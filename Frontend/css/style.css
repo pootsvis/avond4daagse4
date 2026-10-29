@@ -859,6 +859,8 @@ button:focus-visible {
     }
 }
 
+/*algemene informatie pagina */
+
 .info-page {
     background: white;
     padding: 28px 0 80px;
@@ -1314,6 +1316,126 @@ button:focus-visible {
     line-height: 1.4;
 }
 
+/*Betaalpagina*/
+
+.pay-section {
+    background: white;
+    padding: 28px 0 64px;
+}
+
+.pay-title {
+    font-size: 32px;
+    font-weight: 800;
+    line-height: 1.1;
+    margin-bottom: 6px;
+}
+
+.pay-subtitle {
+    font-size: 15px;
+    color: var(--muted);
+    margin-bottom: 20px;
+}
+
+.pay-layout {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 300px;
+    gap: 18px;
+    align-items: start;
+}
+
+/* Overzicht inschrijving */
+.order-list {
+    margin-bottom: 18px;
+}
+
+.order-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 12px;
+    padding: 12px 0;
+    border-bottom: 1px solid var(--border);
+    font-size: 14px;
+}
+
+.order-row dt {
+    color: var(--muted);
+}
+
+.order-row dd {
+    font-weight: 700;
+    text-align: right;
+}
+
+.order-total {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    padding-top: 16px;
+    font-size: 19px;
+    font-weight: 800;
+}
+
+.order-amount {
+    font-size: 22px;
+}
+
+/* Betaalmethode kaart */
+.payment-card {
+    background: white;
+    border: 1px solid var(--border);
+    padding: 20px;
+}
+
+.payment-card h2 {
+    font-size: 19px;
+    font-weight: 700;
+    margin-bottom: 16px;
+}
+
+.payment-form {
+    display: flex;
+    flex-direction: column;
+}
+
+.payment-option {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    margin-bottom: 14px;
+}
+
+.payment-option input[type="checkbox"] {
+    accent-color: var(--dark);
+    width: 16px;
+    height: 16px;
+    flex-shrink: 0;
+}
+
+.payment-bank {
+    margin-left: 26px;
+    margin-bottom: 18px;
+}
+
+.payment-agree {
+    margin-top: 4px;
+    margin-bottom: 18px;
+}
+
+.btn-pay {
+    width: 100%;
+    margin-bottom: 12px;
+}
+
+.payment-note {
+    font-size: 12px;
+    color: var(--muted);
+    line-height: 1.4;
+    text-align: center;
+}
 
 /* Tablet */
 @media (max-width: 1050px) {
@@ -1365,6 +1487,10 @@ button:focus-visible {
     .register-layout {
         grid-template-columns: minmax(0, 1fr) 260px;
     }
+
+    .pay-layout {
+        grid-template-columns: minmax(0, 1fr) 260px;
+    }
 }
 
 
@@ -1404,7 +1530,8 @@ button:focus-visible {
         max-width: 550px;
     }
 
-    .register-layout {
+    .register-layout,
+    .pay-layout {
         grid-template-columns: 1fr;
     }
 
