@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="nl">
 <head>
@@ -26,11 +25,184 @@
         </div>
     </header>
 
-    <main class="locations-section">
+    <main class="register-section">
         <div class="section-inner">
-            <h1>Inschrijven</h1>
-            <p>Deze pagina is nog in ontwikkeling.</p>
-            <a href="index.html">← Terug naar Home</a>
+            <h1 class="register-title">Inschrijven</h1>
+
+            <ol class="stepper">
+                <li class="stepper-step active">1. Inschrijven</li>
+                <li class="stepper-step">2. Betalen</li>
+            </ol>
+
+            <form class="register-layout" novalidate>
+
+                <div class="form-card">
+                    <h2>Persoonlijke gegevens</h2>
+
+                    <div class="participants-head">
+                        <h3>Deelnemers</h3>
+                        <button type="button" class="btn btn-secondary btn-small btn-add">+ Nieuwe Deelnemer</button>
+                    </div>
+
+                    <!-- Deelnemer 1 -->
+                    <fieldset class="participant">
+                        <legend class="sr-only">Deelnemer 1</legend>
+                        <div class="participant-header">
+                            <h3>Deelnemer 1</h3>
+                            <span class="participant-badge">5 km &bull; 4 avonden</span>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="voornaam-1">Voornaam</label>
+                            <input type="text" id="voornaam-1" name="voornaam-1" placeholder="Voornaam">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="achternaam-1">Achternaam</label>
+                            <input type="text" id="achternaam-1" name="achternaam-1" placeholder="Achternaam">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="keer-1">Hoeveelste keer</label>
+                            <input type="text" id="keer-1" name="keer-1" placeholder="Hoeveelste keer">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="school-1">School</label>
+                            <select id="school-1" name="school-1">
+                                <option value="" selected>Selecteer school</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="groep-1">Groep</label>
+                            <select id="groep-1" name="groep-1">
+                                <option value="" selected>Selecteer groep</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="geboortejaar-1">Geboortejaar</label>
+                            <select id="geboortejaar-1" name="geboortejaar-1">
+                                <option value="" selected>Geboortejaar</option>
+                            </select>
+                        </div>
+
+                        <hr class="form-divider">
+
+                        <div class="radio-group">
+                            <span class="radio-group-label">Begeleider meenemen</span>
+                            <label class="radio-option">
+                                <input type="radio" name="begeleider-1" value="ja" checked>
+                                Ja
+                            </label>
+                            <label class="radio-option">
+                                <input type="radio" name="begeleider-1" value="nee">
+                                Nee
+                            </label>
+                        </div>
+                    </fieldset>
+
+                    <!-- Deelnemer 2 -->
+                    <fieldset class="participant">
+                        <legend class="sr-only">Deelnemer 2</legend>
+                        <div class="participant-header">
+                            <h3>Deelnemer 2</h3>
+                            <span class="participant-badge">5 km &bull; 4 avonden</span>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="voornaam-2">Voornaam</label>
+                            <input type="text" id="voornaam-2" name="voornaam-2" placeholder="Voornaam">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="achternaam-2">Achternaam</label>
+                            <input type="text" id="achternaam-2" name="achternaam-2" placeholder="Achternaam">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="keer-2">Hoeveelste keer</label>
+                            <input type="text" id="keer-2" name="keer-2" placeholder="Hoeveelste keer">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="school-2">School</label>
+                            <select id="school-2" name="school-2">
+                                <option value="" selected>Selecteer school</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="groep-2">Groep</label>
+                            <select id="groep-2" name="groep-2">
+                                <option value="" selected>Selecteer groep</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="geboortejaar-2">Geboortejaar</label>
+                            <select id="geboortejaar-2" name="geboortejaar-2">
+                                <option value="" selected>Geboortejaar</option>
+                            </select>
+                        </div>
+
+                        <hr class="form-divider">
+
+                        <div class="radio-group">
+                            <span class="radio-group-label">Begeleider meenemen</span>
+                            <label class="radio-option">
+                                <input type="radio" name="begeleider-2" value="ja" checked>
+                                Ja
+                            </label>
+                            <label class="radio-option">
+                                <input type="radio" name="begeleider-2" value="nee">
+                                Nee
+                            </label>
+                        </div>
+                    </fieldset>
+
+                    <div class="contact-section">
+                        <h3>Contactgegevens</h3>
+
+                        <div class="form-group">
+                            <label for="email">E-mailadres</label>
+                            <input type="email" id="email" name="email" placeholder="naam@voorbeeld.nl">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="telefoon">Telefoonnummer</label>
+                            <input type="tel" id="telefoon" name="telefoon" placeholder="06 12345678">
+                        </div>
+                    </div>
+
+                    <label class="checkbox-row">
+                        <input type="checkbox" name="akkoord" checked>
+                        <span>Ik ga akkoord met de <a href="#">deelnamevoorwaarden</a> en <a href="#">privacyverklaring</a>.</span>
+                    </label>
+
+                    <div class="form-actions">
+                        <button type="button" class="btn btn-secondary">Annuleren</button>
+                        <!-- <button type="submit" class="btn btn-primary">VOLGENDE: BETALEN</button> -->
+                        <a href="betalen.html" class="btn btn-primary">VOLGENDE: CONTROLE</a>
+                    </div>
+                </div>
+
+                <aside class="summary-card">
+                    <h3>Samenvatting</h3>
+                    <div class="summary-list">
+                        <p>2 deelnemers</p>
+                        <p>5 km &bull; 4 avonden</p>
+                        <p>Inclusief medaille</p>
+                    </div>
+                    <div class="summary-total">
+                        <span>Totaal</span>
+                        <span class="summary-amount">&euro; 17,00</span>
+                    </div>
+                    <p class="summary-note">Je inschrijving is definitief na betaling.</p>
+                </aside>
+
+            </form>
         </div>
     </main>
 
