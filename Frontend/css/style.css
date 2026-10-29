@@ -1203,3 +1203,178 @@ button:focus-visible {
         height: 180px;
     }
 }
+
+
+/* Sponsorenpagina: eigen CSS, zodat de bestaande pagina's niet veranderen. */
+.sponsors-page {
+    padding: 42px 0 80px;
+    background: white;
+}
+
+.sponsors-heading {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 24px;
+    margin-bottom: 24px;
+}
+
+.sponsors-heading h1 {
+    font-size: 32px;
+    font-weight: 800;
+    line-height: 1.15;
+    margin-bottom: 8px;
+}
+
+.sponsors-heading p {
+    font-size: 14px;
+    line-height: 1.5;
+    color: var(--muted);
+}
+
+.sponsors-cta {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    min-height: 42px;
+    padding: 10px 17px;
+    border: 1px solid var(--dark);
+    border-radius: 3px;
+    background: var(--dark);
+    color: white;
+    font-size: 12px;
+    font-weight: 600;
+    white-space: nowrap;
+}
+
+.sponsors-cta:hover {
+    background: #444;
+}
+
+.sponsors-featured {
+    display: grid;
+    grid-template-columns: 240px minmax(0, 1fr);
+    align-items: center;
+    gap: 22px;
+    padding: 16px;
+    margin-bottom: 20px;
+    border: 1px solid var(--border);
+    background: var(--light);
+}
+
+.sponsors-featured-logo {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 132px;
+    border: 1px solid #a8a8a8;
+    color: #888;
+    text-align: center;
+    font-size: 12px;
+    padding: 12px;
+}
+
+.sponsors-kicker {
+    margin-bottom: 6px;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    color: var(--muted);
+}
+
+.sponsors-featured-content h2 {
+    margin-bottom: 8px;
+    font-size: 24px;
+    font-weight: 800;
+    line-height: 1.2;
+}
+
+.sponsors-featured-content > p:last-child {
+    max-width: 650px;
+    font-size: 14px;
+    line-height: 1.6;
+    color: var(--muted);
+}
+
+.sponsors-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 12px;
+    list-style: none;
+}
+
+.sponsors-card {
+    min-width: 0;
+    min-height: 114px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    padding: 20px 12px;
+    border: 1px solid #d1d1d1;
+    background: white;
+    text-align: center;
+}
+
+.sponsors-card-logo {
+    color: #999;
+    font-size: 11px;
+    letter-spacing: 0.04em;
+}
+
+.sponsors-card h3 {
+    font-size: 14px;
+    line-height: 1.4;
+    font-weight: 500;
+}
+
+/* Tablet: het overzicht krijgt twee kolommen. */
+@media (max-width: 800px) {
+    .sponsors-featured {
+        grid-template-columns: 190px minmax(0, 1fr);
+    }
+
+    .sponsors-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+}
+
+/* Mobiel: intro, hoofdsponsor en sponsorblokken onder elkaar. */
+@media (max-width: 600px) {
+    .sponsors-page {
+        padding: 28px 0 50px;
+    }
+
+    .sponsors-heading {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 18px;
+    }
+
+    .sponsors-heading h1 {
+        font-size: 26px;
+    }
+
+    .sponsors-cta {
+        width: 100%;
+    }
+
+    .sponsors-featured {
+        grid-template-columns: 1fr;
+        gap: 16px;
+    }
+
+    .sponsors-featured-logo {
+        min-height: 130px;
+    }
+
+    .sponsors-featured-content h2 {
+        font-size: 21px;
+    }
+
+    .sponsors-grid {
+        grid-template-columns: 1fr;
+    }
+}
