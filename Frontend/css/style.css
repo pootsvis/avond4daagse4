@@ -859,6 +859,168 @@ button:focus-visible {
     }
 }
 
+.info-page {
+    background: white;
+    padding: 28px 0 80px;
+}
+ 
+.info-layout {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 300px;
+    gap: 26px;
+    align-items: start;
+}
+ 
+/* Titel */
+.page-intro h1 {
+    font-size: 26px;
+    font-weight: 800;
+    line-height: 1.2;
+    margin-bottom: 6px;
+}
+ 
+.page-intro p {
+    font-size: 14px;
+    color: var(--muted);
+    margin-bottom: 24px;
+}
+ 
+/* Vier snelle feiten */
+.quick-facts {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 12px;
+    margin-bottom: 28px;
+}
+ 
+.quick-fact {
+    background: var(--light);
+    border: 1px solid var(--border);
+    padding: 14px;
+}
+ 
+.quick-fact h2 {
+    font-size: 12px;
+    font-weight: 700;
+    margin-bottom: 8px;
+}
+ 
+.quick-fact p {
+    font-size: 12px;
+    line-height: 1.5;
+    color: var(--muted);
+}
+ 
+/* Veelgestelde vragen */
+.faq h2 {
+    font-size: 20px;
+    font-weight: 700;
+    margin-bottom: 16px;
+}
+ 
+.faq-item {
+    border-top: 1px solid var(--border);
+}
+ 
+.faq-item:last-child {
+    border-bottom: 1px solid var(--border);
+}
+ 
+.faq-item summary {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 14px 0;
+    cursor: pointer;
+    list-style: none;
+    font-size: 14px;
+}
+ 
+/* Standaard driehoekje verbergen */
+.faq-item summary::-webkit-details-marker {
+    display: none;
+}
+ 
+.faq-item summary::before {
+    content: "+";
+    width: 12px;
+    flex-shrink: 0;
+    text-align: center;
+    font-size: 16px;
+    color: var(--muted);
+}
+ 
+.faq-item[open] summary::before {
+    content: "–";
+}
+ 
+.faq-item summary:hover .faq-question {
+    color: var(--muted);
+}
+ 
+.faq-item summary:focus-visible {
+    outline: 3px solid var(--blue);
+    outline-offset: 2px;
+}
+ 
+.faq-item p {
+    padding: 0 0 14px 24px;
+    font-size: 12px;
+    line-height: 1.5;
+    color: var(--muted);
+}
+ 
+/* Rechterkolom */
+.info-sidebar {
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+}
+ 
+.location-map {
+    height: 210px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    background: var(--light);
+    border: 1px solid #6e6e6e;
+    color: var(--muted);
+    font-size: 12px;
+    text-align: center;
+}
+ 
+.access-card {
+    border: 1px solid var(--border);
+    background: white;
+    padding: 18px;
+}
+ 
+.access-card h2 {
+    font-size: 19px;
+    font-weight: 700;
+    margin-bottom: 10px;
+}
+ 
+.access-card p {
+    font-size: 12px;
+    line-height: 1.5;
+    color: var(--muted);
+    margin-bottom: 12px;
+}
+ 
+.access-card a {
+    font-size: 12px;
+    font-weight: 700;
+    text-decoration: underline;
+}
+ 
+.access-card a:hover {
+    color: var(--muted);
+}
+ 
+
 /* Tablet */
 @media (max-width: 1050px) {
     .header-inner {
@@ -897,7 +1059,16 @@ button:focus-visible {
     .selected-layout {
         grid-template-columns: 300px minmax(0, 1fr);
     }
+
+    .info-layout {
+        grid-template-columns: minmax(0, 1fr) 260px;
+    }
+ 
+    .quick-facts {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
 }
+
 
 /* Kleine tablet */
 @media (max-width: 800px) {
@@ -925,6 +1096,14 @@ button:focus-visible {
 
     .info-grid {
         gap: 12px;
+    }
+
+    .info-layout {
+        grid-template-columns: 1fr;
+    }
+ 
+    .info-sidebar {
+        max-width: 550px;
     }
 }
 
@@ -1006,5 +1185,21 @@ button:focus-visible {
 
     .photo-wide {
         grid-column: auto;
+    }
+
+    .info-page {
+        padding: 24px 0 48px;
+    }
+ 
+    .page-intro h1 {
+        font-size: 24px;
+    }
+ 
+    .quick-facts {
+        grid-template-columns: 1fr;
+    }
+ 
+    .location-map {
+        height: 180px;
     }
 }
