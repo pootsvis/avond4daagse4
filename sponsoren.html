@@ -1,15 +1,16 @@
-
 <!DOCTYPE html>
 <html lang="nl">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Ontdek de lokale partners en sponsoren van de Avond4daagse 2027.">
     <title>Avond4daagse 2027 | Sponsoren</title>
     <link rel="stylesheet" href="Frontend/css/style.css">
+    <link rel="stylesheet" href="Frontend/css/sponsoren.css">
 </head>
 <body>
 
-    <!-- Navigatiebalk -->
+    <!-- Bestaande navigatie: gelijk aan de andere publieke pagina's. -->
     <header class="site-header">
         <div class="header-inner">
             <a href="index.html" class="logo">AVOND4DAAGSE</a>
@@ -20,21 +21,67 @@
                 <a href="inschrijven.html">Inschrijven</a>
                 <a href="praktische-informatie.html">Praktische informatie</a>
                 <a href="contact.html">Contact</a>
-                <a href="sponsoren.html" class="active">Sponsoren</a>
+                <a href="sponsoren.html" class="active" aria-current="page">Sponsoren</a>
             </nav>
 
-            <a href="inschrijven.html" class="login-btn">
-                INSCHRIJVEN
-            </a>
+            <a href="inschrijven.html" class="login-btn">INSCHRIJVEN</a>
         </div>
     </header>
 
-    <!-- Tijdelijke pagina -->
-    <main class="locations-section">
+    <main class="sponsors-page">
         <div class="section-inner">
-            <h1>Sponsoren</h1>
-            <p>Deze pagina is nog in ontwikkeling.</p>
-            <a href="index.html">← Terug naar Home</a>
+
+            <!-- Introductie en contactactie volgens de Figma-mock-up. -->
+            <div class="sponsors-heading">
+                <div>
+                    <h1>Onze sponsoren</h1>
+                    <p>Dankzij deze lokale partners kunnen duizenden deelnemers vier avonden op pad.</p>
+                </div>
+                <a class="sponsors-cta" href="contact.html?onderwerp=sponsoring">WORD SPONSOR</a>
+            </div>
+
+            <!-- Uitgelichte hoofdsponsor. Logo is tijdelijk een placeholder. -->
+            <section class="sponsors-featured" aria-labelledby="hoofdsponsor-titel">
+                <div class="sponsors-featured-logo" aria-label="Plaatsaanduiding voor logo hoofdsponsor">
+                    <span aria-hidden="true">[ LOGO HOOFDSPONSOR ]</span>
+                </div>
+                <div class="sponsors-featured-content">
+                    <p class="sponsors-kicker">HOOFDSPONSOR</p>
+                    <h2 id="hoofdsponsor-titel">Rabobank Dorpveld</h2>
+                    <p>Samen brengen we de regio in beweging en maken we de Avond4daagse toegankelijk voor iedereen.</p>
+                </div>
+            </section>
+
+            <!-- Sponsoroverzicht; namen en logo's zijn overgenomen uit de mock-up. -->
+            <section class="sponsors-overview" aria-label="Overige sponsoren">
+                <ul class="sponsors-grid">
+                    <li class="sponsors-card">
+                        <span class="sponsors-card-logo" aria-hidden="true">[ LOGO ]</span>
+                        <h3>Gemeente Dorpveld</h3>
+                    </li>
+                    <li class="sponsors-card">
+                        <span class="sponsors-card-logo" aria-hidden="true">[ LOGO ]</span>
+                        <h3>Bakkerij De Molen</h3>
+                    </li>
+                    <li class="sponsors-card">
+                        <span class="sponsors-card-logo" aria-hidden="true">[ LOGO ]</span>
+                        <h3>Sporthuis Sprint</h3>
+                    </li>
+                    <li class="sponsors-card">
+                        <span class="sponsors-card-logo" aria-hidden="true">[ LOGO ]</span>
+                        <h3>Van Dijk Logistics</h3>
+                    </li>
+                    <li class="sponsors-card">
+                        <span class="sponsors-card-logo" aria-hidden="true">[ LOGO ]</span>
+                        <h3>Gezondheidscentrum Brink</h3>
+                    </li>
+                    <li class="sponsors-card">
+                        <span class="sponsors-card-logo" aria-hidden="true">[ LOGO ]</span>
+                        <h3>Drukkerij Lettervast</h3>
+                    </li>
+                </ul>
+            </section>
+
         </div>
     </main>
 
