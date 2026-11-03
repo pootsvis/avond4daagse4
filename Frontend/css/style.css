@@ -1314,233 +1314,6 @@ button:focus-visible {
     line-height: 1.4;
 }
 
-
-/* Tablet */
-@media (max-width: 1050px) {
-    .header-inner {
-        flex-wrap: wrap;
-        justify-content: center;
-        padding: 15px 0;
-        gap: 14px 25px;
-    }
-
-    .site-header nav {
-        order: 3;
-        width: 100%;
-        justify-content: center;
-        flex-wrap: wrap;
-        gap: 8px 20px;
-    }
-
-    .site-header nav a {
-        height: 34px;
-    }
-
-    .hero-layout {
-        grid-template-columns: minmax(0, 1fr) 42%;
-        gap: 25px;
-    }
-
-    .hero h1 {
-        font-size: 36px;
-    }
-
-    .hero h2 {
-        font-size: 20px;
-    }
-
-    .locations-layout,
-    .selected-layout {
-        grid-template-columns: 300px minmax(0, 1fr);
-    }
-
-    .info-layout {
-        grid-template-columns: minmax(0, 1fr) 260px;
-    }
- 
-    .quick-facts {
-        grid-template-columns: repeat(2, minmax(0, 1fr));
-    }
-
-    .register-layout {
-        grid-template-columns: minmax(0, 1fr) 260px;
-    }
-}
-
-
-/* Kleine tablet */
-@media (max-width: 800px) {
-    .section-inner {
-        width: calc(100% - 48px);
-    }
-
-    .locations-layout,
-    .selected-layout {
-        grid-template-columns: 1fr;
-    }
-
-    .map-preview {
-        max-width: 400px;
-    }
-
-    .hero-layout {
-        grid-template-columns: 1fr;
-    }
-
-    .hero-image {
-        max-width: 550px;
-        height: 280px;
-    }
-
-    .info-grid {
-        gap: 12px;
-    }
-
-    .info-layout {
-        grid-template-columns: 1fr;
-    }
- 
-    .info-sidebar {
-        max-width: 550px;
-    }
-
-    .register-layout {
-        grid-template-columns: 1fr;
-    }
-
-    .summary-card {
-        position: static;
-    }
-
-    .form-card {
-        padding: 18px;
-    }
-}
-
-/* Mobiel */
-@media (max-width: 600px) {
-    .section-inner,
-    .header-inner {
-        width: calc(100% - 36px);
-    }
-
-    .logo {
-        font-size: 18px;
-    }
-
-    .site-header nav {
-        gap: 5px 14px;
-    }
-
-    .site-header nav a {
-        font-size: 11px;
-    }
-
-    .hero-layout {
-        padding-top: 35px;
-        padding-bottom: 35px;
-    }
-
-    .hero h1 {
-        font-size: 32px;
-    }
-
-    .hero h2 {
-        font-size: 19px;
-    }
-
-    .hero-description {
-        font-size: 14px;
-    }
-
-    .hero-image {
-        height: 220px;
-    }
-
-    .info-grid {
-        grid-template-columns: 1fr;
-    }
-
-    .info-card {
-        min-height: 125px;
-    }
-
-    .section-heading h2 {
-        font-size: 26px;
-    }
-
-    .section-heading > p:last-child {
-        font-size: 14px;
-    }
-
-    .location-card {
-        padding: 14px;
-    }
-
-    .location-identity h3 {
-        font-size: 16px;
-    }
-
-    .location-description {
-        font-size: 13px;
-    }
-
-    .sponsor-row {
-        flex-wrap: wrap;
-    }
-
-    .photos-grid {
-        grid-template-columns: 1fr;
-    }
-
-    .photo-wide {
-        grid-column: auto;
-    }
-
-    .info-page {
-        padding: 24px 0 48px;
-    }
- 
-    .page-intro h1 {
-        font-size: 24px;
-    }
- 
-    .quick-facts {
-        grid-template-columns: 1fr;
-    }
- 
-    .location-map {
-        height: 180px;
-    }
-
-    .register-title {
-        font-size: 26px;
-    }
-
-    .stepper-step {
-        font-size: 12px;
-        padding: 10px 6px;
-    }
-
-    .participants-head {
-        flex-direction: column;
-        align-items: stretch;
-    }
-
-    .btn-add {
-        width: 100%;
-    }
-
-    .form-actions {
-        flex-direction: column-reverse;
-    }
-
-    .form-actions .btn {
-        width: 100%;
-    }
-}
-
-
 /* Sponsorenpagina: eigen CSS, zodat de bestaande pagina's niet veranderen. */
 .sponsors-page {
     padding: 42px 0 80px;
@@ -1666,8 +1439,211 @@ button:focus-visible {
     font-weight: 500;
 }
 
-/* Tablet: het overzicht krijgt twee kolommen. */
+/*contact pagina*/
+.contact-page {
+    background: white;
+    padding: 28px 0 80px;
+}
+
+.contact-layout {
+    display: grid;
+    grid-template-columns: 340px minmax(0, 1fr);
+    gap: 32px;
+    align-items: start;
+}
+
+.contact-intro h1 {
+    font-size: 32px;
+    font-weight: 800;
+    line-height: 1.1;
+    margin-bottom: 14px;
+}
+
+.contact-intro > p {
+    font-size: 15px;
+    color: var(--muted);
+    line-height: 1.5;
+    margin-bottom: 24px;
+}
+
+.org-card {
+    background: var(--light);
+    border: 1px solid var(--border);
+    padding: 18px;
+    margin-bottom: 16px;
+}
+
+.org-card h2 {
+    font-size: 16px;
+    font-weight: 700;
+    margin-bottom: 10px;
+}
+
+.org-name {
+    font-size: 14px;
+    font-weight: 600;
+    margin-bottom: 6px;
+}
+
+.org-details {
+    font-size: 13px;
+    color: var(--muted);
+    line-height: 1.5;
+}
+
+.contact-note {
+    font-size: 13px;
+    color: var(--muted);
+    line-height: 1.5;
+}
+
+.contact-form-card {
+    background: white;
+    border: 1px solid var(--border);
+    padding: 28px;
+}
+
+.contact-form-card h2 {
+    font-size: 19px;
+    font-weight: 700;
+    margin-bottom: 20px;
+}
+
+.form-row {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 16px;
+}
+
+.form-group textarea {
+    width: 100%;
+    padding: 12px 14px;
+    font: inherit;
+    font-size: 14px;
+    color: var(--dark);
+    background-color: white;
+    border: 1px solid var(--border);
+    border-radius: 3px;
+    resize: vertical;
+    min-height: 120px;
+}
+
+.form-group textarea::placeholder {
+    color: #9a9a9a;
+}
+
+.form-group textarea:focus-visible {
+    outline: 3px solid var(--blue);
+    outline-offset: 2px;
+}
+
+.form-submit {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 8px;
+}
+
+/* Tablet */
+@media (max-width: 1050px) {
+    .header-inner {
+        flex-wrap: wrap;
+        justify-content: center;
+        padding: 15px 0;
+        gap: 14px 25px;
+    }
+
+    .site-header nav {
+        order: 3;
+        width: 100%;
+        justify-content: center;
+        flex-wrap: wrap;
+        gap: 8px 20px;
+    }
+
+    .site-header nav a {
+        height: 34px;
+    }
+
+    .hero-layout {
+        grid-template-columns: minmax(0, 1fr) 42%;
+        gap: 25px;
+    }
+
+    .hero h1 {
+        font-size: 36px;
+    }
+
+    .hero h2 {
+        font-size: 20px;
+    }
+
+    .locations-layout,
+    .selected-layout {
+        grid-template-columns: 300px minmax(0, 1fr);
+    }
+
+    .info-layout {
+        grid-template-columns: minmax(0, 1fr) 260px;
+    }
+ 
+    .quick-facts {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .register-layout {
+        grid-template-columns: minmax(0, 1fr) 260px;
+    }
+}
+
+
+/* Kleine tablet */
 @media (max-width: 800px) {
+    .section-inner {
+        width: calc(100% - 48px);
+    }
+
+    .locations-layout,
+    .selected-layout {
+        grid-template-columns: 1fr;
+    }
+
+    .map-preview {
+        max-width: 400px;
+    }
+
+    .hero-layout {
+        grid-template-columns: 1fr;
+    }
+
+    .hero-image {
+        max-width: 550px;
+        height: 280px;
+    }
+
+    .info-grid {
+        gap: 12px;
+    }
+
+    .info-layout {
+        grid-template-columns: 1fr;
+    }
+ 
+    .info-sidebar {
+        max-width: 550px;
+    }
+
+    .register-layout {
+        grid-template-columns: 1fr;
+    }
+
+    .summary-card {
+        position: static;
+    }
+
+    .form-card {
+        padding: 18px;
+    }
+
     .sponsors-featured {
         grid-template-columns: 190px minmax(0, 1fr);
     }
@@ -1675,10 +1651,143 @@ button:focus-visible {
     .sponsors-grid {
         grid-template-columns: repeat(2, minmax(0, 1fr));
     }
+
+    .contact-layout {
+        grid-template-columns: 1fr;
+    }
+
+    .form-row {
+        grid-template-columns: 1fr;
+    }
+
+    .contact-form-card {
+        padding: 20px;
+    }
+
 }
 
-/* Mobiel: intro, hoofdsponsor en sponsorblokken onder elkaar. */
+/* Mobiel */
 @media (max-width: 600px) {
+    .section-inner,
+    .header-inner {
+        width: calc(100% - 36px);
+    }
+
+    .logo {
+        font-size: 18px;
+    }
+
+    .site-header nav {
+        gap: 5px 14px;
+    }
+
+    .site-header nav a {
+        font-size: 11px;
+    }
+
+    .hero-layout {
+        padding-top: 35px;
+        padding-bottom: 35px;
+    }
+
+    .hero h1 {
+        font-size: 32px;
+    }
+
+    .hero h2 {
+        font-size: 19px;
+    }
+
+    .hero-description {
+        font-size: 14px;
+    }
+
+    .hero-image {
+        height: 220px;
+    }
+
+    .info-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .info-card {
+        min-height: 125px;
+    }
+
+    .section-heading h2 {
+        font-size: 26px;
+    }
+
+    .section-heading > p:last-child {
+        font-size: 14px;
+    }
+
+    .location-card {
+        padding: 14px;
+    }
+
+    .location-identity h3 {
+        font-size: 16px;
+    }
+
+    .location-description {
+        font-size: 13px;
+    }
+
+    .sponsor-row {
+        flex-wrap: wrap;
+    }
+
+    .photos-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .photo-wide {
+        grid-column: auto;
+    }
+
+    .info-page {
+        padding: 24px 0 48px;
+    }
+ 
+    .page-intro h1 {
+        font-size: 24px;
+    }
+ 
+    .quick-facts {
+        grid-template-columns: 1fr;
+    }
+ 
+    .location-map {
+        height: 180px;
+    }
+
+    .register-title {
+        font-size: 26px;
+    }
+
+    .stepper-step {
+        font-size: 12px;
+        padding: 10px 6px;
+    }
+
+    .participants-head {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .btn-add {
+        width: 100%;
+    }
+
+    .form-actions {
+        flex-direction: column-reverse;
+    }
+
+    .form-actions .btn {
+        width: 100%;
+    }
+
     .sponsors-page {
         padding: 28px 0 50px;
     }
@@ -1712,5 +1821,17 @@ button:focus-visible {
 
     .sponsors-grid {
         grid-template-columns: 1fr;
+    }
+
+    .contact-intro h1 {
+        font-size: 26px;
+    }
+
+    .form-submit {
+        flex-direction: column;
+    }
+
+    .form-submit .btn {
+        width: 100%;
     }
 }
