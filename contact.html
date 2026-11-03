@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="nl">
 <head>
@@ -26,11 +25,71 @@
         </div>
     </header>
 
-    <main class="locations-section">
+    <main class="contact-page">
         <div class="section-inner">
-            <h1>Contact</h1>
-            <p>Deze pagina is nog in ontwikkeling.</p>
-            <a href="index.html">← Terug naar Home</a>
+
+            <div class="contact-layout">
+
+                <!-- Linkerkolom -->
+                <div class="contact-intro">
+                    <h1>Contact</h1>
+                    <p>Heb je een vraag over inschrijven, routes of deelname? Stuur ons een bericht.</p>
+
+                    <div class="org-card">
+                        <h2>Organisatie</h2>
+                        <p class="org-name">Stichting Avond4daagse Dorpveld</p>
+                        <p class="org-details">info@avond4daagse.nl <br> 06 1234 5678 <br> Ma&ndash;vr, 09:00&ndash;17:00</p>
+                    </div>
+
+                    <p class="contact-note">We proberen binnen twee werkdagen te reageren.</p>
+                </div>
+
+                <!-- Rechterkolom -->
+                <div class="contact-form-card">
+                    <h2>Stuur een bericht</h2>
+
+                    <form>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="voornaam">Voornaam</label>
+                                <input type="text" id="voornaam" name="voornaam" placeholder="Voornaam">
+                            </div>
+                            <div class="form-group">
+                                <label for="achternaam">Achternaam</label>
+                                <input type="text" id="achternaam" name="achternaam" placeholder="Achternaam">
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="email">E-mailadres</label>
+                            <input type="email" id="email" name="email" placeholder="naam@voorbeeld.nl">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="onderwerp">Onderwerp</label>
+                            <select id="onderwerp" name="onderwerp">
+                                <option value="">Kies een onderwerp</option>
+                                <option value="inschrijven">Inschrijven</option>
+                                <option value="routes">Routes</option>
+                                <option value="betaling">Betaling</option>
+                                <option value="sponsoring">Sponsoring</option>
+                                <option value="overig">Overig</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="bericht">Bericht</label>
+                            <textarea id="bericht" name="bericht" rows="5" placeholder="Typ hier je vraag of opmerking..."></textarea>
+                        </div>
+
+                        <div class="form-submit">
+                            <button type="submit" class="btn btn-primary">BERICHT VERSTUREN</button>
+                        </div>
+                    </form>
+                </div>
+
+            </div>
+
         </div>
     </main>
 
