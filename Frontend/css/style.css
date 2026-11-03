@@ -1266,6 +1266,17 @@ button:focus-visible {
     color: var(--muted);
 }
 
+input[type="date"] {
+    height: 42px;
+    padding: 0 14px;
+    font: inherit;
+    font-size: 14px;
+    color: var(--dark);
+    background-color: white;
+    border: 1px solid var(--border);
+    border-radius: 3px;
+}
+
 /* Actieknoppen onderaan formulier */
 .form-actions {
     display: flex;
