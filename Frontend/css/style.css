@@ -1436,7 +1436,8 @@ button:focus-visible {
     line-height: 1.4;
     text-align: center;
 }
-/* Sponsorenpagina: eigen CSS, zodat de bestaande pagina's niet veranderen. */
+
+/* Sponsorenpagina */
 .sponsors-page {
     padding: 42px 0 80px;
     background: white;
