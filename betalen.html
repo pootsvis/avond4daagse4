@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Avond4daagse 2027 | Betalen</title>
+    <link rel="stylesheet" href="Frontend/css/style.css">
+</head>
+<body>
+
+    <header class="site-header">
+        <div class="header-inner">
+            <a href="index.html" class="logo">AVOND4DAAGSE</a>
+
+            <nav aria-label="Hoofdnavigatie">
+                <a href="index.html">Home</a>
+                <a href="routes.html">Routes</a>
+                <a href="inschrijven.html" class="active">Inschrijven</a>
+                <a href="praktische-informatie.html">Praktische informatie</a>
+                <a href="contact.html">Contact</a>
+                <a href="sponsoren.html">Sponsoren</a>
+            </nav>
+
+            <a href="inschrijven.html" class="login-btn">INSCHRIJVEN</a>
+        </div>
+    </header>
+
+    <main class="pay-section">
+        <div class="section-inner">
+            <h1 class="pay-title">Betalen</h1>
+            <p class="pay-subtitle">Controleer je inschrijving en rond de betaling veilig af.</p>
+
+            <ol class="stepper">
+                <li class="stepper-step">1. Inschrijven</li>
+                <li class="stepper-step active">2. Betalen</li>
+            </ol>
+
+            <div class="pay-layout">
+
+                <section class="form-card">
+                    <h2>Overzicht inschrijving</h2>
+
+                    <dl class="order-list">
+                        <div class="order-row">
+                            <dt>Deelnemer</dt>
+                            <dd>Lotte de Vries</dd>
+                        </div>
+                        <div class="order-row">
+                            <dt>Afstand</dt>
+                            <dd>5 km</dd>
+                        </div>
+                        <div class="order-row">
+                            <dt>Avonden</dt>
+                            <dd>4 avonden</dd>
+                        </div>
+                        <div class="order-row">
+                            <dt>Startgroep</dt>
+                            <dd>Basisschool De Horizon</dd>
+                        </div>
+                        <div class="order-row">
+                            <dt>Inschrijfnummer</dt>
+                            <dd>A4D-2027-0184</dd>
+                        </div>
+                    </dl>
+
+                    <div class="order-total">
+                        <span>Totaal</span>
+                        <span class="order-amount">&euro; 8,50</span>
+                    </div>
+                </section>
+
+                <aside class="payment-card">
+                    <h2>Betaalmethode</h2>
+
+                    <form class="payment-form" novalidate>
+                        <label class="payment-option">
+                            <input type="checkbox" name="methode" value="ideal" checked>
+                            <span>iDEAL</span>
+                        </label>
+
+                        <div class="form-group payment-bank">
+                            <label for="bank" class="sr-only">Kies je bank</label>
+                            <select id="bank" name="bank">
+                                <option value="" selected>Selecteer bank</option>
+                            </select>
+                        </div>
+
+                        <label class="payment-option">
+                            <input type="checkbox" name="methode" value="bankcontact">
+                            <span>Bankcontact</span>
+                        </label>
+
+                        <label class="checkbox-row payment-agree">
+                            <input type="checkbox" name="akkoord">
+                            <span>Ik ga akkoord met de <a href="#">betaalvoorwaarden</a>.</span>
+                        </label>
+
+                        <button type="submit" class="btn btn-primary btn-pay">BETALEN &euro; 8,50</button>
+
+                        <p class="payment-note">Je wordt doorgestuurd naar de beveiligde betaalomgeving van je bank.</p>
+                    </form>
+                </aside>
+
+            </div>
+        </div>
+    </main>
+
+</body>
+</html>
