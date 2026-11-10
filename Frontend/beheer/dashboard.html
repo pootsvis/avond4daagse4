@@ -1,0 +1,150 @@
+
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard | Avond4daagse Beheer</title>
+    <link rel="stylesheet" href="../css/beheer.css">
+</head>
+<body class="admin-body">
+
+<div class="admin-layout">
+
+    <!-- Navigatie beheeromgeving -->
+    <aside class="admin-sidebar">
+        <div class="admin-brand">
+            <h2>AVOND4DAAGSE</h2>
+            <span>BEHEER 2027</span>
+        </div>
+
+        <nav class="admin-navigation" aria-label="Beheernavigatie">
+            <a href="dashboard.html" class="admin-active"
+               aria-current="page">Dashboard</a>
+
+            <!-- Deze pagina's bouwen we later -->
+            <span>Inschrijvingen</span>
+            <span>Routebeheer</span>
+            <span>Vrijwilligers & inzet</span>
+            <span>Draaiboek</span>
+            <span>Financiën</span>
+            <span>Contactvragen</span>
+        </nav>
+
+        <div class="admin-sidebar-footer">
+            <span>Beheeromgeving 2027</span>
+            <a href="login.html">Terug naar login (demo)</a>
+        </div>
+    </aside>
+
+    <!-- Dashboard inhoud -->
+    <main class="admin-main">
+
+        <div class="admin-page-header">
+            <div>
+                <h1>Dashboard</h1>
+                <p>Overzicht van de Avond4daagse 2027</p>
+            </div>
+            <span class="admin-demo-label">Voorbeeldgegevens</span>
+        </div>
+
+        <!-- Statistieken -->
+        <section class="admin-stats" aria-label="Statistieken">
+
+            <article class="admin-stat-card">
+                <span>Inschrijvingen</span>
+                <strong>1.248</strong>
+                <small>Totaal ingeschreven</small>
+            </article>
+
+            <article class="admin-stat-card">
+                <span>Betaalde inschrijvingen</span>
+                <strong>1.176</strong>
+                <small>Betaling ontvangen</small>
+            </article>
+
+            <article class="admin-stat-card">
+                <span>Vrijwilligers</span>
+                <strong>73</strong>
+                <small>Aangemelde vrijwilligers</small>
+            </article>
+
+            <article class="admin-stat-card">
+                <span>Openstaande vragen</span>
+                <strong>8</strong>
+                <small>Nog te behandelen</small>
+            </article>
+
+        </section>
+
+        <!-- Dashboard overzichten -->
+        <div class="admin-dashboard-grid">
+
+            <section class="admin-panel">
+                <div class="admin-panel-header">
+                    <h2>Recente inschrijvingen</h2>
+                </div>
+
+                <div class="admin-table-scroll">
+                    <table class="admin-table">
+                        <thead>
+                            <tr>
+                                <th>Deelnemer</th>
+                                <th>Afstand</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Lisa de Vries</td>
+                                <td>5 km</td>
+                                <td><span class="admin-status">Betaald</span></td>
+                            </tr>
+                            <tr>
+                                <td>Thomas Jansen</td>
+                                <td>10 km</td>
+                                <td><span class="admin-status">Betaald</span></td>
+                            </tr>
+                            <tr>
+                                <td>Emma Bakker</td>
+                                <td>5 km</td>
+                                <td><span class="admin-status pending">Open</span></td>
+                            </tr>
+                            <tr>
+                                <td>Noah Visser</td>
+                                <td>5 km</td>
+                                <td><span class="admin-status">Betaald</span></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+            <section class="admin-panel">
+                <div class="admin-panel-header">
+                    <h2>Acties voor vandaag</h2>
+                </div>
+
+                <div class="admin-task">
+                    <strong>Openstaande contactvragen</strong>
+                    <p>Controleer berichten van deelnemers.</p>
+                </div>
+
+                <div class="admin-task">
+                    <strong>Betalingen controleren</strong>
+                    <p>Bekijk inschrijvingen die nog niet betaald zijn.</p>
+                </div>
+
+                <div class="admin-task">
+                    <strong>Vrijwilligersplanning</strong>
+                    <p>Controleer de openstaande diensten.</p>
+                </div>
+            </section>
+
+        </div>
+
+    </main>
+</div>
+
+</body>
+</html>
