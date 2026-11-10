@@ -1,0 +1,210 @@
+
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Inschrijvingen | Avond4daagse 2027</title>
+  <link rel="stylesheet" href="../css/beheer.css">
+</head>
+
+<body class="inschrijvingen-pagina">
+  <div class="ins-layout">
+
+    <!-- ZIJMENU -->
+    <aside class="ins-sidebar">
+      <div>
+        <div class="ins-logo">
+          <strong>AVOND4DAAGSE</strong>
+          <small>BEHEER 2027</small>
+        </div>
+
+        <nav class="ins-menu" aria-label="Beheermenu">
+          <a href="dashboard.html">Dashboard</a>
+          <a href="inschrijvingen.html" class="actief"
+             aria-current="page">Inschrijvingen</a>
+          <span>Routebeheer</span>
+          <span>Vrijwilligers & inzet</span>
+          <span>Mijn beschikbaarheid</span>
+          <span>Draaiboek</span>
+          <span>Financiën</span>
+          <span>Contactvragen</span>
+          <span class="ins-handleiding">Handleiding</span>
+        </nav>
+      </div>
+
+      <div class="ins-account">
+        <span>Beheerder</span>
+        <a href="login.html">Uitloggen</a>
+      </div>
+    </aside>
+
+    <!-- HOOFDINHOUD -->
+    <main class="ins-main">
+
+      <!-- PAGINATITEL -->
+      <header class="ins-header">
+        <div>
+          <h1>Inschrijvingen</h1>
+          <p>1.248 deelnemers • 1.176 betalingen afgerond</p>
+        </div>
+
+        <div class="ins-header-buttons">
+          <button type="button" class="ins-btn">
+            − Inschrijving annuleren
+          </button>
+          <button type="button" class="ins-btn ins-dark">
+            + Inschrijving toevoegen
+          </button>
+        </div>
+      </header>
+
+      <!-- ZOEKEN EN FILTEREN -->
+      <form class="ins-filters">
+        <input
+          type="search"
+          aria-label="Zoeken naar inschrijvingen"
+          placeholder="Zoek op naam, school of nummer..."
+        >
+
+        <select aria-label="Filter op afstand">
+          <option>Alle afstanden</option>
+          <option>5 km</option>
+          <option>10 km</option>
+        </select>
+
+        <select aria-label="Filter op status">
+          <option>Alle statussen</option>
+          <option>Betaald</option>
+          <option>Open</option>
+          <option>Geannuleerd</option>
+        </select>
+
+        <button type="reset" class="ins-btn">
+          Filters wissen
+        </button>
+      </form>
+
+      <!-- ACTIEKNOPPEN -->
+      <section class="ins-actions"
+               aria-label="Acties voor inschrijvingen">
+        <span>0 geselecteerd</span>
+
+        <div class="ins-action-buttons">
+          <button type="button" class="ins-btn">
+            Exporteer CSV
+          </button>
+          <button type="button" class="ins-btn">
+            E-mail deelnemers
+          </button>
+          <button type="button" class="ins-btn">
+            Print startlijsten
+          </button>
+        </div>
+      </section>
+
+      <!-- INSCHRIJVINGENTABEL -->
+      <div class="ins-table-wrapper">
+        <table class="ins-table">
+          <thead>
+            <tr>
+              <th>NR.</th>
+              <th>DEELNEMER</th>
+              <th>SCHOOL</th>
+              <th>GROEP</th>
+              <th>AFSTAND</th>
+              <th>STATUS</th>
+              <th>DATUM</th>
+            </tr>
+          </thead>
+
+          <tbody>
+            <tr>
+              <td>A4D-1247</td>
+              <td>Milan Jansen</td>
+              <td>De Regenboog</td>
+              <td>5</td>
+              <td>10 km</td>
+              <td>Open</td>
+              <td>14 apr</td>
+            </tr>
+            <tr>
+              <td>A4D-1246</td>
+              <td>Sara Bakker</td>
+              <td>De Horizon</td>
+              <td>3</td>
+              <td>5 km</td>
+              <td>Betaald</td>
+              <td>14 apr</td>
+            </tr>
+            <tr>
+              <td>A4D-1245</td>
+              <td>Finn Smit</td>
+              <td>Particulier</td>
+              <td>7</td>
+              <td>10 km</td>
+              <td>Betaald</td>
+              <td>13 apr</td>
+            </tr>
+            <tr>
+              <td>A4D-1244</td>
+              <td>Nora Visser</td>
+              <td>De Klimboom</td>
+              <td>4</td>
+              <td>5 km</td>
+              <td>Geannuleerd</td>
+              <td>13 apr</td>
+            </tr>
+            <tr>
+              <td>A4D-1243</td>
+              <td>Sem de Boer</td>
+              <td>De Regenboog</td>
+              <td>6</td>
+              <td>5 km</td>
+              <td>Betaald</td>
+              <td>13 apr</td>
+            </tr>
+            <tr>
+              <td>A4D-1242</td>
+              <td>Yara Meijer</td>
+              <td>De Horizon</td>
+              <td>8</td>
+              <td>10 km</td>
+              <td>Open</td>
+              <td>12 apr</td>
+            </tr>
+            <tr>
+              <td>A4D-1241</td>
+              <td>Mees Vos</td>
+              <td>De Klimboom</td>
+              <td>5</td>
+              <td>5 km</td>
+              <td>Betaald</td>
+              <td>12 apr</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- PAGINANAVIGATIE -->
+      <footer class="ins-pagination">
+        <p>1–25 van 1.248 inschrijvingen</p>
+
+        <div class="ins-page-buttons">
+          <button type="button" class="ins-btn">
+            ← Vorige
+          </button>
+          <button type="button" class="ins-btn ins-dark"
+                  aria-current="page">1</button>
+          <button type="button" class="ins-btn">2</button>
+          <button type="button" class="ins-btn">3</button>
+          <button type="button" class="ins-btn">
+            Volgende →
+          </button>
+        </div>
+      </footer>
+
+    </main>
+  </div>
+</body>
+</html>
