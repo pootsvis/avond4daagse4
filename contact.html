@@ -77,7 +77,8 @@
                             </select>
                         </div>
 
-                        <div class="form-group">
+
+<div class="form-group">
                             <label for="bericht">Bericht</label>
                             <textarea id="bericht" name="bericht" rows="5" placeholder="Typ hier je vraag of opmerking..."></textarea>
                         </div>
@@ -92,6 +93,19 @@
 
         </div>
     </main>
+
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+    const params = new URLSearchParams(window.location.search);
+    const onderwerp = params.get("onderwerp");
+
+    if (onderwerp === "sponsoring") {
+        document.getElementById("onderwerp").value = "sponsoring";
+    }
+});
+</script>
+
 
 </body>
 </html>
