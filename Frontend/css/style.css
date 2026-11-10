@@ -1266,6 +1266,17 @@ button:focus-visible {
     color: var(--muted);
 }
 
+.form-group input[type="date"] {
+    height: 42px;
+    padding: 0 14px;
+    font: inherit;
+    font-size: 14px;
+    color: var(--dark);
+    background-color: white;
+    border: 1px solid var(--border);
+    border-radius: 3px;
+}
+
 /* Actieknoppen onderaan formulier */
 .form-actions {
     display: flex;
@@ -1436,7 +1447,8 @@ button:focus-visible {
     line-height: 1.4;
     text-align: center;
 }
-/* Sponsorenpagina: eigen CSS, zodat de bestaande pagina's niet veranderen. */
+
+/* Sponsorenpagina */
 .sponsors-page {
     padding: 42px 0 80px;
     background: white;
