@@ -1,0 +1,103 @@
+
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inloggen | Avond4daagse Beheer</title>
+    <link rel="stylesheet" href="../css/beheer.css">
+</head>
+<body>
+
+<main class="login-layout">
+
+    <!-- Linkerkant -->
+    <section class="login-welcome">
+        <div class="welcome-logo">
+            <h2>AVOND4DAAGSE</h2>
+            <p>BEHEEROMGEVING 2027</p>
+        </div>
+
+        <div class="welcome-text">
+            <h1>Welkom</h1>
+            <p>Wil je lopen?</p>
+        </div>
+
+        <p class="welcome-footer">
+            Alleen voor geautoriseerde medewerkers
+        </p>
+    </section>
+
+    <!-- Rechterkant -->
+    <section class="login-content">
+        <div class="login-card">
+            <h2>Inloggen</h2>
+            <p class="login-description">
+                Gebruik je beheerdersaccount.
+            </p>
+
+            <form id="loginForm">
+                <div class="login-field">
+                    <label for="email">E-mailadres</label>
+                    <input
+                        type="email"
+                        id="email"
+                        name="email"
+                        placeholder="naam@email.nl"
+                        autocomplete="username"
+                        required>
+                </div>
+
+                <div class="login-field">
+                    <label for="password">Wachtwoord</label>
+                    <input
+                        type="password"
+                        id="password"
+                        name="password"
+                        placeholder="Wachtwoord"
+                        autocomplete="current-password"
+                        required>
+                </div>
+
+                <div class="login-options">
+                    <label class="remember-me">
+                        <input type="checkbox" name="remember">
+                        Onthoud mij
+                    </label>
+                    <span>Wachtwoord vergeten?</span>
+                </div>
+
+                <button type="submit" class="login-button">
+                    INLOGGEN
+                </button>
+
+                <p id="loginFeedback" class="login-feedback"
+                   role="status" aria-live="polite"></p>
+            </form>
+
+            <p class="login-help">
+                Problemen met inloggen? Neem contact op
+                met de hoofdbeheerder.
+            </p>
+        </div>
+    </section>
+
+</main>
+
+<script>
+    // Tijdelijke frontend-demo.
+    // Echte authenticatie wordt later via de Java-backend gemaakt.
+    document.getElementById("loginForm").addEventListener(
+        "submit",
+        function(event) {
+            event.preventDefault();
+
+            document.getElementById("loginFeedback")
+                .textContent =
+                "De login wordt later gekoppeld aan de backend.";
+        }
+    );
+</script>
+
+</body>
+</html>
