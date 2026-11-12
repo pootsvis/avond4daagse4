@@ -1,4 +1,4 @@
-namespace DefaultNamespace;
+namespace avond4daagseBackend.Interfaces;
 
 public interface IRouteService
 {

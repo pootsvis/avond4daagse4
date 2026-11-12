@@ -13,6 +13,7 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddScoped<IEvenementService, EvenementService>();
 builder.Services.AddScoped<IRouteService, RouteService>();
 builder.Services.AddScoped<ISponsorService, SponsorService>();
+builder.Services.AddScoped<IInschrijvingService, InschrijvingService>();
 
 var app = builder.Build();
 

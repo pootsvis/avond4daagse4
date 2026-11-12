@@ -1,4 +1,4 @@
-namespace DefaultNamespace;
+namespace avond4daagseBackend.Services;
 
 public class SponsorService (applicationDbContext context) : ISponsorService
 {

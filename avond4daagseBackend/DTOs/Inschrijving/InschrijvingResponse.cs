@@ -7,5 +7,5 @@ public class InschrijvingResponse
     public string Status { get; set; } = string.Empty;
     public int AantalDeelnemers { get; set; }
     public int EvenementId { get; set; }
-    public ContactpersoonDto Contactpersoon { get; set; } = null!;
+    public ContactpersoonDto? Contactpersoon { get; set; } = null!;
 }
