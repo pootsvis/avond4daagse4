@@ -1323,3 +1323,288 @@ body {
     align-items: flex-start;
   }
 }
+
+
+/* =========================================
+   BEHEER - INZETSCHEMA
+   ========================================= */
+
+/* TABS */
+
+.inzet-tab {
+  display: inline-block;
+  text-decoration: none;
+  color: #222;
+}
+
+.inzet-tab.active {
+  color: white;
+}
+
+/* ROOSTER */
+
+.inzet-table-container {
+  margin-top: 20px;
+  width: 100%;
+  overflow-x: auto;
+}
+
+.inzet-table {
+  width: 100%;
+  min-width: 760px;
+  border-collapse: collapse;
+  table-layout: fixed;
+  font-size: 12px;
+}
+
+.inzet-table th,
+.inzet-table td {
+  border: 1px solid #ccc;
+  text-align: left;
+}
+
+.inzet-table thead th {
+  background: #292929;
+  color: white;
+  padding: 15px 12px;
+  font-size: 11px;
+}
+
+.inzet-table thead th:first-child {
+  width: 115px;
+}
+
+.inzet-table tbody th {
+  background: #f1f1f1;
+  padding: 15px 12px;
+  font-size: 12px;
+}
+
+.inzet-table tbody td {
+  padding: 0;
+  background: white;
+  height: 74px;
+}
+
+.inzet-table tbody tr:nth-child(even) td {
+  background: #f5f5f5;
+}
+
+/* KLIKBARE DIENSTEN */
+
+.inzet-slot {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  width: 100%;
+  min-height: 74px;
+  padding: 12px;
+  text-align: left;
+  border: none;
+  background: transparent;
+  color: #222;
+  cursor: pointer;
+  font-size: 12px;
+}
+
+.inzet-slot strong {
+  font-size: 12px;
+  margin-bottom: 6px;
+}
+
+.inzet-aantal {
+  font-size: 12px;
+}
+
+.inzet-slot:hover {
+  background: #dedede;
+}
+
+.inzet-slot.selected {
+  background: #dedede;
+  box-shadow: inset 0 0 0 2px #444;
+}
+
+.inzet-slot.inzet-verborgen {
+  visibility: hidden;
+}
+
+/* DETAILPANEEL */
+
+.inzet-details {
+  margin-top: 20px;
+  padding: 16px;
+  border: 1px solid #ccc;
+  background: white;
+  min-height: 340px;
+}
+
+.inzet-details-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 15px;
+  margin-bottom: 15px;
+}
+
+.inzet-details-header h2 {
+  font-size: 18px;
+  margin: 0 0 6px;
+}
+
+.inzet-details-header p {
+  color: #777;
+  font-size: 12px;
+  margin: 0;
+}
+
+.inzet-badge {
+  padding: 7px 10px;
+  border: 1px solid #aaa;
+  font-size: 10px;
+  white-space: nowrap;
+}
+
+/* TWEE KOLOMMEN */
+
+.inzet-details-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 270px;
+  gap: 12px;
+}
+
+/* HUIDIGE BEZETTING */
+
+.inzet-huidig {
+  border: 1px solid #ccc;
+  background: #f7f7f7;
+  padding: 14px;
+  align-self: start;
+}
+
+.inzet-huidig h3,
+.inzet-wijzigen h3 {
+  margin: 0 0 13px;
+  font-size: 11px;
+  color: #555;
+}
+
+.inzet-huidig p {
+  font-size: 13px;
+  margin: 0 0 14px;
+}
+
+.inzet-voorbeeld {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  font-size: 12px;
+}
+
+.inzet-voorbeeld span:last-child {
+  color: #777;
+}
+
+/* WIJZIGINGEN */
+
+.inzet-wijzigen {
+  border: 1px solid #ccc;
+  padding: 12px;
+  background: #f7f7f7;
+}
+
+.inzet-wijzigen label {
+  display: block;
+  font-size: 12px;
+  color: #777;
+  margin-bottom: 7px;
+}
+
+.inzet-wijzigen select {
+  width: 100%;
+  padding: 11px;
+  border: 1px solid #bbb;
+  background: white;
+  font-size: 12px;
+}
+
+.inzet-klein {
+  color: #777;
+  font-size: 11px;
+  line-height: 1.5;
+  margin: 10px 0;
+}
+
+.inzet-wijzigen .vrij-dark-btn {
+  margin-top: 4px;
+  width: 100%;
+}
+
+.inzet-controle {
+  border: 1px solid #ccc;
+  background: #eee;
+  margin-top: 12px;
+  padding: 10px;
+}
+
+.inzet-controle strong {
+  font-size: 11px;
+}
+
+.inzet-controle p {
+  margin: 5px 0 0;
+  color: #777;
+  line-height: 1.5;
+  font-size: 11px;
+}
+
+.inzet-melding {
+  font-size: 12px;
+  margin: 18px 0 0;
+  color: #444;
+}
+
+.inzet-melding:empty {
+  display: none;
+}
+
+/* ONDERKANT */
+
+.inzet-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 15px;
+  margin-top: 20px;
+}
+
+.inzet-footer strong {
+  font-size: 12px;
+}
+
+.inzet-demo-note {
+  font-size: 11px;
+  color: #777;
+  margin-top: 16px;
+}
+
+/* RESPONSIVE */
+
+@media (max-width: 850px) {
+  .inzet-details-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 600px) {
+  .inzet-details-header,
+  .inzet-footer {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .inzet-details {
+    padding: 12px;
+  }
+}
