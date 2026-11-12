@@ -19,6 +19,7 @@ builder.Services.AddScoped<IContactvraagService, ContactvraagService>();
 builder.Services.AddScoped<IGebruikerService, GebruikerService>();
 builder.Services.AddScoped<IRolService, RolService>();
 builder.Services.AddScoped<IRechtService, RechtService>();
+builder.Services.AddScoped<IDraaiboektaakService, DraaiboektaakService>();
 
 var app = builder.Build();
 
