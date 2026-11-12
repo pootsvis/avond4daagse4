@@ -2725,3 +2725,263 @@ body {
     break-inside: avoid;
   }
 }
+
+
+/* =========================================
+   BEHEER - DRAAIBOEK MIJN TAKEN
+   ========================================= */
+
+/* INFORMATIEBLOK */
+
+.dbt-info {
+  background: #f4f4f4;
+  border: 1px solid #ccc;
+  padding: 15px;
+  margin-bottom: 20px;
+}
+
+.dbt-info strong {
+  display: block;
+  font-size: 12px;
+  margin-bottom: 6px;
+}
+
+.dbt-info p {
+  color: #777;
+  font-size: 11px;
+  line-height: 1.5;
+  margin: 0;
+}
+
+/* FILTERS */
+
+.dbt-filters {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  gap: 10px;
+  margin-bottom: 24px;
+}
+
+.dbt-filter {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.dbt-filter label {
+  font-size: 12px;
+  font-weight: bold;
+}
+
+.dbt-filter select {
+  min-width: 165px;
+  background: white;
+  border: 1px solid #ccc;
+  padding: 11px;
+  font-size: 12px;
+}
+
+#dbt-wissen {
+  margin-left: auto;
+}
+
+/* SECTIE */
+
+.dbt-section {
+  width: 100%;
+}
+
+.dbt-section-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 15px;
+  margin-bottom: 14px;
+}
+
+.dbt-section-header h2 {
+  font-size: 18px;
+  margin: 0;
+}
+
+.dbt-section-header p {
+  color: #777;
+  font-size: 12px;
+  margin: 0;
+}
+
+/* TABEL */
+
+.dbt-table-container {
+  width: 100%;
+  overflow-x: auto;
+}
+
+.dbt-table {
+  width: 100%;
+  min-width: 850px;
+  border-collapse: collapse;
+  background: white;
+  font-size: 12px;
+}
+
+.dbt-table th,
+.dbt-table td {
+  border: 1px solid #ccc;
+  padding: 15px 11px;
+  text-align: left;
+  vertical-align: middle;
+}
+
+.dbt-table thead th {
+  background: #f1f1f1;
+  font-size: 11px;
+  font-weight: bold;
+}
+
+.dbt-table tbody tr:hover {
+  background: #fafafa;
+}
+
+.dbt-taak-info {
+  min-width: 230px;
+}
+
+.dbt-taak-info strong {
+  display: block;
+  font-size: 12px;
+  margin-bottom: 6px;
+}
+
+.dbt-taak-info p {
+  color: #777;
+  font-size: 11px;
+  line-height: 1.5;
+  margin: 0;
+}
+
+.dbt-persoon {
+  display: block;
+  font-size: 11px;
+  color: #888;
+  margin-top: 5px;
+}
+
+/* STATUS */
+
+.dbt-status {
+  display: inline-block;
+  padding: 6px 9px;
+  border: 1px solid #aaa;
+  font-size: 11px;
+  white-space: nowrap;
+}
+
+.dbt-status.gereed {
+  background: #292929;
+  color: white;
+  border-color: #292929;
+}
+
+.dbt-status.bezig {
+  background: #e7e7e7;
+  color: #222;
+}
+
+.dbt-status.open {
+  background: #fafafa;
+  color: #222;
+}
+
+/* AFRONDEN */
+
+.dbt-afronden-btn {
+  padding: 8px 10px;
+  border: 1px solid #999;
+  background: white;
+  color: #222;
+  font-size: 11px;
+  white-space: nowrap;
+  cursor: pointer;
+}
+
+.dbt-afronden-btn:hover {
+  background: #eee;
+}
+
+.dbt-check-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  white-space: nowrap;
+  cursor: pointer;
+  font-size: 11px;
+}
+
+.dbt-check-label input {
+  accent-color: #292929;
+  cursor: pointer;
+}
+
+.dbt-geen-taken {
+  text-align: center !important;
+  color: #777;
+  padding: 22px !important;
+}
+
+/* ONDERKANT */
+
+.dbt-hulp {
+  color: #888;
+  font-size: 11px;
+  line-height: 1.5;
+  margin-top: 12px;
+}
+
+.dbt-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 20px;
+  margin-top: 20px;
+}
+
+.dbt-footer p {
+  color: #777;
+  font-size: 11px;
+}
+
+.dbt-link {
+  display: inline-block;
+  text-decoration: none;
+}
+
+/* RESPONSIVE */
+
+@media (max-width: 900px) {
+  .dbt-section-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  #dbt-wissen {
+    margin-left: 0;
+  }
+}
+
+@media (max-width: 650px) {
+  .dbt-filter,
+  .dbt-filter select {
+    width: 100%;
+  }
+
+  .dbt-footer {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .dbt-section-header h2 {
+    font-size: 17px;
+  }
+}
