@@ -1,0 +1,358 @@
+
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Vrijwilligers & inzet - Avond4daagse</title>
+  <link rel="stylesheet" href="../css/beheer.css">
+</head>
+
+<body class="vrij-page">
+
+  <div class="vrij-layout">
+
+    <!-- SIDEBAR -->
+    <aside class="vrij-sidebar">
+
+      <div class="vrij-logo">
+        <strong>AVOND4DAAGSE</strong>
+        <small>BEHEER 2027</small>
+      </div>
+
+      <nav class="vrij-menu">
+        <a href="dashboard.html">Dashboard</a>
+        <a href="inschrijvingen.html">Inschrijvingen</a>
+        <a href="routebeheer.html">Routebeheer</a>
+
+        <a href="vrijwilligers.html" class="vrij-active">
+          Vrijwilligers & inzet
+        </a>
+
+        
+<a href="mijn-beschikbaarheid.html">
+  Mijn beschikbaarheid
+</a>
+
+        <span>Draaiboek</span>
+        <span>Financiën</span>
+        <span>Contactvragen</span>
+        <span>Handleiding</span>
+      </nav>
+
+      <div class="vrij-sidebar-bottom">
+        <p>Beheerder</p>
+        <a href="login.html">Uitloggen</a>
+      </div>
+
+    </aside>
+
+    <!-- HOOFDINHOUD -->
+    <main class="vrij-main">
+
+      <!-- PAGINA TITEL -->
+      <header class="vrij-header">
+
+        <div>
+          <h1>Vrijwilligers & inzet</h1>
+
+          <p>
+            Beheer beschikbaarheid, rollen en contactgegevens,
+            en koppel vrijwilligers direct aan diensten in het
+            inzetschema.
+          </p>
+        </div>
+
+        <button class="vrij-dark-btn" type="button" disabled>
+          + Vrijwilliger
+        </button>
+
+      </header>
+
+      <!-- TABS -->
+      <div class="vrij-tabs">
+
+        <button class="vrij-tab active" type="button">
+          Vrijwilligers
+        </button>
+
+        
+<a href="inzetschema.html" class="vrij-tab inzet-tab">
+  Inzetschema
+</a>
+
+
+      </div>
+
+      <!-- STATISTIEKEN -->
+      <p class="vrij-statistieken">
+        73 aangemeld (doel: 85) •
+        61 bevestigd •
+        12 uitnodigingen open •
+        18 open plaatsen, vooral woensdag
+      </p>
+
+      <!-- ZOEKEN EN FILTEREN -->
+      <div class="vrij-filters">
+
+        <input
+          type="text"
+          id="zoekVrijwilliger"
+          placeholder="Zoek vrijwilliger..."
+        >
+
+        <select id="filterRol">
+          <option value="">Alle rollen</option>
+          <option value="Verkeersregelaar">Verkeersregelaar</option>
+          <option value="Controlepost">Controlepost</option>
+          <option value="Startbureau">Startbureau</option>
+          <option value="Routebegeleider">Routebegeleider</option>
+          <option value="EHBO">EHBO</option>
+          <option value="Finishteam">Finishteam</option>
+        </select>
+
+        <select id="filterStatus">
+          <option value="">Alle statussen</option>
+          <option value="Bevestigd">Bevestigd</option>
+          <option value="Uitgenodigd">Uitgenodigd</option>
+        </select>
+
+        <button class="vrij-light-btn" id="wisFilters">
+          Filters wissen
+        </button>
+
+      </div>
+
+      <!-- VRIJWILLIGERS TABEL -->
+      <div class="vrij-table-container">
+
+        <table class="vrij-table">
+
+          <thead>
+            <tr>
+              <th>NR.</th>
+              <th>NAAM</th>
+              <th>TELEFOON</th>
+              <th>VOORKEURSROL</th>
+              <th>BESCHIKBAAR</th>
+              <th>STATUS</th>
+              <th>INZET</th>
+              <th>ACTIE</th>
+            </tr>
+          </thead>
+
+          <tbody id="vrijwilligersTabel">
+
+            <tr data-rol="Verkeersregelaar" data-status="Bevestigd">
+              <td>V-073</td>
+              <td>Anja Mulder</td>
+              <td>06 3456 7812</td>
+              <td>Verkeersregelaar</td>
+              <td>4 avonden</td>
+              <td>Bevestigd</td>
+              <td>di 18:15–20:30</td>
+              <td><button disabled>Inzet beheren</button></td>
+            </tr>
+
+            <tr data-rol="Controlepost" data-status="Bevestigd">
+              <td>V-072</td>
+              <td>Peter Kuiper</td>
+              <td>06 2201 9034</td>
+              <td>Controlepost</td>
+              <td>di, wo, vr</td>
+              <td>Bevestigd</td>
+              <td>wo 18:15–20:30</td>
+              <td><button disabled>Inzet beheren</button></td>
+            </tr>
+
+            <tr data-rol="Startbureau" data-status="Uitgenodigd">
+              <td>V-071</td>
+              <td>Fatima El Amrani</td>
+              <td>06 5512 4800</td>
+              <td>Startbureau</td>
+              <td>4 avonden</td>
+              <td>Uitgenodigd</td>
+              <td>di 18:00–19:00</td>
+              <td><button disabled>Inzet beheren</button></td>
+            </tr>
+
+            <tr data-rol="Routebegeleider" data-status="Bevestigd">
+              <td>V-070</td>
+              <td>Jan de Groot</td>
+              <td>06 9098 1122</td>
+              <td>Routebegeleider</td>
+              <td>do, vr</td>
+              <td>Bevestigd</td>
+              <td>Nog niet ingepland</td>
+              <td><button disabled>Inzet beheren</button></td>
+            </tr>
+
+            <tr data-rol="EHBO" data-status="Bevestigd">
+              <td>V-069</td>
+              <td>Iris Hendriks</td>
+              <td>06 1188 4402</td>
+              <td>EHBO</td>
+              <td>4 avonden</td>
+              <td>Bevestigd</td>
+              <td>vr 19:30–21:30</td>
+              <td><button disabled>Inzet beheren</button></td>
+            </tr>
+
+            <tr data-rol="Finishteam" data-status="Uitgenodigd">
+              <td>V-068</td>
+              <td>Wim Bos</td>
+              <td>06 7070 3301</td>
+              <td>Finishteam</td>
+              <td>vrijdag</td>
+              <td>Uitgenodigd</td>
+              <td>vr 19:30–21:30</td>
+              <td><button disabled>Inzet beheren</button></td>
+            </tr>
+
+          </tbody>
+        </table>
+
+        <p id="geenResultaten" hidden>
+          Geen vrijwilligers gevonden.
+        </p>
+
+      </div>
+
+      <!-- ONDERKANT TABEL -->
+      <div class="vrij-table-footer">
+
+        <p id="aantalVrijwilligers">
+          6 van 6 voorbeeldvrijwilligers getoond
+        </p>
+
+        <div class="vrij-footer-knoppen">
+          <button class="vrij-light-btn" id="exporteerLijst">
+            Exporteer lijst
+          </button>
+
+          <button class="vrij-dark-btn" disabled>
+            Stuur groepsmail
+          </button>
+        </div>
+
+      </div>
+
+      <p class="vrij-info">
+        Vrijwilligers nodig? Deel de aanmeldlink via e-mail
+        of social media.
+      </p>
+
+      <p class="vrij-info">
+        Dit zijn voorbeeldgegevens uit de Figma-mock-up.
+      </p>
+
+    </main>
+
+  </div>
+
+  <!-- JAVASCRIPT -->
+  <script>
+
+    const zoekveld = document.getElementById("zoekVrijwilliger");
+    const rolFilter = document.getElementById("filterRol");
+    const statusFilter = document.getElementById("filterStatus");
+    const wisFilters = document.getElementById("wisFilters");
+
+    const vrijwilligers = Array.from(
+      document.querySelectorAll("#vrijwilligersTabel tr")
+    );
+
+    // Vrijwilligers zoeken en filteren
+    function filterVrijwilligers() {
+
+      const zoekterm = zoekveld.value.toLowerCase();
+      const rol = rolFilter.value;
+      const status = statusFilter.value;
+
+      let aantal = 0;
+
+      vrijwilligers.forEach((vrijwilliger) => {
+
+        const naam = vrijwilliger.cells[1].textContent.toLowerCase();
+
+        const matchZoeken = naam.includes(zoekterm);
+
+        const matchRol =
+          rol === "" || vrijwilliger.dataset.rol === rol;
+
+        const matchStatus =
+          status === "" || vrijwilliger.dataset.status === status;
+
+        if (matchZoeken && matchRol && matchStatus) {
+          vrijwilliger.hidden = false;
+          aantal++;
+        } else {
+          vrijwilliger.hidden = true;
+        }
+
+      });
+
+      document.getElementById("aantalVrijwilligers").textContent =
+        aantal + " van 6 voorbeeldvrijwilligers getoond";
+
+      document.getElementById("geenResultaten").hidden =
+        aantal !== 0;
+    }
+
+    zoekveld.addEventListener("input", filterVrijwilligers);
+    rolFilter.addEventListener("change", filterVrijwilligers);
+    statusFilter.addEventListener("change", filterVrijwilligers);
+
+    // Filters wissen
+    wisFilters.addEventListener("click", () => {
+
+      zoekveld.value = "";
+      rolFilter.value = "";
+      statusFilter.value = "";
+
+      filterVrijwilligers();
+
+    });
+
+    // Zichtbare voorbeeldvrijwilligers exporteren
+    document.getElementById("exporteerLijst").addEventListener("click", () => {
+
+      const regels = [
+        ["Nr", "Naam", "Telefoon", "Rol", "Beschikbaar", "Status", "Inzet"]
+      ];
+
+      vrijwilligers.forEach((rij) => {
+        if (!rij.hidden) {
+          const cellen = Array.from(rij.cells)
+            .slice(0, 7)
+            .map(cel => cel.textContent.trim());
+
+          regels.push(cellen);
+        }
+      });
+
+      const csv = regels.map(regel =>
+        regel.map(waarde =>
+          '"' + waarde.replace(/"/g, '""') + '"'
+        ).join(";")
+      ).join("\r\n");
+
+      const blob = new Blob(["\uFEFF" + csv], {
+        type: "text/csv;charset=utf-8"
+      });
+
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement("a");
+
+      link.href = url;
+      link.download = "vrijwilligers-voorbeeld.csv";
+      link.click();
+
+      setTimeout(() => URL.revokeObjectURL(url), 1000);
+
+    });
+
+  </script>
+
+</body>
+</html>

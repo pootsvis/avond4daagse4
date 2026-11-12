@@ -1,0 +1,535 @@
+
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mijn beschikbaarheid - Avond4daagse</title>
+  <link rel="stylesheet" href="../css/beheer.css">
+</head>
+
+<body class="vrij-page besch-page">
+
+<div class="vrij-layout">
+
+  <!-- SIDEBAR -->
+  <aside class="vrij-sidebar">
+
+    <div class="vrij-logo">
+      <strong>AVOND4DAAGSE</strong>
+      <small>BEHEER 2027</small>
+    </div>
+
+    <nav class="vrij-menu">
+      <a href="dashboard.html">Dashboard</a>
+      <a href="inschrijvingen.html">Inschrijvingen</a>
+      <a href="routebeheer.html">Routebeheer</a>
+      <a href="vrijwilligers.html">Vrijwilligers & inzet</a>
+      <a href="mijn-beschikbaarheid.html"
+         class="vrij-active"
+         aria-current="page">
+        Mijn beschikbaarheid
+      </a>
+      <span>Draaiboek</span>
+      <span>Financiën</span>
+      <span>Contactvragen</span>
+      <span>Handleiding</span>
+    </nav>
+
+    <div class="vrij-sidebar-bottom">
+      <p>Anja Mulder</p>
+      <p>Vrijwilliger</p>
+      <a href="login.html">Uitloggen</a>
+    </div>
+
+  </aside>
+
+  <!-- HOOFDINHOUD -->
+  <main class="vrij-main besch-main">
+
+    <header class="besch-header">
+      <div>
+        <h1>Mijn beschikbaarheid</h1>
+        <p>
+          Geef per avond aan of je kunt helpen en bekijk
+          daarna direct welke diensten je hebt gekregen,
+          wanneer je moet verschijnen en of je aanwezigheid
+          is geregistreerd.
+        </p>
+      </div>
+
+      <span class="besch-editie">
+        Editie 2027 - 1 t/m 4 juni
+      </span>
+    </header>
+
+    <!-- INFORMATIE -->
+    <div class="besch-info-box">
+      <strong>
+        Beschikbaarheid doorgeven is nog geen definitieve inplanning
+      </strong>
+
+      <p>
+        De organisatie maakt het inzetschema op basis van je
+        beschikbaarheid. Je ontvangt apart een bevestiging van je
+        diensten. Zodra je bent ingepland, zie je hier direct je
+        diensten, tijden en aanwezigheidsstatus.
+      </p>
+    </div>
+
+    <!-- BESCHIKBAARHEID -->
+    <section class="besch-section">
+
+      <div class="besch-section-header">
+        <div>
+          <h2>Beschikbaarheid per avond</h2>
+          <p>Kies voor elke avond een optie.</p>
+        </div>
+
+        <span id="besch-aantal">
+          3 van 4 avonden beschikbaar
+        </span>
+      </div>
+
+      <form id="besch-form">
+
+        <div class="besch-tabel-wrapper">
+
+          <table class="besch-tabel">
+            <thead>
+              <tr>
+                <th>EVENEMENTAVOND</th>
+                <th>BESCHIKBAARHEID</th>
+              </tr>
+            </thead>
+
+            <tbody>
+
+              <tr class="besch-dag" data-datum="2027-06-01">
+                <td>1 juni 2027 (dinsdag)</td>
+                <td>
+                  <label>
+                    <input type="radio" name="avond-1"
+                           value="ja" checked>
+                    Beschikbaar
+                  </label>
+
+                  <label>
+                    <input type="radio" name="avond-1"
+                           value="nee">
+                    Niet beschikbaar
+                  </label>
+                </td>
+              </tr>
+
+              <tr class="besch-dag" data-datum="2027-06-02">
+                <td>2 juni 2027 (woensdag)</td>
+                <td>
+                  <label>
+                    <input type="radio" name="avond-2"
+                           value="ja" checked>
+                    Beschikbaar
+                  </label>
+
+                  <label>
+                    <input type="radio" name="avond-2"
+                           value="nee">
+                    Niet beschikbaar
+                  </label>
+                </td>
+              </tr>
+
+              <tr class="besch-dag" data-datum="2027-06-03">
+                <td>3 juni 2027 (donderdag)</td>
+                <td>
+                  <label>
+                    <input type="radio" name="avond-3"
+                           value="ja">
+                    Beschikbaar
+                  </label>
+
+                  <label>
+                    <input type="radio" name="avond-3"
+                           value="nee" checked>
+                    Niet beschikbaar
+                  </label>
+                </td>
+              </tr>
+
+              <tr class="besch-dag" data-datum="2027-06-04">
+                <td>4 juni 2027 (vrijdag)</td>
+                <td>
+                  <label>
+                    <input type="radio" name="avond-4"
+                           value="ja" checked>
+                    Beschikbaar
+                  </label>
+
+                  <label>
+                    <input type="radio" name="avond-4"
+                           value="nee">
+                    Niet beschikbaar
+                  </label>
+                </td>
+              </tr>
+
+            </tbody>
+          </table>
+        </div>
+
+        <!-- TOELICHTING -->
+        <div class="besch-toelichting">
+
+          <label for="besch-opmerking">
+            Toelichting (optioneel)
+          </label>
+
+          <textarea id="besch-opmerking" rows="3"
+            placeholder="Bijvoorbeeld: Ik kan pas vanaf 18:30 helpen.">Op 4 juni kan ik pas vanaf 18:30 helpen.</textarea>
+
+          <p>
+            Zijn er bijzonderheden waar de organisatie
+            rekening mee kan houden? Vermeld ze hier.
+          </p>
+        </div>
+
+        <!-- OPSLAAN -->
+        <div class="besch-opslaan">
+          <div>
+            <strong id="besch-status">
+              Voorbeeldbeschikbaarheid - nog niet opgeslagen
+            </strong>
+            <p>
+              Je kunt je beschikbaarheid hier aanpassen.
+              Dit wordt voorlopig alleen lokaal opgeslagen.
+            </p>
+          </div>
+
+          <button type="submit" class="vrij-dark-btn">
+            Beschikbaarheid opslaan
+          </button>
+        </div>
+
+      </form>
+
+    </section>
+
+    <!-- INGEPLANDE DIENSTEN -->
+    <section class="besch-section">
+
+      <h2>Overzicht ingeplande diensten</h2>
+
+      <p class="besch-uitleg">
+        Hier staat een compact overzicht van je toegewezen
+        diensten, inclusief tijden, locatie en aanwezigheidsstatus.
+      </p>
+
+      <div class="besch-tabel-wrapper">
+
+        <table class="besch-tabel besch-diensten-tabel">
+          <thead>
+            <tr>
+              <th>DIENST</th>
+              <th>TIJD</th>
+              <th>LOCATIE</th>
+              <th>AANWEZIG</th>
+              <th>ACTIE</th>
+            </tr>
+          </thead>
+
+          <tbody>
+
+            <tr>
+              <td><strong>Startbureau</strong></td>
+              <td>18:00–19:00</td>
+              <td>Startlocatie</td>
+              <td><strong>Aanwezig</strong></td>
+              <td>
+                <button class="besch-corrigeer"
+                        data-dienst="Startbureau"
+                        type="button">
+                  Corrigeer
+                </button>
+              </td>
+            </tr>
+
+            <tr>
+              <td><strong>Routeposten</strong></td>
+              <td>18:15–20:30</td>
+              <td>Post 3</td>
+              <td><strong>Aanwezig</strong></td>
+              <td>
+                <button class="besch-corrigeer"
+                        data-dienst="Routeposten"
+                        type="button">
+                  Corrigeer
+                </button>
+              </td>
+            </tr>
+
+            <tr>
+              <td><strong>Finishteam</strong></td>
+              <td>19:30–21:30</td>
+              <td>Eindlocatie</td>
+              <td><strong>Aanwezig</strong></td>
+              <td>
+                <button class="besch-corrigeer"
+                        data-dienst="Finishteam"
+                        type="button">
+                  Corrigeer
+                </button>
+              </td>
+            </tr>
+
+          </tbody>
+        </table>
+
+      </div>
+
+    </section>
+
+    <!-- AANWEZIGHEIDSREGISTRATIE -->
+    <section class="besch-section">
+
+      <h2>Aanwezigheidsregistratie</h2>
+
+      <p class="besch-uitleg">
+        Zodra je op de locatie bent, registreer je
+        aanwezigheid per dienst. Zo weet de organisatie
+        direct wie er aanwezig is.
+      </p>
+
+      <!-- KAART 1 -->
+      <div class="besch-dienst-kaart">
+
+        <div class="besch-kaart-header">
+          <div>
+            <h3>Startbureau</h3>
+            <p>1 juni 2027 · 18:00–19:00</p>
+          </div>
+
+          <span class="besch-badge">AANWEZIG</span>
+        </div>
+
+        <strong>Aanwezigheid registreren</strong>
+
+        <p>
+          Je bent al geregistreerd voor deze dienst.
+          Als je je aanwezigheid wilt corrigeren,
+          dan kan dat via de coördinator.
+        </p>
+
+        <button class="vrij-dark-btn besch-corrigeer"
+                data-dienst="Startbureau"
+                type="button">
+          Aanwezigheid corrigeren
+        </button>
+
+      </div>
+
+      <!-- KAART 2 -->
+      <div class="besch-dienst-kaart">
+
+        <div class="besch-kaart-header">
+          <div>
+            <h3>Routeposten</h3>
+            <p>2 juni 2027 · 18:15–20:30</p>
+          </div>
+
+          <span class="besch-badge">AANWEZIG</span>
+        </div>
+
+        <strong>Aanwezigheid registreren</strong>
+
+        <p>
+          Je bent al geregistreerd voor deze dienst.
+          Als je je aanwezigheid wilt corrigeren,
+          dan kan dat via de coördinator.
+        </p>
+
+        <button class="vrij-dark-btn besch-corrigeer"
+                data-dienst="Routeposten"
+                type="button">
+          Aanwezigheid corrigeren
+        </button>
+
+      </div>
+
+      <!-- KAART 3 -->
+      <div class="besch-dienst-kaart">
+
+        <div class="besch-kaart-header">
+          <div>
+            <h3>Finishteam</h3>
+            <p>4 juni 2027 · 19:30–21:30</p>
+          </div>
+
+          <span class="besch-badge">AANWEZIG</span>
+        </div>
+
+        <strong>Aanwezigheid registreren</strong>
+
+        <p>
+          Je bent al geregistreerd voor deze dienst.
+          Als je je aanwezigheid wilt corrigeren,
+          dan kan dat via de coördinator.
+        </p>
+
+        <button class="vrij-dark-btn besch-corrigeer"
+                data-dienst="Finishteam"
+                type="button">
+          Aanwezigheid corrigeren
+        </button>
+
+      </div>
+
+      <p id="besch-feedback"
+         class="besch-feedback"
+         role="status"
+         hidden>
+      </p>
+
+    </section>
+
+  </main>
+
+</div>
+
+<!-- JAVASCRIPT -->
+<script>
+
+  const opslagSleutel = "avond4daagse-beschikbaarheid-demo";
+
+  const formulier = document.getElementById("besch-form");
+  const dagen = Array.from(
+    document.querySelectorAll(".besch-dag")
+  );
+
+  const opmerking = document.getElementById("besch-opmerking");
+  const statusTekst = document.getElementById("besch-status");
+  const aantalTekst = document.getElementById("besch-aantal");
+
+  // Eerder lokaal opgeslagen gegevens ophalen
+  function laadBeschikbaarheid() {
+    try {
+      const opgeslagen = JSON.parse(
+        localStorage.getItem(opslagSleutel)
+      );
+
+      if (!opgeslagen) return;
+
+      dagen.forEach((dag) => {
+        const datum = dag.dataset.datum;
+        const waarde = opgeslagen.avonden?.[datum];
+
+        if (waarde === "ja" || waarde === "nee") {
+          const radio = dag.querySelector(
+            `input[value="${waarde}"]`
+          );
+
+          if (radio) radio.checked = true;
+        }
+      });
+
+      opmerking.value = opgeslagen.toelichting ?? "";
+      statusTekst.textContent =
+        "Beschikbaarheid lokaal opgeslagen";
+
+    } catch (fout) {
+      statusTekst.textContent =
+        "Voorbeeldbeschikbaarheid - nog niet opgeslagen";
+    }
+  }
+
+  // Aantal beschikbare avonden berekenen
+  function updateAantal() {
+    let aantal = 0;
+
+    dagen.forEach((dag) => {
+      const beschikbaar = dag.querySelector(
+        'input[value="ja"]'
+      );
+
+      if (beschikbaar.checked) aantal++;
+    });
+
+    aantalTekst.textContent =
+      `${aantal} van 4 avonden beschikbaar`;
+  }
+
+  // Aangeven wanneer er wijzigingen zijn
+  function wijzigingGemaakt() {
+    statusTekst.textContent =
+      "Wijzigingen nog niet opgeslagen";
+    updateAantal();
+  }
+
+  dagen.forEach((dag) => {
+    dag.querySelectorAll("input").forEach((radio) => {
+      radio.addEventListener("change", wijzigingGemaakt);
+    });
+  });
+
+  opmerking.addEventListener("input", wijzigingGemaakt);
+
+  // Beschikbaarheid lokaal opslaan
+  formulier.addEventListener("submit", (event) => {
+    event.preventDefault();
+
+    const gegevens = {
+      avonden: {},
+      toelichting: opmerking.value
+    };
+
+    dagen.forEach((dag) => {
+      const geselecteerd = dag.querySelector(
+        'input[type="radio"]:checked'
+      );
+
+      gegevens.avonden[dag.dataset.datum] =
+        geselecteerd.value;
+    });
+
+    try {
+      localStorage.setItem(
+        opslagSleutel,
+        JSON.stringify(gegevens)
+      );
+
+      statusTekst.textContent =
+        "Beschikbaarheid opgeslagen op dit apparaat";
+
+    } catch (fout) {
+      statusTekst.textContent =
+        "Opslaan mislukt. Probeer het opnieuw.";
+    }
+  });
+
+  // Correctieknoppen - alleen demonstratie
+  document.querySelectorAll(".besch-corrigeer")
+    .forEach((knop) => {
+
+      knop.addEventListener("click", () => {
+        const dienst = knop.dataset.dienst;
+        const feedback = document.getElementById(
+          "besch-feedback"
+        );
+
+        feedback.hidden = false;
+
+        feedback.textContent =
+          `Demo: voor ${dienst} zou hier een ` +
+          `correctie aangevraagd worden. ` +
+          `Er is nog niets naar de organisatie verstuurd.`;
+      });
+
+    });
+
+  // Pagina initialiseren
+  laadBeschikbaarheid();
+  updateAantal();
+
+</script>
+
+</body>
+</html>
