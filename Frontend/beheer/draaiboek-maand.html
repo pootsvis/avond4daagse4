@@ -1,0 +1,541 @@
+
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Draaiboek maand - Avond4daagse 2027</title>
+  <link rel="stylesheet" href="../css/beheer.css">
+</head>
+
+<body class="db-page dbm-page">
+
+<div class="db-layout">
+
+  <!-- SIDEBAR -->
+  <aside class="db-sidebar">
+    <div class="db-logo">
+      <strong>AVOND4DAAGSE</strong>
+      <small>BEHEER 2027</small>
+    </div>
+
+    <nav class="db-menu">
+      <a href="dashboard.html">Dashboard</a>
+      <a href="inschrijvingen.html">Inschrijvingen</a>
+      <a href="routebeheer.html">Routebeheer</a>
+      <a href="vrijwilligers.html">Vrijwilligers & inzet</a>
+      <a href="mijn-beschikbaarheid.html">Mijn beschikbaarheid</a>
+      <a href="draaiboek.html" class="db-active">Draaiboek</a>
+      <span>Financiën</span>
+      <span>Contactvragen</span>
+      <span>Handleiding</span>
+    </nav>
+
+    <div class="db-sidebar-bottom">
+      <p>Beheerder</p>
+      <a href="login.html">Uitloggen</a>
+    </div>
+  </aside>
+
+  <!-- HOOFDINHOUD -->
+  <main class="db-main">
+
+    <header class="db-header">
+      <div>
+        <h1>Draaiboek</h1>
+        <p>
+          Bekijk taken per dag, per maand of alleen
+          je eigen verantwoordelijkheden.
+        </p>
+      </div>
+
+      <button class="db-dark-btn" id="dbm-nieuw" type="button">
+        + Taak toevoegen
+      </button>
+    </header>
+
+    <!-- TABS -->
+    <div class="db-tabs">
+      <a href="draaiboek.html" class="db-tab">Dag</a>
+      <a href="draaiboek-maand.html"
+         class="db-tab active" aria-current="page">Maand</a>
+      <span class="db-tab">Mijn taken</span>
+    </div>
+
+    <!-- FILTERS -->
+    <div class="dbm-filters">
+      <div class="dbm-filter">
+        <label for="dbm-maand">Maand</label>
+        <select id="dbm-maand">
+          <option value="6">Juni</option>
+        </select>
+      </div>
+
+      <div class="dbm-filter">
+        <label for="dbm-team">Team</label>
+        <select id="dbm-team">
+          <option value="">Alle teams</option>
+          <option value="Coördinatie">Coördinatie</option>
+          <option value="Startteam">Startteam</option>
+          <option value="Hoofdorganisatie">Hoofdorganisatie</option>
+          <option value="Finishteam">Finishteam</option>
+          <option value="Routecoördinator">Routecoördinator</option>
+        </select>
+      </div>
+
+      <div class="dbm-filter">
+        <label for="dbm-moment">Moment</label>
+        <select id="dbm-moment">
+          <option value="">Alle momenten</option>
+          <option value="Voorbereiding">Voorbereiding</option>
+          <option value="Tijdens de wandelavond">
+            Tijdens de wandelavond
+          </option>
+          <option value="Afronding">Afronding</option>
+        </select>
+      </div>
+
+      <button id="dbm-export"
+              class="db-light-btn dbm-export"
+              type="button">
+        Exporteer PDF
+      </button>
+    </div>
+
+    <!-- NIEUWE TAAK FORMULIER -->
+    <section class="db-new-task" id="dbm-form-box" hidden>
+      <h2>Taak toevoegen aan geselecteerde dag</h2>
+      <p id="dbm-form-datum"></p>
+
+      <form id="dbm-form">
+        <label for="dbm-titel">Taaknaam</label>
+        <input id="dbm-titel" type="text"
+               maxlength="100" required
+               placeholder="Bijvoorbeeld: Materialen controleren">
+
+        <label for="dbm-omschrijving">Omschrijving</label>
+        <textarea id="dbm-omschrijving" rows="2"
+                  placeholder="Wat moet er gebeuren?"></textarea>
+
+        <label for="dbm-nieuw-team">Verantwoordelijk team</label>
+        <select id="dbm-nieuw-team">
+          <option>Coördinatie</option>
+          <option>Startteam</option>
+          <option>Hoofdorganisatie</option>
+          <option>Finishteam</option>
+          <option>Routecoördinator</option>
+        </select>
+
+        <label for="dbm-nieuw-moment">Moment</label>
+        <select id="dbm-nieuw-moment">
+          <option>Voorbereiding</option>
+          <option>Tijdens de wandelavond</option>
+          <option>Afronding</option>
+        </select>
+
+        <div class="db-form-actions">
+          <button class="db-dark-btn" type="submit">
+            Taak opslaan
+          </button>
+          <button class="db-light-btn"
+                  id="dbm-annuleren" type="button">
+            Annuleren
+          </button>
+        </div>
+      </form>
+    </section>
+
+    <!-- MAANDOVERZICHT -->
+    <div class="dbm-layout">
+
+      <!-- LINKER KOLOM -->
+      <section class="dbm-calendar">
+        <div class="dbm-calendar-header">
+          <h2>Juni — maandagenda</h2>
+          <p>Avond4daagse: 1–4 juni 2027</p>
+        </div>
+
+        <div id="dbm-dagen" class="dbm-dagen">
+          <!-- Alle 30 dagen komen hier -->
+        </div>
+      </section>
+
+      <!-- RECHTER KOLOM -->
+      <section class="dbm-overzicht">
+
+        <header class="dbm-selected-header">
+          <div>
+            <h2 id="dbm-datum-titel">3 juni</h2>
+            <p id="dbm-datum-info">
+              7 taken op deze dag
+            </p>
+          </div>
+
+          <span>Geselecteerde dag</span>
+        </header>
+
+        <div id="dbm-taken">
+          <!-- Taken worden met JavaScript getoond -->
+        </div>
+
+        <div class="dbm-notitie">
+          <strong>Andere dagen nog niet ingevuld</strong>
+          <p>
+            Alleen de taken van 3 juni zijn als voorbeeld
+            aangeleverd. Voor de overige dagen kun je
+            zelf nieuwe taken toevoegen.
+          </p>
+        </div>
+
+      </section>
+
+    </div>
+
+    <p id="dbm-melding" class="db-melding"
+       role="status" hidden></p>
+
+    <p class="db-demo">
+      Dit is een voorbeeldplanning. Toegevoegde taken worden
+      voorlopig alleen in deze browser opgeslagen.
+    </p>
+
+  </main>
+
+</div>
+
+<script>
+  // ZELFDE OPSLAG ALS HET DAGOVERZICHT
+  const opslagSleutel = "avond4daagse-draaiboek-dag-demo";
+
+  const voorbeeldTaken = {
+    "2027-06-01": [],
+    "2027-06-02": [],
+    "2027-06-03": [
+      {
+        id: 1,
+        titel: "Terrein openen",
+        omschrijving: "Hekken openen, stroom en portofoons controleren.",
+        team: "Coördinatie",
+        moment: "Voorbereiding",
+        status: "Gereed"
+      },
+      {
+        id: 2,
+        titel: "Opbouw startbureau",
+        omschrijving: "Tafels, startlijsten en stempelkaarten klaarleggen.",
+        team: "Startteam",
+        moment: "Voorbereiding",
+        status: "Bezig"
+      },
+      {
+        id: 3,
+        titel: "Briefing vrijwilligers",
+        omschrijving: "Laatste routewijzigingen en veiligheidsafspraken.",
+        team: "Hoofdorganisatie",
+        moment: "Voorbereiding",
+        status: "Open"
+      },
+      {
+        id: 4,
+        titel: "Start 10 km",
+        omschrijving: "Startvak openen en eerste groep laten vertrekken.",
+        team: "Startteam",
+        moment: "Tijdens de wandelavond",
+        status: "Open"
+      },
+      {
+        id: 5,
+        titel: "Start 5 km",
+        omschrijving: "Groepen per school gefaseerd laten vertrekken.",
+        team: "Startteam",
+        moment: "Tijdens de wandelavond",
+        status: "Open"
+      },
+      {
+        id: 6,
+        titel: "Eerste finishers",
+        omschrijving: "Waterpunten en stempelpost volledig bemand.",
+        team: "Finishteam",
+        moment: "Tijdens de wandelavond",
+        status: "Open"
+      },
+      {
+        id: 7,
+        titel: "Route vrijmelden",
+        omschrijving: "Alle posten bellen en deelnemersaantallen bevestigen.",
+        team: "Routecoördinator",
+        moment: "Afronding",
+        status: "Open"
+      }
+    ],
+    "2027-06-04": []
+  };
+
+  let taken = voorbeeldTaken;
+  let geselecteerdeDatum = "2027-06-03";
+
+  const dagenContainer = document.getElementById("dbm-dagen");
+  const takenContainer = document.getElementById("dbm-taken");
+  const teamFilter = document.getElementById("dbm-team");
+  const momentFilter = document.getElementById("dbm-moment");
+  const melding = document.getElementById("dbm-melding");
+
+  // OPGESLAGEN TAKEN LADEN
+  try {
+    const opgeslagen = JSON.parse(
+      localStorage.getItem(opslagSleutel)
+    );
+
+    const geldig = opgeslagen &&
+      ["2027-06-01", "2027-06-02",
+       "2027-06-03", "2027-06-04"].every(
+        datum => Array.isArray(opgeslagen[datum])
+      );
+
+    if (geldig) {
+      taken = opgeslagen;
+    }
+  } catch (fout) {
+    console.warn("Opgeslagen taken konden niet geladen worden.");
+  }
+
+  function opslaan() {
+    try {
+      localStorage.setItem(
+        opslagSleutel,
+        JSON.stringify(taken)
+      );
+      return true;
+    } catch (fout) {
+      toonMelding("Lokaal opslaan is mislukt.");
+      return false;
+    }
+  }
+
+  function toonMelding(tekst) {
+    melding.textContent = tekst;
+    melding.hidden = false;
+  }
+
+  function element(tag, className, tekst) {
+    const nieuw = document.createElement(tag);
+
+    if (className) nieuw.className = className;
+
+    if (tekst !== undefined) {
+      nieuw.textContent = tekst;
+    }
+
+    return nieuw;
+  }
+
+  function datumVanDag(dag) {
+    return `2027-06-${String(dag).padStart(2, "0")}`;
+  }
+
+  function toonKalender() {
+    dagenContainer.replaceChildren();
+
+    for (let dag = 1; dag <= 30; dag++) {
+      const datum = datumVanDag(dag);
+      const dagTaken = taken[datum] || [];
+
+      const knop = element("button", "dbm-dag");
+      knop.type = "button";
+
+      if (datum === geselecteerdeDatum) {
+        knop.classList.add("selected");
+      }
+
+      knop.setAttribute(
+        "aria-pressed",
+        String(datum === geselecteerdeDatum)
+      );
+
+      const links = element("div", "dbm-dag-tekst");
+      links.appendChild(
+        element("strong", "", `${dag} juni`)
+      );
+
+      links.appendChild(
+        element(
+          "span",
+          "",
+          datum === geselecteerdeDatum
+            ? `Geselecteerd · ${dagTaken.length} taken`
+            : dagTaken.length
+              ? `${dagTaken.length} taken`
+              : "Nog geen taken toegevoegd"
+        )
+      );
+
+      knop.appendChild(links);
+
+      if (dag <= 4) {
+        knop.appendChild(element("small", "", "A4D"));
+      }
+
+      knop.addEventListener("click", () => {
+        geselecteerdeDatum = datum;
+        toonKalender();
+        toonDag();
+      });
+
+      dagenContainer.appendChild(knop);
+    }
+  }
+
+  // TAKEN VAN GESELECTEERDE DAG
+  function toonDag() {
+    const dag = Number(geselecteerdeDatum.slice(-2));
+    const dagTaken = taken[geselecteerdeDatum] || [];
+
+    const team = teamFilter.value;
+    const moment = momentFilter.value;
+
+    const gefilterd = dagTaken.filter(taak =>
+      (!team || taak.team === team) &&
+      (!moment || taak.moment === moment)
+    );
+
+    document.getElementById("dbm-datum-titel").textContent =
+      `${dag} juni`;
+
+    document.getElementById("dbm-datum-info").textContent =
+      `${gefilterd.length} taken zichtbaar van ${dagTaken.length}`;
+
+    takenContainer.replaceChildren();
+
+    const groepen = [
+      "Voorbereiding",
+      "Tijdens de wandelavond",
+      "Afronding"
+    ];
+
+    groepen.forEach(groep => {
+      const groepTaken = gefilterd.filter(
+        taak => taak.moment === groep
+      );
+
+      if (!groepTaken.length) return;
+
+      takenContainer.appendChild(
+        element("h3", "dbm-groep", groep)
+      );
+
+      groepTaken.forEach(taak => {
+        const kaart = element("article", "dbm-taak");
+
+        const inhoud = element("div", "dbm-taak-inhoud");
+
+        inhoud.appendChild(
+          element("strong", "", taak.titel)
+        );
+
+        inhoud.appendChild(
+          element("p", "", taak.omschrijving)
+        );
+
+        const teamNaam = element(
+          "span", "dbm-team", taak.team
+        );
+
+        const status = element(
+          "span",
+          "dbm-status " + taak.status.toLowerCase(),
+          taak.status
+        );
+
+        kaart.append(inhoud, teamNaam, status);
+        takenContainer.appendChild(kaart);
+      });
+    });
+
+    if (!gefilterd.length) {
+      takenContainer.appendChild(
+        element(
+          "p",
+          "dbm-leeg",
+          "Geen taken gevonden voor deze dag en filters."
+        )
+      );
+    }
+  }
+
+  teamFilter.addEventListener("change", toonDag);
+  momentFilter.addEventListener("change", toonDag);
+
+  // TAAK TOEVOEGEN
+  const formBox = document.getElementById("dbm-form-box");
+  const form = document.getElementById("dbm-form");
+
+  document.getElementById("dbm-nieuw")
+    .addEventListener("click", () => {
+      document.getElementById("dbm-form-datum").textContent =
+        `Geselecteerde datum: ${Number(geselecteerdeDatum.slice(-2))} juni 2027`;
+
+      formBox.hidden = false;
+      document.getElementById("dbm-titel").focus();
+    });
+
+  document.getElementById("dbm-annuleren")
+    .addEventListener("click", () => {
+      formBox.hidden = true;
+      form.reset();
+    });
+
+  form.addEventListener("submit", event => {
+    event.preventDefault();
+
+    const titel = document.getElementById("dbm-titel")
+      .value.trim();
+
+    if (!titel) return;
+
+    const nieuweTaak = {
+      id: Date.now(),
+      titel: titel,
+      omschrijving: document.getElementById(
+        "dbm-omschrijving"
+      ).value.trim(),
+      team: document.getElementById("dbm-nieuw-team").value,
+      moment: document.getElementById("dbm-nieuw-moment").value,
+      status: "Open"
+    };
+
+    if (!taken[geselecteerdeDatum]) {
+      taken[geselecteerdeDatum] = [];
+    }
+
+    taken[geselecteerdeDatum].push(nieuweTaak);
+
+    const opgeslagen = opslaan();
+
+    teamFilter.value = "";
+    momentFilter.value = "";
+
+    form.reset();
+    formBox.hidden = true;
+
+    toonKalender();
+    toonDag();
+
+    if (opgeslagen) {
+      toonMelding("Nieuwe taak lokaal opgeslagen.");
+    }
+  });
+
+  // PDF EXPORTEREN
+  document.getElementById("dbm-export")
+    .addEventListener("click", () => {
+      window.print();
+    });
+
+  // PAGINA STARTEN
+  toonKalender();
+  toonDag();
+
+</script>
+
+</body>
+</html>

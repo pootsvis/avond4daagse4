@@ -2390,3 +2390,338 @@ body {
     break-inside: avoid;
   }
 }
+
+
+/* =========================================
+   BEHEER - DRAAIBOEK MAAND
+   ========================================= */
+
+.dbm-page .db-main {
+  padding: 30px 27px;
+}
+
+/* FILTERS */
+
+.dbm-filters {
+  display: flex;
+  gap: 12px;
+  align-items: flex-end;
+  margin-bottom: 18px;
+  flex-wrap: wrap;
+}
+
+.dbm-filter {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+}
+
+.dbm-filter label {
+  font-size: 12px;
+  font-weight: bold;
+}
+
+.dbm-filter select {
+  min-width: 150px;
+  padding: 11px;
+  border: 1px solid #ccc;
+  border-radius: 2px;
+  font-size: 12px;
+  background: white;
+}
+
+.dbm-export {
+  margin-left: auto;
+}
+
+/* TWEE KOLOMMEN */
+
+.dbm-layout {
+  display: grid;
+  grid-template-columns: minmax(230px, 35%) minmax(0, 1fr);
+  gap: 15px;
+  align-items: start;
+}
+
+/* MAANDAGENDA LINKS */
+
+.dbm-calendar {
+  min-width: 0;
+  background: white;
+  border: 1px solid #ccc;
+}
+
+.dbm-calendar-header {
+  padding: 15px;
+  border-bottom: 1px solid #ccc;
+}
+
+.dbm-calendar-header h2 {
+  font-size: 17px;
+  margin: 0 0 6px;
+}
+
+.dbm-calendar-header p {
+  font-size: 11px;
+  color: #777;
+  margin: 0;
+}
+
+.dbm-dagen {
+  display: flex;
+  flex-direction: column;
+}
+
+.dbm-dag {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  min-height: 31px;
+  gap: 10px;
+  padding: 7px 11px;
+  background: white;
+  border: none;
+  border-bottom: 1px solid #ddd;
+  text-align: left;
+  cursor: pointer;
+  color: #222;
+}
+
+.dbm-dag:hover {
+  background: #f1f1f1;
+}
+
+.dbm-dag.selected {
+  background: #dedede;
+  border-left: 4px solid #292929;
+  padding-left: 7px;
+}
+
+.dbm-dag-tekst {
+  display: flex;
+  align-items: center;
+  gap: 13px;
+  min-width: 0;
+}
+
+.dbm-dag-tekst strong {
+  font-size: 11px;
+  white-space: nowrap;
+}
+
+.dbm-dag-tekst span {
+  font-size: 10px;
+  color: #888;
+}
+
+.dbm-dag.selected .dbm-dag-tekst span {
+  color: #444;
+}
+
+.dbm-dag small {
+  font-size: 10px;
+  color: #888;
+}
+
+/* RECHTER KOLOM */
+
+.dbm-overzicht {
+  min-width: 0;
+}
+
+.dbm-selected-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 17px;
+  background: white;
+  border: 1px solid #ccc;
+  margin-bottom: 20px;
+}
+
+.dbm-selected-header h2 {
+  font-size: 20px;
+  margin: 0 0 7px;
+}
+
+.dbm-selected-header p {
+  color: #777;
+  margin: 0;
+  font-size: 12px;
+}
+
+.dbm-selected-header > span {
+  font-size: 11px;
+  color: #888;
+  white-space: nowrap;
+}
+
+/* TAAKGROEPEN */
+
+.dbm-groep {
+  margin: 19px 0 10px;
+  font-size: 13px;
+}
+
+.dbm-taak {
+  background: white;
+  border: 1px solid #ccc;
+  padding: 13px 12px;
+  margin-bottom: 8px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.dbm-taak-inhoud {
+  flex: 1;
+  min-width: 0;
+}
+
+.dbm-taak-inhoud strong {
+  display: block;
+  font-size: 12px;
+  margin-bottom: 5px;
+}
+
+.dbm-taak-inhoud p {
+  font-size: 11px;
+  color: #777;
+  line-height: 1.4;
+  margin: 0;
+}
+
+.dbm-team {
+  font-size: 11px;
+  color: #888;
+  max-width: 110px;
+  overflow-wrap: anywhere;
+}
+
+.dbm-status {
+  border: 1px solid #aaa;
+  background: #f5f5f5;
+  color: #222;
+  font-size: 10px;
+  padding: 6px 9px;
+  white-space: nowrap;
+}
+
+.dbm-status.gereed {
+  color: white;
+  background: #292929;
+  border-color: #292929;
+}
+
+.dbm-status.bezig {
+  background: #e7e7e7;
+}
+
+.dbm-status.open {
+  background: #f9f9f9;
+}
+
+/* INFORMATIE */
+
+.dbm-notitie {
+  background: #f1f1f1;
+  border: 1px solid #ccc;
+  padding: 15px;
+  margin-top: 20px;
+}
+
+.dbm-notitie strong {
+  font-size: 12px;
+}
+
+.dbm-notitie p {
+  color: #777;
+  font-size: 11px;
+  line-height: 1.6;
+  margin: 8px 0 0;
+}
+
+.dbm-leeg {
+  padding: 20px;
+  font-size: 12px;
+  color: #777;
+  background: white;
+  border: 1px solid #ccc;
+}
+
+/* FORMULIER */
+
+#dbm-form-datum {
+  font-size: 12px;
+  color: #777;
+  margin-bottom: 15px;
+}
+
+/* RESPONSIVE */
+
+@media (max-width: 1000px) {
+  .dbm-layout {
+    grid-template-columns: minmax(210px, 38%) minmax(0, 1fr);
+  }
+
+  .dbm-taak {
+    flex-wrap: wrap;
+  }
+
+  .dbm-export {
+    margin-left: 0;
+  }
+}
+
+@media (max-width: 750px) {
+  .dbm-layout {
+    grid-template-columns: 1fr;
+  }
+
+  .dbm-calendar {
+    max-height: 350px;
+    overflow-y: auto;
+  }
+
+  .dbm-filters {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .dbm-filter select {
+    width: 100%;
+  }
+
+  .dbm-export {
+    width: 100%;
+  }
+}
+
+/* PDF EXPORT */
+
+@media print {
+  .dbm-page .db-sidebar,
+  .dbm-page .db-tabs,
+  .dbm-page .dbm-filters,
+  .dbm-page .db-header button,
+  .dbm-page .dbm-calendar,
+  .dbm-page .db-new-task,
+  .dbm-page .db-demo,
+  .dbm-page .db-melding {
+    display: none !important;
+  }
+
+  .dbm-page {
+    background: white;
+  }
+
+  .dbm-page .dbm-layout {
+    display: block;
+  }
+
+  .dbm-page .dbm-taak {
+    break-inside: avoid;
+  }
+}
