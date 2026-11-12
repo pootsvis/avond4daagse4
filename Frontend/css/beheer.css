@@ -1004,3 +1004,247 @@ body {
     min-height: 300px;
   }
 }
+
+
+/* ========================================
+   CONTACTVRAGEN - Omgeving
+======================================== */
+
+/* Twee kolommen */
+.ins-contact-layout {
+    display: grid;
+    grid-template-columns: 320px minmax(0, 1fr);
+    gap: 20px;
+    align-items: start;
+    margin-top: 20px;
+}
+
+
+/* links- inbox */
+
+.ins-contact-lijst {
+    background: white;
+    border: 1px solid #e5e5e5;
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.ins-contact-lijst-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 18px;
+    border-bottom: 1px solid #e5e5e5;
+}
+
+.ins-contact-lijst-header h2 {
+    margin: 0;
+    font-size: 18px;
+}
+
+.ins-contact-lijst-header span {
+    color: #777;
+    font-size: 13px;
+}
+
+/* Contactvraag in de lijst */
+.ins-contact-item {
+    display: block;
+    width: 100%;
+    padding: 18px;
+    text-align: left;
+    background: white;
+    border: none;
+    border-bottom: 1px solid #e5e5e5;
+    cursor: pointer;
+    font-family: inherit;
+    transition: background 0.2s;
+}
+
+.ins-contact-item:hover {
+    background: #f7f7f7;
+}
+
+/* Geselecteerde contactvraag */
+.ins-contact-item.actief {
+    background: #f7f7f7;
+    border-left: 4px solid #222;
+    padding-left: 14px;
+}
+
+/* Bovenste regel: status en datum */
+.ins-contact-item-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 10px;
+}
+
+/* Onderwerp */
+.ins-contact-item-onderwerp {
+    margin-top: 12px;
+    font-size: 14px;
+    font-weight: bold;
+}
+
+/* Naam */
+.ins-contact-item-naam {
+    margin: 5px 0 2px;
+    color: #777;
+    font-size: 13px;
+    font-weight: normal;
+}
+
+/* Voorbeeld van het bericht */
+.ins-contact-item-preview {
+    margin: 0;
+    color: #888;
+    font-size: 12px;
+    font-weight: normal;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+/* Datum en tijd */
+.ins-contactvraag-datum {
+    color: #777;
+    font-size: 12px;
+    font-weight: normal;
+}
+
+
+/* statuslabels*/
+
+.ins-contactvraag-status {
+    display: inline-block;
+    padding: 5px 10px;
+    background: #222;
+    color: white;
+    border-radius: 3px;
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: lowercase;
+}
+
+
+/* rechts- detailvenster*/
+
+.ins-contact-detail {
+    min-width: 0;
+    padding: 25px;
+    background: white;
+    border: 1px solid #e5e5e5;
+    border-radius: 8px;
+}
+
+.ins-detail-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 15px;
+    padding-bottom: 20px;
+    border-bottom: 1px solid #e5e5e5;
+}
+
+.ins-detail-header h2 {
+    margin: 0 0 5px;
+    font-size: 21px;
+}
+
+.ins-detail-header p {
+    margin: 0;
+    color: #777;
+    font-size: 13px;
+}
+
+
+.ins-origineel-bericht {
+    margin-top: 22px;
+    padding: 20px;
+    background: #fafafa;
+    border: 1px solid #e8e8e8;
+    border-radius: 6px;
+}
+
+/* Ontvangstdatum en kanaal */
+#detailDatum {
+    display: block;
+    color: #777;
+    font-size: 13px;
+    font-weight: normal;
+}
+
+.ins-origineel-bericht p {
+    margin: 12px 0 0;
+    color: #444;
+    font-size: 14px;
+    line-height: 1.7;
+}
+
+
+/* antwoorden */
+
+.ins-antwoord {
+    margin-top: 25px;
+}
+
+.ins-antwoord h3 {
+    margin: 0 0 12px;
+    font-size: 15px;
+}
+
+.ins-antwoord textarea {
+    display: block;
+    width: 100%;
+    box-sizing: border-box;
+    padding: 12px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-family: inherit;
+    font-size: 14px;
+    resize: vertical;
+}
+
+.ins-antwoord textarea:focus {
+    outline: 2px solid #222;
+    outline-offset: 1px;
+}
+
+.ins-antwoord-acties {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 15px;
+}
+
+
+/* responsive- telf */
+
+@media (max-width: 900px) {
+    .ins-contact-layout {
+        grid-template-columns: 1fr;
+    }
+
+    .ins-contact-lijst {
+        width: 100%;
+    }
+}
+
+@media (max-width: 480px) {
+    .ins-contact-detail {
+        padding: 16px;
+    }
+
+    .ins-detail-header h2 {
+        font-size: 18px;
+    }
+
+    .ins-antwoord-acties {
+        flex-direction: column;
+    }
+
+    .ins-antwoord-acties button {
+        width: 100%;
+    }
+}

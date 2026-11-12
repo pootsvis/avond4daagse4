@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="nl">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contactvragen | Avond4daagse 2027</title>
+    <link rel="stylesheet" href="../css/beheer.css">
+</head>
+
+<body class="contactvragen-pagina">
+    <div class="ins-layout">
+
+        <!-- ZIJMENU -->
+        <aside class="ins-sidebar">
+            <div>
+                <div class="ins-logo">
+                    <strong>AVOND4DAAGSE</strong>
+                    <small>BEHEER 2027</small>
+                </div>
+
+                <nav class="ins-menu" aria-label="Beheermenu">
+                    <a href="dashboard.html">Dashboard</a>
+                    <span>Inschrijvingen</span>
+                    <span>Routebeheer</span>
+                    <span>Vrijwilligers & inzet</span>
+                    <span>Mijn beschikbaarheid</span>
+                    <span>Draaiboek</span>
+                    <span>Financiën</span>
+                    <a href="contactvragen.html" class="actief" aria-current="page">Contactvragen</a>
+                    <span class="ins-handleiding">Handleiding</span>
+                </nav>
+            </div>
+
+            <div class="ins-account">
+                <span>Beheerder</span>
+                <a href="login.html">Uitloggen</a>
+            </div>
+        </aside>
+
+        <!-- HOOFDINHOUD -->
+        <main class="ins-main">
+
+            <!-- PAGINATITEL -->
+            <header class="ins-header">
+                <div>
+                    <h1>Contactvragen</h1>
+                    <p>8 open vragen • gemiddelde reactietijd 1,4 dagen</p>
+                </div>
+
+                <div class="ins-header-buttons">
+                    <button type="button" class="ins-btn ins-dark"> + nieuwe vraag </button>
+                </div>
+            </header>
+
+            <!-- ZOEKEN EN FILTEREN -->
+            <form class="ins-filters">
+                <input
+                    type="search"
+                    aria-label="Zoeken naar contactvragen"
+                    placeholder="Zoek op naam, e-mail of onderwerp..."
+                >
+                <select aria-label="Filter op status">
+                    <option>Alle statussen</option>
+                    <option>open</option>
+                    <option>beantwoord</option>
+                    <option>nieuw</option>
+                    <option>in behandeling</option>
+                </select>
+
+                <button type="reset" class="ins-btn"> Filters wissen </button>
+            </form>
+
+            <!-- TWEE KOLOMMEN -->
+            <section class="ins-contact-layout">
+
+                <!-- LINKS: OVERZICHT CONTACTVRAGEN -->
+                <div class="ins-contact-lijst">
+
+                    <div class="ins-contact-lijst-header">
+                        <h2>Inbox</h2>
+                        <span>2 berichten</span>
+                    </div>
+
+                    <!-- CONTACTVRAAG 1 -->
+                    <button
+                        type="button"
+                        class="ins-contact-item actief"
+                        data-naam="Marieka van Leeuwen"
+                        data-email="marieka@example.nl"
+                        data-onderwerp="Vraag over inschrijving"
+                        data-status="open"
+                        data-datum="12 juni 2027"
+                        data-tijd="10:24"
+                        data-bericht="Ik heb een vraag over mijn inschrijving. Kunt u mij helpen?"
+                        aria-pressed="true"
+                    >
+                        <div class="ins-contact-item-top">
+                            <span class="ins-contactvraag-status">open</span>
+                            <span class="ins-contactvraag-datum">Vandaag • 10:24</span>
+                        </div>
+
+                        <div class="ins-contact-item-onderwerp"> Vraag over inschrijving </div>
+                        <p class="ins-contact-item-naam"> Marieka van Leeuwen </p>
+                        <p class="ins-contact-item-preview"> Beste organisatie, kan ik de afstand van mijn zoon nog aanpassen van 10 km naar 5 km? zijn inschrijfnummer is A4D-0982. Alvast bedaankt! </p>
+                    </button>
+
+                    <!-- CONTACTVRAAG 2 -->
+                    <button
+                        type="button"
+                        class="ins-contact-item"
+                        data-naam="Jan Jansen"
+                        data-email="jan.jansen@example.nl"
+                        data-onderwerp="Probleem met betaling"
+                        data-status="beantwoord"
+                        data-datum="10 juni 2027"
+                        data-tijd="14:35"
+                        data-bericht="Ik heb een probleem met mijn betaling. Kunt u dit oplossen?"
+                        aria-pressed="false"
+                    >
+                        <div class="ins-contact-item-top">
+                            <span class="ins-contactvraag-status">beantwoord</span>
+                            <span class="ins-contactvraag-datum">10 juni • 14:35</span>
+                        </div>
+
+                        <div class="ins-contact-item-onderwerp"> Probleem met betaling </div>
+                        <p class="ins-contact-item-naam"> Jan Jansen </p>
+                        <p class="ins-contact-item-preview"> Ik heb betaald, maar mijn inschrijving staat nog niet op bevestigd. </p>
+                    </button>
+
+                </div>
+
+                <!-- RECHTS: DETAIL CONTACTVRAAG -->
+                <section class="ins-contact-detail" aria-label="Details contactvraag">
+
+                    <!-- TITEL EN STATUS -->
+                    <header class="ins-detail-header">
+                        <div>
+                            <h2 id="detailOnderwerp">Vraag over inschrijving</h2>
+                            <p id="detailNaam">Marieka van Leeuwen • marieka@example.nl</p>
+                        </div>
+
+                        <span id="detailStatus" class="ins-contactvraag-status"> open </span>
+                    </header>
+
+                    <!-- ORIGINELE BERICHT -->
+                    <div class="ins-origineel-bericht">
+                        <div class="ins-ontvangen-info">
+                            <span id="detailDatum"> Ontvangen vandaag om 10:24 • via contactformulier </span>
+                        </div>
+
+                        <p id="detailBericht">
+                            Beste organisatie, kan ik de afstand van mijn zoon nog aanpassen van 10 km naar 5 km? zijn inschrijfnummer is A4D-0982. Alvast bedaankt!
+                        </p>
+                    </div>
+
+                    <!-- ANTWOORDEN -->
+                    <div class="ins-antwoord">
+                        <h3>Antwoord</h3>
+
+                        <form id="antwoordForm">
+                            <textarea id="antwoord" name="antwoord" rows="6" placeholder="Typ hier je antwoord..." required ></textarea>
+
+                            <!-- ACTIES -->
+                            <div class="ins-antwoord-acties">
+                                <button type="button" class="ins-btn" id="conceptOpslaan" > Concept opslaan </button>
+                                <button type="button" class="ins-btn" id="afhandelen" > Afhandelen en sluiten </button>                         >
+                                <button type="submit" class="ins-btn ins-dark" >Versturen </button>
+                            </div>
+                        </form>
+                    </div>
+
+                </section>
+            </section>
+        </main>
+    </div>
+</body>
+
+</html>
