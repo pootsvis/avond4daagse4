@@ -12,6 +12,7 @@ builder.Services.AddSwaggerGen();
 
 builder.Services.AddScoped<IEvenementService, EvenementService>();
 builder.Services.AddScoped<IRouteService, RouteService>();
+builder.Services.AddScoped<ISponsorService, SponsorService>();
 
 var app = builder.Build();
 
