@@ -1,0 +1,457 @@
+
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Inzetschema - Avond4daagse</title>
+  <link rel="stylesheet" href="../css/beheer.css">
+</head>
+
+<body class="vrij-page inzet-page">
+
+<div class="vrij-layout">
+
+  <!-- SIDEBAR -->
+  <aside class="vrij-sidebar">
+
+    <div class="vrij-logo">
+      <strong>AVOND4DAAGSE</strong>
+      <small>BEHEER 2027</small>
+    </div>
+
+    <nav class="vrij-menu">
+      <a href="dashboard.html">Dashboard</a>
+      <a href="inschrijvingen.html">Inschrijvingen</a>
+      <a href="routebeheer.html">Routebeheer</a>
+
+      <a href="vrijwilligers.html" class="vrij-active">
+        Vrijwilligers & inzet
+      </a>
+
+      
+<a href="mijn-beschikbaarheid.html">
+  Mijn beschikbaarheid
+</a>
+
+      <span>Draaiboek</span>
+      <span>Financiën</span>
+      <span>Contactvragen</span>
+      <span>Handleiding</span>
+    </nav>
+
+    <div class="vrij-sidebar-bottom">
+      <p>Beheerder</p>
+      <a href="login.html">Uitloggen</a>
+    </div>
+
+  </aside>
+
+  <!-- HOOFDINHOUD -->
+  <main class="vrij-main inzet-main">
+
+    <header class="vrij-header">
+      <div>
+        <h1>Vrijwilligers & inzet</h1>
+        <p>
+          Beheer beschikbaarheid, rollen en contactgegevens,
+          en koppel vrijwilligers direct aan diensten in het inzetschema.
+        </p>
+      </div>
+
+      <button class="vrij-dark-btn" type="button" disabled>
+        + Vrijwilliger
+      </button>
+    </header>
+
+    <!-- TABS -->
+    <div class="vrij-tabs">
+      <a class="vrij-tab inzet-tab" href="vrijwilligers.html">
+        Vrijwilligers
+      </a>
+
+      <a class="vrij-tab inzet-tab active"
+         href="inzetschema.html"
+         aria-current="page">
+        Inzetschema
+      </a>
+    </div>
+
+    <!-- PLANNING -->
+    <div class="inzet-table-container">
+      <table class="inzet-table">
+
+        <thead>
+          <tr>
+            <th>TIJD</th>
+            <th>DINSDAG 1 JUNI</th>
+            <th>WOENSDAG 2 JUNI</th>
+            <th>DONDERDAG 3 JUNI</th>
+            <th>VRIJDAG 4 JUNI</th>
+          </tr>
+        </thead>
+
+        <tbody id="inzetRooster">
+          <!-- De diensten worden hieronder
+               met JavaScript toegevoegd -->
+        </tbody>
+
+      </table>
+    </div>
+
+    <!-- GESELECTEERDE DIENST -->
+    <section class="inzet-details">
+
+      <div class="inzet-details-header">
+        <div>
+          <h2 id="dienstTitel">
+            Routeposten • do 18:15–20:30
+          </h2>
+          <p id="dienstBezetting">
+            13 / 14 bezet • 1 open plaats
+          </p>
+        </div>
+
+        <span class="inzet-badge" id="dienstOpen">
+          NOG 1 OPEN
+        </span>
+      </div>
+
+      <div class="inzet-details-grid">
+
+        <!-- HUIDIGE BEZETTING -->
+        <div class="inzet-huidig">
+          <h3>HUIDIGE BEZETTING</h3>
+
+          <p id="gekoppeldAantal">
+            13 vrijwilligers gekoppeld
+          </p>
+
+          <div class="inzet-voorbeeld">
+            <span>Voorbeeld: Anja Mulder</span>
+            <span>Verkeersregelaar</span>
+          </div>
+        </div>
+
+        <!-- VRIJWILLIGER TOEVOEGEN -->
+        <div class="inzet-wijzigen">
+
+          <h3>WIJZIGING TOEPASSEN</h3>
+
+          <label for="vrijwilligerSelect">
+            Kies vrijwilliger
+          </label>
+
+          <select id="vrijwilligerSelect">
+            <option value="">Selecteer vrijwilliger</option>
+            <option value="Jan de Groot">Jan de Groot</option>
+            <option value="Anja Mulder">Anja Mulder</option>
+            <option value="Peter Kuiper">Peter Kuiper</option>
+          </select>
+
+          <p class="inzet-klein">
+            Dit zijn voorbeeldvrijwilligers.
+            Beschikbaarheid wordt nog niet automatisch gecontroleerd.
+          </p>
+
+          <button class="vrij-dark-btn"
+                  id="voegVrijwilligerToe"
+                  type="button">
+            Toevoegen aan dienst
+          </button>
+
+          <div class="inzet-controle">
+            <strong>CONTROLE VOOR TOEWIJZEN</strong>
+
+            <p>
+              Controleer of de vrijwilliger beschikbaar is
+              en of de dienst nog open plaatsen heeft.
+              Automatische controles komen later.
+            </p>
+          </div>
+
+        </div>
+
+      </div>
+
+      <p id="inzetMelding" class="inzet-melding" role="status"></p>
+
+    </section>
+
+    <!-- ONDERKANT -->
+    <div class="inzet-footer">
+
+      <strong id="totaalOpen">
+        Open plaatsen berekenen...
+      </strong>
+
+      <button class="vrij-light-btn" id="toonOpen" type="button">
+        Bekijk open diensten
+      </button>
+
+    </div>
+
+    <p class="inzet-demo-note">
+      Voorbeeldplanning: wijzigingen worden alleen in deze
+      browserpagina bijgehouden en nog niet opgeslagen
+      in een database.
+    </p>
+
+  </main>
+</div>
+
+<script>
+
+  // VOORBEELDGEGEVENS UIT FIGMA
+  const dagen = ["di", "wo", "do", "vr"];
+
+  const planning = [
+    {
+      tijd: "17:00–18:00",
+      diensten: [
+        ["Opbouw startterrein", 6, 6],
+        ["Opbouw startterrein", 5, 6],
+        ["Opbouw startterrein", 4, 6],
+        ["Finish opbouw", 8, 10]
+      ]
+    },
+    {
+      tijd: "18:00–19:00",
+      diensten: [
+        ["Startbureau", 5, 5],
+        ["Startbureau", 4, 5],
+        ["Startbureau", 5, 5],
+        ["Startbureau", 5, 5]
+      ]
+    },
+    {
+      tijd: "18:15–20:30",
+      diensten: [
+        ["Routeposten", 12, 14],
+        ["Routeposten", 10, 14],
+        ["Routeposten", 13, 14],
+        ["Routeposten", 14, 14]
+      ]
+    },
+    {
+      tijd: "19:30–21:30",
+      diensten: [
+        ["Finishteam", 6, 6],
+        ["Finishteam", 5, 6],
+        ["Finishteam", 6, 6],
+        ["Medaille-uitgifte", 12, 15]
+      ]
+    },
+    {
+      tijd: "21:00–22:00",
+      diensten: [
+        ["Afbouw", 4, 4],
+        ["Afbouw", 3, 4],
+        ["Afbouw", 4, 4],
+        ["Eindschoonmaak", 6, 8]
+      ]
+    }
+  ];
+
+  const rooster = document.getElementById("inzetRooster");
+  const selectVrijwilliger = document.getElementById("vrijwilligerSelect");
+  const melding = document.getElementById("inzetMelding");
+  const toevoegenKnop = document.getElementById("voegVrijwilligerToe");
+
+  let geselecteerdeDienst = null;
+  let alleenOpen = false;
+
+  // Bijhouden welke voorbeeldvrijwilligers
+  // we tijdelijk aan een dienst toevoegen.
+  const toewijzingen = new Map();
+
+  // ROOSTER MAKEN
+  planning.forEach((rij) => {
+    const tr = document.createElement("tr");
+
+    const tijdCel = document.createElement("th");
+    tijdCel.scope = "row";
+    tijdCel.textContent = rij.tijd;
+    tr.appendChild(tijdCel);
+
+    rij.diensten.forEach((dienst, index) => {
+      const [naam, bezet, totaal] = dienst;
+
+      const td = document.createElement("td");
+      const knop = document.createElement("button");
+
+      knop.type = "button";
+      knop.className = "inzet-slot";
+
+      knop.dataset.dag = dagen[index];
+      knop.dataset.tijd = rij.tijd;
+      knop.dataset.naam = naam;
+      knop.dataset.bezet = bezet;
+      knop.dataset.totaal = totaal;
+
+      const naamElement = document.createElement("strong");
+      naamElement.textContent = naam;
+
+      const aantalElement = document.createElement("span");
+      aantalElement.className = "inzet-aantal";
+      aantalElement.textContent = `${bezet} / ${totaal}`;
+
+      knop.append(naamElement, aantalElement);
+
+      knop.addEventListener("click", () => {
+        selecteerDienst(knop);
+      });
+
+      td.appendChild(knop);
+      tr.appendChild(td);
+    });
+
+    rooster.appendChild(tr);
+  });
+
+  // DIENST SELECTEREN
+  function selecteerDienst(knop) {
+    document.querySelectorAll(".inzet-slot").forEach((slot) => {
+      slot.classList.remove("selected");
+      slot.setAttribute("aria-pressed", "false");
+    });
+
+    knop.classList.add("selected");
+    knop.setAttribute("aria-pressed", "true");
+    geselecteerdeDienst = knop;
+
+    const naam = knop.dataset.naam;
+    const dag = knop.dataset.dag;
+    const tijd = knop.dataset.tijd;
+
+    document.getElementById("dienstTitel").textContent =
+      `${naam} • ${dag} ${tijd}`;
+
+    updateDetails();
+    melding.textContent = "";
+    selectVrijwilliger.value = "";
+  }
+
+  // DETAILS BIJWERKEN
+  function updateDetails() {
+    if (!geselecteerdeDienst) return;
+
+    const bezet = Number(geselecteerdeDienst.dataset.bezet);
+    const totaal = Number(geselecteerdeDienst.dataset.totaal);
+    const open = totaal - bezet;
+
+    document.getElementById("dienstBezetting").textContent =
+      `${bezet} / ${totaal} bezet • ${open} open plaatsen`;
+
+    document.getElementById("gekoppeldAantal").textContent =
+      `${bezet} vrijwilligers gekoppeld`;
+
+    document.getElementById("dienstOpen").textContent =
+      open > 0 ? `NOG ${open} OPEN` : "VOL";
+
+    toevoegenKnop.disabled = open === 0;
+  }
+
+  // TOTAAL AANTAL OPEN PLAATSEN
+  function berekenOpenPlaatsen() {
+    let open = 0;
+
+    document.querySelectorAll(".inzet-slot").forEach((slot) => {
+      open += Number(slot.dataset.totaal)
+        - Number(slot.dataset.bezet);
+    });
+
+    document.getElementById("totaalOpen").textContent =
+      `Totaal nog ${open} open plaatsen in dit voorbeeldrooster`;
+  }
+
+  // VRIJWILLIGER TOEVOEGEN (DEMO)
+  toevoegenKnop.addEventListener("click", () => {
+    if (!geselecteerdeDienst) return;
+
+    const naam = selectVrijwilliger.value;
+
+    if (!naam) {
+      melding.textContent = "Selecteer eerst een vrijwilliger.";
+      return;
+    }
+
+    const bezet = Number(geselecteerdeDienst.dataset.bezet);
+    const totaal = Number(geselecteerdeDienst.dataset.totaal);
+
+    if (bezet >= totaal) {
+      melding.textContent = "Deze dienst zit al vol.";
+      return;
+    }
+
+    const sleutel =
+      `${geselecteerdeDienst.dataset.dag}-${geselecteerdeDienst.dataset.tijd}`;
+
+    if (!toewijzingen.has(sleutel)) {
+      toewijzingen.set(sleutel, new Set());
+    }
+
+    const personen = toewijzingen.get(sleutel);
+
+    if (personen.has(naam)) {
+      melding.textContent =
+        `${naam} is in deze demo al aan deze dienst toegevoegd.`;
+      return;
+    }
+
+    personen.add(naam);
+
+    const nieuwAantal = bezet + 1;
+
+    geselecteerdeDienst.dataset.bezet = nieuwAantal;
+
+    geselecteerdeDienst.querySelector(".inzet-aantal").textContent =
+      `${nieuwAantal} / ${totaal}`;
+
+    melding.textContent =
+      `${naam} is tijdelijk toegevoegd aan deze dienst. Niet opgeslagen in de database.`;
+
+    updateDetails();
+    berekenOpenPlaatsen();
+    vernieuwOpenFilter();
+    selectVrijwilliger.value = "";
+  });
+
+  // ALLEEN OPEN DIENSTEN TONEN
+  function vernieuwOpenFilter() {
+    document.querySelectorAll(".inzet-slot").forEach((slot) => {
+      const open = Number(slot.dataset.totaal)
+        - Number(slot.dataset.bezet);
+
+      slot.classList.toggle(
+        "inzet-verborgen",
+        alleenOpen && open === 0
+      );
+    });
+  }
+
+  document.getElementById("toonOpen").addEventListener("click", (event) => {
+    alleenOpen = !alleenOpen;
+
+    event.currentTarget.textContent = alleenOpen
+      ? "Toon alle diensten"
+      : "Bekijk open diensten";
+
+    vernieuwOpenFilter();
+  });
+
+  // STANDAARD DE DONDERDAG ROUTEPOSTEN SELECTEREN
+  const standaardDienst = document.querySelector(
+    '.inzet-slot[data-dag="do"][data-tijd="18:15–20:30"]'
+  );
+
+  if (standaardDienst) {
+    selecteerDienst(standaardDienst);
+  }
+
+  berekenOpenPlaatsen();
+
+</script>
+
+</body>
+</html>

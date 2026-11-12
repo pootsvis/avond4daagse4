@@ -1006,6 +1006,7 @@ body {
 }
 
 
+<<<<<<< HEAD
 /* ========================================
    CONTACTVRAGEN - Omgeving
 ======================================== */
@@ -1247,4 +1248,938 @@ body {
     .ins-antwoord-acties button {
         width: 100%;
     }
+=======
+/* =========================================
+   BEHEER - VRIJWILLIGERS & INZET
+   ========================================= */
+
+.vrij-page {
+  margin: 0;
+  padding: 0;
+  background: #eaeaea;
+  color: #222;
+  font-family: Arial, sans-serif;
+}
+
+.vrij-page * {
+  box-sizing: border-box;
+}
+
+/* ALGEMENE LAYOUT */
+
+.vrij-layout {
+  display: flex;
+  min-height: 100vh;
+}
+
+/* SIDEBAR */
+
+.vrij-sidebar {
+  width: 210px;
+  min-width: 210px;
+  background: #292929;
+  color: white;
+  display: flex;
+  flex-direction: column;
+}
+
+.vrij-logo {
+  padding: 25px 20px;
+  display: flex;
+  flex-direction: column;
+}
+
+.vrij-logo strong {
+  font-size: 15px;
+}
+
+.vrij-logo small {
+  font-size: 10px;
+  color: #bbb;
+  margin-top: 4px;
+}
+
+.vrij-menu {
+  display: flex;
+  flex-direction: column;
+}
+
+.vrij-menu a,
+.vrij-menu span {
+  display: block;
+  padding: 13px 20px;
+  font-size: 13px;
+  color: #eee;
+  text-decoration: none;
+}
+
+.vrij-menu a:hover {
+  background: #3c3c3c;
+}
+
+.vrij-menu .vrij-active {
+  background: #505050;
+  font-weight: bold;
+}
+
+.vrij-menu span {
+  color: #ccc;
+}
+
+.vrij-sidebar-bottom {
+  margin-top: auto;
+  padding: 20px;
+  font-size: 12px;
+}
+
+.vrij-sidebar-bottom p {
+  margin: 0 0 5px;
+}
+
+.vrij-sidebar-bottom a {
+  color: #ccc;
+  text-decoration: none;
+}
+
+/* HOOFDINHOUD */
+
+.vrij-main {
+  flex: 1;
+  min-width: 0;
+  padding: 32px 30px;
+}
+
+/* PAGINA HEADER */
+
+.vrij-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 20px;
+}
+
+.vrij-header h1 {
+  font-size: 26px;
+  margin: 0 0 8px;
+}
+
+.vrij-header p {
+  font-size: 13px;
+  line-height: 1.6;
+  color: #777;
+  margin: 0;
+}
+
+/* KNOPPEN */
+
+.vrij-dark-btn {
+  background: #292929;
+  color: white;
+  border: 1px solid #292929;
+  padding: 11px 14px;
+  border-radius: 2px;
+  font-size: 12px;
+  white-space: nowrap;
+  cursor: pointer;
+}
+
+.vrij-light-btn {
+  background: white;
+  color: #222;
+  border: 1px solid #999;
+  padding: 11px 14px;
+  border-radius: 2px;
+  font-size: 12px;
+  cursor: pointer;
+}
+
+.vrij-page button:disabled {
+  cursor: not-allowed;
+  opacity: 0.75;
+}
+
+/* TABS */
+
+.vrij-tabs {
+  display: flex;
+  gap: 8px;
+  margin-top: 22px;
+}
+
+.vrij-tab {
+  background: white;
+  border: 1px solid #999;
+  padding: 10px 14px;
+  font-size: 12px;
+  border-radius: 2px;
+  cursor: pointer;
+}
+
+.vrij-tab.active {
+  background: #292929;
+  color: white;
+  border-color: #292929;
+  font-weight: bold;
+}
+
+/* STATISTIEKEN */
+
+.vrij-statistieken {
+  font-size: 13px;
+  color: #777;
+  margin: 22px 0;
+}
+
+/* FILTERS */
+
+.vrij-filters {
+  display: grid;
+  grid-template-columns: minmax(160px, 1fr) 135px 145px auto;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.vrij-filters input,
+.vrij-filters select {
+  width: 100%;
+  min-width: 0;
+  border: 1px solid #ccc;
+  background: white;
+  padding: 11px;
+  border-radius: 2px;
+  font-size: 12px;
+}
+
+/* TABEL */
+
+.vrij-table-container {
+  width: 100%;
+  overflow-x: auto;
+}
+
+.vrij-table {
+  width: 100%;
+  min-width: 850px;
+  border-collapse: collapse;
+  background: white;
+  font-size: 12px;
+}
+
+.vrij-table th,
+.vrij-table td {
+  border: 1px solid #ccc;
+  padding: 12px 9px;
+  text-align: left;
+}
+
+.vrij-table th {
+  background: #f1f1f1;
+  font-size: 11px;
+  font-weight: bold;
+}
+
+.vrij-table tbody tr:hover {
+  background: #f7f7f7;
+}
+
+.vrij-table tbody tr[hidden] {
+  display: none;
+}
+
+.vrij-table td button {
+  padding: 7px 9px;
+  background: white;
+  border: 1px solid #888;
+  font-size: 11px;
+  white-space: nowrap;
+}
+
+#geenResultaten {
+  padding: 15px;
+  text-align: center;
+  background: white;
+  font-size: 13px;
+}
+
+#geenResultaten[hidden] {
+  display: none;
+}
+
+/* ONDERKANT TABEL */
+
+.vrij-table-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 15px;
+  margin-top: 18px;
+}
+
+.vrij-table-footer p {
+  color: #777;
+  font-size: 12px;
+}
+
+.vrij-footer-knoppen {
+  display: flex;
+  gap: 8px;
+}
+
+.vrij-info {
+  margin-top: 24px;
+  color: #777;
+  font-size: 12px;
+}
+
+/* KLEINERE SCHERMEN */
+
+@media (max-width: 1000px) {
+  .vrij-filters {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+@media (max-width: 700px) {
+  .vrij-layout {
+    flex-direction: column;
+  }
+
+  .vrij-sidebar {
+    width: 100%;
+    min-width: 0;
+  }
+
+  .vrij-main {
+    padding: 20px;
+  }
+
+  .vrij-header {
+    flex-direction: column;
+  }
+
+  .vrij-filters {
+    grid-template-columns: 1fr;
+  }
+
+  .vrij-table-footer {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}
+
+
+/* =========================================
+   BEHEER - INZETSCHEMA
+   ========================================= */
+
+/* TABS */
+
+.inzet-tab {
+  display: inline-block;
+  text-decoration: none;
+  color: #222;
+}
+
+.inzet-tab.active {
+  color: white;
+}
+
+/* ROOSTER */
+
+.inzet-table-container {
+  margin-top: 20px;
+  width: 100%;
+  overflow-x: auto;
+}
+
+.inzet-table {
+  width: 100%;
+  min-width: 760px;
+  border-collapse: collapse;
+  table-layout: fixed;
+  font-size: 12px;
+}
+
+.inzet-table th,
+.inzet-table td {
+  border: 1px solid #ccc;
+  text-align: left;
+}
+
+.inzet-table thead th {
+  background: #292929;
+  color: white;
+  padding: 15px 12px;
+  font-size: 11px;
+}
+
+.inzet-table thead th:first-child {
+  width: 115px;
+}
+
+.inzet-table tbody th {
+  background: #f1f1f1;
+  padding: 15px 12px;
+  font-size: 12px;
+}
+
+.inzet-table tbody td {
+  padding: 0;
+  background: white;
+  height: 74px;
+}
+
+.inzet-table tbody tr:nth-child(even) td {
+  background: #f5f5f5;
+}
+
+/* KLIKBARE DIENSTEN */
+
+.inzet-slot {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  width: 100%;
+  min-height: 74px;
+  padding: 12px;
+  text-align: left;
+  border: none;
+  background: transparent;
+  color: #222;
+  cursor: pointer;
+  font-size: 12px;
+}
+
+.inzet-slot strong {
+  font-size: 12px;
+  margin-bottom: 6px;
+}
+
+.inzet-aantal {
+  font-size: 12px;
+}
+
+.inzet-slot:hover {
+  background: #dedede;
+}
+
+.inzet-slot.selected {
+  background: #dedede;
+  box-shadow: inset 0 0 0 2px #444;
+}
+
+.inzet-slot.inzet-verborgen {
+  visibility: hidden;
+}
+
+/* DETAILPANEEL */
+
+.inzet-details {
+  margin-top: 20px;
+  padding: 16px;
+  border: 1px solid #ccc;
+  background: white;
+  min-height: 340px;
+}
+
+.inzet-details-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 15px;
+  margin-bottom: 15px;
+}
+
+.inzet-details-header h2 {
+  font-size: 18px;
+  margin: 0 0 6px;
+}
+
+.inzet-details-header p {
+  color: #777;
+  font-size: 12px;
+  margin: 0;
+}
+
+.inzet-badge {
+  padding: 7px 10px;
+  border: 1px solid #aaa;
+  font-size: 10px;
+  white-space: nowrap;
+}
+
+/* TWEE KOLOMMEN */
+
+.inzet-details-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 270px;
+  gap: 12px;
+}
+
+/* HUIDIGE BEZETTING */
+
+.inzet-huidig {
+  border: 1px solid #ccc;
+  background: #f7f7f7;
+  padding: 14px;
+  align-self: start;
+}
+
+.inzet-huidig h3,
+.inzet-wijzigen h3 {
+  margin: 0 0 13px;
+  font-size: 11px;
+  color: #555;
+}
+
+.inzet-huidig p {
+  font-size: 13px;
+  margin: 0 0 14px;
+}
+
+.inzet-voorbeeld {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  font-size: 12px;
+}
+
+.inzet-voorbeeld span:last-child {
+  color: #777;
+}
+
+/* WIJZIGINGEN */
+
+.inzet-wijzigen {
+  border: 1px solid #ccc;
+  padding: 12px;
+  background: #f7f7f7;
+}
+
+.inzet-wijzigen label {
+  display: block;
+  font-size: 12px;
+  color: #777;
+  margin-bottom: 7px;
+}
+
+.inzet-wijzigen select {
+  width: 100%;
+  padding: 11px;
+  border: 1px solid #bbb;
+  background: white;
+  font-size: 12px;
+}
+
+.inzet-klein {
+  color: #777;
+  font-size: 11px;
+  line-height: 1.5;
+  margin: 10px 0;
+}
+
+.inzet-wijzigen .vrij-dark-btn {
+  margin-top: 4px;
+  width: 100%;
+}
+
+.inzet-controle {
+  border: 1px solid #ccc;
+  background: #eee;
+  margin-top: 12px;
+  padding: 10px;
+}
+
+.inzet-controle strong {
+  font-size: 11px;
+}
+
+.inzet-controle p {
+  margin: 5px 0 0;
+  color: #777;
+  line-height: 1.5;
+  font-size: 11px;
+}
+
+.inzet-melding {
+  font-size: 12px;
+  margin: 18px 0 0;
+  color: #444;
+}
+
+.inzet-melding:empty {
+  display: none;
+}
+
+/* ONDERKANT */
+
+.inzet-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 15px;
+  margin-top: 20px;
+}
+
+.inzet-footer strong {
+  font-size: 12px;
+}
+
+.inzet-demo-note {
+  font-size: 11px;
+  color: #777;
+  margin-top: 16px;
+}
+
+/* RESPONSIVE */
+
+@media (max-width: 850px) {
+  .inzet-details-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 600px) {
+  .inzet-details-header,
+  .inzet-footer {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .inzet-details {
+    padding: 12px;
+  }
+}
+
+
+/* =========================================
+   BEHEER - MIJN BESCHIKBAARHEID
+   ========================================= */
+
+.besch-main {
+  max-width: 1200px;
+}
+
+/* HEADER */
+
+.besch-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 20px;
+  margin-bottom: 18px;
+}
+
+.besch-header h1 {
+  font-size: 26px;
+  margin: 0 0 8px;
+}
+
+.besch-header p {
+  font-size: 13px;
+  color: #777;
+  line-height: 1.6;
+  max-width: 730px;
+  margin: 0;
+}
+
+.besch-editie {
+  color: #777;
+  font-size: 12px;
+  white-space: nowrap;
+  padding-top: 7px;
+}
+
+/* INFORMATIEBLOK */
+
+.besch-info-box {
+  padding: 15px;
+  background: #f6f6f6;
+  border: 1px solid #bbb;
+  margin-bottom: 24px;
+}
+
+.besch-info-box strong {
+  display: block;
+  font-size: 13px;
+  margin-bottom: 8px;
+}
+
+.besch-info-box p {
+  color: #777;
+  font-size: 12px;
+  line-height: 1.6;
+  margin: 0;
+}
+
+/* SECTIES */
+
+.besch-section {
+  margin-bottom: 28px;
+}
+
+.besch-section h2 {
+  font-size: 17px;
+  margin: 0 0 6px;
+}
+
+.besch-section-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 15px;
+  margin-bottom: 12px;
+}
+
+.besch-section-header p,
+.besch-uitleg {
+  color: #777;
+  font-size: 12px;
+  line-height: 1.5;
+  margin: 0 0 12px;
+}
+
+#besch-aantal {
+  font-size: 12px;
+  color: #777;
+  white-space: nowrap;
+}
+
+/* TABELLEN */
+
+.besch-tabel-wrapper {
+  width: 100%;
+  overflow-x: auto;
+}
+
+.besch-tabel {
+  width: 100%;
+  border-collapse: collapse;
+  background: white;
+  font-size: 12px;
+}
+
+.besch-tabel th,
+.besch-tabel td {
+  border: 1px solid #ccc;
+  padding: 15px 12px;
+  text-align: left;
+}
+
+.besch-tabel thead th {
+  background: #f1f1f1;
+  font-size: 11px;
+  font-weight: bold;
+}
+
+.besch-tabel tbody tr:hover {
+  background: #fafafa;
+}
+
+.besch-tabel th:first-child {
+  width: 35%;
+}
+
+/* RADIOKNOPPEN */
+
+.besch-tabel td label {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin-right: 20px;
+  cursor: pointer;
+  font-size: 12px;
+  white-space: nowrap;
+}
+
+.besch-tabel input[type="radio"] {
+  accent-color: #292929;
+  cursor: pointer;
+}
+
+/* TOELICHTING */
+
+.besch-toelichting {
+  margin-top: 20px;
+}
+
+.besch-toelichting label {
+  display: block;
+  font-size: 13px;
+  font-weight: bold;
+  margin-bottom: 8px;
+}
+
+.besch-toelichting textarea {
+  width: 100%;
+  min-height: 90px;
+  padding: 12px;
+  resize: vertical;
+  background: white;
+  border: 1px solid #ccc;
+  font-family: Arial, sans-serif;
+  font-size: 12px;
+  line-height: 1.5;
+}
+
+.besch-toelichting p {
+  font-size: 11px;
+  color: #888;
+  margin-top: 7px;
+}
+
+/* OPSLAAN */
+
+.besch-opslaan {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  margin-top: 18px;
+}
+
+.besch-opslaan strong {
+  font-size: 12px;
+}
+
+.besch-opslaan p {
+  font-size: 11px;
+  color: #777;
+  margin: 6px 0 0;
+}
+
+/* INGEPLANDE DIENSTEN */
+
+.besch-diensten-tabel {
+  min-width: 650px;
+}
+
+.besch-diensten-tabel td {
+  padding: 14px 10px;
+}
+
+.besch-diensten-tabel td strong {
+  font-size: 12px;
+}
+
+.besch-diensten-tabel th:first-child {
+  width: auto;
+}
+
+.besch-diensten-tabel button {
+  border: none;
+  background: none;
+  padding: 5px 0;
+  color: #222;
+  text-decoration: underline;
+  font-size: 12px;
+  cursor: pointer;
+}
+
+/* AANWEZIGHEIDSREGISTRATIE */
+
+.besch-dienst-kaart {
+  background: white;
+  border: 1px solid #ccc;
+  padding: 16px;
+  margin-bottom: 10px;
+}
+
+.besch-kaart-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 15px;
+  margin-bottom: 16px;
+}
+
+.besch-kaart-header h3 {
+  font-size: 14px;
+  margin: 0 0 6px;
+}
+
+.besch-kaart-header p {
+  color: #777;
+  font-size: 12px;
+  margin: 0;
+}
+
+.besch-badge {
+  background: #f5f5f5;
+  border: 1px solid #bbb;
+  padding: 6px 10px;
+  font-size: 10px;
+  font-weight: bold;
+  white-space: nowrap;
+}
+
+.besch-dienst-kaart > strong {
+  display: block;
+  font-size: 12px;
+  margin-bottom: 7px;
+}
+
+.besch-dienst-kaart > p {
+  color: #777;
+  font-size: 12px;
+  line-height: 1.5;
+  margin: 0 0 12px;
+}
+
+.besch-dienst-kaart .vrij-dark-btn {
+  font-size: 11px;
+  padding: 9px 12px;
+}
+
+.besch-feedback {
+  background: white;
+  border: 1px solid #bbb;
+  padding: 12px;
+  font-size: 12px;
+  margin-top: 12px;
+}
+
+.besch-feedback[hidden] {
+  display: none;
+}
+
+/* RESPONSIVE */
+
+@media (max-width: 800px) {
+  .besch-header {
+    flex-direction: column;
+  }
+
+  .besch-section-header {
+    flex-direction: column;
+  }
+
+  .besch-opslaan {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .besch-tabel td label {
+    margin: 5px 12px 5px 0;
+  }
+}
+
+@media (max-width: 600px) {
+  .besch-header h1 {
+    font-size: 23px;
+  }
+
+  .besch-tabel {
+    min-width: 480px;
+  }
+
+  .besch-diensten-tabel {
+    min-width: 650px;
+  }
+
+  .besch-dienst-kaart {
+    padding: 12px;
+  }
+>>>>>>> f8cdd080f142e1fb6b393b6e5684499e1176580d
 }
