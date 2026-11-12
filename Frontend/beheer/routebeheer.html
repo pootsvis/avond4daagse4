@@ -1,0 +1,208 @@
+
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Routebeheer | Avond4daagse 2027</title>
+  <link rel="stylesheet" href="../css/beheer.css">
+</head>
+
+<body class="inschrijvingen-pagina routebeheer-pagina">
+  <div class="ins-layout">
+
+    <!-- ZIJMENU -->
+    <aside class="ins-sidebar">
+      <div>
+        <div class="ins-logo">
+          <strong>AVOND4DAAGSE</strong>
+          <small>BEHEER 2027</small>
+        </div>
+
+        <nav class="ins-menu" aria-label="Beheermenu">
+          <a href="dashboard.html">Dashboard</a>
+          <a href="inschrijvingen.html">Inschrijvingen</a>
+          <a href="routebeheer.html" class="actief"
+             aria-current="page">Routebeheer</a>
+
+          <span>Vrijwilligers & inzet</span>
+          <span>Mijn beschikbaarheid</span>
+          <span>Draaiboek</span>
+          <span>Financiën</span>
+          <span>Contactvragen</span>
+          <span class="ins-handleiding">Handleiding</span>
+        </nav>
+      </div>
+
+      <div class="ins-account">
+        <span>Beheerder</span>
+        <a href="login.html">Uitloggen</a>
+      </div>
+    </aside>
+
+    <!-- HOOFDINHOUD -->
+    <main class="ins-main route-main">
+
+      <!-- TITEL -->
+      <header class="route-header">
+        <div>
+          <h1>Routebeheer</h1>
+          <p>
+            Beheer routes, controleposten en
+            routebestanden per avond.
+          </p>
+        </div>
+
+        <button class="ins-btn ins-dark"
+                type="button" disabled>
+          + Nieuwe route
+        </button>
+      </header>
+
+      <!-- FILTERS -->
+      <section class="route-toolbar"
+               aria-label="Routefilters">
+        <div class="route-filters">
+          <select aria-label="Selecteer avond">
+            <option>Dinsdag 3 juni</option>
+            <option>Woensdag 4 juni</option>
+            <option>Donderdag 5 juni</option>
+            <option>Vrijdag 6 juni</option>
+          </select>
+
+          <select aria-label="Selecteer afstand">
+            <option>Alle afstanden</option>
+            <option>5 km</option>
+            <option>10 km</option>
+          </select>
+        </div>
+
+        <button class="ins-btn ins-dark"
+                type="button" disabled>
+          Publiceer wijzigingen
+        </button>
+      </section>
+
+      <!-- ROUTEOVERZICHT -->
+      <div class="route-grid">
+
+        <!-- LINKERKOLOM -->
+        <section class="route-list"
+                 aria-label="Beschikbare routes">
+
+          <!-- ROUTE 1 -->
+          <article class="route-card route-selected">
+            <div class="route-card-top">
+              <div>
+                <h2>
+                  Dorpsroute
+                  <span class="route-distance">5 km</span>
+                </h2>
+                <p>4,9 km • 3 posten</p>
+              </div>
+
+              <span class="route-status">
+                Gepubliceerd
+              </span>
+            </div>
+
+            <div class="route-buttons">
+              <button class="ins-btn" type="button"
+                      disabled>Bewerken</button>
+              <button class="ins-btn" type="button"
+                      disabled>Dupliceren</button>
+              <button class="ins-btn" type="button"
+                      disabled>Download GPX</button>
+            </div>
+          </article>
+
+          <!-- ROUTE 2 -->
+          <article class="route-card">
+            <div class="route-card-top">
+              <div>
+                <h2>
+                  Polderroute
+                  <span class="route-distance">10 km</span>
+                </h2>
+                <p>10,2 km • 5 posten</p>
+              </div>
+
+              <span class="route-status">
+                Concept
+              </span>
+            </div>
+
+            <div class="route-buttons">
+              <button class="ins-btn" type="button"
+                      disabled>Bewerken</button>
+              <button class="ins-btn" type="button"
+                      disabled>Dupliceren</button>
+              <button class="ins-btn" type="button"
+                      disabled>Download GPX</button>
+            </div>
+          </article>
+
+          <!-- CONTROLEPOSTEN -->
+          <div class="route-table-wrapper">
+            <table class="route-table">
+              <thead>
+                <tr>
+                  <th>CONTROLEPOST</th>
+                  <th>LOCATIE</th>
+                  <th>VRIJWILLIGERS</th>
+                </tr>
+              </thead>
+
+              <tbody>
+                <tr>
+                  <td>Post 1</td>
+                  <td>Parklaan</td>
+                  <td>2 / 2</td>
+                </tr>
+                <tr>
+                  <td>Post 2</td>
+                  <td>Molenplein</td>
+                  <td>1 / 2</td>
+                </tr>
+                <tr>
+                  <td>Post 3</td>
+                  <td>Sportpark</td>
+                  <td>2 / 2</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+        <!-- RECHTERKOLOM -->
+        <section class="route-preview"
+                 aria-label="Routekaart">
+          <div class="route-preview-header">
+            <h2>Dorpsroute — 5 km</h2>
+            <button class="ins-btn" type="button"
+                    disabled>
+              Volledig scherm
+            </button>
+          </div>
+
+          <div class="route-map">
+            <div class="route-placeholder">
+              <span aria-hidden="true">▧</span>
+              <p>
+                [ BEWERKBARE ROUTEKAART + CONTROLEPUNTEN ]
+              </p>
+            </div>
+          </div>
+
+          <p class="route-help">
+            Sleep punten om de route aan te passen.
+            Klik op de kaart om een controlepost toe te voegen.
+          </p>
+        </section>
+
+      </div>
+
+    </main>
+  </div>
+</body>
+</html>
