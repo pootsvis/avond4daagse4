@@ -1,0 +1,512 @@
+
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Draaiboek - Avond4daagse 2027</title>
+  <link rel="stylesheet" href="../css/beheer.css">
+</head>
+
+<body class="db-page">
+
+<div class="db-layout">
+
+  <!-- SIDEBAR -->
+  <aside class="db-sidebar">
+    <div class="db-logo">
+      <strong>AVOND4DAAGSE</strong>
+      <small>BEHEER 2027</small>
+    </div>
+
+    <nav class="db-menu">
+      <a href="dashboard.html">Dashboard</a>
+      <a href="inschrijvingen.html">Inschrijvingen</a>
+      <a href="routebeheer.html">Routebeheer</a>
+      <a href="vrijwilligers.html">Vrijwilligers & inzet</a>
+      <a href="mijn-beschikbaarheid.html">Mijn beschikbaarheid</a>
+      <a href="draaiboek.html" class="db-active"
+         aria-current="page">Draaiboek</a>
+      <span>Financiën</span>
+      <span>Contactvragen</span>
+      <span>Handleiding</span>
+    </nav>
+
+    <div class="db-sidebar-bottom">
+      <p>Beheerder</p>
+      <a href="login.html">Uitloggen</a>
+    </div>
+  </aside>
+
+  <!-- HOOFDINHOUD -->
+  <main class="db-main">
+
+    <header class="db-header">
+      <div>
+        <h1>Draaiboek</h1>
+        <p>
+          Bekijk taken per dag, per maand of alleen
+          je eigen verantwoordelijkheden.
+        </p>
+      </div>
+
+      <button id="db-nieuw" class="db-dark-btn" type="button">
+        + Taak toevoegen
+      </button>
+    </header>
+
+    <!-- TABS -->
+    <div class="db-tabs">
+      <a href="draaiboek.html" class="db-tab active">Dag</a>
+      <span class="db-tab">Maand</span>
+      <span class="db-tab">Mijn taken</span>
+    </div>
+
+    <!-- FILTERS -->
+    <div class="db-filters">
+      <select id="db-dag" aria-label="Kies dag">
+        <option value="2027-06-01">Dinsdag 1 juni</option>
+        <option value="2027-06-02">Woensdag 2 juni</option>
+        <option value="2027-06-03" selected>Donderdag 3 juni</option>
+        <option value="2027-06-04">Vrijdag 4 juni</option>
+      </select>
+
+      <select id="db-team" aria-label="Filter op team">
+        <option value="">Alle teams</option>
+        <option value="Coördinatie">Coördinatie</option>
+        <option value="Startteam">Startteam</option>
+        <option value="Hoofdorganisatie">Hoofdorganisatie</option>
+        <option value="Finishteam">Finishteam</option>
+        <option value="Routecoördinator">Routecoördinator</option>
+      </select>
+
+      <select id="db-moment" aria-label="Filter op moment">
+        <option value="">Alle momenten</option>
+        <option value="Voorbereiding">Voorbereiding</option>
+        <option value="Tijdens de wandelavond">Tijdens de wandelavond</option>
+        <option value="Afronding">Afronding</option>
+      </select>
+
+      <div class="db-filter-actions">
+        <button id="db-dupliceren" class="db-light-btn" type="button">
+          Dupliceer naar avond
+        </button>
+        <button id="db-export" class="db-light-btn" type="button">
+          Exporteer PDF
+        </button>
+      </div>
+    </div>
+
+    <!-- NIEUWE TAAK -->
+    <section class="db-new-task" id="db-form-box" hidden>
+      <h2>Nieuwe taak toevoegen</h2>
+
+      <form id="db-form">
+        <label for="db-titel">Taaknaam</label>
+        <input type="text" id="db-titel"
+               placeholder="Bijvoorbeeld: Materialen controleren"
+               required maxlength="100">
+
+        <label for="db-omschrijving">Omschrijving</label>
+        <textarea id="db-omschrijving" rows="2"
+                  placeholder="Wat moet er gebeuren?"></textarea>
+
+        <label for="db-nieuw-team">Verantwoordelijk team</label>
+        <select id="db-nieuw-team">
+          <option>Coördinatie</option>
+          <option>Startteam</option>
+          <option>Hoofdorganisatie</option>
+          <option>Finishteam</option>
+          <option>Routecoördinator</option>
+        </select>
+
+        <label for="db-nieuw-moment">Moment</label>
+        <select id="db-nieuw-moment">
+          <option>Voorbereiding</option>
+          <option>Tijdens de wandelavond</option>
+          <option>Afronding</option>
+        </select>
+
+        <div class="db-form-actions">
+          <button class="db-dark-btn" type="submit">
+            Taak opslaan
+          </button>
+          <button class="db-light-btn" id="db-annuleren"
+                  type="button">
+            Annuleren
+          </button>
+        </div>
+      </form>
+    </section>
+
+    <!-- DAGOVERZICHT -->
+    <div class="db-content">
+
+      <section class="db-task-list" aria-label="Taken van deze dag">
+        <div id="db-taken">
+          <!-- JavaScript vult de taken in -->
+        </div>
+      </section>
+
+      <!-- RECHTER KOLOM -->
+      <aside class="db-right">
+
+        <div class="db-progress">
+          <h2>Voortgang</h2>
+          <strong id="db-voortgang">0 / 0</strong>
+          <p>taken afgerond op deze dag</p>
+        </div>
+
+        <div class="db-emergency">
+          <h3>Calamiteit?</h3>
+          <p>
+            Neem bij nood contact op met de coördinator.
+            Bel bij direct gevaar 112.
+          </p>
+          <button class="db-light-btn" type="button" disabled>
+            Open noodprocedure
+          </button>
+        </div>
+
+      </aside>
+    </div>
+
+    <p id="db-melding" class="db-melding"
+       role="status" hidden></p>
+
+    <p class="db-demo">
+      Dit is een voorbeeldplanning. De taken worden voorlopig
+      alleen lokaal in deze browser opgeslagen.
+    </p>
+
+  </main>
+</div>
+
+<script>
+  // VOORBEELDGEGEVENS
+  const datums = [
+    "2027-06-01",
+    "2027-06-02",
+    "2027-06-03",
+    "2027-06-04"
+  ];
+
+  const voorbeeldTaken = {
+    "2027-06-01": [],
+    "2027-06-02": [],
+    "2027-06-03": [
+      {
+        id: 1,
+        titel: "Terrein openen",
+        omschrijving: "Hekken openen, stroom en portofoons controleren.",
+        team: "Coördinatie",
+        moment: "Voorbereiding",
+        status: "Gereed"
+      },
+      {
+        id: 2,
+        titel: "Opbouw startbureau",
+        omschrijving: "Tafels, startlijsten en stempelkaarten klaarleggen.",
+        team: "Startteam",
+        moment: "Voorbereiding",
+        status: "Bezig"
+      },
+      {
+        id: 3,
+        titel: "Briefing vrijwilligers",
+        omschrijving: "Laatste routewijzigingen en veiligheidsafspraken.",
+        team: "Hoofdorganisatie",
+        moment: "Voorbereiding",
+        status: "Open"
+      },
+      {
+        id: 4,
+        titel: "Start 10 km",
+        omschrijving: "Startvak openen en eerste groep laten vertrekken.",
+        team: "Startteam",
+        moment: "Tijdens de wandelavond",
+        status: "Open"
+      },
+      {
+        id: 5,
+        titel: "Start 5 km",
+        omschrijving: "Groepen per school gefaseerd laten vertrekken.",
+        team: "Startteam",
+        moment: "Tijdens de wandelavond",
+        status: "Open"
+      },
+      {
+        id: 6,
+        titel: "Eerste finishers",
+        omschrijving: "Waterpunten en stempelpost volledig bemand.",
+        team: "Finishteam",
+        moment: "Tijdens de wandelavond",
+        status: "Open"
+      },
+      {
+        id: 7,
+        titel: "Route vrijmelden",
+        omschrijving: "Alle posten bellen en deelnemersaantallen bevestigen.",
+        team: "Routecoördinator",
+        moment: "Afronding",
+        status: "Open"
+      }
+    ],
+    "2027-06-04": []
+  };
+
+  const opslagSleutel = "avond4daagse-draaiboek-dag-demo";
+  const dagSelect = document.getElementById("db-dag");
+  const teamSelect = document.getElementById("db-team");
+  const momentSelect = document.getElementById("db-moment");
+  const takenContainer = document.getElementById("db-taken");
+  const voortgang = document.getElementById("db-voortgang");
+  const melding = document.getElementById("db-melding");
+
+  let taken = voorbeeldTaken;
+
+  // OPGESLAGEN TAKEN OPHALEN
+  try {
+    const opgeslagen = JSON.parse(
+      localStorage.getItem(opslagSleutel)
+    );
+
+    if (opgeslagen && typeof opgeslagen === "object") {
+      const geldig = datums.every(datum =>
+        Array.isArray(opgeslagen[datum])
+      );
+      if (geldig) taken = opgeslagen;
+    }
+  } catch (fout) {
+    console.warn("Voorbeeldtaken konden niet geladen worden.");
+  }
+
+  function opslaan() {
+    try {
+      localStorage.setItem(
+        opslagSleutel,
+        JSON.stringify(taken)
+      );
+    } catch (fout) {
+      toonMelding("Lokaal opslaan is niet gelukt.");
+    }
+  }
+
+  function toonMelding(tekst) {
+    melding.hidden = false;
+    melding.textContent = tekst;
+  }
+
+  function maakElement(tag, klasse, tekst) {
+    const element = document.createElement(tag);
+    if (klasse) element.className = klasse;
+    if (tekst !== undefined) element.textContent = tekst;
+    return element;
+  }
+
+  // DAGOVERZICHT TONEN
+  function toonTaken() {
+    const datum = dagSelect.value;
+    const team = teamSelect.value;
+    const moment = momentSelect.value;
+
+    const dagTaken = taken[datum] || [];
+
+    const zichtbaar = dagTaken.filter(taak =>
+      (!team || taak.team === team) &&
+      (!moment || taak.moment === moment)
+    );
+
+    takenContainer.replaceChildren();
+
+    const datumTekst = new Intl.DateTimeFormat("nl-NL", {
+      weekday: "long",
+      day: "numeric",
+      month: "long"
+    }).format(new Date(datum + "T12:00:00"));
+
+    const titel = maakElement(
+      "h2", "db-day-title", datumTekst
+    );
+
+    takenContainer.appendChild(titel);
+
+    const groepen = [
+      "Voorbereiding",
+      "Tijdens de wandelavond",
+      "Afronding"
+    ];
+
+    groepen.forEach(groep => {
+      const groepTaken = zichtbaar.filter(
+        taak => taak.moment === groep
+      );
+
+      if (!groepTaken.length) return;
+
+      const kop = maakElement(
+        "h3", "db-group-title", groep
+      );
+
+      takenContainer.appendChild(kop);
+
+      groepTaken.forEach(taak => {
+        const kaart = maakElement("article", "db-task");
+
+        const inhoud = maakElement("div", "db-task-info");
+        inhoud.appendChild(
+          maakElement("strong", "", taak.titel)
+        );
+        inhoud.appendChild(
+          maakElement("p", "", taak.omschrijving)
+        );
+
+        const teamNaam = maakElement(
+          "span", "db-task-team", taak.team
+        );
+
+        const statusKnop = maakElement(
+          "button",
+          "db-status " + taak.status.toLowerCase(),
+          taak.status
+        );
+
+        statusKnop.type = "button";
+        statusKnop.title = "Klik om de status te wijzigen";
+        statusKnop.setAttribute(
+          "aria-label",
+          "Status wijzigen van " + taak.titel
+        );
+
+        statusKnop.addEventListener("click", () => {
+          const statussen = ["Open", "Bezig", "Gereed"];
+          const index = statussen.indexOf(taak.status);
+
+          taak.status = statussen[(index + 1) % statussen.length];
+
+          opslaan();
+          toonTaken();
+        });
+
+        kaart.append(inhoud, teamNaam, statusKnop);
+        takenContainer.appendChild(kaart);
+      });
+    });
+
+    if (!zichtbaar.length) {
+      takenContainer.appendChild(
+        maakElement(
+          "p",
+          "db-empty",
+          "Geen taken gevonden voor deze dag en filters."
+        )
+      );
+    }
+
+    const afgerond = dagTaken.filter(
+      taak => taak.status === "Gereed"
+    ).length;
+
+    voortgang.textContent =
+      `${afgerond} / ${dagTaken.length}`;
+  }
+
+  dagSelect.addEventListener("change", toonTaken);
+  teamSelect.addEventListener("change", toonTaken);
+  momentSelect.addEventListener("change", toonTaken);
+
+  // TAAK TOEVOEGEN
+  const formBox = document.getElementById("db-form-box");
+  const form = document.getElementById("db-form");
+
+  document.getElementById("db-nieuw")
+    .addEventListener("click", () => {
+      formBox.hidden = false;
+      document.getElementById("db-titel").focus();
+    });
+
+  document.getElementById("db-annuleren")
+    .addEventListener("click", () => {
+      formBox.hidden = true;
+      form.reset();
+    });
+
+  form.addEventListener("submit", event => {
+    event.preventDefault();
+
+    const datum = dagSelect.value;
+
+    const taak = {
+      id: Date.now(),
+      titel: document.getElementById("db-titel").value.trim(),
+      omschrijving: document.getElementById(
+        "db-omschrijving"
+      ).value.trim(),
+      team: document.getElementById("db-nieuw-team").value,
+      moment: document.getElementById("db-nieuw-moment").value,
+      status: "Open"
+    };
+
+    if (!taak.titel) return;
+
+    taken[datum].push(taak);
+    opslaan();
+
+    teamSelect.value = "";
+    momentSelect.value = "";
+
+    form.reset();
+    formBox.hidden = true;
+
+    toonTaken();
+    toonMelding("Nieuwe taak toegevoegd aan de voorbeeldplanning.");
+  });
+
+  // TAKEN NAAR VOLGENDE AVOND KOPIËREN
+  document.getElementById("db-dupliceren")
+    .addEventListener("click", () => {
+      const index = datums.indexOf(dagSelect.value);
+      const volgendeDatum = datums[index + 1];
+
+      if (!volgendeDatum) {
+        toonMelding("Dit is de laatste avond.");
+        return;
+      }
+
+      const bronTaken = taken[dagSelect.value];
+
+      if (!bronTaken.length) {
+        toonMelding("Er zijn geen taken om te dupliceren.");
+        return;
+      }
+
+      const kopie = bronTaken.map((taak, index) => ({
+        ...taak,
+        id: Date.now() + index,
+        status: "Open"
+      }));
+
+      taken[volgendeDatum].push(...kopie);
+      opslaan();
+
+      dagSelect.value = volgendeDatum;
+      teamSelect.value = "";
+      momentSelect.value = "";
+
+      toonTaken();
+      toonMelding(
+        `${kopie.length} taken gekopieerd naar de volgende avond.`
+      );
+    });
+
+  // EXPORT VIA BROWSER: AFDRUKKEN / OPSLAAN ALS PDF
+  document.getElementById("db-export")
+    .addEventListener("click", () => {
+      window.print();
+    });
+
+  toonTaken();
+</script>
+
+</body>
+</html>

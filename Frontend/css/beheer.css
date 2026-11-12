@@ -1939,3 +1939,454 @@ body {
     padding: 12px;
   }
 }
+
+
+/* =========================================
+   BEHEER - DRAAIBOEK DAG
+   ========================================= */
+
+.db-page {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background: #ebebeb;
+  color: #222;
+}
+
+.db-page * {
+  box-sizing: border-box;
+}
+
+.db-layout {
+  display: flex;
+  min-height: 100vh;
+}
+
+/* SIDEBAR */
+
+.db-sidebar {
+  width: 205px;
+  min-width: 205px;
+  background: #292929;
+  color: white;
+  display: flex;
+  flex-direction: column;
+}
+
+.db-logo {
+  padding: 24px 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.db-logo strong {
+  font-size: 15px;
+}
+
+.db-logo small {
+  color: #bbb;
+  font-size: 10px;
+}
+
+.db-menu {
+  display: flex;
+  flex-direction: column;
+}
+
+.db-menu a,
+.db-menu span {
+  display: block;
+  padding: 13px 18px;
+  font-size: 13px;
+  text-decoration: none;
+  color: #eee;
+}
+
+.db-menu a:hover {
+  background: #414141;
+}
+
+.db-menu .db-active {
+  background: #505050;
+  font-weight: bold;
+}
+
+.db-sidebar-bottom {
+  margin-top: auto;
+  padding: 20px 18px;
+  font-size: 12px;
+}
+
+.db-sidebar-bottom p {
+  margin: 0 0 5px;
+}
+
+.db-sidebar-bottom a {
+  color: #ccc;
+  text-decoration: none;
+}
+
+/* HOOFDINHOUD */
+
+.db-main {
+  flex: 1;
+  min-width: 0;
+  padding: 30px 27px;
+}
+
+.db-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 20px;
+}
+
+.db-header h1 {
+  font-size: 26px;
+  margin: 0 0 8px;
+}
+
+.db-header p {
+  font-size: 13px;
+  color: #777;
+  margin: 0;
+  line-height: 1.5;
+}
+
+/* KNOPPEN */
+
+.db-dark-btn,
+.db-light-btn {
+  padding: 10px 13px;
+  font-size: 12px;
+  border-radius: 2px;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.db-dark-btn {
+  background: #292929;
+  color: white;
+  border: 1px solid #292929;
+}
+
+.db-light-btn {
+  background: white;
+  color: #222;
+  border: 1px solid #aaa;
+}
+
+.db-page button:disabled {
+  opacity: 0.65;
+  cursor: not-allowed;
+}
+
+/* TABS */
+
+.db-tabs {
+  display: flex;
+  gap: 8px;
+  margin: 19px 0 21px;
+}
+
+.db-tab {
+  padding: 9px 13px;
+  border: 1px solid #aaa;
+  background: white;
+  color: #222;
+  text-decoration: none;
+  font-size: 12px;
+}
+
+.db-tab.active {
+  background: #292929;
+  color: white;
+  border-color: #292929;
+  font-weight: bold;
+}
+
+/* FILTERS */
+
+.db-filters {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  align-items: center;
+  margin-bottom: 42px;
+}
+
+.db-filters select {
+  min-width: 140px;
+  padding: 10px;
+  border: 1px solid #ccc;
+  background: white;
+  font-size: 12px;
+}
+
+.db-filter-actions {
+  margin-left: auto;
+  display: flex;
+  gap: 8px;
+}
+
+/* DAGOVERZICHT */
+
+.db-content {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 225px;
+  gap: 18px;
+}
+
+.db-day-title {
+  font-size: 18px;
+  text-transform: capitalize;
+  margin: 0 0 21px;
+}
+
+.db-group-title {
+  font-size: 13px;
+  margin: 18px 0 9px;
+}
+
+.db-task {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 13px 12px;
+  margin-bottom: 8px;
+  border: 1px solid #ccc;
+  background: white;
+}
+
+.db-task-info {
+  flex: 1;
+  min-width: 0;
+}
+
+.db-task-info strong {
+  font-size: 13px;
+}
+
+.db-task-info p {
+  color: #777;
+  font-size: 11px;
+  line-height: 1.4;
+  margin: 5px 0 0;
+}
+
+.db-task-team {
+  min-width: 100px;
+  font-size: 11px;
+  color: #777;
+}
+
+.db-status {
+  border: 1px solid #aaa;
+  background: #f1f1f1;
+  padding: 6px 9px;
+  cursor: pointer;
+  font-size: 11px;
+  min-width: 58px;
+}
+
+.db-status.gereed {
+  color: white;
+  background: #292929;
+  border-color: #292929;
+}
+
+.db-status.bezig {
+  background: #e4e4e4;
+}
+
+.db-status.open {
+  background: #fafafa;
+}
+
+/* RECHTER KOLOM */
+
+.db-right {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.db-progress,
+.db-emergency {
+  border: 1px solid #bbb;
+  padding: 15px;
+  background: white;
+}
+
+.db-progress h2 {
+  font-size: 17px;
+  margin: 0 0 10px;
+}
+
+.db-progress strong {
+  font-size: 30px;
+}
+
+.db-progress p,
+.db-emergency p {
+  color: #777;
+  font-size: 12px;
+  line-height: 1.5;
+  margin: 7px 0;
+}
+
+.db-emergency {
+  background: #f4f4f4;
+}
+
+.db-emergency h3 {
+  font-size: 13px;
+  margin: 0 0 8px;
+}
+
+/* FORMULIER */
+
+.db-new-task {
+  padding: 18px;
+  border: 1px solid #ccc;
+  background: white;
+  margin-bottom: 24px;
+}
+
+.db-new-task[hidden] {
+  display: none;
+}
+
+.db-new-task h2 {
+  font-size: 17px;
+  margin: 0 0 15px;
+}
+
+.db-new-task form {
+  display: flex;
+  flex-direction: column;
+  gap: 9px;
+}
+
+.db-new-task label {
+  font-size: 12px;
+  font-weight: bold;
+}
+
+.db-new-task input,
+.db-new-task textarea,
+.db-new-task select {
+  width: 100%;
+  padding: 10px;
+  font-family: Arial, sans-serif;
+  font-size: 12px;
+  border: 1px solid #ccc;
+  background: white;
+}
+
+.db-form-actions {
+  display: flex;
+  gap: 8px;
+  margin-top: 10px;
+}
+
+.db-empty {
+  padding: 22px;
+  background: white;
+  border: 1px solid #ccc;
+  color: #777;
+  font-size: 12px;
+}
+
+.db-melding {
+  margin-top: 20px;
+  padding: 12px;
+  border: 1px solid #aaa;
+  background: white;
+  font-size: 12px;
+}
+
+.db-melding[hidden] {
+  display: none;
+}
+
+.db-demo {
+  margin-top: 25px;
+  font-size: 11px;
+  color: #777;
+}
+
+/* RESPONSIVE */
+
+@media (max-width: 900px) {
+  .db-content {
+    grid-template-columns: 1fr;
+  }
+
+  .db-right {
+    flex-direction: row;
+  }
+
+  .db-right > div {
+    flex: 1;
+  }
+
+  .db-filter-actions {
+    margin-left: 0;
+  }
+}
+
+@media (max-width: 650px) {
+  .db-layout {
+    flex-direction: column;
+  }
+
+  .db-sidebar {
+    width: 100%;
+    min-width: 0;
+  }
+
+  .db-main {
+    padding: 20px 15px;
+  }
+
+  .db-header,
+  .db-right {
+    flex-direction: column;
+  }
+
+  .db-task {
+    flex-wrap: wrap;
+  }
+}
+
+/* PDF EXPORT */
+
+@media print {
+  .db-sidebar,
+  .db-tabs,
+  .db-filters,
+  .db-header button,
+  .db-new-task,
+  .db-emergency,
+  .db-demo,
+  .db-melding {
+    display: none !important;
+  }
+
+  .db-page {
+    background: white;
+  }
+
+  .db-main {
+    padding: 0;
+  }
+
+  .db-content {
+    grid-template-columns: 1fr;
+  }
+
+  .db-task {
+    break-inside: avoid;
+  }
+}
