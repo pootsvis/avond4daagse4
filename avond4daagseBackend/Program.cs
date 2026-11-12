@@ -10,8 +10,8 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-// dit moet hier voor elke service worden toegevoegd
-// builder.Services.AddScoped<IEvenementService, EvenementService>();
+builder.Services.AddScoped<IEvenementService, EvenementService>();
+builder.Services.AddScoped<IRouteService, RouteService>();
 
 var app = builder.Build();
 
