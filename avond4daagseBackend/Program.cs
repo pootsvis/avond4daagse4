@@ -18,6 +18,7 @@ builder.Services.AddScoped<ITransactieService, TransactieService>();
 builder.Services.AddScoped<IContactvraagService, ContactvraagService>();
 builder.Services.AddScoped<IGebruikerService, GebruikerService>();
 builder.Services.AddScoped<IRolService, RolService>();
+builder.Services.AddScoped<IRechtService, RechtService>();
 
 var app = builder.Build();
 
