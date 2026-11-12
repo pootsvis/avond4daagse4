@@ -1608,3 +1608,334 @@ body {
     padding: 12px;
   }
 }
+
+
+/* =========================================
+   BEHEER - MIJN BESCHIKBAARHEID
+   ========================================= */
+
+.besch-main {
+  max-width: 1200px;
+}
+
+/* HEADER */
+
+.besch-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 20px;
+  margin-bottom: 18px;
+}
+
+.besch-header h1 {
+  font-size: 26px;
+  margin: 0 0 8px;
+}
+
+.besch-header p {
+  font-size: 13px;
+  color: #777;
+  line-height: 1.6;
+  max-width: 730px;
+  margin: 0;
+}
+
+.besch-editie {
+  color: #777;
+  font-size: 12px;
+  white-space: nowrap;
+  padding-top: 7px;
+}
+
+/* INFORMATIEBLOK */
+
+.besch-info-box {
+  padding: 15px;
+  background: #f6f6f6;
+  border: 1px solid #bbb;
+  margin-bottom: 24px;
+}
+
+.besch-info-box strong {
+  display: block;
+  font-size: 13px;
+  margin-bottom: 8px;
+}
+
+.besch-info-box p {
+  color: #777;
+  font-size: 12px;
+  line-height: 1.6;
+  margin: 0;
+}
+
+/* SECTIES */
+
+.besch-section {
+  margin-bottom: 28px;
+}
+
+.besch-section h2 {
+  font-size: 17px;
+  margin: 0 0 6px;
+}
+
+.besch-section-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 15px;
+  margin-bottom: 12px;
+}
+
+.besch-section-header p,
+.besch-uitleg {
+  color: #777;
+  font-size: 12px;
+  line-height: 1.5;
+  margin: 0 0 12px;
+}
+
+#besch-aantal {
+  font-size: 12px;
+  color: #777;
+  white-space: nowrap;
+}
+
+/* TABELLEN */
+
+.besch-tabel-wrapper {
+  width: 100%;
+  overflow-x: auto;
+}
+
+.besch-tabel {
+  width: 100%;
+  border-collapse: collapse;
+  background: white;
+  font-size: 12px;
+}
+
+.besch-tabel th,
+.besch-tabel td {
+  border: 1px solid #ccc;
+  padding: 15px 12px;
+  text-align: left;
+}
+
+.besch-tabel thead th {
+  background: #f1f1f1;
+  font-size: 11px;
+  font-weight: bold;
+}
+
+.besch-tabel tbody tr:hover {
+  background: #fafafa;
+}
+
+.besch-tabel th:first-child {
+  width: 35%;
+}
+
+/* RADIOKNOPPEN */
+
+.besch-tabel td label {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin-right: 20px;
+  cursor: pointer;
+  font-size: 12px;
+  white-space: nowrap;
+}
+
+.besch-tabel input[type="radio"] {
+  accent-color: #292929;
+  cursor: pointer;
+}
+
+/* TOELICHTING */
+
+.besch-toelichting {
+  margin-top: 20px;
+}
+
+.besch-toelichting label {
+  display: block;
+  font-size: 13px;
+  font-weight: bold;
+  margin-bottom: 8px;
+}
+
+.besch-toelichting textarea {
+  width: 100%;
+  min-height: 90px;
+  padding: 12px;
+  resize: vertical;
+  background: white;
+  border: 1px solid #ccc;
+  font-family: Arial, sans-serif;
+  font-size: 12px;
+  line-height: 1.5;
+}
+
+.besch-toelichting p {
+  font-size: 11px;
+  color: #888;
+  margin-top: 7px;
+}
+
+/* OPSLAAN */
+
+.besch-opslaan {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  margin-top: 18px;
+}
+
+.besch-opslaan strong {
+  font-size: 12px;
+}
+
+.besch-opslaan p {
+  font-size: 11px;
+  color: #777;
+  margin: 6px 0 0;
+}
+
+/* INGEPLANDE DIENSTEN */
+
+.besch-diensten-tabel {
+  min-width: 650px;
+}
+
+.besch-diensten-tabel td {
+  padding: 14px 10px;
+}
+
+.besch-diensten-tabel td strong {
+  font-size: 12px;
+}
+
+.besch-diensten-tabel th:first-child {
+  width: auto;
+}
+
+.besch-diensten-tabel button {
+  border: none;
+  background: none;
+  padding: 5px 0;
+  color: #222;
+  text-decoration: underline;
+  font-size: 12px;
+  cursor: pointer;
+}
+
+/* AANWEZIGHEIDSREGISTRATIE */
+
+.besch-dienst-kaart {
+  background: white;
+  border: 1px solid #ccc;
+  padding: 16px;
+  margin-bottom: 10px;
+}
+
+.besch-kaart-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 15px;
+  margin-bottom: 16px;
+}
+
+.besch-kaart-header h3 {
+  font-size: 14px;
+  margin: 0 0 6px;
+}
+
+.besch-kaart-header p {
+  color: #777;
+  font-size: 12px;
+  margin: 0;
+}
+
+.besch-badge {
+  background: #f5f5f5;
+  border: 1px solid #bbb;
+  padding: 6px 10px;
+  font-size: 10px;
+  font-weight: bold;
+  white-space: nowrap;
+}
+
+.besch-dienst-kaart > strong {
+  display: block;
+  font-size: 12px;
+  margin-bottom: 7px;
+}
+
+.besch-dienst-kaart > p {
+  color: #777;
+  font-size: 12px;
+  line-height: 1.5;
+  margin: 0 0 12px;
+}
+
+.besch-dienst-kaart .vrij-dark-btn {
+  font-size: 11px;
+  padding: 9px 12px;
+}
+
+.besch-feedback {
+  background: white;
+  border: 1px solid #bbb;
+  padding: 12px;
+  font-size: 12px;
+  margin-top: 12px;
+}
+
+.besch-feedback[hidden] {
+  display: none;
+}
+
+/* RESPONSIVE */
+
+@media (max-width: 800px) {
+  .besch-header {
+    flex-direction: column;
+  }
+
+  .besch-section-header {
+    flex-direction: column;
+  }
+
+  .besch-opslaan {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .besch-tabel td label {
+    margin: 5px 12px 5px 0;
+  }
+}
+
+@media (max-width: 600px) {
+  .besch-header h1 {
+    font-size: 23px;
+  }
+
+  .besch-tabel {
+    min-width: 480px;
+  }
+
+  .besch-diensten-tabel {
+    min-width: 650px;
+  }
+
+  .besch-dienst-kaart {
+    padding: 12px;
+  }
+}
