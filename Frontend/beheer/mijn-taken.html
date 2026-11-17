@@ -1,0 +1,523 @@
+
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mijn taken - Avond4daagse 2027</title>
+  <link rel="stylesheet" href="../css/beheer.css">
+</head>
+
+<body class="db-page dbt-page">
+
+<div class="db-layout">
+
+  <!-- SIDEBAR -->
+  <aside class="db-sidebar">
+    <div class="db-logo">
+      <strong>AVOND4DAAGSE</strong>
+      <small>BEHEER 2027</small>
+    </div>
+
+    <nav class="db-menu">
+      <a href="dashboard.html">Dashboard</a>
+      <a href="inschrijvingen.html">Inschrijvingen</a>
+      <a href="routebeheer.html">Routebeheer</a>
+      <a href="vrijwilligers.html">Vrijwilligers & inzet</a>
+      <a href="mijn-beschikbaarheid.html">Mijn beschikbaarheid</a>
+      <a href="draaiboek.html" class="db-active">Draaiboek</a>
+      <span>Financiën</span>
+      <span>Contactvragen</span>
+      <span>Handleiding</span>
+    </nav>
+
+    <div class="db-sidebar-bottom">
+      <p>Beheerder</p>
+      <a href="login.html">Uitloggen</a>
+    </div>
+  </aside>
+
+  <!-- HOOFDINHOUD -->
+  <main class="db-main">
+
+    <header class="db-header">
+      <div>
+        <h1>Draaiboek</h1>
+        <p>
+          Bekijk taken per dag, per maand of alleen
+          je eigen verantwoordelijkheden.
+        </p>
+      </div>
+
+      <button class="db-dark-btn" type="button" disabled>
+        + Taak toevoegen
+      </button>
+    </header>
+
+    <!-- TABS -->
+    <div class="db-tabs">
+      <a href="draaiboek.html" class="db-tab">Dag</a>
+      <a href="draaiboek-maand.html" class="db-tab">Maand</a>
+      <a href="mijn-taken.html" class="db-tab active"
+         aria-current="page">Mijn taken</a>
+    </div>
+
+    <!-- INFORMATIEBLOK -->
+    <div class="dbt-info">
+      <strong>Voorbeeldweergave — persoonlijke toewijzingen</strong>
+      <p>
+        Dit overzicht toont hoe je eigen taken eruitzien.
+        Er zijn nog geen echte persoonlijke taaktoewijzingen
+        of gebruikersaccounts aan het draaiboek gekoppeld.
+      </p>
+    </div>
+
+    <!-- FILTERS -->
+    <div class="dbt-filters">
+
+      <div class="dbt-filter">
+        <label for="dbt-periode">Periode</label>
+        <select id="dbt-periode">
+          <option value="">1–4 juni</option>
+          <option value="2027-06-01">1 juni</option>
+          <option value="2027-06-02">2 juni</option>
+          <option value="2027-06-03">3 juni</option>
+          <option value="2027-06-04">4 juni</option>
+        </select>
+      </div>
+
+      <div class="dbt-filter">
+        <label for="dbt-moment">Moment</label>
+        <select id="dbt-moment">
+          <option value="">Alle momenten</option>
+          <option value="Voorbereiding">Voorbereiding</option>
+          <option value="Tijdens de wandelavond">
+            Tijdens de wandelavond
+          </option>
+          <option value="Afronding">Afronding</option>
+        </select>
+      </div>
+
+      <div class="dbt-filter">
+        <label for="dbt-status">Status</label>
+        <select id="dbt-status">
+          <option value="">Alle statussen</option>
+          <option value="Open">Open</option>
+          <option value="Bezig">Bezig</option>
+          <option value="Gereed">Gereed</option>
+        </select>
+      </div>
+
+      <button id="dbt-wissen" class="db-light-btn"
+              type="button">
+        Filters wissen
+      </button>
+
+    </div>
+
+    <!-- TAKEN OVERZICHT -->
+    <section class="dbt-section">
+
+      <div class="dbt-section-header">
+        <h2>Mijn taken</h2>
+        <p id="dbt-samenvatting">
+          Voorbeeldtaken laden...
+        </p>
+      </div>
+
+      <div class="dbt-table-container">
+        <table class="dbt-table">
+
+          <thead>
+            <tr>
+              <th>DATUM</th>
+              <th>MOMENT</th>
+              <th>TAAK</th>
+              <th>VERANTWOORDELIJK</th>
+              <th>STATUS</th>
+              <th>AFRONDEN</th>
+            </tr>
+          </thead>
+
+          <tbody id="dbt-taken">
+            <!-- JavaScript vult deze tabel -->
+          </tbody>
+
+        </table>
+      </div>
+
+      <p class="dbt-hulp">
+        Rond een taak af zodra deze is uitgevoerd.
+        Afgeronde taken blijven zichtbaar bij
+        'Alle statussen'.
+      </p>
+
+      <div class="dbt-footer">
+        <p>
+          Voorbeeldtaken op 3 juni, binnen de
+          evenementperiode 1–4 juni 2027.
+        </p>
+
+        <a href="draaiboek.html" class="db-light-btn dbt-link">
+          Bekijk volledige dag
+        </a>
+      </div>
+
+      <p id="dbt-melding" class="db-melding"
+         role="status" hidden></p>
+
+    </section>
+
+  </main>
+</div>
+
+<script>
+  // ZELFDE OPSLAG ALS DAG- EN MAANDOVERZICHT
+  const opslagSleutel = "avond4daagse-draaiboek-dag-demo";
+
+  // VOORBEELDGEGEVENS
+  const voorbeeldTaken = {
+    "2027-06-01": [],
+    "2027-06-02": [],
+    "2027-06-03": [
+      {
+        id: 1,
+        titel: "Terrein openen",
+        omschrijving: "Hekken openen, stroom en portofoons controleren.",
+        team: "Coördinatie",
+        moment: "Voorbereiding",
+        status: "Gereed"
+      },
+      {
+        id: 2,
+        titel: "Opbouw startbureau",
+        omschrijving: "Tafels, startlijsten en stempelkaarten klaarleggen.",
+        team: "Startteam",
+        moment: "Voorbereiding",
+        status: "Bezig"
+      },
+      {
+        id: 3,
+        titel: "Briefing vrijwilligers",
+        omschrijving: "Laatste routewijzigingen en veiligheidsafspraken.",
+        team: "Hoofdorganisatie",
+        moment: "Voorbereiding",
+        status: "Open"
+      },
+      {
+        id: 4,
+        titel: "Start 10 km",
+        omschrijving: "Startvak openen en eerste groep laten vertrekken.",
+        team: "Startteam",
+        moment: "Tijdens de wandelavond",
+        status: "Open"
+      },
+      {
+        id: 5,
+        titel: "Start 5 km",
+        omschrijving: "Groepen per school gefaseerd laten vertrekken.",
+        team: "Startteam",
+        moment: "Tijdens de wandelavond",
+        status: "Open"
+      },
+      {
+        id: 6,
+        titel: "Eerste finishers",
+        omschrijving: "Waterpunten en stempelpost volledig bemand.",
+        team: "Finishteam",
+        moment: "Tijdens de wandelavond",
+        status: "Open"
+      },
+      {
+        id: 7,
+        titel: "Route vrijmelden",
+        omschrijving: "Alle posten bellen en deelnemersaantallen bevestigen.",
+        team: "Routecoördinator",
+        moment: "Afronding",
+        status: "Open"
+      }
+    ],
+    "2027-06-04": []
+  };
+
+  // In deze demo zijn drie bestaande taken
+  // toegewezen aan de voorbeeldgebruiker.
+  const mijnVoorbeeldIds = new Set([1, 3, 7]);
+
+  let taken = voorbeeldTaken;
+
+  const periodeFilter = document.getElementById("dbt-periode");
+  const momentFilter = document.getElementById("dbt-moment");
+  const statusFilter = document.getElementById("dbt-status");
+
+  const tabelBody = document.getElementById("dbt-taken");
+  const samenvatting = document.getElementById("dbt-samenvatting");
+  const melding = document.getElementById("dbt-melding");
+
+  // OPGESLAGEN TAKEN OPHALEN
+  try {
+    const opgeslagen = JSON.parse(
+      localStorage.getItem(opslagSleutel)
+    );
+
+    const datums = [
+      "2027-06-01",
+      "2027-06-02",
+      "2027-06-03",
+      "2027-06-04"
+    ];
+
+    if (
+      opgeslagen &&
+      datums.every(datum => Array.isArray(opgeslagen[datum]))
+    ) {
+      taken = opgeslagen;
+    }
+  } catch (fout) {
+    console.warn("Taken konden niet geladen worden.");
+  }
+
+  // LOKAAL OPSLAAN
+  function opslaan() {
+    try {
+      localStorage.setItem(
+        opslagSleutel,
+        JSON.stringify(taken)
+      );
+      return true;
+    } catch (fout) {
+      melding.textContent =
+        "Opslaan mislukt. Probeer het opnieuw.";
+      melding.hidden = false;
+      return false;
+    }
+  }
+
+  // ELEMENT MET TEKST AANMAKEN
+  function maakElement(tag, klasse, tekst) {
+    const element = document.createElement(tag);
+
+    if (klasse) {
+      element.className = klasse;
+    }
+
+    if (tekst !== undefined) {
+      element.textContent = tekst;
+    }
+
+    return element;
+  }
+
+  // PERSOONLIJKE VOORBEELDTAKEN OPHALEN
+  function haalMijnTakenOp() {
+    const resultaat = [];
+
+    // De demo-toewijzingen komen uit 3 juni.
+    const datum = "2027-06-03";
+
+    (taken[datum] || []).forEach(taak => {
+      if (mijnVoorbeeldIds.has(Number(taak.id))) {
+        resultaat.push({ datum, taak });
+      }
+    });
+
+    return resultaat;
+  }
+
+  // STATUS WIJZIGEN
+  function wijzigStatus(taak, nieuweStatus) {
+    const oudeStatus = taak.status;
+
+    taak.status = nieuweStatus;
+
+    if (!opslaan()) {
+      taak.status = oudeStatus;
+      return;
+    }
+
+    melding.hidden = false;
+    melding.textContent =
+      `Taak "${taak.titel}" staat nu op ${nieuweStatus}.`;
+
+    toonTaken();
+  }
+
+  // TAKEN IN TABEL TONEN
+  function toonTaken() {
+    const alleTaken = haalMijnTakenOp();
+
+    const periode = periodeFilter.value;
+    const moment = momentFilter.value;
+    const status = statusFilter.value;
+
+    const gefilterd = alleTaken.filter(item => {
+      const taak = item.taak;
+
+      return (
+        (!periode || item.datum === periode) &&
+        (!moment || taak.moment === moment) &&
+        (!status || taak.status === status)
+      );
+    });
+
+    const gereed = alleTaken.filter(
+      item => item.taak.status === "Gereed"
+    ).length;
+
+    const open = alleTaken.length - gereed;
+
+    samenvatting.textContent =
+      `${alleTaken.length} voorbeeldtaken · ` +
+      `${open} open/bezig · ${gereed} gereed · ` +
+      `${gefilterd.length} zichtbaar`;
+
+    tabelBody.replaceChildren();
+
+    // RIJEN MAKEN
+    gefilterd.forEach(item => {
+      const taak = item.taak;
+
+      const rij = document.createElement("tr");
+
+      // DATUM
+      rij.appendChild(
+        maakElement(
+          "td",
+          "",
+          `${Number(item.datum.slice(-2))} juni`
+        )
+      );
+
+      // MOMENT
+      rij.appendChild(
+        maakElement("td", "", taak.moment)
+      );
+
+      // TAAK EN OMSCHRIJVING
+      const taakCel = document.createElement("td");
+      taakCel.className = "dbt-taak-info";
+
+      taakCel.appendChild(
+        maakElement("strong", "", taak.titel)
+      );
+
+      taakCel.appendChild(
+        maakElement("p", "", taak.omschrijving)
+      );
+
+      rij.appendChild(taakCel);
+
+      // VERANTWOORDELIJKE
+      const persoonCel = document.createElement("td");
+
+      persoonCel.appendChild(
+        maakElement("span", "", taak.team)
+      );
+
+      persoonCel.appendChild(
+        maakElement(
+          "small",
+          "dbt-persoon",
+          "Anja (voorbeeld)"
+        )
+      );
+
+      rij.appendChild(persoonCel);
+
+      // STATUS
+      const statusCel = document.createElement("td");
+
+      statusCel.appendChild(
+        maakElement(
+          "span",
+          "dbt-status " + taak.status.toLowerCase(),
+          taak.status
+        )
+      );
+
+      rij.appendChild(statusCel);
+
+      // AFRONDEN
+      const actieCel = document.createElement("td");
+
+      if (taak.status === "Gereed") {
+        const label = maakElement(
+          "label",
+          "dbt-check-label"
+        );
+
+        const checkbox = document.createElement("input");
+        checkbox.type = "checkbox";
+        checkbox.checked = true;
+
+        checkbox.setAttribute(
+          "aria-label",
+          `${taak.titel} is afgerond`
+        );
+
+        checkbox.addEventListener("change", () => {
+          wijzigStatus(taak, "Open");
+        });
+
+        label.appendChild(checkbox);
+        label.appendChild(
+          maakElement("span", "", "Afgerond")
+        );
+
+        actieCel.appendChild(label);
+      } else {
+        const knop = maakElement(
+          "button",
+          "dbt-afronden-btn",
+          "Taak afronden"
+        );
+
+        knop.type = "button";
+
+        knop.addEventListener("click", () => {
+          wijzigStatus(taak, "Gereed");
+        });
+
+        actieCel.appendChild(knop);
+      }
+
+      rij.appendChild(actieCel);
+      tabelBody.appendChild(rij);
+    });
+
+    if (!gefilterd.length) {
+      const rij = document.createElement("tr");
+      const cel = maakElement(
+        "td",
+        "dbt-geen-taken",
+        "Geen taken gevonden voor deze filters."
+      );
+
+      cel.colSpan = 6;
+      rij.appendChild(cel);
+      tabelBody.appendChild(rij);
+    }
+  }
+
+  // FILTERS
+  periodeFilter.addEventListener("change", toonTaken);
+  momentFilter.addEventListener("change", toonTaken);
+  statusFilter.addEventListener("change", toonTaken);
+
+  // FILTERS WISSEN
+  document.getElementById("dbt-wissen")
+    .addEventListener("click", () => {
+      periodeFilter.value = "";
+      momentFilter.value = "";
+      statusFilter.value = "";
+
+      toonTaken();
+    });
+
+  // PAGINA STARTEN
+  toonTaken();
+
+</script>
+
+</body>
+</html>
