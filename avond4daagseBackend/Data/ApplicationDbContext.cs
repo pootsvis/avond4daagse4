@@ -1,4 +1,4 @@
-using Avond4DaagseBackend.data;
+using Avond4DaagseBackend.Models;
 using Microsoft.EntityFrameworkCore;
 using Route = Avond4DaagseBackend.Models.Route; // voorkomt verwarring met Microsoft.AspNetCore.Routing.Route
 
@@ -41,10 +41,34 @@ public class ApplicationDbContext : DbContext
     {
         base.OnModelCreating(modelBuilder);
 
+        modelBuilder.Entity<Rol>().HasData(
+            new Rol { RolId = 1, Naam = "Vrijwilliger" },
+            new Rol { RolId = 2, Naam = "Penningmeester" },
+            new Rol { RolId = 3, Naam = "Verkeersregelaars" },
+            new Rol { RolId = 4, Naam = "Secretaris" },
+            new Rol { RolId = 5, Naam = "Voorzitter" }
+        );
+        
         // Primaire sleutels die niet via de naamconventie gevonden worden
         modelBuilder.Entity<Vrijwilliger>().HasKey(v => v.VrijwilligersId);
         modelBuilder.Entity<Draaiboektaak>().HasKey(t => t.TaakId);
+        modelBuilder.Entity<Taaktoewijzing>().HasKey(t => t.ToewijzingId);
 
+        modelBuilder.Entity<Taaktoewijzing>()
+            .HasOne(t => t.Vrijwilliger)
+            .WithMany(v => v.Taaktoewijzingen)
+            .HasForeignKey(t => t.VrijwilligersId);
+        
+        modelBuilder.Entity<Taaktoewijzing>()
+            .HasOne(t => t.Draaiboektaak)
+            .WithMany(d => d.Taaktoewijzingen)
+            .HasForeignKey(t => t.TaakId);
+
+        modelBuilder.Entity<GebruikerDraaiboektaak>()
+            .HasOne(gd => gd.Draaiboektaak)
+            .WithMany(d => d.GebruikerDraaiboektaken)
+            .HasForeignKey(gd => gd.TaakId);
+        
         // 1-op-1: Evenement <-> InzetSchema en PraktischeInformatie (FK + UNIQUE staan bij Evenement)
         modelBuilder.Entity<Evenement>()
             .HasOne(e => e.InzetSchema)

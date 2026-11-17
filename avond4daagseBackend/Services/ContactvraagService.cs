@@ -1,10 +1,10 @@
-namespace DefaultNamespace;
+namespace Avond4DaagseBackend.Services;
 
-public class ContactvraagService(applicationDbContext context) : IContactvraagService
+public class ContactvraagService(ApplicationDbContext context) : IContactvraagService
 {
     public async Task<List<Contactvraag>> GetAllContactvragen()
     {
-        return await context.Contactvragen.ToListAsync();
+        return await context.Contactvragen
             .Include(c => c.Gebruiker)
             .ToListAsync();
     }
@@ -69,4 +69,3 @@ public class ContactvraagService(applicationDbContext context) : IContactvraagSe
         return true;
     }
 }
-

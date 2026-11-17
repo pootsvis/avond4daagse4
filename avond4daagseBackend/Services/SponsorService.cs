@@ -1,6 +1,6 @@
-namespace avond4daagseBackend.Services;
+namespace Avond4DaagseBackend.Services;
 
-public class SponsorService (applicationDbContext context) : ISponsorService
+public class SponsorService(ApplicationDbContext context) : ISponsorService
 {
     public async Task<List<Sponsor>> GetAllSponsors()
     {

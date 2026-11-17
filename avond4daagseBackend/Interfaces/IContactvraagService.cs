@@ -1,4 +1,4 @@
-namespace DefaultNamespace;
+namespace Avond4DaagseBackend.Interfaces;
 
 public interface IContactvraagService
 {

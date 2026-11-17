@@ -1,21 +1,21 @@
-namespace avond4daagseBackend.Services;
+namespace Avond4DaagseBackend.Services;
 
-public class DeelnemerService(applicationDbContext context) : IDeelnemerService
+public class DeelnemerService(ApplicationDbContext context) : IDeelnemerService
 {
-    public Task<List<Deelnemer>> GetAllDeelnemers()
+    public async Task<List<Deelnemer>> GetAllDeelnemers()
     {
-        return await _context.Deelnemers.ToListAsync();
-            .include(d => d.persoon)
-            .include(d => d.deelname)
-            .toListAsync();
+        return await context.Deelnemers
+            .Include(d => d.Persoon)
+            .Include(d => d.Deelname)
+            .ToListAsync();
     }
     
     public async Task<Deelnemer> GetDeelnemerById(int id)
     {
-        Deelnemer? deelnemer = await _context.Deelnemers.FindAsync(id);
-            .include(d => d.persoon)
-            .include(d => d.deelname)
-            .FirstOrDefaultAsync(e => e.DeelnemerId == id);
+        Deelnemer? deelnemer = await context.Deelnemers
+            .Include(d => d.Persoon)
+            .Include(d => d.Deelname)
+            .FirstOrDefaultAsync(d => d.DeelnemerId == id);
         if (deelnemer == null)
         {
             throw new InvalidOperationException("Deelnemer not found");
@@ -27,45 +27,55 @@ public class DeelnemerService(applicationDbContext context) : IDeelnemerService
     {
         Deelnemer deelnemer = new()
         {
-            Voornaam = deelnemerDto.Voornaam,
-            Achternaam = deelnemerDto.Achternaam,
-            Geboortedatum = deelnemerDto.Geboortedatum,
-            Email = deelnemerDto.Email,
-            Telefoonnummer = deelnemerDto.Telefoonnummer,
-            DeelnameId = deelnemerDto.DeelnameId
+            Persoon = new Persoon
+            {
+                Voornaam = deelnemerDto.Voornaam,
+                Achternaam = deelnemerDto.Achternaam
+            },
+            Deelname = new Deelname
+            {
+                School = deelnemerDto.Deelname.School,
+                Groep = deelnemerDto.Deelname.Groep,
+                Geboortejaar = deelnemerDto.Deelname.Geboortejaar,
+                HoeveelheidKeer = deelnemerDto.Deelname.HoeveelheidKeer,
+                NeemtBegeleiderMee = deelnemerDto.Deelname.NeemtBegeleiderMee
+            }
         };
-        _context.Deelnemers.Add(deelnemer);
-        await _context.SaveChangesAsync();
+        context.Deelnemers.Add(deelnemer);
+        await context.SaveChangesAsync();
         return deelnemer;
     }
     
     public async Task<Deelnemer> UpdateDeelnemer(int id, UpdateDeelnemerDto deelnemerDto)
     {
-        Deelnemer? deelnemer = await _context.Deelnemers.FindAsync(id);
+        Deelnemer? deelnemer = await context.Deelnemers
+            .Include(d => d.Persoon)
+            .Include(d => d.Deelname)
+            .FirstOrDefaultAsync(d => d.DeelnemerId == id);
         if (deelnemer == null)
         {
             throw new InvalidOperationException("Deelnemer not found");
         }
-        deelnemer.Voornaam = deelnemerDto.Voornaam;
-        deelnemer.Achternaam = deelnemerDto.Achternaam;
-        deelnemer.Geboortedatum = deelnemerDto.Geboortedatum;
-        deelnemer.Email = deelnemerDto.Email;
-        deelnemer.Telefoonnummer = deelnemerDto.Telefoonnummer;
-        deelnemer.DeelnameId = deelnemerDto.DeelnameId;
-        _context.Deelnemers.Update(deelnemer);
-        await _context.SaveChangesAsync();
+        deelnemer.Persoon.Voornaam = deelnemerDto.Voornaam;
+        deelnemer.Persoon.Achternaam = deelnemerDto.Achternaam;
+        deelnemer.Deelname.School = deelnemerDto.Deelname.School;
+        deelnemer.Deelname.Groep = deelnemerDto.Deelname.Groep;
+        deelnemer.Deelname.Geboortejaar = deelnemerDto.Deelname.Geboortejaar;
+        deelnemer.Deelname.HoeveelheidKeer = deelnemerDto.Deelname.HoeveelheidKeer;
+        deelnemer.Deelname.NeemtBegeleiderMee = deelnemerDto.Deelname.NeemtBegeleiderMee;
+        await context.SaveChangesAsync();
         return deelnemer;
     }
     
     public async Task<bool> DeleteDeelnemer(int id)
     {
-        Deelnemer? deelnemer = await _context.Deelnemers.FindAsync(id);
+        Deelnemer? deelnemer = await context.Deelnemers.FindAsync(id);
         if (deelnemer == null)
         {
             throw new InvalidOperationException("Deelnemer not found");
         }
-        _context.Deelnemers.Remove(deelnemer);
-        await _context.SaveChangesAsync();
+        context.Deelnemers.Remove(deelnemer);
+        await context.SaveChangesAsync();
         return true;
     }
 }

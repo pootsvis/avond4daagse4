@@ -1,4 +1,6 @@
-namespace avond4daagseBackend.Interfaces;
+using Route = Avond4DaagseBackend.Models.Route;
+
+namespace Avond4DaagseBackend.Interfaces;
 
 public interface IRouteService
 {

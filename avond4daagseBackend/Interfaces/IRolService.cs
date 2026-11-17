@@ -1,10 +1,10 @@
-namespace DefaultNamespace;
+using Avond4DaagseBackend.Interfaces;
+
+namespace Avond4DaagseBackend.Interfaces;
 
 public interface IRolService
 {
     Task<List<Rol>> GetAllRollen();
     Task<Rol> GetRolById(int id);
-    Task<Rol> CreateRol(CreateRolDto rolDto);
-    Task<Rol> UpdateRol(int id, UpdateRolDto rolDto);
-    Task<bool> DeleteRol(int id);
+    Task<Rol> AssignRol(int rolId, int gebruikerId);
 }

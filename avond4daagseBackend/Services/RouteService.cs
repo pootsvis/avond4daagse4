@@ -1,6 +1,8 @@
-namespace avond4daagseBackend.Services;
+using Route = Avond4DaagseBackend.Models.Route;
 
-public class RouteService (applicationDbContext context) : IRouteService
+namespace Avond4DaagseBackend.Services;
+
+public class RouteService(ApplicationDbContext context) : IRouteService
 {
     public async Task<List<Route>> GetAllRoutes()
     {
@@ -23,7 +25,7 @@ public class RouteService (applicationDbContext context) : IRouteService
         {
             Naam = routeDto.Naam,
             Afstand = routeDto.Afstand,
-            StartTijd = routeDto.StartTijd,
+            Starttijd = routeDto.Starttijd,
             Controlepost = routeDto.Controlepost,
             EvenementId = routeDto.EvenementId
         };
@@ -41,7 +43,7 @@ public class RouteService (applicationDbContext context) : IRouteService
         }
         route.Naam = routeDto.Naam;
         route.Afstand = routeDto.Afstand;
-        route.StartTijd = routeDto.StartTijd;
+        route.Starttijd = routeDto.Starttijd;
         route.Controlepost = routeDto.Controlepost;
         context.Routes.Update(route);
         await context.SaveChangesAsync();

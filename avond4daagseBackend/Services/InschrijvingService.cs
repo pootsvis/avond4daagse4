@@ -1,8 +1,6 @@
-namespace avond4daagseBackend.Services;
+namespace Avond4DaagseBackend.Services;
 
-public class InschijvingService(
-    ApplicationDbContext context
-) : IInschijvingService
+public class InschrijvingService(ApplicationDbContext context) : IInschrijvingService
 {
     public async Task<List<Inschrijving>> GetAllInschrijvingen()
     {
@@ -11,31 +9,31 @@ public class InschijvingService(
             .ToListAsync();
     }
     
-    public async Task<Inschrijving> GetInschijvingById(int id)
+    public async Task<Inschrijving> GetInschrijvingById(int id)
     {
         // FindAsync kan geen Include doen, daarom FirstOrDefaultAsync
-        Inschijving? inschijving = await context.Inschrijvingen
+        Inschrijving? inschrijving = await context.Inschrijvingen
             .Include(i => i.Contactpersoon)
             .FirstOrDefaultAsync(i => i.InschrijvingId == id);
-        if (inschijving == null)
+        if (inschrijving == null)
         {
-            throw new InvalidOperationException("Inschijving not found");
+            throw new InvalidOperationException("Inschrijving not found");
         }
-        return inschijving;
+        return inschrijving;
     }
     
-    public async Task<Inschrijving> CreateInschrijving(CreateInschrijvingDto inschijvingDto)
+    public async Task<Inschrijving> CreateInschrijving(CreateInschrijvingDto inschrijvingDto)
     {
         Inschrijving inschrijving = new()
         {
-            Inschrijfdatum = inschijvingDto.Inschrijfdatum,
-            Status = inschijvingDto.Status,
-            AantalDeelnemers = inschijvingDto.AantalDeelnemers,
-            EvenementId = inschijvingDto.EvenementId,
+            Inschrijfdatum = DateOnly.FromDateTime(DateTime.Today),
+            Status = "Ingediend",
+            AantalDeelnemers = inschrijvingDto.AantalDeelnemers,
+            EvenementId = inschrijvingDto.EvenementId,
             Contactpersoon = new Contactpersoon
             {
-                Email = inschijvingDto.Contactpersoon.Email,
-                Telefoonnummer = inschijvingDto.Contactpersoon.Telefoonnummer
+                Email = inschrijvingDto.Contactpersoon?.Email ?? string.Empty,
+                Telefoonnummer = inschrijvingDto.Contactpersoon?.Telefoonnummer ?? string.Empty
             }
         };
         context.Inschrijvingen.Add(inschrijving);
@@ -53,17 +51,8 @@ public class InschijvingService(
             throw new InvalidOperationException("Inschrijving not found");
         }
 
-        inschrijving.Inschrijfdatum = inschrijvingDto.Inschrijfdatum;
         inschrijving.Status = inschrijvingDto.Status;
         inschrijving.AantalDeelnemers = inschrijvingDto.AantalDeelnemers;
-        inschrijving.EvenementId = inschrijvingDto.EvenementId;
-
-        // Update the associated Contactpersoon
-        if (inschrijving.Contactpersoon != null)
-        {
-            inschrijving.Contactpersoon.Email = inschrijvingDto.Contactpersoon.Email;
-            inschrijving.Contactpersoon.Telefoonnummer = inschrijvingDto.Contactpersoon.Telefoonnummer;
-        }
 
         context.Inschrijvingen.Update(inschrijving);
         await context.SaveChangesAsync();

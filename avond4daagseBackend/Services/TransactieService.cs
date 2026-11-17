@@ -1,10 +1,10 @@
-namespace avond4daagseBackend.Services;
+namespace Avond4DaagseBackend.Services;
 
-public class TransactieService(applicationDbContext context) : ITransactieService
+public class TransactieService(ApplicationDbContext context) : ITransactieService
 {
     public async Task<List<Transactie>> GetAllTransacties()
     {
-        return await context.Transacties.ToListAsync();
+        return await context.Transacties
             .Include(e => e.Betaling)
             .ToListAsync();
     }
@@ -33,7 +33,7 @@ public class TransactieService(applicationDbContext context) : ITransactieServic
             Rekening = transactieDto.Rekening,
             Betaalstatus = transactieDto.Betaalstatus,
             Factuur = transactieDto.Factuur,
-            InschrijvingId = transactieDto.InschrijvingId
+            InschrijvingId = transactieDto.InschrijvingId,
             Betaling = new Betaling
             {
                 Bedrag = transactieDto.Betaling.Bedrag,
@@ -48,7 +48,9 @@ public class TransactieService(applicationDbContext context) : ITransactieServic
     
     public async Task<Transactie> UpdateTransactie(int id, UpdateTransactieDto transactieDto)
     {
-        Transactie? transactie = await context.Transacties.FindAsync(id);
+        Transactie? transactie = await context.Transacties
+            .Include(t => t.Betaling)
+            .FirstOrDefaultAsync(t => t.TransactieId == id);
         if (transactie == null)
         {
             throw new InvalidOperationException("Transactie not found");
@@ -61,10 +63,6 @@ public class TransactieService(applicationDbContext context) : ITransactieServic
         transactie.Rekening = transactieDto.Rekening;
         transactie.Betaalstatus = transactieDto.Betaalstatus;
         transactie.Factuur = transactieDto.Factuur;
-        context.Transacties.Update(transactie);
-        await context.SaveChangesAsync();
-        return transactie;
-        
         //update betaling if provided
         if (transactieDto.Betaling != null)
         {
@@ -77,9 +75,11 @@ public class TransactieService(applicationDbContext context) : ITransactieServic
             transactie.Betaling.Betaaldatum = transactieDto.Betaling.Betaaldatum;
             transactie.Betaling.Status = transactieDto.Betaling.Status;
         }
+        await context.SaveChangesAsync();
+        return transactie;
     }
     
-    public async Task DeleteTransactie(int id)
+    public async Task<bool> DeleteTransactie(int id)
     {
         Transactie? transactie = await context.Transacties.FindAsync(id);
         if (transactie == null)
@@ -88,5 +88,6 @@ public class TransactieService(applicationDbContext context) : ITransactieServic
         }
         context.Transacties.Remove(transactie);
         await context.SaveChangesAsync();
+        return true;
     }
 }

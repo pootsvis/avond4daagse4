@@ -1,4 +1,4 @@
-namespace avond4daagseBackend.Interfaces;
+namespace Avond4DaagseBackend.Interfaces;
 
 public interface IRechtService
 {
@@ -6,4 +6,5 @@ public interface IRechtService
     Task<Recht> GetRechtById(int id);
     Task<Recht> CreateRecht(CreateRechtDto rechtDto);
     Task<Recht> UpdateRecht(int id, UpdateRechtDto rechtDto);
+    Task<bool> DeleteRecht(int id);
 }

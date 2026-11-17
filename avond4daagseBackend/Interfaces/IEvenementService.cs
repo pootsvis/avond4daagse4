@@ -1,7 +1,4 @@
-using Avond4Daagse.DTOs;
-using Avond4Daagse.Models;
-
-namespace Avond4Daagse.Interfaces;
+namespace Avond4DaagseBackend.Interfaces;
 
 public interface IEvenementService
 {

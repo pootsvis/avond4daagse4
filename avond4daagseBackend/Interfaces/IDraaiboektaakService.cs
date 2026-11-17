@@ -1,4 +1,4 @@
-namespace avond4daagseBackend.Interfaces;
+namespace Avond4DaagseBackend.Interfaces;
 
 public interface IDraaiboektaakService
 {

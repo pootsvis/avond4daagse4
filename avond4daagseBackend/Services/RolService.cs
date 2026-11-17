@@ -1,78 +1,59 @@
-namespace avond4daagseBackend.Services;
+using Avond4DaagseBackend.Data;
+using Avond4DaagseBackend.Interfaces;
+using Avond4DaagseBackend.Models;
+using Microsoft.EntityFrameworkCore;
 
-public class RolService(applicationDbContext context) : IRolService
+namespace Avond4DaagseBackend.Services;
+
+public class RolService(
+    ApplicationDbContext context
+) : IRolService
 {
     public async Task<List<Rol>> GetAllRollen()
     {
-        return await context.Rollen.ToListAsync();
+        return await context.Rollen
             .Include(r => r.RolRechten)
             .ToListAsync();
     }
-    
+
     public async Task<Rol> GetRolById(int id)
     {
-        Rol? rol = await context.Rollen.FindAsync(id);
+        // FindAsync kan geen Include doen, daarom FirstOrDefaultAsync
+        Rol? rol = await context.Rollen
             .Include(r => r.RolRechten)
-            .FirstOrDefaultAsync(e => e.RolId == id);
+            .FirstOrDefaultAsync(r => r.RolId == id);
         if (rol == null)
         {
             throw new InvalidOperationException("Rol not found");
         }
-        return rol;
-    }
-    
-    public async Task<Rol> CreateRol(CreateRolDto rolDto)
-    {
-        Rol rol = new()
-        {
-            Naam = rolDto.Naam,
-            RolRechten = rechtIds
-                .Select(rechtId => new RolRecht { RechtId = rechtId })
-                .ToList()
-        };
-        context.Rollen.Add(rol);
-        await context.SaveChangesAsync();
-    }
-    
-    public async Task<Rol> UpdateRol(int id, UpdateRolDto rolDto)
-    {
-        Rol rol = await GetRolById(id);
- 
-        List<int> rechtIds = rolDto.RechtIds.Distinct().ToList();
-        await CheckRechtenExist(rechtIds);
- 
-        rol.Naam = rolDto.Naam;
- 
-        // Koppeltabel bijwerken: alleen verwijderen wat weg moet, alleen toevoegen wat nieuw is
-        HashSet<int> huidigeIds = rol.RolRechten.Select(rr => rr.RechtId).ToHashSet();
-        HashSet<int> nieuweIds = rechtIds.ToHashSet();
- 
-        foreach (RolRecht teVerwijderen in rol.RolRechten
-                     .Where(rr => !nieuweIds.Contains(rr.RechtId))
-                     .ToList())
-        {
-            context.RolRechten.Remove(teVerwijderen);
-        }
- 
-        foreach (int rechtId in nieuweIds.Where(rid => !huidigeIds.Contains(rid)))
-        {
-            rol.RolRechten.Add(new RolRecht { RechtId = rechtId });
-        }
- 
-        await context.SaveChangesAsync();
         return rol;
     }
 
-    public async Task<bool> DeleteRol(int id)
+    public async Task<Rol> AssignRol(int rolId, int gebruikerId)
     {
-        Rol? rol = await context.Rollen.FindAsync(id);
-        if (rol == null)
+        Rol rol = await GetRolById(rolId);
+
+        bool gebruikerBestaat = await context.Gebruikers.AnyAsync(g => g.GebruikerId == gebruikerId);
+        if (!gebruikerBestaat)
         {
-            throw new InvalidOperationException("Rol not found");
+            throw new InvalidOperationException("Gebruiker not found");
         }
-        context.Rollen.Remove(rol);
-        await context.SaveChangesAsync();
-        return true;
+
+        // Heeft de gebruiker de rol al, dan is er niets te doen. De samengestelde sleutel
+        // (GebruikerId, RolId) zou bij een tweede keer toevoegen een databasefout geven.
+        bool alToegewezen = await context.GebruikerRollen
+            .AnyAsync(gr => gr.GebruikerId == gebruikerId && gr.RolId == rolId);
+        if (!alToegewezen)
+        {
+            // Eén rij in de koppeltabel GebruikerRol
+            context.GebruikerRollen.Add(new GebruikerRol
+            {
+                GebruikerId = gebruikerId,
+                RolId = rolId
+            });
+            await context.SaveChangesAsync();
+        }
+
+        return rol;
     }
-    
 }

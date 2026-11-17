@@ -1,14 +1,6 @@
-using Avond4Daagse.Data;
-using Avond4Daagse.DTOs;
-using Avond4Daagse.Interfaces;
-using Avond4Daagse.Models;
-using Microsoft.EntityFrameworkCore;
+namespace Avond4DaagseBackend.Services;
 
-namespace Avond4Daagse.Services;
-
-public class EvenementService(
-    ApplicationDbContext context
-) : IEvenementService
+public class EvenementService(ApplicationDbContext context) : IEvenementService
 {
     public async Task<List<Evenement>> GetAllEvenementen()
     {

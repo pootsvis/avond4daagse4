@@ -1,4 +1,4 @@
-namespace DefaultNamespace;
+namespace Avond4DaagseBackend.Interfaces;
 
 public interface IGebruikerService
 {
@@ -7,4 +7,6 @@ public interface IGebruikerService
     Task<Gebruiker> CreateGebruiker(CreateGebruikerDto gebruikerDto);
     Task<Gebruiker> UpdateGebruiker(int id, UpdateGebruikerDto gebruikerDto);
     Task<bool> DeleteGebruiker(int id);
+    Task<Gebruiker> ValidateLogin(string email, string wachtwoord);
+    Task<Gebruiker> Register(RegisterDto registerDto);
 }
