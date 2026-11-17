@@ -1,0 +1,363 @@
+
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Boeking toevoegen - Avond4daagse 2027</title>
+  <link rel="stylesheet" href="../css/beheer.css">
+</head>
+
+<body class="fin-page">
+
+<div class="fin-layout">
+
+  <!-- SIDEBAR -->
+  <aside class="fin-sidebar">
+    <div class="fin-logo">
+      <strong>AVOND4DAAGSE</strong>
+      <small>BEHEER 2027</small>
+    </div>
+
+    <nav class="fin-menu">
+      <a href="dashboard.html">Dashboard</a>
+      <a href="inschrijvingen.html">Inschrijvingen</a>
+      <a href="routebeheer.html">Routebeheer</a>
+      <a href="vrijwilligers.html">Vrijwilligers & inzet</a>
+      <a href="mijn-beschikbaarheid.html">Mijn beschikbaarheid</a>
+      <a href="draaiboek.html">Draaiboek</a>
+      <a href="financien.html" class="fin-active">Financiën</a>
+      <a href="contactvragen.html">Contactvragen</a>
+      <span>Handleiding</span>
+    </nav>
+
+    <div class="fin-sidebar-footer">
+      <p>Beheerder</p>
+      <a href="login.html">Uitloggen</a>
+    </div>
+  </aside>
+
+  <!-- HOOFDINHOUD -->
+  <main class="fin-main">
+
+    <a href="financien.html" class="fin-back">
+      ← Terug naar Financiën
+    </a>
+
+    <header class="fin-book-header">
+      <h1>Uitgave / betaling toevoegen</h1>
+      <p>
+        Registreer een uitgave of ontvangen betaling
+        voor editie 2027.
+      </p>
+    </header>
+
+    <div class="fin-notice">
+      <strong>Voorbeeldboeking — nog niet opgeslagen</strong>
+    </div>
+
+    <div class="fin-book-layout">
+
+      <!-- FORMULIER -->
+      <section class="fin-book-card">
+        <h2>Nieuwe boeking</h2>
+
+        <form id="fin-form">
+
+          <!-- TYPE BOEKING -->
+          <div class="fin-field">
+            <strong>Type boeking *</strong>
+
+            <div class="fin-choice-group">
+              <label class="fin-choice">
+                <input type="radio" name="boekingType"
+                       value="uitgave" checked>
+                Uitgave
+              </label>
+
+              <label class="fin-choice">
+                <input type="radio" name="boekingType"
+                       value="inkomst">
+                Ontvangen betaling
+              </label>
+            </div>
+          </div>
+
+          <!-- DATUM EN BEDRAG -->
+          <div class="fin-field-grid">
+
+            <div class="fin-field">
+              <label for="fin-datum">Datum *</label>
+              <input type="date" id="fin-datum"
+                     value="2027-06-01" required>
+            </div>
+
+            <div class="fin-field">
+              <label for="fin-bedrag">Bedrag (€) *</label>
+              <input type="number" id="fin-bedrag"
+                     min="0.01" step="0.01"
+                     placeholder="180.00" required>
+            </div>
+
+          </div>
+
+          <!-- OMSCHRIJVING -->
+          <div class="fin-field">
+            <label for="fin-omschrijving">Omschrijving *</label>
+            <input type="text" id="fin-omschrijving"
+                   maxlength="150"
+                   placeholder="Aanschaf materialen startbureau"
+                   required>
+          </div>
+
+          <!-- CATEGORIE EN REKENING -->
+          <div class="fin-field-grid">
+
+            <div class="fin-field">
+              <label for="fin-categorie">Categorie *</label>
+              <select id="fin-categorie" required></select>
+            </div>
+
+            <div class="fin-field">
+              <label for="fin-rekening">Rekening *</label>
+              <select id="fin-rekening" required>
+                <option value="Betaalrekening">
+                  Betaalrekening
+                </option>
+                <option value="Spaarrekening">
+                  Spaarrekening
+                </option>
+                <option value="Kas">
+                  Kas
+                </option>
+              </select>
+              <p class="fin-help">
+                Keuze voor de demo; geen echte bankkoppeling.
+              </p>
+            </div>
+
+          </div>
+
+          <!-- BETAALSTATUS -->
+          <div class="fin-field">
+            <label for="fin-status">Betaalstatus *</label>
+            <select id="fin-status" required></select>
+          </div>
+
+          <!-- INSCHRIJVING KOPPELEN -->
+          <div class="fin-field" id="fin-koppeling" hidden>
+            <label for="fin-referentie">
+              Openstaande inschrijving koppelen (optioneel)
+            </label>
+
+            <input type="text" id="fin-referentie"
+                   placeholder="Bijvoorbeeld A4D-1248">
+
+            <p class="fin-help">
+              Voorlopig wordt alleen de referentie opgeslagen.
+              Er is nog geen echte koppeling met inschrijvingen.
+            </p>
+          </div>
+
+          <!-- BON -->
+          <div class="fin-field">
+            <label for="fin-bon">Bon / factuur (optioneel)</label>
+
+            <input class="fin-book-file"
+                   type="file"
+                   id="fin-bon"
+                   accept=".pdf,.jpg,.jpeg,.png">
+
+            <p class="fin-help">
+              PDF, JPG of PNG. Bestanden worden in deze demo
+              niet geüpload of opgeslagen.
+            </p>
+          </div>
+
+          <!-- KNOPPEN -->
+          <div class="fin-book-actions">
+            <a href="financien.html" class="fin-light-btn">
+              Annuleren
+            </a>
+
+            <button type="submit" class="fin-dark-btn">
+              Boeking opslaan
+            </button>
+          </div>
+
+        </form>
+
+        <p id="fin-feedback" class="fin-book-feedback"
+           role="status" hidden></p>
+      </section>
+
+      <!-- INFORMATIE RECHTS -->
+      <aside>
+
+        <div class="fin-help-card">
+          <h3>Boeken is niet overmaken</h3>
+          <p>
+            Met 'Boeking opslaan' registreer je de
+            uitgave in de boekhouding. Er wordt geen
+            bankoverschrijving uitgevoerd.
+          </p>
+          <p>
+            Betaal een openstaande uitgave apart
+            via je bank en werk daarna de betaalstatus bij.
+          </p>
+        </div>
+
+        <div class="fin-help-card">
+          <h3>Wat registreer je?</h3>
+          <p>
+            Uitgave: kosten voor de organisatie,
+            ook als ze nog niet betaald zijn.
+          </p>
+          <p>
+            Ontvangen betaling: geld dat is
+            binnengekomen, eventueel gekoppeld aan
+            een inschrijvingsreferentie.
+          </p>
+        </div>
+
+      </aside>
+
+    </div>
+  </main>
+
+</div>
+
+<script>
+  const OPSLAG = "a4d-financien-demo-v1";
+
+  const formulier = document.getElementById("fin-form");
+  const categorieVeld = document.getElementById("fin-categorie");
+  const statusVeld = document.getElementById("fin-status");
+  const koppeling = document.getElementById("fin-koppeling");
+  const feedback = document.getElementById("fin-feedback");
+
+  const categorieen = {
+    uitgave: [
+      "Materialen",
+      "Veiligheid",
+      "Vergunningen",
+      "Communicatie",
+      "Overig"
+    ],
+    inkomst: [
+      "Inschrijvingen",
+      "Sponsoring",
+      "Donaties",
+      "Overig"
+    ]
+  };
+
+  // KEUZES AANPASSEN AAN TYPE BOEKING
+  function updateBoekingType() {
+    const type = document.querySelector(
+      'input[name="boekingType"]:checked'
+    ).value;
+
+    categorieVeld.replaceChildren();
+    statusVeld.replaceChildren();
+
+    categorieen[type].forEach(naam => {
+      const optie = document.createElement("option");
+      optie.value = naam;
+      optie.textContent = naam;
+      categorieVeld.appendChild(optie);
+    });
+
+    const statussen = type === "uitgave"
+      ? ["Nog te betalen", "Betaald"]
+      : ["Ontvangen"];
+
+    statussen.forEach(naam => {
+      const optie = document.createElement("option");
+      optie.value = naam;
+      optie.textContent = naam;
+      statusVeld.appendChild(optie);
+    });
+
+    koppeling.hidden = type !== "inkomst";
+  }
+
+  document.querySelectorAll(
+    'input[name="boekingType"]'
+  ).forEach(radio => {
+    radio.addEventListener("change", updateBoekingType);
+  });
+
+  // NIEUWE BOEKING LOKAAL OPSLAAN
+  formulier.addEventListener("submit", event => {
+    event.preventDefault();
+
+    const type = document.querySelector(
+      'input[name="boekingType"]:checked'
+    ).value;
+
+    const bedrag = Number(
+      document.getElementById("fin-bedrag").value
+    );
+
+    if (!Number.isFinite(bedrag) || bedrag <= 0) {
+      feedback.hidden = false;
+      feedback.textContent =
+        "Vul een geldig bedrag groter dan € 0 in.";
+      return;
+    }
+
+    const boeking = {
+      id: Date.now(),
+      type: type,
+      datum: document.getElementById("fin-datum").value,
+      bedrag: bedrag,
+      omschrijving: document.getElementById(
+        "fin-omschrijving"
+      ).value.trim(),
+      categorie: categorieVeld.value,
+      rekening: document.getElementById("fin-rekening").value,
+      status: statusVeld.value,
+      referentie: type === "inkomst"
+        ? document.getElementById("fin-referentie").value.trim()
+        : ""
+    };
+
+    if (!boeking.datum || !boeking.omschrijving) {
+      feedback.hidden = false;
+      feedback.textContent =
+        "Vul alle verplichte velden in.";
+      return;
+    }
+
+    try {
+      const opgeslagen = JSON.parse(
+        localStorage.getItem(OPSLAG) || "[]"
+      );
+
+      if (!Array.isArray(opgeslagen)) {
+        throw new Error("Ongeldige opslaggegevens");
+      }
+
+      opgeslagen.push(boeking);
+
+      localStorage.setItem(
+        OPSLAG,
+        JSON.stringify(opgeslagen)
+      );
+
+      // TERUG NAAR FINANCIEEL OVERZICHT
+      window.location.href = "financien.html";
+
+    } catch (fout) {
+      feedback.hidden = false;
+      feedback.textContent =
+        "Opslaan is mislukt. Probeer opnieuw.";
+    }
+  });
+
+  updateBoekingType();
+</script>
+
+</body>
+</html>
