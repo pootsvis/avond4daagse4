@@ -27,7 +27,7 @@ public class RouteController(
         return Ok(route);
     }
 
-    [Authorize(Roles = "voorzitter")]
+    [Authorize(Roles = "Voorzitter")]
     [HttpPost]
     public async Task<ActionResult<Route>> CreateRoute(CreateRouteDto route)
     {

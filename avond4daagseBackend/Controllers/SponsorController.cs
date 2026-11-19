@@ -25,7 +25,7 @@ public class SponsorController(
         return Ok(sponsor);
     }
     
-    [Authorize(Roles = "Penningmeester,Secretaris")]
+    [Authorize(Roles = "Penningmeester, Secretaris")]
     [HttpPost]
     public async Task<ActionResult<Sponsor>> CreateSponsor(CreateSponsorDto sponsor)
     {
@@ -33,7 +33,7 @@ public class SponsorController(
         return CreatedAtAction(nameof(GetSponsor), new { id = createdSponsor.SponsorId }, createdSponsor);
     }
     
-    [Authorize(Roles = "Penningmeester,Secretaris")]
+    [Authorize(Roles = "Penningmeester, Secretaris")]
     [HttpPut("{id}")]
     public async Task<ActionResult<Sponsor>> UpdateSponsor(int id, UpdateSponsorDto sponsor)
     {
@@ -45,7 +45,7 @@ public class SponsorController(
         return Ok(updatedSponsor);
     }
 
-    [Authorize(Roles = "Penningmeester,Secretaris")]
+    [Authorize(Roles = "Penningmeester, Secretaris")]
     [HttpDelete("{id}")]
     public async Task<ActionResult> DeleteSponsor(int id)
     {

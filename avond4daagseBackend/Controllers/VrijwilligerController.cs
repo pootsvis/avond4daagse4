@@ -5,7 +5,7 @@ public class VrijwilligerController(
     IVrijwilligerService vrijwilligerService
     ) : ControllerBase
 {
-    [Authorize(Roles = "voorzitter")]
+    [Authorize(Roles = "Voorzitter")]
     [HttpGet]
     public async Task<ActionResult<IEnumerable<Vrijwilliger>>> GetVrijwilligers()
     {
@@ -13,7 +13,7 @@ public class VrijwilligerController(
         return Ok(vrijwilligers);
     }
 
-    [Authorize(Roles = "voorzitter")]
+    [Authorize(Roles = "Voorzitter")]
     [HttpGet("{id}")]
     public async Task<ActionResult<Vrijwilliger>> GetVrijwilliger(int id)
     {  
@@ -25,7 +25,7 @@ public class VrijwilligerController(
             return Ok(vrijwilliger);
     }
 
-    [Authorize(Roles = "voorzitter")]
+    [Authorize(Roles = "Voorzitter")]
     [HttpPost]
     public async Task<ActionResult<Vrijwilliger>> CreateVrijwilliger(CreateVrijwilligerDto vrijwilliger)
     {
@@ -33,7 +33,7 @@ public class VrijwilligerController(
         return CreatedAtAction(nameof(GetVrijwilliger), new { id = createdVrijwilliger.VrijwilligersId }, createdVrijwilliger);
     }
 
-    [Authorize(Roles = "voorzitter")]
+    [Authorize(Roles = "Voorzitter")]
     [HttpPut("{id}")]
     public async Task<ActionResult> UpdateVrijwilliger(int id, UpdateVrijwilligerDto vrijwilliger)
     {
@@ -47,7 +47,7 @@ public class VrijwilligerController(
         return NoContent();
     }
 
-    [Authorize(Roles = "voorzitter")]
+    [Authorize(Roles = "Voorzitter")]
     [HttpDelete("{id}")]
     public async Task<ActionResult> DeleteVrijwilliger(int id)
     {

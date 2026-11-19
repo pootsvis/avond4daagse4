@@ -1,60 +1,103 @@
-namespace avond4daagseBackend.Controllers;
+using Avond4DaagseBackend.DTOs;
+using Avond4DaagseBackend.Interfaces;
+using Avond4DaagseBackend.Models;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+
+namespace Avond4DaagseBackend.Controllers;
+
 [ApiController]
 [Route("api/[controller]")]
 public class DeelnemerController(
     IDeelnemerService deelnemerService
-    ) : ControllerBase
+) : ControllerBase
 {
     [Authorize(Roles = "Voorzitter")]
     [HttpGet]
-    public async Task<ActionResult<IEnumerable<Deelnemer>>> GetDeelnemers()
+    [ProducesResponseType(typeof(List<DeelnemerResponse>), StatusCodes.Status200OK)]
+    public async Task<ActionResult<List<DeelnemerResponse>>> GetDeelnemers()
     {
-        var deelnemers = await deelnemerService.GetAllDeelnemers();
-        return Ok(deelnemers);
+        List<Deelnemer> deelnemers = await deelnemerService.GetAllDeelnemers();
+        return Ok(deelnemers.Select(ToResponse).ToList());
     }
 
     [Authorize(Roles = "Voorzitter")]
     [HttpGet("{id}")]
-    public async Task<ActionResult<Deelnemer>> GetDeelnemer(int id)
+    [ProducesResponseType(typeof(DeelnemerResponse), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public async Task<ActionResult<DeelnemerResponse>> GetDeelnemer(int id)
     {
-        var deelnemer = await deelnemerService.GetDeelnemerById(id);
-        if (deelnemer == null)
+        try
         {
-            return NotFound();
+            Deelnemer deelnemer = await deelnemerService.GetDeelnemerById(id);
+            return Ok(ToResponse(deelnemer));
         }
-        return Ok(deelnemer);
+        catch (InvalidOperationException ex)
+        {
+            return NotFound(ex.Message);
+        }
     }
-    
+
     [AllowAnonymous]
     [HttpPost]
-    public async Task<ActionResult<Deelnemer>> CreateDeelnemer(CreateDeelnemerDto deelnemer)
+    [ProducesResponseType(typeof(DeelnemerResponse), StatusCodes.Status201Created)]
+    public async Task<ActionResult<DeelnemerResponse>> CreateDeelnemer(CreateDeelnemerDto deelnemerDto)
     {
-        var createdDeelnemer = await deelnemerService.CreateDeelnemer(deelnemer);
-        return CreatedAtAction(nameof(GetDeelnemer), new { id = createdDeelnemer.DeelnemerId }, createdDeelnemer);
+        Deelnemer aangemaakt = await deelnemerService.CreateDeelnemer(deelnemerDto);
+
+        // Opnieuw ophalen zodat Persoon en Deelname zeker geladen zijn voor de response
+        Deelnemer deelnemer = await deelnemerService.GetDeelnemerById(aangemaakt.DeelnemerId);
+        return CreatedAtAction(nameof(GetDeelnemer), new { id = deelnemer.DeelnemerId }, ToResponse(deelnemer));
     }
-    
+
     [Authorize(Roles = "Voorzitter")]
     [HttpPut("{id}")]
-    public async Task<ActionResult<Deelnemer>> UpdateDeelnemer(int id, UpdateDeelnemerDto deelnemer)
+    [ProducesResponseType(typeof(DeelnemerResponse), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public async Task<ActionResult<DeelnemerResponse>> UpdateDeelnemer(int id, UpdateDeelnemerDto deelnemerDto)
     {
-        var updatedDeelnemer = await deelnemerService.UpdateDeelnemer(id, deelnemer);
-        if (updatedDeelnemer == null)
+        try
         {
-            return NotFound();
+            await deelnemerService.UpdateDeelnemer(id, deelnemerDto);
+            Deelnemer deelnemer = await deelnemerService.GetDeelnemerById(id);
+            return Ok(ToResponse(deelnemer));
         }
-        return Ok(updatedDeelnemer);
+        catch (InvalidOperationException ex)
+        {
+            return NotFound(ex.Message);
+        }
     }
 
     [Authorize(Roles = "Voorzitter")]
     [HttpDelete("{id}")]
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<ActionResult> DeleteDeelnemer(int id)
     {
-        var deelnemer = await deelnemerService.GetDeelnemerById(id);
-        if (deelnemer == null)
+        try
         {
-            return NotFound();
+            await deelnemerService.DeleteDeelnemer(id);
+            return NoContent();
         }
-        await deelnemerService.DeleteDeelnemer(id);
-        return NoContent();
+        catch (InvalidOperationException ex)
+        {
+            return NotFound(ex.Message);
+        }
     }
+
+    // Model -> response: zo gaat er geen Persoon -> Deelnemer -> Persoon... naar buiten (cirkelverwijzing)
+    private static DeelnemerResponse ToResponse(Deelnemer d) => new()
+    {
+        DeelnemerId = d.DeelnemerId,
+        Voornaam = d.Persoon.Voornaam,
+        Achternaam = d.Persoon.Achternaam,
+        Deelname = new DeelnameDto
+        {
+            School = d.Deelname.School,
+            Groep = d.Deelname.Groep,
+            Geboortejaar = d.Deelname.Geboortejaar,
+            HoeveelheidKeer = d.Deelname.HoeveelheidKeer,
+            NeemtBegeleiderMee = d.Deelname.NeemtBegeleiderMee
+        }
+    };
 }

@@ -7,7 +7,6 @@ namespace Avond4DaagseBackend.Data;
 public class ApplicationDbContext : DbContext
 {
     public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options) { }
-
     public DbSet<Evenement> Evenementen => Set<Evenement>();
     public DbSet<InzetSchema> InzetSchemas => Set<InzetSchema>();
     public DbSet<PraktischeInformatie> PraktischeInformaties => Set<PraktischeInformatie>();
@@ -46,7 +45,9 @@ public class ApplicationDbContext : DbContext
             new Rol { RolId = 2, Naam = "Penningmeester" },
             new Rol { RolId = 3, Naam = "Verkeersregelaars" },
             new Rol { RolId = 4, Naam = "Secretaris" },
-            new Rol { RolId = 5, Naam = "Voorzitter" }
+            new Rol { RolId = 5, Naam = "Voorzitter" },
+            new Rol { RolId = 6, Naam = "gebruiker" },
+            new Rol { RolId = 7, Naam = "Beheerder" }
         );
         
         // Primaire sleutels die niet via de naamconventie gevonden worden

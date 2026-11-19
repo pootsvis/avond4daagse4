@@ -480,6 +480,16 @@ namespace avond4daagseBackend.Migrations
                         {
                             RolId = 5,
                             Naam = "Voorzitter"
+                        },
+                        new
+                        {
+                            RolId = 6,
+                            Naam = "gebruiker"
+                        },
+                        new
+                        {
+                            RolId = 7,
+                            Naam = "Beheerder"
                         });
                 });
 

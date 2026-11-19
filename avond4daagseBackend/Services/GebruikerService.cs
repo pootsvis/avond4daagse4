@@ -84,7 +84,7 @@ public class GebruikerService(
         return gebruiker;
     }
     
-    private const string StandaardRol = "Deelnemer";
+    private const string StandaardRol = "gebruiker";
 
     public async Task<Gebruiker> Register(RegisterDto registerDto)
     {
