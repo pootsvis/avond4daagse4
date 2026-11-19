@@ -1,3 +1,9 @@
+using Avond4DaagseBackend.DTOs;
+using Avond4DaagseBackend.Interfaces;
+using Avond4DaagseBackend.Models;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+
 namespace Avond4DaagseBackend.Controllers;
 
 [ApiController]
@@ -6,38 +12,96 @@ public class DraaiboekController(IDraaiboektaakService draaiboektaakService) : C
 {
     [Authorize(Roles = "Voorzitter,Secretaris,Verkeersregelaars,Penningmeester,Vrijwilliger")]
     [HttpGet]
-    public async Task<ActionResult<IEnumerable<Draaiboektaak>>> GetDraaiboektaken()
+    [ProducesResponseType(typeof(List<DraaiboektaakResponse>), StatusCodes.Status200OK)]
+    public async Task<ActionResult<List<DraaiboektaakResponse>>> GetDraaiboektaken()
     {
-        return Ok(await draaiboektaakService.GetAllDraaiboektaken());
+        List<Draaiboektaak> taken = await draaiboektaakService.GetAllDraaiboektaken();
+        return Ok(taken.Select(ToResponse).ToList());
     }
 
     [Authorize(Roles = "Voorzitter,Secretaris,Verkeersregelaars,Penningmeester,Vrijwilliger")]
     [HttpGet("{id}")]
-    public async Task<ActionResult<Draaiboektaak>> GetDraaiboektaak(int id)
+    [ProducesResponseType(typeof(DraaiboektaakResponse), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public async Task<ActionResult<DraaiboektaakResponse>> GetDraaiboektaak(int id)
     {
-        return Ok(await draaiboektaakService.GetDraaiboektaakById(id));
+        try
+        {
+            Draaiboektaak taak = await draaiboektaakService.GetDraaiboektaakById(id);
+            return Ok(ToResponse(taak));
+        }
+        catch (InvalidOperationException ex)
+        {
+            return NotFound(ex.Message);
+        }
     }
 
     [Authorize(Roles = "Voorzitter")]
     [HttpPost]
-    public async Task<ActionResult<Draaiboektaak>> CreateDraaiboektaak(CreateDraaiboektaakDto dto)
+    [ProducesResponseType(typeof(DraaiboektaakResponse), StatusCodes.Status201Created)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    public async Task<ActionResult<DraaiboektaakResponse>> CreateDraaiboektaak(CreateDraaiboektaakDto dto)
     {
-        Draaiboektaak created = await draaiboektaakService.CreateDraaiboektaak(dto);
-        return CreatedAtAction(nameof(GetDraaiboektaak), new { id = created.TaakId }, created);
+        try
+        {
+            Draaiboektaak aangemaakt = await draaiboektaakService.CreateDraaiboektaak(dto);
+
+            // Opnieuw ophalen zodat de gekoppelde gebruikers zeker geladen zijn voor de response
+            Draaiboektaak taak = await draaiboektaakService.GetDraaiboektaakById(aangemaakt.TaakId);
+            return CreatedAtAction(nameof(GetDraaiboektaak), new { id = taak.TaakId }, ToResponse(taak));
+        }
+        catch (InvalidOperationException ex)
+        {
+            // bijvoorbeeld: een opgegeven GebruikerId bestaat niet
+            return BadRequest(ex.Message);
+        }
     }
 
     [Authorize(Roles = "Voorzitter")]
     [HttpPut("{id}")]
-    public async Task<ActionResult<Draaiboektaak>> UpdateDraaiboektaak(int id, UpdateDraaiboektaakDto dto)
+    [ProducesResponseType(typeof(DraaiboektaakResponse), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public async Task<ActionResult<DraaiboektaakResponse>> UpdateDraaiboektaak(int id, UpdateDraaiboektaakDto dto)
     {
-        return Ok(await draaiboektaakService.UpdateDraaiboektaak(id, dto));
+        try
+        {
+            await draaiboektaakService.UpdateDraaiboektaak(id, dto);
+            Draaiboektaak taak = await draaiboektaakService.GetDraaiboektaakById(id);
+            return Ok(ToResponse(taak));
+        }
+        catch (InvalidOperationException ex)
+        {
+            return NotFound(ex.Message);
+        }
     }
 
     [Authorize(Roles = "Voorzitter")]
     [HttpDelete("{id}")]
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<ActionResult> DeleteDraaiboektaak(int id)
     {
-        await draaiboektaakService.DeleteDraaiboektaak(id);
-        return NoContent();
+        try
+        {
+            await draaiboektaakService.DeleteDraaiboektaak(id);
+            return NoContent();
+        }
+        catch (InvalidOperationException ex)
+        {
+            return NotFound(ex.Message);
+        }
     }
+
+    // Model -> response: de koppeltabel wordt een lijst met GebruikerIds, zonder cirkelverwijzing
+    private static DraaiboektaakResponse ToResponse(Draaiboektaak t) => new()
+    {
+        TaakId = t.TaakId,
+        Titel = t.Titel,
+        Beschrijving = t.Beschrijving,
+        Datum = t.Datum,
+        Categorie = t.Categorie,
+        Status = t.Status,
+        Verantwoordelijke = t.Verantwoordelijke,
+        GebruikerIds = t.GebruikerDraaiboektaken.Select(gd => gd.GebruikerId).ToList()
+    };
 }
