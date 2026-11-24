@@ -2,204 +2,618 @@
 <!DOCTYPE html>
 <html lang="nl">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Routebeheer | Avond4daagse 2027</title>
-  <link rel="stylesheet" href="../css/beheer.css">
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <meta name="description"
+          content="Beheer wandelroutes van de Avond4daagse 2027.">
+
+    <title>Routebeheer | Avond4daagse Beheer</title>
+
+    <link rel="stylesheet" href="../css/beheer.css">
+    <link rel="stylesheet" href="../css/beheer-polish.css">
+    <link rel="stylesheet" href="../css/beheer-route.css">
+
+    <!-- Leaflet: interactieve OpenStreetMap-kaart -->
+    <link rel="stylesheet"
+          href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+
+    <script defer
+            src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
+    <script defer src="../js/beheer-ui.js"></script>
+    <script defer src="../js/beheer-route.js"></script>
 </head>
 
-<body class="inschrijvingen-pagina routebeheer-pagina">
-  <div class="ins-layout">
+<body class="bm-page br-page">
+
+<div class="bm-layout">
 
     <!-- ZIJMENU -->
-    <aside class="ins-sidebar">
-      <div>
-        <div class="ins-logo">
-          <strong>AVOND4DAAGSE</strong>
-          <small>BEHEER 2027</small>
+    <aside class="bm-sidebar" id="bmSidebar">
+
+        <a href="dashboard.html" class="bm-brand">
+            <span class="bm-brand-symbol"
+                  aria-hidden="true">4</span>
+            <span>
+                <strong>AVOND4DAAGSE</strong>
+                <small>BEHEEROMGEVING 2027</small>
+            </span>
+        </a>
+
+        <div class="bm-sidebar-content">
+
+            <p class="bm-nav-label">OVERZICHT</p>
+
+            <nav class="bm-navigation"
+                 aria-label="Beheernavigatie">
+
+                <a href="dashboard.html">
+                    <span class="bm-nav-icon"
+                          aria-hidden="true">▦</span>
+                    Dashboard
+                </a>
+
+                <a href="inschrijvingen.html">
+                    <span class="bm-nav-icon"
+                          aria-hidden="true">◎</span>
+                    Inschrijvingen
+                </a>
+
+                <a href="routebeheer.html"
+                   class="bm-nav-active"
+                   aria-current="page">
+                    <span class="bm-nav-icon"
+                          aria-hidden="true">◇</span>
+                    Routebeheer
+                </a>
+
+                <a href="vrijwilligers.html">
+                    <span class="bm-nav-icon"
+                          aria-hidden="true">♧</span>
+                    Vrijwilligers &amp; inzet
+                </a>
+
+                <a href="mijn-beschikbaarheid.html">
+                    <span class="bm-nav-icon"
+                          aria-hidden="true">◷</span>
+                    Mijn beschikbaarheid
+                </a>
+
+                <a href="draaiboek.html">
+                    <span class="bm-nav-icon"
+                          aria-hidden="true">☷</span>
+                    Draaiboek
+                </a>
+
+                <a href="financien.html">
+                    <span class="bm-nav-icon"
+                          aria-hidden="true">€</span>
+                    Financiën
+                </a>
+
+                <a href="contactvragen.html">
+                    <span class="bm-nav-icon"
+                          aria-hidden="true">✉</span>
+                    Contactvragen
+                </a>
+
+            </nav>
         </div>
 
-        <nav class="ins-menu" aria-label="Beheermenu">
-          <a href="dashboard.html">Dashboard</a>
-          <a href="inschrijvingen.html">Inschrijvingen</a>
-          <a href="routebeheer.html" class="actief" aria-current="page">Routebeheer</a>
-          <a href="vrijwilligers.html">Vrijwilligers & inzet</a>
-          <a href="mijn-beschikbaarheid.html">Mijn beschikbaarheid</a>
-          <a href="draaiboek.html">Draaiboek</a>
-          <a href="financien.html">Financiën</a>
-          <a href="contactvragen.html">Contactvragen</a>
-        </nav>
-      </div>
+        <div class="bm-sidebar-footer">
 
-      <div class="ins-account">
-        <span>Beheerder</span>
-        <a href="login.html">Uitloggen</a>
-      </div>
+            <div class="bm-account">
+                <span class="bm-account-avatar"
+                      aria-hidden="true">B</span>
+
+                <span>
+                    <strong>Beheeromgeving</strong>
+                    <small>Frontenddemo</small>
+                </span>
+            </div>
+
+            <a href="login.html" class="bm-sidebar-exit">
+                Terug naar inloggen
+                <span aria-hidden="true">↗</span>
+            </a>
+
+        </div>
     </aside>
 
-    <!-- HOOFDINHOUD -->
-    <main class="ins-main route-main">
 
-      <!-- TITEL -->
-      <header class="route-header">
+    <!-- HOOFDGEDEELTE -->
+    <div class="bm-main-area">
+
+        <!-- BOVENBALK -->
+        <header class="bm-topbar">
+
+            <div class="bm-topbar-left">
+
+                <button
+                    type="button"
+                    class="bm-menu-button"
+                    id="bmMenuButton"
+                    aria-controls="bmSidebar"
+                    aria-expanded="false"
+                    aria-label="Open beheermenu">
+
+                    <span aria-hidden="true">☰</span>
+                    Menu
+                </button>
+
+                <div class="bm-breadcrumb">
+                    <span>Beheeromgeving</span>
+                    <span aria-hidden="true">/</span>
+                    <strong>Routebeheer</strong>
+                </div>
+
+            </div>
+
+            <a href="../../index.html"
+               class="bm-website-link">
+                Bekijk publieke website
+                <span aria-hidden="true">↗</span>
+            </a>
+
+        </header>
+
+
+        <main class="bm-content">
+
+            <!-- TITEL -->
+            <section class="br-heading">
+
+                <div>
+                    <p class="bm-eyebrow">
+                        WANDELROUTES · EDITIE 2027
+                    </p>
+
+                    <h1>Routebeheer</h1>
+
+                    <p>
+                        Beheer routes per wandelavond,
+                        voeg GPX-bestanden toe en bekijk
+                        het verloop op de kaart.
+                    </p>
+                </div>
+
+                <button type="button"
+                        id="brAddRoute"
+                        class="br-button br-button-primary">
+                    <span aria-hidden="true">+</span>
+                    Route toevoegen
+                </button>
+
+            </section>
+
+
+            <!-- MELDING -->
+            <div class="bm-notice" role="note">
+
+                <span class="bm-notice-icon"
+                      aria-hidden="true">i</span>
+
+                <div>
+                    <strong>
+                        Lokaal routebeheer — nog geen publicatie
+                    </strong>
+
+                    <p>
+                        Routes die je hier toevoegt, worden
+                        uitsluitend in deze browser opgeslagen.
+                        Er wordt niets naar de database of
+                        publieke Routespagina verstuurd.
+                        Gebruik Avond 1 t/m 4 totdat
+                        de officiële datums bevestigd zijn.
+                    </p>
+                </div>
+
+            </div>
+
+
+            <!-- STATISTIEKEN -->
+            <section class="br-stats"
+                     aria-label="Routeoverzicht in cijfers">
+
+                <article class="br-stat">
+                    <span>Totaal routes</span>
+                    <strong id="brTotalRoutes">0</strong>
+                    <small>Routes in deze browser</small>
+                </article>
+
+                <article class="br-stat">
+                    <span>Met GPX-bestand</span>
+                    <strong id="brRoutesWithGpx">0</strong>
+                    <small>Op de kaart te bekijken</small>
+                </article>
+
+                <article class="br-stat">
+                    <span>Zonder GPX-bestand</span>
+                    <strong id="brRoutesWithoutGpx">0</strong>
+                    <small>Routebestand ontbreekt</small>
+                </article>
+
+            </section>
+
+
+            <!-- ROUTES + KAART -->
+            <div class="br-layout">
+
+                <!-- LINKERKOLOM -->
+                <section class="br-panel"
+                         aria-labelledby="brListTitle">
+
+                    <div class="br-panel-header">
+                        <div>
+                            <p class="bm-eyebrow">
+                                ROUTEOVERZICHT
+                            </p>
+
+                            <h2 id="brListTitle">
+                                Wandelroutes
+                            </h2>
+                        </div>
+
+                        <span id="brResultCount"
+                              class="br-count">
+                            0 routes
+                        </span>
+                    </div>
+
+
+                    <!-- FILTERS -->
+                    <form id="brFilters" class="br-filters">
+
+                        <label class="br-search">
+                            Zoek route
+
+                            <input id="brSearch"
+                                   type="search"
+                                   placeholder="Routenaam of startlocatie"
+                                   autocomplete="off">
+                        </label>
+
+                        <div class="br-filter-row">
+
+                            <label>
+                                Wandelavond
+
+                                <select id="brEveningFilter">
+                                    <option value="all">
+                                        Alle avonden
+                                    </option>
+                                    <option value="1">
+                                        Avond 1
+                                    </option>
+                                    <option value="2">
+                                        Avond 2
+                                    </option>
+                                    <option value="3">
+                                        Avond 3
+                                    </option>
+                                    <option value="4">
+                                        Avond 4
+                                    </option>
+                                </select>
+                            </label>
+
+                            <label>
+                                Afstand
+
+                                <select id="brDistanceFilter">
+                                    <option value="all">
+                                        Alle afstanden
+                                    </option>
+                                    <option value="5">
+                                        5 km
+                                    </option>
+                                    <option value="10">
+                                        10 km
+                                    </option>
+                                </select>
+                            </label>
+
+                        </div>
+
+                        <button type="reset"
+                                class="br-reset-button">
+                            Filters wissen
+                        </button>
+
+                    </form>
+
+
+                    <!-- ROUTEKAARTEN -->
+                    <div id="brRouteList"
+                         class="br-route-list"
+                         aria-live="polite">
+
+                        <div class="br-empty">
+                            <strong>Nog geen routes toegevoegd</strong>
+                            <p>
+                                Klik op Route toevoegen om
+                                de eerste route aan te maken.
+                            </p>
+                        </div>
+
+                    </div>
+
+                </section>
+
+
+                <!-- RECHTERKOLOM -->
+                <section class="br-panel br-map-panel"
+                         aria-labelledby="brMapTitle">
+
+                    <div class="br-map-heading">
+
+                        <div>
+                            <p class="bm-eyebrow">
+                                ROUTEVOORBEELD
+                            </p>
+
+                            <h2 id="brMapTitle">
+                                Interactieve kaart
+                            </h2>
+                        </div>
+
+                        <span id="brMapBadge"
+                              class="br-map-badge">
+                            Geen route geselecteerd
+                        </span>
+
+                    </div>
+
+
+                    <!-- ECHTE KAART -->
+                    <div class="br-map-container">
+
+                        <div id="brMap"
+                             aria-label="Interactieve routekaart">
+                        </div>
+
+                        <div id="brMapEmpty"
+                             class="br-map-empty">
+
+                            <span aria-hidden="true">◇</span>
+
+                            <strong>
+                                Nog geen GPX-route
+                            </strong>
+
+                            <p id="brMapEmptyText">
+                                Selecteer een route met
+                                GPX-bestand om het verloop
+                                op de kaart te zien.
+                            </p>
+
+                        </div>
+
+                    </div>
+
+                    <p class="br-map-caption">
+                        Kaartgegevens: OpenStreetMap.
+                        De route wordt uitsluitend getekend
+                        met punten uit jouw GPX-bestand.
+                        Geen officiële routes worden verzonnen.
+                    </p>
+
+
+                    <!-- DETAILS GESELECTEERDE ROUTE -->
+                    <section id="brSelectedDetails"
+                             class="br-details-panel"
+                             hidden>
+
+                        <h3>Routegegevens</h3>
+
+                        <dl class="br-details">
+
+                            <div>
+                                <dt>Wandelavond</dt>
+                                <dd id="brDetailEvening">—</dd>
+                            </div>
+
+                            <div>
+                                <dt>Afstandscategorie</dt>
+                                <dd id="brDetailDistance">—</dd>
+                            </div>
+
+                            <div>
+                                <dt>Startlocatie</dt>
+                                <dd id="brDetailStart">—</dd>
+                            </div>
+
+                            <div>
+                                <dt>Gemeten GPX-afstand</dt>
+                                <dd id="brDetailGpxDistance">—</dd>
+                            </div>
+
+                        </dl>
+
+                        <div class="br-detail-actions">
+
+                            <button type="button"
+                                    id="brEditRoute"
+                                    class="br-button br-button-light">
+                                Bewerken
+                            </button>
+
+                            <button type="button"
+                                    id="brDownloadGpx"
+                                    class="br-button br-button-light"
+                                    disabled>
+                                Download GPX
+                            </button>
+
+                            <button type="button"
+                                    id="brDeleteRoute"
+                                    class="br-button br-button-danger">
+                                Verwijderen
+                            </button>
+
+                        </div>
+
+                    </section>
+
+                </section>
+
+            </div>
+
+
+            <p id="brFeedback"
+               class="br-feedback"
+               role="status"
+               aria-live="polite"></p>
+
+            <footer class="bm-content-footer">
+                Avond4daagse 2027 · Routebeheer · Frontenddemo
+            </footer>
+
+        </main>
+
+    </div>
+
+</div>
+
+
+<!-- ===================================
+     ROUTE TOEVOEGEN / BEWERKEN
+     =================================== -->
+
+<dialog id="brDialog"
+        class="br-dialog"
+        aria-labelledby="brDialogTitle">
+
+    <div class="br-dialog-heading">
+
         <div>
-          <h1>Routebeheer</h1>
-          <p>
-            Beheer routes, controleposten en
-            routebestanden per avond.
-          </p>
+            <p class="bm-eyebrow">
+                ROUTEGEGEVENS
+            </p>
+
+            <h2 id="brDialogTitle">
+                Route toevoegen
+            </h2>
         </div>
 
-        <button class="ins-btn ins-dark"
-                type="button" disabled>
-          + Nieuwe route
+        <button type="button"
+                id="brCloseDialog"
+                class="br-dialog-close"
+                aria-label="Venster sluiten">
+            ×
         </button>
-      </header>
 
-      <!-- FILTERS -->
-      <section class="route-toolbar"
-               aria-label="Routefilters">
-        <div class="route-filters">
-          <select aria-label="Selecteer avond">
-            <option>Dinsdag 3 juni</option>
-            <option>Woensdag 4 juni</option>
-            <option>Donderdag 5 juni</option>
-            <option>Vrijdag 6 juni</option>
-          </select>
+    </div>
 
-          <select aria-label="Selecteer afstand">
-            <option>Alle afstanden</option>
-            <option>5 km</option>
-            <option>10 km</option>
-          </select>
+    <form id="brRouteForm" class="br-form">
+
+        <label>
+            Routenaam
+
+            <input id="brRouteName"
+                   type="text"
+                   maxlength="90"
+                   placeholder="Bijv. Wandelroute centrum"
+                   required>
+        </label>
+
+        <div class="br-form-grid">
+
+            <label>
+                Wandelavond
+
+                <select id="brRouteEvening" required>
+                    <option value="1">Avond 1</option>
+                    <option value="2">Avond 2</option>
+                    <option value="3">Avond 3</option>
+                    <option value="4">Avond 4</option>
+                </select>
+            </label>
+
+            <label>
+                Afstandscategorie
+
+                <select id="brRouteDistance" required>
+                    <option value="5">5 km</option>
+                    <option value="10">10 km</option>
+                </select>
+            </label>
+
         </div>
 
-        <button class="ins-btn ins-dark"
-                type="button" disabled>
-          Publiceer wijzigingen
-        </button>
-      </section>
+        <label>
+            Startlocatie (optioneel)
 
-      <!-- ROUTEOVERZICHT -->
-      <div class="route-grid">
+            <input id="brRouteStart"
+                   type="text"
+                   maxlength="120"
+                   placeholder="Bijv. het startplein">
+        </label>
 
-        <!-- LINKERKOLOM -->
-        <section class="route-list"
-                 aria-label="Beschikbare routes">
+        <div class="br-upload">
 
-          <!-- ROUTE 1 -->
-          <article class="route-card route-selected">
-            <div class="route-card-top">
-              <div>
-                <h2>
-                  Dorpsroute
-                  <span class="route-distance">5 km</span>
-                </h2>
-                <p>4,9 km • 3 posten</p>
-              </div>
+            <label for="brGpxFile">
+                GPX-routebestand (optioneel)
+            </label>
 
-              <span class="route-status">
-                Gepubliceerd
-              </span>
-            </div>
+            <input id="brGpxFile"
+                   type="file"
+                   accept=".gpx,application/gpx+xml,application/xml,text/xml">
 
-            <div class="route-buttons">
-              <button class="ins-btn" type="button"
-                      disabled>Bewerken</button>
-              <button class="ins-btn" type="button"
-                      disabled>Dupliceren</button>
-              <button class="ins-btn" type="button"
-                      disabled>Download GPX</button>
-            </div>
-          </article>
+            <p>
+                Upload een GPX-bestand met een track
+                of route. Maximaal 2 MB en 5.000
+                routepunten voor deze demo.
+            </p>
 
-          <!-- ROUTE 2 -->
-          <article class="route-card">
-            <div class="route-card-top">
-              <div>
-                <h2>
-                  Polderroute
-                  <span class="route-distance">10 km</span>
-                </h2>
-                <p>10,2 km • 5 posten</p>
-              </div>
+            <p id="brExistingGpx"
+               class="br-existing-gpx"
+               hidden></p>
 
-              <span class="route-status">
-                Concept
-              </span>
-            </div>
+            <label id="brRemoveGpxWrap"
+                   class="br-check"
+                   hidden>
 
-            <div class="route-buttons">
-              <button class="ins-btn" type="button"
-                      disabled>Bewerken</button>
-              <button class="ins-btn" type="button"
-                      disabled>Dupliceren</button>
-              <button class="ins-btn" type="button"
-                      disabled>Download GPX</button>
-            </div>
-          </article>
+                <input id="brRemoveGpx"
+                       type="checkbox">
 
-          <!-- CONTROLEPOSTEN -->
-          <div class="route-table-wrapper">
-            <table class="route-table">
-              <thead>
-                <tr>
-                  <th>CONTROLEPOST</th>
-                  <th>LOCATIE</th>
-                  <th>VRIJWILLIGERS</th>
-                </tr>
-              </thead>
+                Bestaand GPX-bestand verwijderen
+            </label>
 
-              <tbody>
-                <tr>
-                  <td>Post 1</td>
-                  <td>Parklaan</td>
-                  <td>2 / 2</td>
-                </tr>
-                <tr>
-                  <td>Post 2</td>
-                  <td>Molenplein</td>
-                  <td>1 / 2</td>
-                </tr>
-                <tr>
-                  <td>Post 3</td>
-                  <td>Sportpark</td>
-                  <td>2 / 2</td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-        </section>
+        </div>
 
-        <!-- RECHTERKOLOM -->
-        <section class="route-preview"
-                 aria-label="Routekaart">
-          <div class="route-preview-header">
-            <h2>Dorpsroute — 5 km</h2>
-            <button class="ins-btn" type="button"
-                    disabled>
-              Volledig scherm
+        <p id="brFormStatus"
+           class="br-form-status"
+           role="status"
+           aria-live="polite"></p>
+
+        <div class="br-form-actions">
+
+            <button type="button"
+                    id="brCancelDialog"
+                    class="br-button br-button-light">
+                Annuleren
             </button>
-          </div>
 
-          <div class="route-map">
-            <div class="route-placeholder">
-              <span aria-hidden="true">▧</span>
-              <p>
-                [ BEWERKBARE ROUTEKAART + CONTROLEPUNTEN ]
-              </p>
-            </div>
-          </div>
+            <button type="submit"
+                    id="brSaveRoute"
+                    class="br-button br-button-primary">
+                Route opslaan
+            </button>
 
-          <p class="route-help">
-            Sleep punten om de route aan te passen.
-            Klik op de kaart om een controlepost toe te voegen.
-          </p>
-        </section>
+        </div>
 
-      </div>
+    </form>
 
-    </main>
-  </div>
+</dialog>
+
+
+<!-- ACHTERGROND MOBIEL MENU -->
+<div id="bmBackdrop"
+     class="bm-backdrop"
+     hidden></div>
+
 </body>
 </html>
