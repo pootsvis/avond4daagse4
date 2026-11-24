@@ -1,3 +1,4 @@
+
 using Avond4DaagseBackend.DTOs;
 using Avond4DaagseBackend.Interfaces;
 using Avond4DaagseBackend.Models;
@@ -6,21 +7,25 @@ using Microsoft.AspNetCore.Mvc;
 using Route = Avond4DaagseBackend.Models.Route;
 
 namespace Avond4DaagseBackend.Controllers;
+
 [ApiController]
 [RouteAttribute("api/[controller]")]
 public class RouteController(
     IRouteService routeService
-    ) : ControllerBase
+) : ControllerBase
 {
+    // Iedereen mag de beschikbare routes bekijken.
     [AllowAnonymous]
     [HttpGet]
     [ProducesResponseType(typeof(List<RouteResponse>), StatusCodes.Status200OK)]
     public async Task<ActionResult<List<RouteResponse>>> GetRoutes()
     {
         List<Route> routes = await routeService.GetAllRoutes();
+
         return Ok(routes.Select(r => r.ToResponse()).ToList());
     }
 
+    // Iedereen mag een specifieke route bekijken.
     [AllowAnonymous]
     [HttpGet("{id}")]
     [ProducesResponseType(typeof(RouteResponse), StatusCodes.Status200OK)]
@@ -30,6 +35,7 @@ public class RouteController(
         try
         {
             Route route = await routeService.GetRouteById(id);
+
             return Ok(route.ToResponse());
         }
         catch (InvalidOperationException ex)
@@ -38,6 +44,7 @@ public class RouteController(
         }
     }
 
+    // Alleen de voorzitter mag routes toevoegen.
     [Authorize(Roles = "Voorzitter")]
     [HttpPost]
     [ProducesResponseType(typeof(RouteResponse), StatusCodes.Status201Created)]
@@ -48,27 +55,38 @@ public class RouteController(
         {
             Route route = await routeService.CreateRoute(dto);
 
-            // Opnieuw ophalen zodat de gekoppelde gebruikers zeker geladen zijn voor de response
-            Route createdRoute = await routeService.GetRouteById(route.RouteId);
-            return CreatedAtAction(nameof(GetRoute), new { id = createdRoute.RouteId }, createdRoute.ToResponse());
+            Route createdRoute =
+                await routeService.GetRouteById(route.RouteId);
+
+            return CreatedAtAction(
+                nameof(GetRoute),
+                new { id = createdRoute.RouteId },
+                createdRoute.ToResponse()
+            );
         }
         catch (InvalidOperationException ex)
         {
-            // bijvoorbeeld: een opgegeven GebruikerId bestaat niet
             return BadRequest(ex.Message);
         }
     }
 
-    [Authorize(Roles = "voorzitter")]
+    // Alleen de voorzitter mag routes aanpassen.
+    // De rolnaam is nu correct: Voorzitter.
+    [Authorize(Roles = "Voorzitter")]
     [HttpPut("{id}")]
     [ProducesResponseType(typeof(RouteResponse), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public async Task<ActionResult<RouteResponse>> UpdateRoute(int id, UpdateRouteDto dto)
+    public async Task<ActionResult<RouteResponse>> UpdateRoute(
+        int id,
+        UpdateRouteDto dto
+    )
     {
         try
         {
             await routeService.UpdateRoute(id, dto);
+
             Route route = await routeService.GetRouteById(id);
+
             return Ok(route.ToResponse());
         }
         catch (InvalidOperationException ex)
@@ -77,7 +95,9 @@ public class RouteController(
         }
     }
 
-    [Authorize(Roles = "voorzitter")]
+    // Alleen de voorzitter mag routes verwijderen.
+    // Ook hier is de rolnaam correct: Voorzitter.
+    [Authorize(Roles = "Voorzitter")]
     [HttpDelete("{id}")]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -86,6 +106,7 @@ public class RouteController(
         try
         {
             await routeService.DeleteRoute(id);
+
             return NoContent();
         }
         catch (InvalidOperationException ex)
