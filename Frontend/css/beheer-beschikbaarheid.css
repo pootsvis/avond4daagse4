@@ -1,0 +1,598 @@
+
+/* ==========================================
+   AVOND4DAAGSE 2027
+   MIJN BESCHIKBAARHEID
+   ========================================== */
+
+.ba-page {
+  --ba-dark: #193b2b;
+  --ba-green: #246847;
+  --ba-muted: #687b6e;
+  --ba-line: #dfe9e1;
+}
+
+/* ==========================================
+   PAGINATITEL
+   ========================================== */
+
+.ba-page .ba-heading {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 20px;
+  margin-bottom: 26px;
+}
+
+.ba-page .ba-heading h1 {
+  margin: 9px 0 11px;
+  color: var(--ba-dark);
+  font-size: clamp(30px, 3vw, 40px);
+  line-height: 1.13;
+  letter-spacing: -.045em;
+  font-weight: 850;
+}
+
+.ba-page .ba-heading > div > p:last-child {
+  max-width: 600px;
+  color: var(--ba-muted);
+  font-size: 13px;
+  line-height: 1.75;
+}
+
+/* ==========================================
+   STATISTIEKEN
+   ========================================== */
+
+.ba-page .ba-stats {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 15px;
+  margin-bottom: 29px;
+}
+
+.ba-page .ba-stat {
+  display: flex;
+  flex-direction: column;
+  min-height: 145px;
+  min-width: 0;
+  padding: 23px;
+  border: 1px solid var(--ba-line);
+  border-radius: 19px;
+  background: #fff;
+  box-shadow: 0 9px 28px rgba(20, 55, 34, .035);
+}
+
+.ba-page .ba-stat > span {
+  color: var(--ba-muted);
+  font-size: 12px;
+  font-weight: 650;
+}
+
+.ba-page .ba-stat strong {
+  display: block;
+  margin: 15px 0 12px;
+  color: var(--ba-dark);
+  font-size: 34px;
+  line-height: 1;
+  letter-spacing: -.045em;
+}
+
+.ba-page .ba-stat small {
+  margin-top: auto;
+  color: #8a978d;
+  font-size: 11px;
+  line-height: 1.55;
+}
+
+/* ==========================================
+   ALGEMENE PANELEN
+   ========================================== */
+
+.ba-page .ba-panel {
+  overflow: hidden;
+  margin-bottom: 25px;
+  border: 1px solid var(--ba-line);
+  border-radius: 22px;
+  background: #fff;
+  box-shadow: 0 12px 34px rgba(20, 55, 34, .035);
+}
+
+.ba-page .ba-panel-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 18px;
+  padding: 28px 29px;
+}
+
+.ba-page .ba-panel-header h2 {
+  margin: 9px 0 10px;
+  color: var(--ba-dark);
+  font-size: 22px;
+  font-weight: 850;
+  letter-spacing: -.035em;
+}
+
+.ba-page .ba-panel-header p:not(.bm-eyebrow) {
+  max-width: 600px;
+  color: var(--ba-muted);
+  font-size: 12px;
+  line-height: 1.7;
+}
+
+/* ==========================================
+   VOORTGANG
+   ========================================== */
+
+.ba-page .ba-progress-label {
+  display: inline-flex;
+  padding: 9px 13px;
+  border-radius: 100px;
+  background: #e8f3eb;
+  color: #2d6b49;
+  font-size: 11px;
+  font-weight: 800;
+}
+
+.ba-page .ba-progress-track {
+  height: 7px;
+  margin: 0 29px 30px;
+  overflow: hidden;
+  border-radius: 100px;
+  background: #e5eee6;
+}
+
+.ba-page .ba-progress-track span {
+  display: block;
+  width: 0;
+  height: 100%;
+  border-radius: inherit;
+  background: linear-gradient(90deg, #3a9060, #80bb88);
+  transition: width .3s ease;
+}
+
+/* ==========================================
+   VIER AVONDEN
+   ========================================== */
+
+.ba-page .ba-evenings {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 16px;
+  padding: 0 29px 30px;
+}
+
+.ba-page .ba-evening {
+  position: relative;
+  min-width: 0;
+  margin: 0;
+  padding: 24px;
+  border: 1px solid #e0ebe1;
+  border-radius: 18px;
+  background: #fbfdfb;
+}
+
+.ba-page .ba-evening legend {
+  float: left;
+  width: 100%;
+  margin-bottom: 7px;
+  padding: 0;
+  color: #1c412d;
+  font-size: 19px;
+  font-weight: 850;
+  letter-spacing: -.025em;
+}
+
+.ba-page .ba-evening-date {
+  clear: both;
+  margin-bottom: 23px;
+  color: #829085;
+  font-size: 11px;
+}
+
+.ba-page .ba-choices {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 9px;
+}
+
+.ba-page .ba-choice {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-height: 44px;
+  padding: 10px 13px;
+  border: 1px solid #dce7dd;
+  border-radius: 11px;
+  background: #fff;
+  color: #546c59;
+  font-size: 12px;
+  font-weight: 750;
+  cursor: pointer;
+  transition:
+    border-color .2s ease,
+    background-color .2s ease;
+}
+
+.ba-page .ba-choice:hover {
+  border-color: #96c1a0;
+  background: #f5faf5;
+}
+
+.ba-page .ba-choice input {
+  flex: 0 0 17px;
+  width: 17px;
+  height: 17px;
+  margin: 0;
+  accent-color: #26724c;
+  cursor: pointer;
+}
+
+.ba-page .ba-choice.is-selected {
+  border-color: #66a67a;
+  background: #e7f4e9;
+  color: #215f3d;
+}
+
+.ba-page .ba-choice.is-maybe {
+  border-color: #e5c88c;
+  background: #fff6e5;
+  color: #946521;
+}
+
+.ba-page .ba-choice.is-unavailable {
+  border-color: #dbe0dc;
+  background: #edf0ed;
+  color: #66746a;
+}
+
+.ba-page .ba-evening-status {
+  display: block;
+  margin-top: 20px;
+  color: #778a7c;
+  font-size: 11px;
+  font-weight: 750;
+}
+
+/* ==========================================
+   TOELICHTING
+   ========================================== */
+
+.ba-page .ba-notes {
+  display: grid;
+  gap: 10px;
+  margin: 0 29px;
+  padding: 27px 0;
+  border-top: 1px solid #e9efe9;
+}
+
+.ba-page .ba-notes > label {
+  color: #254a33;
+  font-size: 13px;
+  font-weight: 850;
+}
+
+.ba-page .ba-notes > label span {
+  color: #8a978c;
+  font-size: 11px;
+  font-weight: 500;
+}
+
+.ba-page .ba-notes > p {
+  max-width: 650px;
+  color: #7b8b7f;
+  font-size: 11px;
+  line-height: 1.65;
+}
+
+.ba-page .ba-notes textarea {
+  width: 100%;
+  min-height: 120px;
+  padding: 15px;
+  border: 1px solid #d5e3d8;
+  border-radius: 12px;
+  background: #fcfefc;
+  color: #244332;
+  font: inherit;
+  font-size: 13px;
+  line-height: 1.6;
+  resize: vertical;
+}
+
+.ba-page .ba-notes textarea:focus-visible {
+  outline: 3px solid #a5cfb0;
+  outline-offset: 2px;
+}
+
+.ba-page .ba-note-count {
+  justify-self: end;
+  color: #849187;
+  font-size: 11px;
+}
+
+/* ==========================================
+   OPSLAAN
+   ========================================== */
+
+.ba-page .ba-save-area {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 20px;
+  padding: 23px 29px;
+  border-top: 1px solid #e8eee8;
+  background: #f8fbf8;
+}
+
+.ba-page .ba-save-area strong {
+  display: block;
+  margin-bottom: 6px;
+  color: #254b34;
+  font-size: 12px;
+}
+
+.ba-page .ba-save-area p {
+  color: #809086;
+  font-size: 11px;
+}
+
+.ba-page .ba-save-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.ba-page .ba-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 43px;
+  padding: 11px 17px;
+  border: 1px solid transparent;
+  border-radius: 11px;
+  font: inherit;
+  font-size: 12px;
+  font-weight: 800;
+  line-height: 1.3;
+  cursor: pointer;
+}
+
+.ba-page .ba-button-primary {
+  background: #246847;
+  color: #fff;
+}
+
+.ba-page .ba-button-primary:hover {
+  background: #348458;
+}
+
+.ba-page .ba-button-light {
+  border-color: #d7e5da;
+  background: #fff;
+  color: #355e43;
+}
+
+.ba-page .ba-button-light:hover:not(:disabled) {
+  background: #eef6ef;
+}
+
+.ba-page .ba-button:disabled {
+  opacity: .45;
+  cursor: not-allowed;
+}
+
+.ba-page .ba-feedback {
+  min-height: 20px;
+  margin: 17px 29px 22px;
+  color: #2f7650;
+  font-size: 12px;
+  line-height: 1.6;
+}
+
+/* ==========================================
+   VOORBEELDDIENSTEN
+   ========================================== */
+
+.ba-page .ba-table-scroll {
+  overflow-x: auto;
+}
+
+.ba-page .ba-table {
+  width: 100%;
+  min-width: 620px;
+  border-collapse: collapse;
+  text-align: left;
+}
+
+.ba-page .ba-table th {
+  padding: 16px 20px;
+  border-bottom: 1px solid #e1eae2;
+  background: #f8fbf8;
+  color: #7c8b80;
+  font-size: 10px;
+  font-weight: 850;
+  letter-spacing: .05em;
+  text-transform: uppercase;
+}
+
+.ba-page .ba-table td {
+  padding: 20px;
+  border-bottom: 1px solid #ebf0eb;
+  color: #47604e;
+  font-size: 12px;
+}
+
+.ba-page .ba-table tbody tr:last-child td {
+  border-bottom: none;
+}
+
+.ba-page .ba-table td strong {
+  color: #22442e;
+}
+
+.ba-page .ba-demo-badge {
+  display: inline-flex;
+  padding: 7px 11px;
+  border-radius: 100px;
+  background: #edf2ed;
+  color: #647a69;
+  font-size: 10px;
+  font-weight: 800;
+}
+
+.ba-page .ba-text-link {
+  color: #28764a;
+  font-size: 12px;
+  font-weight: 800;
+  text-decoration: none;
+}
+
+.ba-page .ba-text-link:hover {
+  text-decoration: underline;
+}
+
+.ba-page .ba-table-note {
+  padding: 17px 29px;
+  border-top: 1px solid #e8eee8;
+  background: #fafcfa;
+  color: #829084;
+  font-size: 11px;
+  line-height: 1.7;
+}
+
+/* ==========================================
+   EXTRA INFORMATIE
+   ========================================== */
+
+.ba-page .ba-bottom-info {
+  display: flex;
+  align-items: flex-start;
+  gap: 17px;
+  margin-top: 30px;
+  padding: 26px;
+  border: 1px solid #dce9de;
+  border-radius: 18px;
+  background: #eaf4ec;
+}
+
+.ba-page .ba-bottom-icon {
+  display: grid;
+  place-items: center;
+  flex: 0 0 39px;
+  width: 39px;
+  height: 39px;
+  border-radius: 11px;
+  background: #cce9d2;
+  color: #2d7048;
+  font-size: 19px;
+  font-weight: 850;
+}
+
+.ba-page .ba-bottom-info h2 {
+  margin-bottom: 9px;
+  color: #1e4b31;
+  font-size: 15px;
+  font-weight: 850;
+}
+
+.ba-page .ba-bottom-info p {
+  max-width: 700px;
+  color: #567260;
+  font-size: 12px;
+  line-height: 1.75;
+}
+
+/* ==========================================
+   RESPONSIVE
+   ========================================== */
+
+@media (max-width: 1200px) {
+  .ba-page .ba-stats {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 760px) {
+  .ba-page .ba-evenings {
+    grid-template-columns: 1fr;
+  }
+
+  .ba-page .ba-save-area {
+    align-items: stretch;
+  }
+}
+
+@media (max-width: 600px) {
+  .ba-page .ba-stats {
+    gap: 11px;
+  }
+
+  .ba-page .ba-stat {
+    min-height: 130px;
+    padding: 17px;
+  }
+
+  .ba-page .ba-stat strong {
+    font-size: 28px;
+  }
+
+  .ba-page .ba-panel-header {
+    padding: 22px 18px;
+  }
+
+  .ba-page .ba-progress-track {
+    margin-inline: 18px;
+  }
+
+  .ba-page .ba-evenings {
+    padding-inline: 18px;
+  }
+
+  .ba-page .ba-evening {
+    padding: 19px;
+  }
+
+  .ba-page .ba-notes {
+    margin-inline: 18px;
+  }
+
+  .ba-page .ba-save-area {
+    padding: 22px 18px;
+  }
+
+  .ba-page .ba-save-buttons {
+    flex-direction: column;
+  }
+
+  .ba-page .ba-save-buttons .ba-button {
+    width: 100%;
+  }
+
+  .ba-page .ba-feedback {
+    margin-inline: 18px;
+  }
+
+  .ba-page .ba-table-note {
+    padding-inline: 18px;
+  }
+
+  .ba-page .ba-bottom-info {
+    padding: 20px;
+  }
+}
+
+@media (max-width: 380px) {
+  .ba-page .ba-stats {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ba-page .ba-progress-track span,
+  .ba-page .ba-choice {
+    transition: none;
+  }
+}

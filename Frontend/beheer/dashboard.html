@@ -4,145 +4,647 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description"
+          content="Beheerdashboard van de Avond4daagse 2027.">
+
     <title>Dashboard | Avond4daagse Beheer</title>
+
+    <!-- Bestaande CSS behouden -->
     <link rel="stylesheet" href="../css/beheer.css">
+
+    <!-- Nieuwe gedeelde beheerstijl -->
+    <link rel="stylesheet" href="../css/beheer-polish.css">
+
+    <!-- Mobiele navigatie -->
+    <script src="../js/beheer-ui.js" defer></script>
 </head>
-<body class="admin-body">
 
-<div class="admin-layout">
+<body class="bm-page">
 
-    <!-- Navigatie beheeromgeving -->
-    <aside class="admin-sidebar">
-        <div class="admin-brand">
-            <h2>AVOND4DAAGSE</h2>
-            <span>BEHEER 2027</span>
-        </div>
+    <div class="bm-layout">
 
-        <nav class="admin-navigation" aria-label="Beheernavigatie">
-          <a href="dashboard.html" class="admin-active" aria-current="page">Dashboard</a>
-          <a href="inschrijvingen.html">Inschrijvingen</a>
-          <a href="routebeheer.html">Routebeheer</a>
-          <a href="vrijwilligers.html">Vrijwilligers & inzet</a>
-          <a href="mijn-beschikbaarheid.html">Mijn beschikbaarheid</a>
-          <a href="draaiboek.html">Draaiboek</a>
-          <a href="financien.html">Financiën</a>
-          <a href="contactvragen.html">Contactvragen</a>
-        </nav>
+        <!-- ===================================
+             ZIJMENU
+             =================================== -->
 
-        <div class="admin-sidebar-footer">
-            <span>Beheeromgeving 2027</span>
-            <a href="login.html">Terug naar login (demo)</a>
-        </div>
-    </aside>
+        <aside class="bm-sidebar" id="bmSidebar">
 
-    <!-- Dashboard inhoud -->
-    <main class="admin-main">
+            <a href="dashboard.html" class="bm-brand">
+                <span class="bm-brand-symbol"
+                      aria-hidden="true">4</span>
 
-        <div class="admin-page-header">
-            <div>
-                <h1>Dashboard</h1>
-                <p>Overzicht van de Avond4daagse 2027</p>
+                <span>
+                    <strong>AVOND4DAAGSE</strong>
+                    <small>BEHEEROMGEVING 2027</small>
+                </span>
+            </a>
+
+            <div class="bm-sidebar-content">
+
+                <p class="bm-nav-label">OVERZICHT</p>
+
+                <nav class="bm-navigation"
+                     aria-label="Beheernavigatie">
+
+                    <a href="dashboard.html"
+                       class="bm-nav-active"
+                       aria-current="page">
+                        <span class="bm-nav-icon"
+                              aria-hidden="true">▦</span>
+                        Dashboard
+                    </a>
+
+                    <a href="inschrijvingen.html">
+                        <span class="bm-nav-icon"
+                              aria-hidden="true">◎</span>
+                        Inschrijvingen
+                    </a>
+
+                    <a href="routebeheer.html">
+                        <span class="bm-nav-icon"
+                              aria-hidden="true">◇</span>
+                        Routebeheer
+                    </a>
+
+                    <a href="vrijwilligers.html">
+                        <span class="bm-nav-icon"
+                              aria-hidden="true">♧</span>
+                        Vrijwilligers &amp; inzet
+                    </a>
+
+                    <a href="mijn-beschikbaarheid.html">
+                        <span class="bm-nav-icon"
+                              aria-hidden="true">◷</span>
+                        Mijn beschikbaarheid
+                    </a>
+
+                    <a href="draaiboek.html">
+                        <span class="bm-nav-icon"
+                              aria-hidden="true">☷</span>
+                        Draaiboek
+                    </a>
+
+                    <a href="financien.html">
+                        <span class="bm-nav-icon"
+                              aria-hidden="true">€</span>
+                        Financiën
+                    </a>
+
+                    <a href="contactvragen.html">
+                        <span class="bm-nav-icon"
+                              aria-hidden="true">✉</span>
+                        Contactvragen
+                    </a>
+
+                </nav>
             </div>
-            <span class="admin-demo-label">Voorbeeldgegevens</span>
+
+            <div class="bm-sidebar-footer">
+
+                <div class="bm-account">
+
+                    <span class="bm-account-avatar"
+                          aria-hidden="true">B</span>
+
+                    <span>
+                        <strong>Beheeromgeving</strong>
+                        <small>Frontenddemo</small>
+                    </span>
+
+                </div>
+
+                <a href="login.html" class="bm-sidebar-exit">
+                    Terug naar inloggen
+                    <span aria-hidden="true">↗</span>
+                </a>
+
+            </div>
+        </aside>
+
+
+        <!-- ===================================
+             HOOFDGEDEELTE
+             =================================== -->
+
+        <div class="bm-main-area">
+
+            <!-- BOVENBALK -->
+            <header class="bm-topbar">
+
+                <div class="bm-topbar-left">
+
+                    <button
+                        type="button"
+                        class="bm-menu-button"
+                        id="bmMenuButton"
+                        aria-controls="bmSidebar"
+                        aria-expanded="false"
+                        aria-label="Open beheermenu">
+                        <span aria-hidden="true">☰</span>
+                        Menu
+                    </button>
+
+                    <div class="bm-breadcrumb">
+                        <span>Beheeromgeving</span>
+                        <span aria-hidden="true">/</span>
+                        <strong>Dashboard</strong>
+                    </div>
+
+                </div>
+
+                <a href="../../index.html"
+                   class="bm-website-link">
+                    Bekijk publieke website
+                    <span aria-hidden="true">↗</span>
+                </a>
+
+            </header>
+
+
+            <main class="bm-content">
+
+                <!-- PAGINATITEL -->
+                <section class="bm-welcome">
+
+                    <div>
+
+                        <p class="bm-eyebrow">
+                            AVOND4DAAGSE 2027
+                        </p>
+
+                        <h1>Dashboard</h1>
+
+                        <p>
+                            Jouw centrale overzicht voor de
+                            organisatie van de Avond4daagse.
+                        </p>
+
+                    </div>
+
+                    <span class="bm-demo-tag">
+                        <span aria-hidden="true">●</span>
+                        Frontenddemo
+                    </span>
+
+                </section>
+
+
+                <!-- DEMOMELDING -->
+                <div class="bm-notice"
+                     role="note">
+
+                    <span class="bm-notice-icon"
+                          aria-hidden="true">i</span>
+
+                    <div>
+
+                        <strong>Dit dashboard gebruikt voorbeeldgegevens.</strong>
+
+                        <p>
+                            De cijfers hieronder zijn afkomstig
+                            uit de bestaande projectmock-up.
+                            Ze worden nog niet uit de database
+                            opgehaald. De beheeromgeving is
+                            nog niet beveiligd met een echte login.
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+                <!-- STATISTIEKEN -->
+                <section class="bm-section"
+                         aria-labelledby="bmStatsTitle">
+
+                    <div class="bm-section-heading">
+
+                        <div>
+                            <p class="bm-eyebrow">
+                                IN ÉÉN OOGOPSLAG
+                            </p>
+
+                            <h2 id="bmStatsTitle">
+                                Evenementoverzicht
+                            </h2>
+                        </div>
+
+                        <span class="bm-section-caption">
+                            Voorbeeldcijfers
+                        </span>
+
+                    </div>
+
+
+                    <div class="bm-stats">
+
+                        <!-- STATISTIEK 1 -->
+                        <article class="bm-stat-card">
+
+                            <div class="bm-stat-head">
+                                <span>Inschrijvingen</span>
+
+                                <span class="bm-stat-icon"
+                                      aria-hidden="true">◎</span>
+                            </div>
+
+                            <strong>1.248</strong>
+
+                            <div class="bm-stat-foot">
+                                <span class="bm-stat-dot"></span>
+                                Demo · totaal deelnemers
+                            </div>
+
+                        </article>
+
+
+                        <!-- STATISTIEK 2 -->
+                        <article class="bm-stat-card">
+
+                            <div class="bm-stat-head">
+                                <span>Betaalde inschrijvingen</span>
+
+                                <span class="bm-stat-icon"
+                                      aria-hidden="true">€</span>
+                            </div>
+
+                            <strong>1.176</strong>
+
+                            <div class="bm-stat-foot">
+                                <span class="bm-stat-dot"></span>
+                                Demo · betalingen
+                            </div>
+
+                        </article>
+
+
+                        <!-- STATISTIEK 3 -->
+                        <article class="bm-stat-card">
+
+                            <div class="bm-stat-head">
+                                <span>Vrijwilligers</span>
+
+                                <span class="bm-stat-icon"
+                                      aria-hidden="true">♧</span>
+                            </div>
+
+                            <strong>73</strong>
+
+                            <div class="bm-stat-foot">
+                                <span class="bm-stat-dot"></span>
+                                Demo · aangemeld
+                            </div>
+
+                        </article>
+
+
+                        <!-- STATISTIEK 4 -->
+                        <article class="bm-stat-card">
+
+                            <div class="bm-stat-head">
+                                <span>Openstaande vragen</span>
+
+                                <span class="bm-stat-icon"
+                                      aria-hidden="true">✉</span>
+                            </div>
+
+                            <strong>8</strong>
+
+                            <div class="bm-stat-foot">
+                                <span class="bm-stat-dot"></span>
+                                Demo · nog te behandelen
+                            </div>
+
+                        </article>
+
+                    </div>
+
+                </section>
+
+
+                <!-- SNELLE NAVIGATIE -->
+                <section class="bm-section"
+                         aria-labelledby="bmQuickTitle">
+
+                    <div class="bm-section-heading">
+
+                        <div>
+
+                            <p class="bm-eyebrow">
+                                DIRECT NAAR
+                            </p>
+
+                            <h2 id="bmQuickTitle">
+                                Wat wil je beheren?
+                            </h2>
+
+                        </div>
+
+                    </div>
+
+                    <div class="bm-shortcuts">
+
+                        <a href="inschrijvingen.html"
+                           class="bm-shortcut">
+
+                            <span class="bm-shortcut-icon"
+                                  aria-hidden="true">◎</span>
+
+                            <div>
+                                <h3>Inschrijvingen</h3>
+                                <p>
+                                    Bekijk deelnemers en
+                                    hun betaalstatus.
+                                </p>
+                            </div>
+
+                            <span class="bm-shortcut-arrow"
+                                  aria-hidden="true">↗</span>
+
+                        </a>
+
+
+                        <a href="routebeheer.html"
+                           class="bm-shortcut">
+
+                            <span class="bm-shortcut-icon"
+                                  aria-hidden="true">◇</span>
+
+                            <div>
+                                <h3>Routebeheer</h3>
+                                <p>
+                                    Bekijk routes,
+                                    afstanden en routeplanning.
+                                </p>
+                            </div>
+
+                            <span class="bm-shortcut-arrow"
+                                  aria-hidden="true">↗</span>
+
+                        </a>
+
+
+                        <a href="vrijwilligers.html"
+                           class="bm-shortcut">
+
+                            <span class="bm-shortcut-icon"
+                                  aria-hidden="true">♧</span>
+
+                            <div>
+                                <h3>Vrijwilligers</h3>
+                                <p>
+                                    Bekijk vrijwilligers
+                                    en de inzetplanning.
+                                </p>
+                            </div>
+
+                            <span class="bm-shortcut-arrow"
+                                  aria-hidden="true">↗</span>
+
+                        </a>
+
+
+                        <a href="draaiboek.html"
+                           class="bm-shortcut">
+
+                            <span class="bm-shortcut-icon"
+                                  aria-hidden="true">☷</span>
+
+                            <div>
+                                <h3>Draaiboek</h3>
+                                <p>
+                                    Bekijk taken en
+                                    werkzaamheden per avond.
+                                </p>
+                            </div>
+
+                            <span class="bm-shortcut-arrow"
+                                  aria-hidden="true">↗</span>
+
+                        </a>
+
+
+                        <a href="financien.html"
+                           class="bm-shortcut">
+
+                            <span class="bm-shortcut-icon"
+                                  aria-hidden="true">€</span>
+
+                            <div>
+                                <h3>Financiën</h3>
+                                <p>
+                                    Bekijk het financiële
+                                    overzicht en boekingen.
+                                </p>
+                            </div>
+
+                            <span class="bm-shortcut-arrow"
+                                  aria-hidden="true">↗</span>
+
+                        </a>
+
+
+                        <a href="contactvragen.html"
+                           class="bm-shortcut">
+
+                            <span class="bm-shortcut-icon"
+                                  aria-hidden="true">✉</span>
+
+                            <div>
+                                <h3>Contactvragen</h3>
+                                <p>
+                                    Bekijk ontvangen vragen
+                                    en berichten.
+                                </p>
+                            </div>
+
+                            <span class="bm-shortcut-arrow"
+                                  aria-hidden="true">↗</span>
+
+                        </a>
+
+                    </div>
+
+                </section>
+
+
+                <!-- ONDERSTE TWEE KOLOMMEN -->
+                <div class="bm-bottom-grid">
+
+                    <!-- INSCHRIJVINGENVOORBEELD -->
+                    <section class="bm-panel">
+
+                        <div class="bm-panel-header">
+
+                            <div>
+                                <p class="bm-eyebrow">
+                                    VOORBEELDGEGEVENS
+                                </p>
+
+                                <h2>Recente inschrijvingen</h2>
+                            </div>
+
+                            <a href="inschrijvingen.html">
+                                Bekijk overzicht ↗
+                            </a>
+
+                        </div>
+
+                        <div class="bm-table-scroll">
+
+                            <table class="bm-table">
+
+                                <thead>
+                                    <tr>
+                                        <th>Deelnemer</th>
+                                        <th>Afstand</th>
+                                        <th>Status</th>
+                                    </tr>
+                                </thead>
+
+                                <tbody>
+                                    <tr>
+                                        <td>Lisa de Vries</td>
+                                        <td>5 km</td>
+                                        <td>
+                                            <span class="bm-status bm-paid">
+                                                Betaald
+                                            </span>
+                                        </td>
+                                    </tr>
+
+                                    <tr>
+                                        <td>Thomas Jansen</td>
+                                        <td>10 km</td>
+                                        <td>
+                                            <span class="bm-status bm-paid">
+                                                Betaald
+                                            </span>
+                                        </td>
+                                    </tr>
+
+                                    <tr>
+                                        <td>Emma Bakker</td>
+                                        <td>5 km</td>
+                                        <td>
+                                            <span class="bm-status bm-pending">
+                                                Open
+                                            </span>
+                                        </td>
+                                    </tr>
+
+                                    <tr>
+                                        <td>Noah Visser</td>
+                                        <td>5 km</td>
+                                        <td>
+                                            <span class="bm-status bm-paid">
+                                                Betaald
+                                            </span>
+                                        </td>
+                                    </tr>
+                                </tbody>
+
+                            </table>
+
+                        </div>
+
+                        <p class="bm-panel-note">
+                            Deze deelnemers zijn fictieve
+                            voorbeelden uit het huidige ontwerp.
+                        </p>
+
+                    </section>
+
+
+                    <!-- WERKSTROMEN -->
+                    <section class="bm-panel">
+
+                        <div class="bm-panel-header">
+                            <div>
+                                <p class="bm-eyebrow">
+                                    WERKSTROMEN
+                                </p>
+
+                                <h2>Belangrijke onderdelen</h2>
+                            </div>
+                        </div>
+
+                        <div class="bm-workflows">
+
+                            <a href="contactvragen.html"
+                               class="bm-workflow">
+
+                                <span class="bm-workflow-marker"
+                                      aria-hidden="true"></span>
+
+                                <div>
+                                    <strong>Contactvragen</strong>
+                                    <p>
+                                        Ga naar de inbox van
+                                        de organisatie.
+                                    </p>
+                                </div>
+
+                                <span aria-hidden="true">→</span>
+
+                            </a>
+
+                            <a href="mijn-beschikbaarheid.html"
+                               class="bm-workflow">
+
+                                <span class="bm-workflow-marker"
+                                      aria-hidden="true"></span>
+
+                                <div>
+                                    <strong>Beschikbaarheid</strong>
+                                    <p>
+                                        Bekijk de beschikbaarheid
+                                        van vrijwilligers.
+                                    </p>
+                                </div>
+
+                                <span aria-hidden="true">→</span>
+
+                            </a>
+
+                            <a href="draaiboek-maand.html"
+                               class="bm-workflow">
+
+                                <span class="bm-workflow-marker"
+                                      aria-hidden="true"></span>
+
+                                <div>
+                                    <strong>Maandoverzicht</strong>
+                                    <p>
+                                        Bekijk taken in het
+                                        maandelijkse draaiboek.
+                                    </p>
+                                </div>
+
+                                <span aria-hidden="true">→</span>
+
+                            </a>
+
+                        </div>
+
+                    </section>
+
+                </div>
+
+
+                <footer class="bm-content-footer">
+                    Avond4daagse 2027 · Beheeromgeving · Frontenddemo
+                </footer>
+
+            </main>
+
         </div>
+    </div>
 
-        <!-- Statistieken -->
-        <section class="admin-stats" aria-label="Statistieken">
-
-            <article class="admin-stat-card">
-                <span>Inschrijvingen</span>
-                <strong>1.248</strong>
-                <small>Totaal ingeschreven</small>
-            </article>
-
-            <article class="admin-stat-card">
-                <span>Betaalde inschrijvingen</span>
-                <strong>1.176</strong>
-                <small>Betaling ontvangen</small>
-            </article>
-
-            <article class="admin-stat-card">
-                <span>Vrijwilligers</span>
-                <strong>73</strong>
-                <small>Aangemelde vrijwilligers</small>
-            </article>
-
-            <article class="admin-stat-card">
-                <span>Openstaande vragen</span>
-                <strong>8</strong>
-                <small>Nog te behandelen</small>
-            </article>
-
-        </section>
-
-        <!-- Dashboard overzichten -->
-        <div class="admin-dashboard-grid">
-
-            <section class="admin-panel">
-                <div class="admin-panel-header">
-                    <h2>Recente inschrijvingen</h2>
-                </div>
-
-                <div class="admin-table-scroll">
-                    <table class="admin-table">
-                        <thead>
-                            <tr>
-                                <th>Deelnemer</th>
-                                <th>Afstand</th>
-                                <th>Status</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td>Lisa de Vries</td>
-                                <td>5 km</td>
-                                <td><span class="admin-status">Betaald</span></td>
-                            </tr>
-                            <tr>
-                                <td>Thomas Jansen</td>
-                                <td>10 km</td>
-                                <td><span class="admin-status">Betaald</span></td>
-                            </tr>
-                            <tr>
-                                <td>Emma Bakker</td>
-                                <td>5 km</td>
-                                <td><span class="admin-status pending">Open</span></td>
-                            </tr>
-                            <tr>
-                                <td>Noah Visser</td>
-                                <td>5 km</td>
-                                <td><span class="admin-status">Betaald</span></td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-            </section>
-
-            <section class="admin-panel">
-                <div class="admin-panel-header">
-                    <h2>Acties voor vandaag</h2>
-                </div>
-
-                <div class="admin-task">
-                    <strong>Openstaande contactvragen</strong>
-                    <p>Controleer berichten van deelnemers.</p>
-                </div>
-
-                <div class="admin-task">
-                    <strong>Betalingen controleren</strong>
-                    <p>Bekijk inschrijvingen die nog niet betaald zijn.</p>
-                </div>
-
-                <div class="admin-task">
-                    <strong>Vrijwilligersplanning</strong>
-                    <p>Controleer de openstaande diensten.</p>
-                </div>
-            </section>
-
-        </div>
-
-    </main>
-</div>
+    <!-- Mobiele achtergrond bij geopend menu -->
+    <div class="bm-backdrop"
+         id="bmBackdrop"
+         hidden></div>
 
 </body>
 </html>

@@ -4,445 +4,370 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Inzetschema - Avond4daagse</title>
+  <meta name="description" content="Inzetschema vrijwilligers Avond4daagse 2027.">
+  <title>Inzetschema | Avond4daagse Beheer</title>
+
   <link rel="stylesheet" href="../css/beheer.css">
+  <link rel="stylesheet" href="../css/beheer-polish.css">
+  <link rel="stylesheet" href="../css/beheer-vrijwilligers.css">
+
+  <script src="../js/beheer-ui.js" defer></script>
+  <script src="../js/beheer-vrijwilligers.js" defer></script>
 </head>
 
-<body class="vrij-page inzet-page">
+<body class="bm-page bv-page">
+<div class="bm-layout">
 
-<div class="vrij-layout">
+  <!-- ZIJMENU -->
+  <aside class="bm-sidebar" id="bmSidebar">
 
-  <!-- SIDEBAR -->
-  <aside class="vrij-sidebar">
+    <a href="dashboard.html" class="bm-brand">
+      <span class="bm-brand-symbol" aria-hidden="true">4</span>
+      <span>
+        <strong>AVOND4DAAGSE</strong>
+        <small>BEHEEROMGEVING 2027</small>
+      </span>
+    </a>
 
-    <div class="vrij-logo">
-      <strong>AVOND4DAAGSE</strong>
-      <small>BEHEER 2027</small>
+    <div class="bm-sidebar-content">
+      <p class="bm-nav-label">OVERZICHT</p>
+
+      <nav class="bm-navigation" aria-label="Beheernavigatie">
+        <a href="dashboard.html">
+          <span class="bm-nav-icon" aria-hidden="true">▦</span>
+          Dashboard
+        </a>
+
+        <a href="inschrijvingen.html">
+          <span class="bm-nav-icon" aria-hidden="true">◎</span>
+          Inschrijvingen
+        </a>
+
+        <a href="routebeheer.html">
+          <span class="bm-nav-icon" aria-hidden="true">◇</span>
+          Routebeheer
+        </a>
+
+        <a href="vrijwilligers.html"
+           class="bm-nav-active"
+           aria-current="page">
+          <span class="bm-nav-icon" aria-hidden="true">♧</span>
+          Vrijwilligers &amp; inzet
+        </a>
+
+        <a href="mijn-beschikbaarheid.html">
+          <span class="bm-nav-icon" aria-hidden="true">◷</span>
+          Mijn beschikbaarheid
+        </a>
+
+        <a href="draaiboek.html">
+          <span class="bm-nav-icon" aria-hidden="true">☷</span>
+          Draaiboek
+        </a>
+
+        <a href="financien.html">
+          <span class="bm-nav-icon" aria-hidden="true">€</span>
+          Financiën
+        </a>
+
+        <a href="contactvragen.html">
+          <span class="bm-nav-icon" aria-hidden="true">✉</span>
+          Contactvragen
+        </a>
+      </nav>
     </div>
 
-    <nav class="vrij-menu">
-      <a href="dashboard.html">Dashboard</a>
-      <a href="inschrijvingen.html">Inschrijvingen</a>
-      <a href="routebeheer.html">Routebeheer</a>
-      <a href="vrijwilligers.html" class="vrij-active" aria-current="page">Vrijwilligers & inzet</a>
-      <a href="mijn-beschikbaarheid.html">Mijn beschikbaarheid</a>
-      <a href="draaiboek.html">Draaiboek</a>
-      <a href="financien.html">Financiën</a>
-      <a href="contactvragen.html">Contactvragen</a>
-    </nav>
-
-    <div class="vrij-sidebar-bottom">
-      <p>Beheerder</p>
-      <a href="login.html">Uitloggen</a>
-    </div>
-
-  </aside>
-
-  <!-- HOOFDINHOUD -->
-  <main class="vrij-main inzet-main">
-
-    <header class="vrij-header">
-      <div>
-        <h1>Vrijwilligers & inzet</h1>
-        <p>
-          Beheer beschikbaarheid, rollen en contactgegevens,
-          en koppel vrijwilligers direct aan diensten in het inzetschema.
-        </p>
-      </div>
-
-      <button class="vrij-dark-btn" type="button" disabled>
-        + Vrijwilliger
-      </button>
-    </header>
-
-    <!-- TABS -->
-    <div class="vrij-tabs">
-      <a class="vrij-tab inzet-tab" href="vrijwilligers.html">
-        Vrijwilligers
-      </a>
-
-      <a class="vrij-tab inzet-tab active"
-         href="inzetschema.html"
-         aria-current="page">
-        Inzetschema
-      </a>
-    </div>
-
-    <!-- PLANNING -->
-    <div class="inzet-table-container">
-      <table class="inzet-table">
-
-        <thead>
-          <tr>
-            <th>TIJD</th>
-            <th>DINSDAG 1 JUNI</th>
-            <th>WOENSDAG 2 JUNI</th>
-            <th>DONDERDAG 3 JUNI</th>
-            <th>VRIJDAG 4 JUNI</th>
-          </tr>
-        </thead>
-
-        <tbody id="inzetRooster">
-          <!-- De diensten worden hieronder
-               met JavaScript toegevoegd -->
-        </tbody>
-
-      </table>
-    </div>
-
-    <!-- GESELECTEERDE DIENST -->
-    <section class="inzet-details">
-
-      <div class="inzet-details-header">
-        <div>
-          <h2 id="dienstTitel">
-            Routeposten • do 18:15–20:30
-          </h2>
-          <p id="dienstBezetting">
-            13 / 14 bezet • 1 open plaats
-          </p>
-        </div>
-
-        <span class="inzet-badge" id="dienstOpen">
-          NOG 1 OPEN
+    <div class="bm-sidebar-footer">
+      <div class="bm-account">
+        <span class="bm-account-avatar" aria-hidden="true">B</span>
+        <span>
+          <strong>Beheeromgeving</strong>
+          <small>Frontenddemo</small>
         </span>
       </div>
 
-      <div class="inzet-details-grid">
+      <a href="login.html" class="bm-sidebar-exit">
+        Terug naar inloggen
+        <span aria-hidden="true">↗</span>
+      </a>
+    </div>
+  </aside>
 
-        <!-- HUIDIGE BEZETTING -->
-        <div class="inzet-huidig">
-          <h3>HUIDIGE BEZETTING</h3>
+  <!-- PAGINA -->
+  <div class="bm-main-area">
 
-          <p id="gekoppeldAantal">
-            13 vrijwilligers gekoppeld
+    <header class="bm-topbar">
+      <div class="bm-topbar-left">
+        <button type="button"
+                class="bm-menu-button"
+                id="bmMenuButton"
+                aria-controls="bmSidebar"
+                aria-expanded="false"
+                aria-label="Open beheermenu">
+          <span aria-hidden="true">☰</span>
+          Menu
+        </button>
+
+        <div class="bm-breadcrumb">
+          <span>Beheeromgeving</span>
+          <span aria-hidden="true">/</span>
+          <strong>Inzetschema</strong>
+        </div>
+      </div>
+
+      <a href="../../index.html" class="bm-website-link">
+        Bekijk publieke website ↗
+      </a>
+    </header>
+
+    <main class="bm-content">
+
+      <!-- TITEL -->
+      <section class="bv-heading">
+        <div>
+          <p class="bm-eyebrow">VRIJWILLIGERSPLANNING</p>
+          <h1>Inzetschema</h1>
+          <p>
+            Bekijk de bezetting per dienst, vind open
+            plaatsen en wijs voorbeeldvrijwilligers toe.
           </p>
-
-          <div class="inzet-voorbeeld">
-            <span>Voorbeeld: Anja Mulder</span>
-            <span>Verkeersregelaar</span>
-          </div>
         </div>
 
-        <!-- VRIJWILLIGER TOEVOEGEN -->
-        <div class="inzet-wijzigen">
+        <a href="vrijwilligers.html"
+           class="bv-button bv-button-light">
+          ← Vrijwilligersoverzicht
+        </a>
+      </section>
 
-          <h3>WIJZIGING TOEPASSEN</h3>
+      <!-- TABS -->
+      <nav class="bv-tabs" aria-label="Vrijwilligerspagina's">
+        <a href="vrijwilligers.html">
+          Vrijwilligers
+        </a>
+        <a href="inzetschema.html"
+           class="bv-tab-active"
+           aria-current="page">
+          Inzetschema
+        </a>
+      </nav>
 
-          <label for="vrijwilligerSelect">
-            Kies vrijwilliger
-          </label>
-
-          <select id="vrijwilligerSelect">
-            <option value="">Selecteer vrijwilliger</option>
-            <option value="Jan de Groot">Jan de Groot</option>
-            <option value="Anja Mulder">Anja Mulder</option>
-            <option value="Peter Kuiper">Peter Kuiper</option>
-          </select>
-
-          <p class="inzet-klein">
-            Dit zijn voorbeeldvrijwilligers.
-            Beschikbaarheid wordt nog niet automatisch gecontroleerd.
+      <!-- MELDING -->
+      <div class="bm-notice" role="note">
+        <span class="bm-notice-icon" aria-hidden="true">i</span>
+        <div>
+          <strong>Voorbeeldplanning — niet definitief</strong>
+          <p>
+            De aantallen en diensten komen uit de bestaande
+            projectmock-up. De officiële datums zijn nog niet
+            bevestigd. Nieuwe toewijzingen worden alleen in
+            deze browser bewaard, niet in de database.
+            Beschikbaarheid en dubbele diensten worden nog
+            niet automatisch gecontroleerd.
           </p>
+        </div>
+      </div>
 
-          <button class="vrij-dark-btn"
-                  id="voegVrijwilligerToe"
-                  type="button">
-            Toevoegen aan dienst
-          </button>
+      <!-- STATISTIEKEN -->
+      <section class="bv-stats" aria-label="Inzetstatistieken">
+        <article class="bv-stat">
+          <span>Totaal diensten</span>
+          <strong id="bsTotalShifts">20</strong>
+          <small>Voorbeeldrooster</small>
+        </article>
 
-          <div class="inzet-controle">
-            <strong>CONTROLE VOOR TOEWIJZEN</strong>
+        <article class="bv-stat">
+          <span>Open plaatsen</span>
+          <strong id="bsOpenPlaces">0</strong>
+          <small>Over alle vier de avonden</small>
+        </article>
 
+        <article class="bv-stat">
+          <span>Volledig bezet</span>
+          <strong id="bsFullShifts">0</strong>
+          <small>Diensten zonder open plaatsen</small>
+        </article>
+      </section>
+
+      <!-- PLANNING -->
+      <section class="bv-panel"
+               aria-labelledby="bsPlanningTitle">
+
+        <div class="bv-panel-header">
+          <div>
+            <p class="bm-eyebrow">ROOSTER</p>
+            <h2 id="bsPlanningTitle">
+              Bezetting per wandelavond
+            </h2>
             <p>
-              Controleer of de vrijwilliger beschikbaar is
-              en of de dienst nog open plaatsen heeft.
-              Automatische controles komen later.
+              Selecteer een dienst om de bezetting en
+              beschikbare plaatsen te bekijken.
             </p>
           </div>
 
+          <button type="button"
+                  class="bv-button bv-button-light"
+                  id="bsReset">
+            Demo-toewijzingen wissen
+          </button>
         </div>
 
-      </div>
+        <!-- FILTERS -->
+        <div class="bv-schedule-filters">
 
-      <p id="inzetMelding" class="inzet-melding" role="status"></p>
+          <label>
+            Toon wandelavond
+            <select id="bsEveningFilter">
+              <option value="all">Alle avonden</option>
+              <option value="1">Avond 1</option>
+              <option value="2">Avond 2</option>
+              <option value="3">Avond 3</option>
+              <option value="4">Avond 4</option>
+            </select>
+          </label>
 
-    </section>
+          <label class="bv-check-filter">
+            <input type="checkbox" id="bsOnlyOpen">
+            Alleen diensten met open plaatsen
+          </label>
 
-    <!-- ONDERKANT -->
-    <div class="inzet-footer">
+        </div>
 
-      <strong id="totaalOpen">
-        Open plaatsen berekenen...
-      </strong>
+        <!-- ROOSTERTABEL -->
+        <div class="bv-table-scroll">
 
-      <button class="vrij-light-btn" id="toonOpen" type="button">
-        Bekijk open diensten
-      </button>
+          <table class="bv-table bv-schedule-table"
+                 id="bsTable">
 
-    </div>
+            <thead>
+              <tr>
+                <th scope="col">Tijd</th>
+                <th scope="col" data-evening="1">
+                  Avond 1
+                </th>
+                <th scope="col" data-evening="2">
+                  Avond 2
+                </th>
+                <th scope="col" data-evening="3">
+                  Avond 3
+                </th>
+                <th scope="col" data-evening="4">
+                  Avond 4
+                </th>
+              </tr>
+            </thead>
 
-    <p class="inzet-demo-note">
-      Voorbeeldplanning: wijzigingen worden alleen in deze
-      browserpagina bijgehouden en nog niet opgeslagen
-      in een database.
-    </p>
+            <tbody id="bsTableBody">
+              <tr>
+                <td colspan="5">Rooster laden...</td>
+              </tr>
+            </tbody>
 
-  </main>
+          </table>
+
+        </div>
+
+        <div class="bv-panel-footer">
+          <span>
+            Groene diensten hebben nog vrije plaatsen.
+            Grijze diensten zijn volledig bezet.
+          </span>
+        </div>
+
+      </section>
+
+
+      <!-- GESELECTEERDE DIENST -->
+      <section class="bv-panel bv-shift-details"
+               aria-labelledby="bsDetailTitle">
+
+        <div class="bv-panel-header">
+          <div>
+            <p class="bm-eyebrow">GESELECTEERDE DIENST</p>
+            <h2 id="bsDetailTitle">Selecteer een dienst</h2>
+            <p id="bsDetailCount">
+              Klik hierboven op een dienst.
+            </p>
+          </div>
+
+          <span id="bsDetailStatus"
+                class="bv-shift-badge">
+            Geen selectie
+          </span>
+        </div>
+
+        <div class="bv-assignment-grid">
+
+          <!-- LINKERKAART -->
+          <div class="bv-assignment-card">
+
+            <h3>Huidige bezetting</h3>
+
+            <p id="bsBaseInfo">
+              De oorspronkelijke bezetting komt
+              uit de voorbeeldplanning.
+            </p>
+
+            <div class="bv-assignment-list">
+              <strong>Zelf toegevoegde vrijwilligers</strong>
+
+              <ul id="bsAssignedNames">
+                <li>Nog niemand toegevoegd.</li>
+              </ul>
+            </div>
+          </div>
+
+          <!-- RECHTERKAART -->
+          <div class="bv-assignment-card">
+
+            <h3>Vrijwilliger toewijzen</h3>
+
+            <label for="bsVolunteer">
+              Kies een voorbeeldvrijwilliger
+            </label>
+
+            <select id="bsVolunteer">
+              <option value="">Selecteer vrijwilliger</option>
+              <option value="Anja Mulder">Anja Mulder</option>
+              <option value="Peter Kuiper">Peter Kuiper</option>
+              <option value="Jan de Groot">Jan de Groot</option>
+              <option value="Iris Hendriks">Iris Hendriks</option>
+            </select>
+
+            <button type="button"
+                    id="bsAddVolunteer"
+                    class="bv-button bv-button-primary"
+                    disabled>
+              Toevoegen aan dienst
+            </button>
+
+            <p class="bv-form-help">
+              Toewijzen is alleen een demo. Controleer in
+              een echte planning altijd beschikbaarheid,
+              bevoegdheden en eventuele overlappende diensten.
+            </p>
+
+          </div>
+
+        </div>
+
+        <p id="bsMessage"
+           class="bv-feedback"
+           role="status"
+           aria-live="polite"></p>
+
+      </section>
+
+      <footer class="bm-content-footer">
+        Avond4daagse 2027 · Inzetschema · Frontenddemo
+      </footer>
+
+    </main>
+  </div>
 </div>
 
-<script>
-
-  // VOORBEELDGEGEVENS UIT FIGMA
-  const dagen = ["di", "wo", "do", "vr"];
-
-  const planning = [
-    {
-      tijd: "17:00–18:00",
-      diensten: [
-        ["Opbouw startterrein", 6, 6],
-        ["Opbouw startterrein", 5, 6],
-        ["Opbouw startterrein", 4, 6],
-        ["Finish opbouw", 8, 10]
-      ]
-    },
-    {
-      tijd: "18:00–19:00",
-      diensten: [
-        ["Startbureau", 5, 5],
-        ["Startbureau", 4, 5],
-        ["Startbureau", 5, 5],
-        ["Startbureau", 5, 5]
-      ]
-    },
-    {
-      tijd: "18:15–20:30",
-      diensten: [
-        ["Routeposten", 12, 14],
-        ["Routeposten", 10, 14],
-        ["Routeposten", 13, 14],
-        ["Routeposten", 14, 14]
-      ]
-    },
-    {
-      tijd: "19:30–21:30",
-      diensten: [
-        ["Finishteam", 6, 6],
-        ["Finishteam", 5, 6],
-        ["Finishteam", 6, 6],
-        ["Medaille-uitgifte", 12, 15]
-      ]
-    },
-    {
-      tijd: "21:00–22:00",
-      diensten: [
-        ["Afbouw", 4, 4],
-        ["Afbouw", 3, 4],
-        ["Afbouw", 4, 4],
-        ["Eindschoonmaak", 6, 8]
-      ]
-    }
-  ];
-
-  const rooster = document.getElementById("inzetRooster");
-  const selectVrijwilliger = document.getElementById("vrijwilligerSelect");
-  const melding = document.getElementById("inzetMelding");
-  const toevoegenKnop = document.getElementById("voegVrijwilligerToe");
-
-  let geselecteerdeDienst = null;
-  let alleenOpen = false;
-
-  // Bijhouden welke voorbeeldvrijwilligers
-  // we tijdelijk aan een dienst toevoegen.
-  const toewijzingen = new Map();
-
-  // ROOSTER MAKEN
-  planning.forEach((rij) => {
-    const tr = document.createElement("tr");
-
-    const tijdCel = document.createElement("th");
-    tijdCel.scope = "row";
-    tijdCel.textContent = rij.tijd;
-    tr.appendChild(tijdCel);
-
-    rij.diensten.forEach((dienst, index) => {
-      const [naam, bezet, totaal] = dienst;
-
-      const td = document.createElement("td");
-      const knop = document.createElement("button");
-
-      knop.type = "button";
-      knop.className = "inzet-slot";
-
-      knop.dataset.dag = dagen[index];
-      knop.dataset.tijd = rij.tijd;
-      knop.dataset.naam = naam;
-      knop.dataset.bezet = bezet;
-      knop.dataset.totaal = totaal;
-
-      const naamElement = document.createElement("strong");
-      naamElement.textContent = naam;
-
-      const aantalElement = document.createElement("span");
-      aantalElement.className = "inzet-aantal";
-      aantalElement.textContent = `${bezet} / ${totaal}`;
-
-      knop.append(naamElement, aantalElement);
-
-      knop.addEventListener("click", () => {
-        selecteerDienst(knop);
-      });
-
-      td.appendChild(knop);
-      tr.appendChild(td);
-    });
-
-    rooster.appendChild(tr);
-  });
-
-  // DIENST SELECTEREN
-  function selecteerDienst(knop) {
-    document.querySelectorAll(".inzet-slot").forEach((slot) => {
-      slot.classList.remove("selected");
-      slot.setAttribute("aria-pressed", "false");
-    });
-
-    knop.classList.add("selected");
-    knop.setAttribute("aria-pressed", "true");
-    geselecteerdeDienst = knop;
-
-    const naam = knop.dataset.naam;
-    const dag = knop.dataset.dag;
-    const tijd = knop.dataset.tijd;
-
-    document.getElementById("dienstTitel").textContent =
-      `${naam} • ${dag} ${tijd}`;
-
-    updateDetails();
-    melding.textContent = "";
-    selectVrijwilliger.value = "";
-  }
-
-  // DETAILS BIJWERKEN
-  function updateDetails() {
-    if (!geselecteerdeDienst) return;
-
-    const bezet = Number(geselecteerdeDienst.dataset.bezet);
-    const totaal = Number(geselecteerdeDienst.dataset.totaal);
-    const open = totaal - bezet;
-
-    document.getElementById("dienstBezetting").textContent =
-      `${bezet} / ${totaal} bezet • ${open} open plaatsen`;
-
-    document.getElementById("gekoppeldAantal").textContent =
-      `${bezet} vrijwilligers gekoppeld`;
-
-    document.getElementById("dienstOpen").textContent =
-      open > 0 ? `NOG ${open} OPEN` : "VOL";
-
-    toevoegenKnop.disabled = open === 0;
-  }
-
-  // TOTAAL AANTAL OPEN PLAATSEN
-  function berekenOpenPlaatsen() {
-    let open = 0;
-
-    document.querySelectorAll(".inzet-slot").forEach((slot) => {
-      open += Number(slot.dataset.totaal)
-        - Number(slot.dataset.bezet);
-    });
-
-    document.getElementById("totaalOpen").textContent =
-      `Totaal nog ${open} open plaatsen in dit voorbeeldrooster`;
-  }
-
-  // VRIJWILLIGER TOEVOEGEN (DEMO)
-  toevoegenKnop.addEventListener("click", () => {
-    if (!geselecteerdeDienst) return;
-
-    const naam = selectVrijwilliger.value;
-
-    if (!naam) {
-      melding.textContent = "Selecteer eerst een vrijwilliger.";
-      return;
-    }
-
-    const bezet = Number(geselecteerdeDienst.dataset.bezet);
-    const totaal = Number(geselecteerdeDienst.dataset.totaal);
-
-    if (bezet >= totaal) {
-      melding.textContent = "Deze dienst zit al vol.";
-      return;
-    }
-
-    const sleutel =
-      `${geselecteerdeDienst.dataset.dag}-${geselecteerdeDienst.dataset.tijd}`;
-
-    if (!toewijzingen.has(sleutel)) {
-      toewijzingen.set(sleutel, new Set());
-    }
-
-    const personen = toewijzingen.get(sleutel);
-
-    if (personen.has(naam)) {
-      melding.textContent =
-        `${naam} is in deze demo al aan deze dienst toegevoegd.`;
-      return;
-    }
-
-    personen.add(naam);
-
-    const nieuwAantal = bezet + 1;
-
-    geselecteerdeDienst.dataset.bezet = nieuwAantal;
-
-    geselecteerdeDienst.querySelector(".inzet-aantal").textContent =
-      `${nieuwAantal} / ${totaal}`;
-
-    melding.textContent =
-      `${naam} is tijdelijk toegevoegd aan deze dienst. Niet opgeslagen in de database.`;
-
-    updateDetails();
-    berekenOpenPlaatsen();
-    vernieuwOpenFilter();
-    selectVrijwilliger.value = "";
-  });
-
-  // ALLEEN OPEN DIENSTEN TONEN
-  function vernieuwOpenFilter() {
-    document.querySelectorAll(".inzet-slot").forEach((slot) => {
-      const open = Number(slot.dataset.totaal)
-        - Number(slot.dataset.bezet);
-
-      slot.classList.toggle(
-        "inzet-verborgen",
-        alleenOpen && open === 0
-      );
-    });
-  }
-
-  document.getElementById("toonOpen").addEventListener("click", (event) => {
-    alleenOpen = !alleenOpen;
-
-    event.currentTarget.textContent = alleenOpen
-      ? "Toon alle diensten"
-      : "Bekijk open diensten";
-
-    vernieuwOpenFilter();
-  });
-
-  // STANDAARD DE DONDERDAG ROUTEPOSTEN SELECTEREN
-  const standaardDienst = document.querySelector(
-    '.inzet-slot[data-dag="do"][data-tijd="18:15–20:30"]'
-  );
-
-  if (standaardDienst) {
-    selecteerDienst(standaardDienst);
-  }
-
-  berekenOpenPlaatsen();
-
-</script>
+<div class="bm-backdrop"
+     id="bmBackdrop"
+     hidden></div>
 
 </body>
 </html>

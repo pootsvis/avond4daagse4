@@ -1,0 +1,568 @@
+
+/* ==========================================
+   AVOND4DAAGSE 2027
+   INSCHRIJVINGENBEHEER
+   ========================================== */
+
+.bi-page {
+    --bi-green: #205c40;
+    --bi-dark: #193729;
+    --bi-muted: #69796e;
+    --bi-line: #e1e9e2;
+}
+
+.bi-page .bi-heading {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    flex-wrap: wrap;
+    gap: 20px;
+    margin-bottom: 26px;
+}
+
+.bi-page .bi-heading h1 {
+    margin: 8px 0 10px;
+    color: var(--bi-dark);
+    font-size: clamp(30px, 3vw, 40px);
+    line-height: 1.12;
+    letter-spacing: -.045em;
+}
+
+.bi-page .bi-heading > div > p:last-child {
+    font-size: 13px;
+    line-height: 1.7;
+    color: var(--bi-muted);
+}
+
+/* ==========================================
+   STATISTIEKEN
+   ========================================== */
+
+.bi-page .bi-stats {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 16px;
+    margin-bottom: 29px;
+}
+
+.bi-page .bi-stat {
+    display: flex;
+    flex-direction: column;
+    min-height: 156px;
+    min-width: 0;
+    padding: 24px;
+    border: 1px solid var(--bi-line);
+    border-radius: 20px;
+    background: #fff;
+    box-shadow: 0 9px 26px rgba(21, 53, 33, .035);
+}
+
+.bi-page .bi-stat-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 10px;
+    color: var(--bi-muted);
+    font-size: 12px;
+    font-weight: 650;
+}
+
+.bi-page .bi-stat-symbol {
+    display: grid;
+    place-items: center;
+    flex: 0 0 34px;
+    width: 34px;
+    height: 34px;
+    border-radius: 11px;
+    background: #e9f3eb;
+    color: #3e7b56;
+    font-size: 19px;
+}
+
+.bi-page .bi-stat strong {
+    display: block;
+    margin: 17px 0 8px;
+    color: var(--bi-dark);
+    font-size: 35px;
+    line-height: 1;
+    letter-spacing: -.05em;
+}
+
+.bi-page .bi-stat small {
+    margin-top: auto;
+    color: #859187;
+    font-size: 11px;
+}
+
+/* ==========================================
+   HOOFDPANEEL
+   ========================================== */
+
+.bi-page .bi-panel {
+    overflow: hidden;
+    border: 1px solid var(--bi-line);
+    border-radius: 22px;
+    background: #fff;
+    box-shadow: 0 13px 37px rgba(21, 53, 33, .035);
+}
+
+.bi-page .bi-panel-heading {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 20px;
+    padding: 28px 29px;
+}
+
+.bi-page .bi-panel-heading h2 {
+    margin: 9px 0 8px;
+    color: var(--bi-dark);
+    font-size: 23px;
+    letter-spacing: -.035em;
+}
+
+.bi-page .bi-panel-heading p:not(.bm-eyebrow) {
+    color: var(--bi-muted);
+    font-size: 12px;
+    line-height: 1.6;
+}
+
+/* ==========================================
+   KNOPPEN
+   ========================================== */
+
+.bi-page .bi-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    min-height: 42px;
+    padding: 11px 16px;
+    border: 1px solid transparent;
+    border-radius: 11px;
+    font: inherit;
+    font-size: 12px;
+    font-weight: 750;
+    line-height: 1.3;
+    text-decoration: none;
+    white-space: nowrap;
+    cursor: pointer;
+    transition:
+        transform .2s ease,
+        background-color .2s ease,
+        border-color .2s ease;
+}
+
+.bi-page .bi-button:hover:not(:disabled) {
+    transform: translateY(-2px);
+}
+
+.bi-page .bi-button-primary {
+    background: var(--bi-green);
+    color: #fff;
+}
+
+.bi-page .bi-button-primary:hover:not(:disabled) {
+    background: #2e7553;
+}
+
+.bi-page .bi-button-light {
+    background: #fff;
+    border-color: #dbe5dc;
+    color: #294b37;
+}
+
+.bi-page .bi-button-light:hover:not(:disabled) {
+    background: #f0f7f1;
+}
+
+.bi-page .bi-button-danger {
+    border-color: #edd3cf;
+    background: #fff1ef;
+    color: #9f463b;
+}
+
+.bi-page .bi-button-danger:hover:not(:disabled) {
+    background: #fce3de;
+}
+
+.bi-page .bi-button:disabled {
+    opacity: .47;
+    cursor: not-allowed;
+    transform: none;
+}
+
+/* ==========================================
+   ZOEKEN EN FILTEREN
+   ========================================== */
+
+.bi-page .bi-filters {
+    display: grid;
+    grid-template-columns: minmax(220px, 1.6fr)
+                           minmax(140px, .8fr)
+                           minmax(155px, .8fr)
+                           auto;
+    align-items: end;
+    gap: 14px;
+    margin: 0 29px 25px;
+    padding: 21px;
+    border: 1px solid #e6eee6;
+    border-radius: 16px;
+    background: #f7faf7;
+}
+
+.bi-page .bi-filters label {
+    display: block;
+    margin-bottom: 9px;
+    color: #4c6353;
+    font-size: 11px;
+    font-weight: 800;
+}
+
+.bi-page .bi-filters input,
+.bi-page .bi-filters select {
+    width: 100%;
+    min-width: 0;
+    height: 43px;
+    padding: 10px 13px;
+    border: 1px solid #d5e1d7;
+    border-radius: 10px;
+    background: #fff;
+    color: #203e2c;
+    font: inherit;
+    font-size: 12px;
+}
+
+.bi-page .bi-filters input::placeholder {
+    color: #93a198;
+}
+
+.bi-page .bi-filters input:focus,
+.bi-page .bi-filters select:focus {
+    outline: 2px solid #a3cfb0;
+    border-color: #5c9d73;
+}
+
+.bi-page input[type="checkbox"] {
+    width: 16px;
+    height: 16px;
+    accent-color: var(--bi-green);
+    cursor: pointer;
+}
+
+/* ==========================================
+   SELECTIE
+   ========================================== */
+
+.bi-page .bi-selection-bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 14px;
+    padding: 15px 29px;
+    border-top: 1px solid #e9efe9;
+    border-bottom: 1px solid #e9efe9;
+}
+
+.bi-page .bi-selection-bar > span {
+    color: #63776a;
+    font-size: 12px;
+    font-weight: 750;
+}
+
+/* ==========================================
+   TABEL
+   ========================================== */
+
+.bi-page .bi-table-wrapper {
+    width: 100%;
+    overflow-x: auto;
+}
+
+.bi-page .bi-table {
+    width: 100%;
+    min-width: 960px;
+    border-collapse: collapse;
+    text-align: left;
+}
+
+.bi-page .bi-table thead {
+    background: #f7faf7;
+}
+
+.bi-page .bi-table th {
+    padding: 17px 14px;
+    border-bottom: 1px solid #e2ebe3;
+    color: #728578;
+    font-size: 10px;
+    font-weight: 800;
+    letter-spacing: .055em;
+    text-transform: uppercase;
+}
+
+.bi-page .bi-table td {
+    padding: 18px 14px;
+    border-bottom: 1px solid #edf1ed;
+    color: #304c39;
+    font-size: 12px;
+    line-height: 1.5;
+}
+
+.bi-page .bi-table th:first-child,
+.bi-page .bi-table td:first-child {
+    width: 45px;
+    padding-left: 27px;
+}
+
+.bi-page .bi-table tbody tr:hover {
+    background: #f8fbf8;
+}
+
+.bi-page .bi-table tbody tr:last-child td {
+    border-bottom: none;
+}
+
+.bi-page .bi-table td.bi-name {
+    color: #1b3929;
+    font-weight: 800;
+}
+
+.bi-page .bi-number {
+    color: #597365;
+    font-weight: 700;
+    white-space: nowrap;
+}
+
+.bi-page .bi-badge {
+    display: inline-flex;
+    justify-content: center;
+    min-width: 83px;
+    padding: 7px 11px;
+    border-radius: 100px;
+    font-size: 11px;
+    font-weight: 800;
+}
+
+.bi-page .bi-badge--paid {
+    background: #e5f4e9;
+    color: #247746;
+}
+
+.bi-page .bi-badge--open {
+    background: #fff0da;
+    color: #946022;
+}
+
+.bi-page .bi-badge--cancelled {
+    background: #f0f1f0;
+    color: #718076;
+}
+
+.bi-page .bi-detail-button {
+    padding: 8px 12px;
+    border: 1px solid #d9e6dc;
+    border-radius: 9px;
+    background: #fff;
+    color: #276346;
+    font: inherit;
+    font-size: 11px;
+    font-weight: 800;
+    cursor: pointer;
+}
+
+.bi-page .bi-detail-button:hover {
+    background: #edf6ef;
+}
+
+.bi-page .bi-no-results {
+    padding: 40px 20px !important;
+    text-align: center;
+    color: #79867c !important;
+}
+
+/* ==========================================
+   PAGINERING
+   ========================================== */
+
+.bi-page .bi-pagination {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 15px;
+    padding: 21px 29px;
+    border-top: 1px solid #e9eee9;
+}
+
+.bi-page .bi-pagination > p {
+    color: var(--bi-muted);
+    font-size: 12px;
+}
+
+.bi-page .bi-pagination-buttons {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.bi-page .bi-page-number {
+    padding: 10px 12px;
+    border-radius: 9px;
+    background: #edf4ee;
+    color: #315942;
+    font-size: 12px;
+    font-weight: 800;
+}
+
+.bi-page .bi-feedback {
+    min-height: 22px;
+    margin-top: 17px;
+    color: #376d4c;
+    font-size: 12px;
+    font-weight: 650;
+}
+
+/* ==========================================
+   DETAILVENSTER
+   ========================================== */
+
+.bi-dialog {
+    width: min(520px, calc(100% - 28px));
+    max-height: calc(100dvh - 40px);
+    padding: 28px;
+    margin: auto;
+    overflow-y: auto;
+    border: 1px solid #dde8df;
+    border-radius: 23px;
+    background: #fff;
+    color: #1d3829;
+    box-shadow: 0 30px 90px rgba(10, 30, 19, .23);
+}
+
+.bi-dialog::backdrop {
+    background: rgba(11, 31, 20, .66);
+    backdrop-filter: blur(3px);
+}
+
+.bi-dialog-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 18px;
+    margin-bottom: 25px;
+}
+
+.bi-dialog-header h2 {
+    margin-top: 8px;
+    font-size: 24px;
+    letter-spacing: -.035em;
+}
+
+.bi-dialog-close {
+    display: grid;
+    place-items: center;
+    width: 36px;
+    height: 36px;
+    border: 1px solid #dfe8df;
+    border-radius: 10px;
+    background: #f6faf6;
+    color: #37503d;
+    font-size: 22px;
+    cursor: pointer;
+}
+
+.bi-details {
+    display: grid;
+    gap: 0;
+    margin-bottom: 25px;
+}
+
+.bi-details > div {
+    display: grid;
+    grid-template-columns: 145px 1fr;
+    gap: 16px;
+    padding: 14px 0;
+    border-bottom: 1px solid #e9efe9;
+}
+
+.bi-details dt {
+    color: #788b7e;
+    font-size: 12px;
+}
+
+.bi-details dd {
+    margin: 0;
+    color: #244432;
+    font-size: 13px;
+    font-weight: 750;
+}
+
+/* ==========================================
+   RESPONSIVE
+   ========================================== */
+
+@media (max-width: 1200px) {
+    .bi-page .bi-stats {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .bi-page .bi-filters {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+}
+
+@media (max-width: 650px) {
+    .bi-page .bi-stats {
+        gap: 11px;
+    }
+
+    .bi-page .bi-stat {
+        min-height: 144px;
+        padding: 17px;
+    }
+
+    .bi-page .bi-stat strong {
+        font-size: 29px;
+    }
+
+    .bi-page .bi-panel-heading {
+        padding: 22px 18px;
+    }
+
+    .bi-page .bi-panel-heading .bi-button {
+        width: 100%;
+    }
+
+    .bi-page .bi-filters {
+        grid-template-columns: 1fr;
+        margin: 0 18px 20px;
+        padding: 17px;
+    }
+
+    .bi-page .bi-selection-bar,
+    .bi-page .bi-pagination {
+        padding-inline: 18px;
+    }
+
+    .bi-dialog {
+        padding: 20px;
+    }
+
+    .bi-details > div {
+        grid-template-columns: 1fr;
+        gap: 5px;
+    }
+}
+
+@media (max-width: 380px) {
+    .bi-page .bi-stats {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .bi-page .bi-button {
+        transition: none;
+    }
+}
