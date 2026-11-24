@@ -1,178 +1,511 @@
+
 <!DOCTYPE html>
 <html lang="nl">
-
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Contactvragen | Avond4daagse 2027</title>
-    <link rel="stylesheet" href="../css/beheer.css">
+  <meta charset="UTF-8">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0">
+  <meta name="description"
+        content="Beheer contactvragen voor de Avond4daagse 2027.">
+
+  <title>Contactvragen | Avond4daagse Beheer</title>
+
+  <link rel="stylesheet" href="../css/beheer.css">
+  <link rel="stylesheet" href="../css/beheer-polish.css">
+  <link rel="stylesheet" href="../css/beheer-contactvragen.css">
+
+  <script src="../js/beheer-ui.js" defer></script>
+  <script src="../js/beheer-contactvragen.js" defer></script>
 </head>
 
-<body class="contactvragen-pagina">
-    <div class="ins-layout">
+<body class="bm-page cv-page">
 
-        <!-- ZIJMENU -->
-        <aside class="ins-sidebar">
-            <div>
-                <div class="ins-logo">
-                    <strong>AVOND4DAAGSE</strong>
-                    <small>BEHEER 2027</small>
-                </div>
+<div class="bm-layout">
 
-                <nav class="ins-menu" aria-label="Beheermenu">
-                  <a href="dashboard.html">Dashboard</a>
-                  <a href="inschrijvingen.html">Inschrijvingen</a>
-                  <a href="routebeheer.html">Routebeheer</a>
-                  <a href="vrijwilligers.html">Vrijwilligers & inzet</a>
-                  <a href="mijn-beschikbaarheid.html">Mijn beschikbaarheid</a>
-                  <a href="draaiboek.html">Draaiboek</a>
-                  <a href="financien.html">Financiën</a>
-                  <a href="contactvragen.html" class="actief" aria-current="page">Contactvragen</a>
-                </nav>
-            </div>
+  <!-- ZIJMENU -->
+  <aside class="bm-sidebar" id="bmSidebar">
 
-            <div class="ins-account">
-                <span>Beheerder</span>
-                <a href="login.html">Uitloggen</a>
-            </div>
-        </aside>
+    <a href="dashboard.html" class="bm-brand">
+      <span class="bm-brand-symbol" aria-hidden="true">4</span>
+      <span>
+        <strong>AVOND4DAAGSE</strong>
+        <small>BEHEEROMGEVING 2027</small>
+      </span>
+    </a>
 
-        <!-- HOOFDINHOUD -->
-        <main class="ins-main">
+    <div class="bm-sidebar-content">
+      <p class="bm-nav-label">OVERZICHT</p>
 
-            <!-- PAGINATITEL -->
-            <header class="ins-header">
-                <div>
-                    <h1>Contactvragen</h1>
-                    <p>8 open vragen • gemiddelde reactietijd 1,4 dagen</p>
-                </div>
+      <nav class="bm-navigation" aria-label="Beheernavigatie">
 
-                <div class="ins-header-buttons">
-                    <button type="button" class="ins-btn ins-dark"> + nieuwe vraag </button>
-                </div>
-            </header>
+        <a href="dashboard.html">
+          <span class="bm-nav-icon" aria-hidden="true">▦</span>
+          Dashboard
+        </a>
 
-            <!-- ZOEKEN EN FILTEREN -->
-            <form class="ins-filters">
-                <input
-                    type="search"
-                    aria-label="Zoeken naar contactvragen"
-                    placeholder="Zoek op naam, e-mail of onderwerp..."
-                >
-                <select aria-label="Filter op status">
-                    <option>Alle statussen</option>
-                    <option>open</option>
-                    <option>beantwoord</option>
-                    <option>nieuw</option>
-                    <option>in behandeling</option>
-                </select>
+        <a href="inschrijvingen.html">
+          <span class="bm-nav-icon" aria-hidden="true">◎</span>
+          Inschrijvingen
+        </a>
 
-                <button type="reset" class="ins-btn"> Filters wissen </button>
-            </form>
+        <a href="routebeheer.html">
+          <span class="bm-nav-icon" aria-hidden="true">◇</span>
+          Routebeheer
+        </a>
 
-            <!-- TWEE KOLOMMEN -->
-            <section class="ins-contact-layout">
+        <a href="vrijwilligers.html">
+          <span class="bm-nav-icon" aria-hidden="true">♧</span>
+          Vrijwilligers &amp; inzet
+        </a>
 
-                <!-- LINKS: OVERZICHT CONTACTVRAGEN -->
-                <div class="ins-contact-lijst">
+        <a href="mijn-beschikbaarheid.html">
+          <span class="bm-nav-icon" aria-hidden="true">◷</span>
+          Mijn beschikbaarheid
+        </a>
 
-                    <div class="ins-contact-lijst-header">
-                        <h2>Inbox</h2>
-                        <span>2 berichten</span>
-                    </div>
+        <a href="draaiboek.html">
+          <span class="bm-nav-icon" aria-hidden="true">☷</span>
+          Draaiboek
+        </a>
 
-                    <!-- CONTACTVRAAG 1 -->
-                    <button
-                        type="button"
-                        class="ins-contact-item actief"
-                        data-naam="Marieka van Leeuwen"
-                        data-email="marieka@example.nl"
-                        data-onderwerp="Vraag over inschrijving"
-                        data-status="open"
-                        data-datum="12 juni 2027"
-                        data-tijd="10:24"
-                        data-bericht="Ik heb een vraag over mijn inschrijving. Kunt u mij helpen?"
-                        aria-pressed="true"
-                    >
-                        <div class="ins-contact-item-top">
-                            <span class="ins-contactvraag-status">open</span>
-                            <span class="ins-contactvraag-datum">Vandaag • 10:24</span>
-                        </div>
+        <a href="financien.html">
+          <span class="bm-nav-icon" aria-hidden="true">€</span>
+          Financiën
+        </a>
 
-                        <div class="ins-contact-item-onderwerp"> Vraag over inschrijving </div>
-                        <p class="ins-contact-item-naam"> Marieka van Leeuwen </p>
-                        <p class="ins-contact-item-preview"> Beste organisatie, kan ik de afstand van mijn zoon nog aanpassen van 10 km naar 5 km? zijn inschrijfnummer is A4D-0982. Alvast bedaankt! </p>
-                    </button>
+        <a href="contactvragen.html"
+           class="bm-nav-active"
+           aria-current="page">
+          <span class="bm-nav-icon" aria-hidden="true">✉</span>
+          Contactvragen
+        </a>
 
-                    <!-- CONTACTVRAAG 2 -->
-                    <button
-                        type="button"
-                        class="ins-contact-item"
-                        data-naam="Jan Jansen"
-                        data-email="jan.jansen@example.nl"
-                        data-onderwerp="Probleem met betaling"
-                        data-status="beantwoord"
-                        data-datum="10 juni 2027"
-                        data-tijd="14:35"
-                        data-bericht="Ik heb een probleem met mijn betaling. Kunt u dit oplossen?"
-                        aria-pressed="false"
-                    >
-                        <div class="ins-contact-item-top">
-                            <span class="ins-contactvraag-status">beantwoord</span>
-                            <span class="ins-contactvraag-datum">10 juni • 14:35</span>
-                        </div>
-
-                        <div class="ins-contact-item-onderwerp"> Probleem met betaling </div>
-                        <p class="ins-contact-item-naam"> Jan Jansen </p>
-                        <p class="ins-contact-item-preview"> Ik heb betaald, maar mijn inschrijving staat nog niet op bevestigd. </p>
-                    </button>
-
-                </div>
-
-                <!-- RECHTS: DETAIL CONTACTVRAAG -->
-                <section class="ins-contact-detail" aria-label="Details contactvraag">
-
-                    <!-- TITEL EN STATUS -->
-                    <header class="ins-detail-header">
-                        <div>
-                            <h2 id="detailOnderwerp">Vraag over inschrijving</h2>
-                            <p id="detailNaam">Marieka van Leeuwen • marieka@example.nl</p>
-                        </div>
-
-                        <span id="detailStatus" class="ins-contactvraag-status"> open </span>
-                    </header>
-
-                    <!-- ORIGINELE BERICHT -->
-                    <div class="ins-origineel-bericht">
-                        <div class="ins-ontvangen-info">
-                            <span id="detailDatum"> Ontvangen vandaag om 10:24 • via contactformulier </span>
-                        </div>
-
-                        <p id="detailBericht">
-                            Beste organisatie, kan ik de afstand van mijn zoon nog aanpassen van 10 km naar 5 km? zijn inschrijfnummer is A4D-0982. Alvast bedaankt!
-                        </p>
-                    </div>
-
-                    <!-- ANTWOORDEN -->
-                    <div class="ins-antwoord">
-                        <h3>Antwoord</h3>
-
-                        <form id="antwoordForm">
-                            <textarea id="antwoord" name="antwoord" rows="6" placeholder="Typ hier je antwoord..." required ></textarea>
-
-                            <!-- ACTIES -->
-                            <div class="ins-antwoord-acties">
-                                <button type="button" class="ins-btn" id="conceptOpslaan" > Concept opslaan </button>
-                                <button type="button" class="ins-btn" id="afhandelen" > Afhandelen en sluiten </button>                         >
-                                <button type="submit" class="ins-btn ins-dark" >Versturen </button>
-                            </div>
-                        </form>
-                    </div>
-
-                </section>
-            </section>
-        </main>
+      </nav>
     </div>
-</body>
 
+    <div class="bm-sidebar-footer">
+      <div class="bm-account">
+        <span class="bm-account-avatar" aria-hidden="true">B</span>
+        <span>
+          <strong>Beheeromgeving</strong>
+          <small>Frontenddemo</small>
+        </span>
+      </div>
+
+      <a href="login.html" class="bm-sidebar-exit">
+        Terug naar inloggen ↗
+      </a>
+    </div>
+
+  </aside>
+
+
+  <!-- HOOFDGEDEELTE -->
+  <div class="bm-main-area">
+
+    <header class="bm-topbar">
+      <div class="bm-topbar-left">
+
+        <button type="button"
+                class="bm-menu-button"
+                id="bmMenuButton"
+                aria-controls="bmSidebar"
+                aria-expanded="false"
+                aria-label="Open beheermenu">
+          <span aria-hidden="true">☰</span>
+          Menu
+        </button>
+
+        <div class="bm-breadcrumb">
+          <span>Beheeromgeving</span>
+          <span aria-hidden="true">/</span>
+          <strong>Contactvragen</strong>
+        </div>
+
+      </div>
+
+      <a href="../../index.html" class="bm-website-link">
+        Bekijk publieke website ↗
+      </a>
+    </header>
+
+
+    <main class="bm-content">
+
+      <!-- TITEL -->
+      <section class="cv-heading">
+        <div>
+          <p class="bm-eyebrow">COMMUNICATIE</p>
+          <h1>Contactvragen</h1>
+          <p>
+            Bekijk berichten, beheer hun status
+            en bereid antwoorden voor.
+          </p>
+        </div>
+
+        <button type="button"
+                id="cvAdd"
+                class="cv-button cv-button-primary">
+          + Demobericht toevoegen
+        </button>
+      </section>
+
+
+      <!-- DEMOMELDING -->
+      <div class="bm-notice" role="note">
+        <span class="bm-notice-icon" aria-hidden="true">i</span>
+
+        <div>
+          <strong>Dit is een voorbeeldinbox</strong>
+          <p>
+            De twee oorspronkelijke berichten zijn fictief.
+            Nieuwe berichten, conceptantwoorden en statussen
+            worden alleen in deze browser bewaard.
+            Er worden geen echte e-mails verstuurd.
+          </p>
+        </div>
+      </div>
+
+
+      <!-- STATISTIEKEN -->
+      <section class="cv-stats"
+               aria-label="Inboxstatistieken">
+
+        <article class="cv-stat">
+          <span>Totaal berichten</span>
+          <strong id="cvTotal">0</strong>
+          <small>In deze browser</small>
+        </article>
+
+        <article class="cv-stat">
+          <span>Open of in behandeling</span>
+          <strong id="cvOpen">0</strong>
+          <small>Nog af te handelen</small>
+        </article>
+
+        <article class="cv-stat">
+          <span>Beantwoord</span>
+          <strong id="cvAnswered">0</strong>
+          <small>Gemarkeerd in de demo</small>
+        </article>
+      </section>
+
+
+      <!-- FILTERS -->
+      <form class="cv-filters" id="cvFilters">
+
+        <label class="cv-field cv-search">
+          Zoeken
+          <input type="search"
+                 id="cvSearch"
+                 placeholder="Naam, e-mail, onderwerp of bericht"
+                 autocomplete="off">
+        </label>
+
+        <label class="cv-field">
+          Status
+          <select id="cvStatusFilter">
+            <option value="all">Alle statussen</option>
+            <option value="Open">Open</option>
+            <option value="In behandeling">In behandeling</option>
+            <option value="Beantwoord">Beantwoord</option>
+          </select>
+        </label>
+
+        <button type="reset"
+                class="cv-button cv-button-light">
+          Filters wissen
+        </button>
+
+      </form>
+
+
+      <!-- INBOX EN DETAIL -->
+      <div class="cv-layout">
+
+        <!-- INBOX -->
+        <section class="cv-panel cv-inbox"
+                 aria-labelledby="cvInboxTitle">
+
+          <div class="cv-panel-header">
+            <div>
+              <p class="bm-eyebrow">BERICHTEN</p>
+              <h2 id="cvInboxTitle">Inbox</h2>
+            </div>
+
+            <span class="cv-count" id="cvResultCount">
+              0 berichten
+            </span>
+          </div>
+
+          <div id="cvMessageList"
+               class="cv-message-list"
+               aria-label="Contactberichten">
+
+            <p class="cv-empty">
+              Contactberichten laden...
+            </p>
+
+          </div>
+
+        </section>
+
+
+        <!-- DETAIL -->
+        <section class="cv-panel cv-detail"
+                 aria-labelledby="cvDetailTitle">
+
+          <div id="cvNoSelection" class="cv-empty-detail">
+            <span class="cv-empty-icon"
+                  aria-hidden="true">✉</span>
+            <h2>Geen bericht geselecteerd</h2>
+            <p>
+              Selecteer links een bericht om
+              de details te bekijken.
+            </p>
+          </div>
+
+          <div id="cvSelectedMessage" hidden>
+
+            <div class="cv-detail-top">
+
+              <div>
+                <p class="bm-eyebrow">BERICHTDETAILS</p>
+                <h2 id="cvDetailTitle">Onderwerp</h2>
+              </div>
+
+              <span id="cvDetailBadge" class="cv-badge">
+                Open
+              </span>
+
+            </div>
+
+
+            <!-- AFZENDER -->
+            <div class="cv-sender">
+
+              <span class="cv-avatar"
+                    id="cvAvatar"
+                    aria-hidden="true">?</span>
+
+              <div>
+                <strong id="cvDetailName">Naam</strong>
+                <p id="cvDetailEmail">E-mail</p>
+                <small id="cvDetailDate">Datum</small>
+              </div>
+
+            </div>
+
+
+            <!-- OORSPRONKELIJK BERICHT -->
+            <div class="cv-original">
+              <p class="cv-original-label">
+                OORSPRONKELIJK BERICHT
+              </p>
+
+              <p id="cvDetailMessage"
+                 class="cv-message-text"></p>
+            </div>
+
+
+            <!-- STATUS -->
+            <div class="cv-status-area">
+
+              <label for="cvDetailStatus">
+                Status van dit bericht
+              </label>
+
+              <select id="cvDetailStatus">
+                <option value="Open">Open</option>
+                <option value="In behandeling">
+                  In behandeling
+                </option>
+                <option value="Beantwoord">
+                  Beantwoord
+                </option>
+              </select>
+
+              <p>
+                Dit verandert alleen de status
+                in de lokale frontenddemo.
+              </p>
+
+            </div>
+
+
+            <!-- CONCEPTANTWOORD -->
+            <div class="cv-reply">
+
+              <div class="cv-reply-heading">
+                <h3>Conceptantwoord</h3>
+                <span id="cvDraftStatus">
+                  Nog geen concept
+                </span>
+              </div>
+
+              <label for="cvReply" class="cv-reply-label">
+                Antwoord op dit bericht
+              </label>
+
+              <textarea id="cvReply"
+                        rows="7"
+                        maxlength="3000"
+                        placeholder="Typ hier je antwoord..."></textarea>
+
+              <div class="cv-reply-actions">
+
+                <button type="button"
+                        id="cvSaveDraft"
+                        class="cv-button cv-button-light">
+                  Concept opslaan
+                </button>
+
+                <button type="button"
+                        id="cvCopyReply"
+                        class="cv-button cv-button-light">
+                  Kopieer antwoord
+                </button>
+
+                <button type="button"
+                        id="cvEmailReply"
+                        class="cv-button cv-button-primary">
+                  Open in e-mailapp ↗
+                </button>
+
+              </div>
+
+              <p class="cv-reply-note">
+                Een e-mailconcept openen is niet hetzelfde
+                als een e-mail verzenden. De organisatie
+                ontvangt geen automatische bevestiging.
+              </p>
+
+            </div>
+
+
+            <!-- VERWIJDEREN -->
+            <div class="cv-detail-footer">
+
+              <span id="cvMessageSource">
+                Voorbeeldbericht
+              </span>
+
+              <button type="button"
+                      id="cvDelete"
+                      class="cv-button cv-button-danger"
+                      hidden>
+                Demobericht verwijderen
+              </button>
+
+            </div>
+
+          </div>
+
+        </section>
+
+      </div>
+
+
+      <p id="cvFeedback"
+         class="cv-feedback"
+         role="status"
+         aria-live="polite"></p>
+
+      <footer class="bm-content-footer">
+        Avond4daagse 2027 · Contactvragen · Frontenddemo
+      </footer>
+
+    </main>
+
+  </div>
+</div>
+
+
+<!-- ===================================
+     NIEUW DEMOBERICHT
+     =================================== -->
+
+<dialog class="cv-dialog"
+        id="cvDialog"
+        aria-labelledby="cvDialogTitle">
+
+  <div class="cv-dialog-header">
+
+    <div>
+      <p class="bm-eyebrow">FRONTENDDEMO</p>
+      <h2 id="cvDialogTitle">Demobericht toevoegen</h2>
+    </div>
+
+    <button type="button"
+            class="cv-dialog-close"
+            id="cvCloseDialog"
+            aria-label="Venster sluiten">
+      ×
+    </button>
+  </div>
+
+  <form id="cvNewForm" class="cv-new-form">
+
+    <label class="cv-field">
+      Naam *
+      <input type="text"
+             id="cvNewName"
+             maxlength="100"
+             required
+             placeholder="Bijv. Testpersoon">
+    </label>
+
+    <label class="cv-field">
+      E-mailadres *
+      <input type="email"
+             id="cvNewEmail"
+             maxlength="150"
+             required
+             placeholder="test@example.nl">
+    </label>
+
+    <label class="cv-field">
+      Onderwerp *
+      <input type="text"
+             id="cvNewSubject"
+             maxlength="150"
+             required
+             placeholder="Bijv. Vraag over de wandelroute">
+    </label>
+
+    <label class="cv-field">
+      Bericht *
+      <textarea id="cvNewMessage"
+                rows="5"
+                maxlength="3000"
+                required
+                placeholder="Schrijf een voorbeeldbericht..."></textarea>
+    </label>
+
+    <div class="cv-dialog-actions">
+
+      <button type="button"
+              id="cvCancelDialog"
+              class="cv-button cv-button-light">
+        Annuleren
+      </button>
+
+      <button type="submit"
+              class="cv-button cv-button-primary">
+        Demobericht toevoegen
+      </button>
+
+    </div>
+
+  </form>
+
+</dialog>
+
+
+<!-- ACHTERGROND MOBIEL MENU -->
+<div class="bm-backdrop"
+     id="bmBackdrop"
+     hidden></div>
+
+</body>
 </html>
