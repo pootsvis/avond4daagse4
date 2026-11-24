@@ -9,40 +9,65 @@
         content="width=device-width, initial-scale=1.0">
 
   <meta name="description"
-        content="Toegang tot de beheeromgeving van de Avond4daagse 2027.">
+        content="Inloggen bij de beheeromgeving van de Avond4daagse 2027.">
 
   <title>Inloggen | Avond4daagse Beheer</title>
 
-  <!-- Bestaande projectstyling -->
+  <!-- Bestaande styling behouden -->
   <link rel="stylesheet" href="../css/beheer.css">
+  <link rel="stylesheet" href="../css/beheer-login-polish.css">
 
-  <!-- Nieuwe loginstyling -->
-  <link rel="stylesheet"
-        href="../css/beheer-login-polish.css">
+  <!-- Kleine aanvullingen voor het echte inlogformulier -->
+  <style>
+    .bl-login-submit {
+      border: 0;
+      cursor: pointer;
+      font-family: inherit;
+      text-align: left;
+    }
+
+    .bl-login-submit:disabled {
+      cursor: wait;
+      opacity: 0.7;
+    }
+
+    .bl-login-submit:focus-visible,
+    .bl-field input:focus-visible {
+      outline: 3px solid #eba74b;
+      outline-offset: 3px;
+    }
+
+    .bl-login-message {
+      margin-top: 16px;
+      font-size: 12px;
+      line-height: 1.6;
+    }
+
+    .bl-login-message[hidden] {
+      display: none;
+    }
+  </style>
+
+  <script src="../js/beheer-login.js" defer></script>
 </head>
 
 <body class="bl-page">
 
   <main class="bl-layout">
 
-    <!-- ==================================
-         LINKERKANT: WELKOM
-         ================================== -->
-
+    <!-- LINKERKANT -->
     <section class="bl-welcome"
              aria-labelledby="blWelcomeTitle">
 
-      <!-- Decoratieve elementen -->
       <div class="bl-decoration bl-decoration-one"
            aria-hidden="true"></div>
 
       <div class="bl-decoration bl-decoration-two"
            aria-hidden="true"></div>
 
-      <!-- LOGO -->
       <a href="../../index.html"
          class="bl-brand"
-         aria-label="Naar de publieke Avond4daagse website">
+         aria-label="Naar de publieke website">
 
         <span class="bl-brand-icon"
               aria-hidden="true">4</span>
@@ -54,8 +79,6 @@
 
       </a>
 
-
-      <!-- WELKOMTEKST -->
       <div class="bl-welcome-content">
 
         <span class="bl-overline">
@@ -75,12 +98,9 @@
           planning en financiën.
         </p>
 
-
-        <!-- SNEL OVERZICHT -->
         <div class="bl-features">
 
           <div class="bl-feature">
-
             <span class="bl-feature-icon"
                   aria-hidden="true">◎</span>
 
@@ -91,12 +111,9 @@
                 en betaalstatussen
               </span>
             </div>
-
           </div>
 
-
           <div class="bl-feature">
-
             <span class="bl-feature-icon"
                   aria-hidden="true">♧</span>
 
@@ -106,12 +123,9 @@
                 Beschikbaarheid en inzetplanning
               </span>
             </div>
-
           </div>
 
-
           <div class="bl-feature">
-
             <span class="bl-feature-icon"
                   aria-hidden="true">☷</span>
 
@@ -121,20 +135,14 @@
                 Draaiboek, routes en financiën
               </span>
             </div>
-
           </div>
 
         </div>
-
       </div>
 
-
-      <!-- LINKSONDER -->
       <div class="bl-welcome-footer">
 
-        <span>
-          Avond4daagse 2027
-        </span>
+        <span>Avond4daagse 2027</span>
 
         <a href="../../index.html">
           Publieke website bekijken
@@ -142,20 +150,14 @@
         </a>
 
       </div>
-
     </section>
 
-
-    <!-- ==================================
-         RECHTERKANT: TOEGANG
-         ================================== -->
-
+    <!-- RECHTERKANT -->
     <section class="bl-access"
              aria-labelledby="blAccessTitle">
 
       <div class="bl-access-wrapper">
 
-        <!-- BOVENAAN -->
         <div class="bl-access-top">
 
           <span class="bl-access-eyebrow">
@@ -164,17 +166,16 @@
 
           <span class="bl-demo-badge">
             <span aria-hidden="true">●</span>
-            Frontenddemo
+            Lokale login
           </span>
 
         </div>
 
-
-        <!-- INLOGKAART -->
         <div class="bl-card">
 
           <div class="bl-card-icon"
                aria-hidden="true">
+
             <svg viewBox="0 0 24 24"
                  width="27"
                  height="27"
@@ -183,10 +184,15 @@
                  stroke-width="1.8"
                  stroke-linecap="round"
                  stroke-linejoin="round">
-              <rect x="4" y="10"
-                    width="16" height="11"
+
+              <rect x="4"
+                    y="10"
+                    width="16"
+                    height="11"
                     rx="2"></rect>
+
               <path d="M8 10V7a4 4 0 0 1 8 0v3"></path>
+
             </svg>
           </div>
 
@@ -195,132 +201,141 @@
           </h2>
 
           <p class="bl-card-description">
-            Hier krijgen medewerkers en beheerders
-            toegang tot de organisatieomgeving.
+            Log in met je account om toegang
+            te krijgen tot de beheeromgeving
+            van de Avond4daagse.
           </p>
 
-
-          <!-- UITLEG -->
           <div class="bl-notice" role="note">
 
             <span class="bl-notice-icon"
                   aria-hidden="true">i</span>
 
             <div>
-              <strong>Beveiligde login komt later</strong>
+              <strong>Verbonden met de backend</strong>
 
               <p>
-                Het systeem is nog niet gekoppeld aan
-                accounts of de backend. Gebruik daarom
-                geen echte inloggegevens.
+                Tijdens het ontwikkelen gebruiken
+                we de lokale backend en database.
+                Gebruik voorlopig alleen testaccounts.
               </p>
             </div>
 
           </div>
 
+          <!-- ECHT INLOGFORMULIER -->
+          <form id="blLoginForm">
 
-          <!-- VOORBEELD INLOGFORMULIER -->
-          <fieldset class="bl-login-preview"
-                    disabled>
+            <fieldset class="bl-login-preview">
 
-            <legend>
-              Inlogformulier — nog niet actief
-            </legend>
+              <legend>
+                INLOGGEGEVENS
+              </legend>
 
-            <div class="bl-field">
+              <div class="bl-field">
 
-              <label for="blEmail">
-                E-mailadres
-              </label>
+                <label for="blEmail">
+                  E-mailadres
+                </label>
 
-              <input id="blEmail"
-                     type="email"
-                     autocomplete="off"
-                     placeholder="naam@organisatie.nl">
+                <input
+                  id="blEmail"
+                  name="email"
+                  type="email"
+                  autocomplete="username"
+                  placeholder="naam@organisatie.nl"
+                  required
+                >
+
+              </div>
+
+              <div class="bl-field">
+
+                <label for="blPassword">
+                  Wachtwoord
+                </label>
+
+                <input
+                  id="blPassword"
+                  name="wachtwoord"
+                  type="password"
+                  autocomplete="current-password"
+                  placeholder="Vul je wachtwoord in"
+                  required
+                >
+
+              </div>
+
+            </fieldset>
+
+            <div class="bl-demo-access">
+
+              <span class="bl-demo-label">
+                BEVEILIGD INLOGGEN
+              </span>
+
+              <h3>
+                Toegang tot de beheeromgeving
+              </h3>
+
+              <p>
+                Je account wordt gecontroleerd
+                via de Avond4daagse API.
+              </p>
+
+              <button
+                type="submit"
+                class="bl-demo-button bl-login-submit"
+                id="blLoginButton"
+              >
+
+                <span id="blLoginButtonText">
+                  Inloggen
+                </span>
+
+                <span class="bl-button-arrow"
+                      aria-hidden="true">→</span>
+
+              </button>
 
             </div>
 
-            <div class="bl-field">
+            <p id="blLoginMessage"
+               class="bl-login-message"
+               role="status"
+               aria-live="polite"
+               hidden></p>
 
-              <label for="blPassword">
-                Wachtwoord
-              </label>
-
-              <input id="blPassword"
-                     type="password"
-                     autocomplete="off"
-                     placeholder="Beschikbaar na backendkoppeling">
-
-            </div>
-
-          </fieldset>
-
-
-          <!-- DEMOTOEGANG -->
-          <div class="bl-demo-access">
-
-            <span class="bl-demo-label">
-              DEMOMODUS
-            </span>
-
-            <h3>
-              Bekijk de beheeromgeving
-            </h3>
-
-            <p>
-              Open het dashboard en test de
-              verschillende beheerpagina's.
-              Je hoeft hiervoor geen account
-              aan te maken.
-            </p>
-
-            <a href="dashboard.html"
-               class="bl-demo-button">
-
-              <span>Open demodashboard</span>
-
-              <span class="bl-button-arrow"
-                    aria-hidden="true">→</span>
-
-            </a>
-
-          </div>
-
+          </form>
 
           <p class="bl-security-note">
-            Deze demo heeft nog geen toegangsbeveiliging.
-            Iedereen met de directe URL kan de
-            voorbeeldschermen openen.
+            Alleen accounts met een organisatierol
+            krijgen toegang tot het beheerdashboard.
           </p>
 
         </div>
 
-
-        <!-- ONDERKAART -->
         <div class="bl-help-card">
 
           <span class="bl-help-icon"
                 aria-hidden="true">?</span>
 
           <div>
-            <strong>Voor live gebruik</strong>
+            <strong>Problemen met inloggen?</strong>
 
             <p>
-              Echte accounts, beveiligde sessies
-              en gebruikersrechten moeten via
-              de backend worden toegevoegd.
+              Controleer of de lokale backend draait
+              en of je account bestaat.
+              Beheerrechten worden door
+              de organisatie toegewezen.
             </p>
           </div>
 
         </div>
 
-
-        <!-- FOOTER -->
         <div class="bl-access-footer">
 
-          <span>
-            © 2027 Avond4daagse
-          </span>
+          <span>© 2027 Avond4daagse</span>
 
           <a href="../../index.html">
             Terug naar website
