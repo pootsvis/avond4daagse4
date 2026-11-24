@@ -4,10 +4,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Vier avonden samen wandelen: ontdek routes, praktische informatie en schrijf je in voor Avond4daagse 2027.">
     <title>Avond4daagse 2027 | Home</title>
+
     <link rel="stylesheet" href="Frontend/css/style.css">
+    <link rel="stylesheet" href="Frontend/css/public-visual.css">
+    <script src="Frontend/js/public-visual.js" defer></script>
 </head>
-<body>
+
+<body class="pub-home">
 
     <!-- Navigatie -->
     <header class="site-header">
@@ -23,93 +28,153 @@
                 <a href="sponsoren.html">Sponsoren</a>
             </nav>
 
-            <a href="inschrijven.html" class="login-btn">INSCHRIJVEN</a>
+            <a href="inschrijven.html" class="login-btn">
+                INSCHRIJVEN
+            </a>
         </div>
     </header>
 
     <main>
 
-        <!-- Welkomstgedeelte -->
-        <section class="hero">
+        <!-- CINEMATIC HOMEPAGE -->
+        <section class="hero pub-hero" aria-labelledby="pub-hero-title">
+
+            <img
+                class="pub-hero-photo"
+                src="Frontend/assets/images/hero-wandelaars.jpg"
+                alt=""
+                width="1600"
+                height="1000"
+                fetchpriority="high"
+                decoding="async"
+            >
+
+            <div class="pub-hero-overlay" aria-hidden="true"></div>
+
             <div class="section-inner hero-layout">
-
                 <div class="hero-content">
-                    <p class="hero-label">3 T/M 6 JUNI • DORPENVELD</p>
 
-                    <h1>AVOND4DAAGSE 2027</h1>
+                    <p class="hero-label">
+                        <span class="pub-hero-dot" aria-hidden="true"></span>
+                        DORPENVELD · 3 T/M 6 JUNI 2027
+                    </p>
 
-                    <h2>Wandel mee met de Avond4daagse!</h2>
+                    <h1 id="pub-hero-title">
+                        Vier avonden.
+                        <span class="pub-hero-accent">
+                            Duizend herinneringen.
+                        </span>
+                    </h1>
+
+                    <h2>Avond4daagse 2027</h2>
 
                     <p class="hero-description">
-                        Vier avonden wandelen, samen met vrienden,
-                        familie en buurtgenoten. Kies 5 of 10 kilometer
-                        en beleef een feestelijke finish.
+                        Samen op pad, nieuwe herinneringen maken
+                        en genieten van vier bijzondere wandelavonden.
+                        Beleef de Avond4daagse met vrienden,
+                        familie en buurtgenoten.
                     </p>
 
                     <div class="hero-buttons">
                         <a href="inschrijven.html" class="btn btn-primary">
-                            INSCHRIJVEN
+                            Schrijf je in
+                            <span aria-hidden="true">↗</span>
                         </a>
 
                         <a href="routes.html" class="btn btn-secondary">
-                            BEKIJK ROUTES
+                            Ontdek de routes
+                            <span aria-hidden="true">→</span>
                         </a>
                     </div>
-                </div>
 
-                <div class="hero-image" aria-label="Ruimte voor een sfeerfoto">
-                    <span>[ SFEERFOTO WANDELAARS ]</span>
-                </div>
+                    <div class="pub-hero-details" aria-label="Evenementinformatie">
+                        <span>Vier wandelavonden</span>
+                        <span class="pub-detail-divider" aria-hidden="true"></span>
+                        <span>5 km &amp; 10 km</span>
+                        <span class="pub-detail-divider" aria-hidden="true"></span>
+                        <span>Voor jong en oud</span>
+                    </div>
 
+                </div>
             </div>
+
+            <a href="#locaties" class="pub-scroll-cue">
+                Ontdek meer
+                <span aria-hidden="true">↓</span>
+            </a>
+
         </section>
 
-        <!-- Snelle informatie -->
+
+        <!-- SNELLE INFORMATIE -->
         <section class="informatie">
             <div class="section-inner info-grid">
 
                 <article class="info-card">
                     <h3>Routes</h3>
-                    <p>Bekijk de afstanden, starttijden en routekaarten.</p>
-                    <a href="routes.html">Meer bekijken →</a>
+                    <p>
+                        Bekijk de afstanden, starttijden en
+                        routekaarten.
+                    </p>
+                    <a href="routes.html">
+                        Meer bekijken →
+                    </a>
                 </article>
 
                 <article class="info-card">
                     <h3>Praktische info</h3>
-                    <p>Alles over startlocatie, veiligheid en medailles.</p>
-                    <a href="praktische-informatie.html">Meer bekijken →</a>
+                    <p>
+                        Alles over startlocatie, veiligheid
+                        en medailles.
+                    </p>
+                    <a href="praktische-informatie.html">
+                        Meer bekijken →
+                    </a>
                 </article>
 
                 <article class="info-card">
                     <h3>Contact</h3>
-                    <p>Een vraag? Neem contact op met de organisatie.</p>
-                    <a href="contact.html">Meer bekijken →</a>
+                    <p>
+                        Een vraag? Neem contact op met
+                        de organisatie.
+                    </p>
+                    <a href="contact.html">
+                        Meer bekijken →
+                    </a>
                 </article>
 
             </div>
         </section>
 
-        <!-- Locaties -->
+
+        <!-- LOCATIES -->
         <section class="locations-section" id="locaties">
             <div class="section-inner">
 
                 <div class="section-heading">
-                    <p class="section-label">MEERDERE LOCATIES</p>
+                    <p class="section-label">
+                        MEERDERE LOCATIES
+                    </p>
+
                     <h2>Kies je Avond4daagse-locatie</h2>
+
                     <p>
-                        Iedere locatie heeft haar eigen kleur, logo en lokale
-                        partners. Kies een locatie om de lokale editie te bekijken.
+                        Iedere locatie heeft haar eigen kleur,
+                        logo en lokale partners. Kies een locatie
+                        om de lokale editie te bekijken.
                     </p>
                 </div>
 
                 <div class="locations-layout">
 
-                    <!-- Schematisch locatieoverzicht -->
+                    <!-- LOCATIEKAART -->
                     <aside class="map-card">
                         <h3>Locaties in Nederland</h3>
 
                         <div class="map-preview" aria-label="Schematisch overzicht van vier locaties">
-                            <span class="map-count">4 LOCATIES</span>
+                            <span class="map-count">
+                                4 LOCATIES
+                            </span>
 
                             <span class="map-dot dot-orange" title="Dorpenveld"></span>
                             <span class="map-dot dot-purple" title="Havenstad"></span>
@@ -118,10 +183,12 @@
                         </div>
                     </aside>
 
-                    <!-- Locatiekaarten -->
+                    <!-- LOCATIEKAARTEN -->
                     <div class="location-list">
 
+                        <!-- DORPENVELD -->
                         <article class="location-card selected" data-location="dorpenveld">
+
                             <div class="location-top">
                                 <div class="location-identity">
                                     <span class="location-logo orange">D</span>
@@ -132,25 +199,35 @@
                                     </div>
                                 </div>
 
-                                <button class="location-choice" type="button"
-                                        data-location="dorpenveld" aria-pressed="true">
+                                <button
+                                    class="location-choice"
+                                    type="button"
+                                    data-location="dorpenveld"
+                                    aria-pressed="true"
+                                >
                                     Gekozen
                                 </button>
                             </div>
 
                             <p class="location-description">
-                                De Dorpenveld-editie heeft een warme oranje-blauwe
-                                uitstraling en een lokale route door het dorp en
-                                de omliggende velden.
+                                De Dorpenveld-editie heeft een warme
+                                oranje-blauwe uitstraling en een lokale
+                                route door het dorp en de omliggende velden.
                             </p>
 
                             <div class="location-footer">
                                 <span>5 km • 10 km</span>
-                                <a href="routes.html">Bekijk routes →</a>
+                                <a href="routes.html">
+                                    Bekijk routes →
+                                </a>
                             </div>
+
                         </article>
 
+
+                        <!-- HAVENSTAD -->
                         <article class="location-card" data-location="havenstad">
+
                             <div class="location-top">
                                 <div class="location-identity">
                                     <span class="location-logo purple">H</span>
@@ -161,25 +238,35 @@
                                     </div>
                                 </div>
 
-                                <button class="location-choice" type="button"
-                                        data-location="havenstad" aria-pressed="false">
+                                <button
+                                    class="location-choice"
+                                    type="button"
+                                    data-location="havenstad"
+                                    aria-pressed="false"
+                                >
                                     Kies
                                 </button>
                             </div>
 
                             <p class="location-description">
-                                Havenstad draait om een frisse paarse en blauwe
-                                uitstraling met een route langs de haven,
-                                parken en woonwijken.
+                                Havenstad draait om een frisse paarse
+                                en blauwe uitstraling met een route
+                                langs de haven, parken en woonwijken.
                             </p>
 
                             <div class="location-footer">
                                 <span>5 km • 10 km</span>
-                                <a href="routes.html">Bekijk routes →</a>
+                                <a href="routes.html">
+                                    Bekijk routes →
+                                </a>
                             </div>
+
                         </article>
 
+
+                        <!-- BUITENWIJK -->
                         <article class="location-card" data-location="buitenwijk">
+
                             <div class="location-top">
                                 <div class="location-identity">
                                     <span class="location-logo green">B</span>
@@ -190,25 +277,35 @@
                                     </div>
                                 </div>
 
-                                <button class="location-choice" type="button"
-                                        data-location="buitenwijk" aria-pressed="false">
+                                <button
+                                    class="location-choice"
+                                    type="button"
+                                    data-location="buitenwijk"
+                                    aria-pressed="false"
+                                >
                                     Kies
                                 </button>
                             </div>
 
                             <p class="location-description">
-                                Buitenwijk combineert groen en groene energie
-                                met een route door parken, sportvelden en
-                                kindvriendelijke straten.
+                                Buitenwijk combineert groen en groene
+                                energie met een route door parken,
+                                sportvelden en kindvriendelijke straten.
                             </p>
 
                             <div class="location-footer">
                                 <span>5 km • 10 km</span>
-                                <a href="routes.html">Bekijk routes →</a>
+                                <a href="routes.html">
+                                    Bekijk routes →
+                                </a>
                             </div>
+
                         </article>
 
+
+                        <!-- VALLEI -->
                         <article class="location-card" data-location="vallei">
+
                             <div class="location-top">
                                 <div class="location-identity">
                                     <span class="location-logo blue">V</span>
@@ -219,56 +316,72 @@
                                     </div>
                                 </div>
 
-                                <button class="location-choice" type="button"
-                                        data-location="vallei" aria-pressed="false">
+                                <button
+                                    class="location-choice"
+                                    type="button"
+                                    data-location="vallei"
+                                    aria-pressed="false"
+                                >
                                     Kies
                                 </button>
                             </div>
 
                             <p class="location-description">
-                                Vallei kiest voor een frisse blauwe uitstraling
-                                met een route door het centrum, langs water
-                                en over sportieve afstanden.
+                                Vallei kiest voor een frisse blauwe
+                                uitstraling met een route door het
+                                centrum, langs water en over
+                                sportieve afstanden.
                             </p>
 
                             <div class="location-footer">
                                 <span>5 km • 10 km</span>
-                                <a href="routes.html">Bekijk routes →</a>
+                                <a href="routes.html">
+                                    Bekijk routes →
+                                </a>
                             </div>
+
                         </article>
 
                     </div>
                 </div>
+
             </div>
         </section>
 
-        <!-- Gekozen locatie -->
+
+        <!-- GEKOZEN LOCATIE -->
         <section class="selected-section" id="gekozen-locatie">
+
             <div class="section-inner">
 
                 <div class="section-heading">
-                    <p class="section-label">GEKOZEN LOCATIE</p>
+                    <p class="section-label">
+                        GEKOZEN LOCATIE
+                    </p>
 
-                    <h2 id="selected-location-name">Dorpenveld</h2>
+                    <h2 id="selected-location-name">
+                        Dorpenveld
+                    </h2>
 
                     <p id="selected-location-description">
-                        Bekijk de lokale sfeer, partners en foto's van de
-                        Dorpenveld-editie. Deze locatie houdt vast aan de
-                        bestaande evenementgegevens en voegt een eigen
-                        lokale identiteit toe.
+                        Bekijk de lokale sfeer, partners en foto's
+                        van de Dorpenveld-editie. Deze locatie
+                        houdt vast aan de bestaande evenementgegevens
+                        en voegt een eigen lokale identiteit toe.
                     </p>
                 </div>
 
                 <div class="selected-layout">
 
-                    <!-- Lokale sponsoren -->
+                    <!-- LOKALE SPONSOREN -->
                     <div class="sponsor-card" id="sponsoren">
+
                         <h3>Lokale sponsoren</h3>
 
                         <p class="sponsor-description">
-                            Deze partners ondersteunen de Dorpenveld-editie
-                            met lokale energie, catering en activiteiten
-                            langs de route.
+                            Deze partners ondersteunen de
+                            Dorpenveld-editie met lokale energie,
+                            catering en activiteiten langs de route.
                         </p>
 
                         <div class="sponsor-list">
@@ -283,7 +396,9 @@
                                     </div>
                                 </div>
 
-                                <span class="sponsor-badge">Hoofdsponsor</span>
+                                <span class="sponsor-badge">
+                                    Hoofdsponsor
+                                </span>
                             </div>
 
                             <div class="sponsor-row">
@@ -296,7 +411,9 @@
                                     </div>
                                 </div>
 
-                                <span class="sponsor-badge">Activiteit</span>
+                                <span class="sponsor-badge">
+                                    Activiteit
+                                </span>
                             </div>
 
                             <div class="sponsor-row">
@@ -309,20 +426,24 @@
                                     </div>
                                 </div>
 
-                                <span class="sponsor-badge">Finish</span>
+                                <span class="sponsor-badge">
+                                    Finish
+                                </span>
                             </div>
 
                         </div>
                     </div>
 
-                    <!-- Sfeerfoto's -->
+
+                    <!-- SFEERFOTO'S -->
                     <div class="photos-card">
+
                         <h3>Sfeerfoto's Dorpenveld</h3>
 
                         <p class="photos-description">
-                            Een voorbeeld van hoe de lokale editie eruit kan
-                            zien: warme avondkleuren, lokaal logo en een
-                            feestelijke finish.
+                            Een voorbeeld van hoe de lokale editie
+                            eruit kan zien: warme avondkleuren,
+                            lokaal logo en een feestelijke finish.
                         </p>
 
                         <div class="photos-grid">
@@ -335,8 +456,8 @@
                                 <figcaption>
                                     <h4>Startlocatie</h4>
                                     <p>
-                                        Dorpsplein met lokale branding
-                                        en startbord.
+                                        Dorpsplein met lokale
+                                        branding en startbord.
                                     </p>
                                 </figcaption>
                             </figure>
@@ -363,8 +484,9 @@
                                 <figcaption>
                                     <h4>Finish</h4>
                                     <p>
-                                        Feestelijke eindzone met lokale
-                                        partners en medailles.
+                                        Feestelijke eindzone
+                                        met lokale partners
+                                        en medailles.
                                     </p>
                                 </figcaption>
                             </figure>
@@ -373,6 +495,7 @@
                     </div>
 
                 </div>
+
             </div>
         </section>
 

@@ -2,99 +2,307 @@
 <!DOCTYPE html>
 <html lang="nl">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Avond4daagse 2027 | Routes</title>
-    <link rel="stylesheet" href="Frontend/css/style.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Bekijk de wandelafstanden en kaart van de Avond4daagse 2027.">
+  <title>Routes | Avond4daagse 2027</title>
+
+  <link rel="stylesheet" href="Frontend/css/style.css">
+  <link rel="stylesheet" href="Frontend/css/public-pages.css">
+
+  <!-- Leaflet: echte interactieve kaart -->
+  <link rel="stylesheet"
+    href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+
+  <script defer
+    src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js">
+  </script>
+  <script defer src="Frontend/js/public-pages.js"></script>
 </head>
-<body>
 
-    <!-- Navigatiebalk -->
-    <header class="site-header">
-        <div class="header-inner">
-            <a href="index.html" class="logo">AVOND4DAAGSE</a>
+<body class="pp-page pp-routes">
 
-            <nav aria-label="Hoofdnavigatie">
-                <a href="index.html">Home</a>
-                <a href="routes.html" class="active">Routes</a>
-                <a href="inschrijven.html">Inschrijven</a>
-                <a href="praktische-informatie.html">Praktische informatie</a>
-                <a href="contact.html">Contact</a>
-                <a href="sponsoren.html">Sponsoren</a>
-            </nav>
+  <header class="site-header">
+    <div class="header-inner">
+      <a href="index.html" class="logo">AVOND4DAAGSE</a>
 
-            <a href="inschrijven.html" class="login-btn">INSCHRIJVEN</a>
+      <nav aria-label="Hoofdnavigatie">
+        <a href="index.html">Home</a>
+        <a href="routes.html" class="active"
+          aria-current="page">Routes</a>
+        <a href="inschrijven.html">Inschrijven</a>
+        <a href="praktische-informatie.html">
+          Praktische informatie
+        </a>
+        <a href="contact.html">Contact</a>
+        <a href="sponsoren.html">Sponsoren</a>
+      </nav>
+
+      <a href="inschrijven.html"
+        class="login-btn">INSCHRIJVEN</a>
+    </div>
+  </header>
+
+  <main>
+
+    <!-- HERO -->
+    <section class="pp-hero pp-hero--routes">
+      <div class="pp-shell">
+        <span class="pp-eyebrow">ONTDEK DE WANDELING</span>
+
+        <h1 class="pp-title">
+          Elke avond een nieuw avontuur.
+        </h1>
+
+        <p class="pp-lead">
+          Vier avonden samen op pad. Ontdek de
+          afstanden en verken de omgeving op een
+          echte interactieve kaart.
+        </p>
+
+        <div style="margin-top:28px">
+          <a href="#routes-overzicht"
+            class="pp-btn pp-btn--orange">
+            Bekijk de routes ↓
+          </a>
         </div>
-    </header>
+      </div>
+    </section>
 
-    <!-- Tijdelijke inhoud -->
-        <main class="routes-section">
-        <div class="section-inner">
+    <!-- ROUTES EN KAART -->
+    <section class="pp-section pp-section--soft"
+      id="routes-overzicht">
 
-            <div class="routes-head">
-                <div class="section-heading">
-                    <h1>Routes 2027</h1>
-                    <p>Bekijk per avond de route.</p>
-                </div>
+      <div class="pp-shell">
 
-                <div class="routes-filters">
-                    <select class="select" aria-label="Kies een avond">
-                        <option>Dinsdag 3 juni</option>
-                    </select>
-                    <select class="select" aria-label="Kies een afstand">
-                        <option>Alle afstanden</option>
-                    </select>
-                </div>
+        <div style="margin-bottom:30px">
+          <span class="pp-eyebrow">ROUTEVERKENNER</span>
+          <h2 class="pp-section-title">
+            Kies jouw wandelafstand
+          </h2>
+          <p class="pp-muted">
+            Gebruik de filters en verken Nederland
+            op de kaart. De definitieve routes zijn
+            nog niet gepubliceerd.
+          </p>
+        </div>
+
+        <div class="pp-route-filters">
+          <label>
+            Wandelavond
+            <select id="ppDayFilter" class="pp-filter">
+              <option value="3">3 juni 2027</option>
+              <option value="4">4 juni 2027</option>
+              <option value="5">5 juni 2027</option>
+              <option value="6">6 juni 2027</option>
+            </select>
+          </label>
+
+          <label>
+            Afstand
+            <select id="ppDistanceFilter"
+              class="pp-filter">
+              <option value="all">Alle afstanden</option>
+              <option value="5">5 kilometer</option>
+              <option value="10">10 kilometer</option>
+            </select>
+          </label>
+        </div>
+
+        <p id="ppRouteCount"
+          class="pp-muted"
+          aria-live="polite"
+          style="margin-bottom:20px">
+        </p>
+
+        <div class="pp-route-layout">
+
+          <!-- ROUTEKAARTEN -->
+          <div class="pp-route-list">
+
+            <article class="pp-card pp-route-card"
+              data-distance="5">
+
+              <div class="pp-route-top">
+                <h3>5 kilometer</h3>
+                <span class="pp-chip">5 KM</span>
+              </div>
+
+              <p class="pp-muted">
+                Een kortere wandelafstand voor
+                deelnemers die graag rustig
+                samen op pad gaan.
+              </p>
+
+              <span class="pp-chip">
+                Definitieve route volgt
+              </span>
+
+              <a class="pp-btn pp-btn--dark"
+                href="#echte-kaart">
+                Verken de kaart →
+              </a>
+            </article>
+
+            <article class="pp-card pp-route-card"
+              data-distance="10">
+
+              <div class="pp-route-top">
+                <h3>10 kilometer</h3>
+                <span class="pp-chip">10 KM</span>
+              </div>
+
+              <p class="pp-muted">
+                Een langere wandelafstand voor
+                wie graag een extra uitdaging
+                aangaat.
+              </p>
+
+              <span class="pp-chip">
+                Definitieve route volgt
+              </span>
+
+              <a class="pp-btn pp-btn--dark"
+                href="#echte-kaart">
+                Verken de kaart →
+              </a>
+            </article>
+
+            <div class="pp-notice">
+              <strong>Belangrijk</strong>
+              <p>
+                De organisatie moet de startlocatie
+                en officiële wandelroutes nog
+                bevestigen. Er worden geen
+                verzonnen routes op de kaart getekend.
+              </p>
             </div>
 
-            <div class="routes-layout">
-                <aside class="route-list">
+          </div>
 
-                    <article class="route-card">
-                        <div class="route-top">
-                            <h2>Dorpsroute</h2>
-                            <span class="route-badge">5 KM</span>
-                        </div>
-                        <p class="route-meta">18:30 uur • ca. 1 uur</p>
-                        <p class="route-description">Rustige route door het centrum en langs het park.</p>
-                        <div class="route-actions">
-                            <a href="#" class="btn btn-secondary btn-small">Bekijk details</a>
-                            <a href="#" class="btn btn-secondary btn-small">Download PDF</a>
-                        </div>
-                    </article>
+          <!-- ECHTE KAART -->
+          <div id="echte-kaart">
 
-                    <article class="route-card">
-                        <div class="route-top">
-                            <h2>Polderroute</h2>
-                            <span class="route-badge">10 KM</span>
-                        </div>
-                        <p class="route-meta">18:15 uur • ca. 2 uur</p>
-                        <p class="route-description">Langere route door de polder en langs de molen.</p>
-                        <div class="route-actions">
-                            <a href="#" class="btn btn-secondary btn-small">Bekijk details</a>
-                            <a href="#" class="btn btn-secondary btn-small">Download PDF</a>
-                        </div>
-                    </article>
+            <div class="pp-map-toolbar">
+              <strong>Interactieve kaart</strong>
 
-                    <div class="route-info">
-                        <strong>Start &amp; finish</strong>
-                        <span>Sportpark De Brink, Brinklaan 12. Meld je 15 minuten voor vertrek.</span>
-                    </div>
+              <div style="display:flex;gap:8px;flex-wrap:wrap">
+                <button type="button"
+                  id="ppMapReset"
+                  class="pp-btn pp-btn--light">
+                  Nederland
+                </button>
 
-                </aside>
-
-                <section aria-label="Routekaart">
-                    <div class="route-map">[ Interactieve routekaart met markers ]</div>
-                    <div class="route-legend">
-                        <span><i class="legend-start"></i>Start / finish</span>
-                        <span><i class="legend-5"></i>Route 5 km</span>
-                        <span><i class="legend-10"></i>Route 10 km</span>
-                    </div>
-                </section>
+                <button type="button"
+                  id="ppLocate"
+                  class="pp-btn pp-btn--dark">
+                  Mijn locatie
+                </button>
+              </div>
             </div>
 
+            <div class="pp-map-wrap">
+              <div id="ppMap"
+                aria-label="Interactieve kaart van OpenStreetMap">
+              </div>
+
+              <p class="pp-map-caption">
+                Echte kaartgegevens van OpenStreetMap.
+                Er zijn nog geen officiële
+                Avond4daagse-routepunten gekoppeld.
+              </p>
+            </div>
+
+            <p id="ppMapStatus"
+              class="pp-muted"
+              aria-live="polite"
+              style="margin-top:14px;font-size:13px">
+              Zoom, sleep of bekijk jouw locatie.
+              Routepunten worden later toegevoegd.
+            </p>
+
+            <p style="margin-top:14px">
+              <a href="https://www.openstreetmap.org/"
+                target="_blank" rel="noopener noreferrer">
+                Open OpenStreetMap ↗
+              </a>
+            </p>
+
+          </div>
+
         </div>
-    </main>
+      </div>
+    </section>
+
+    <!-- ONDERSTE GEDEELTE -->
+    <section class="pp-section pp-section--white">
+      <div class="pp-shell">
+
+        <span class="pp-eyebrow">ZO WERKT HET</span>
+
+        <h2 class="pp-section-title">
+          Goed voorbereid op pad.
+        </h2>
+
+        <div class="pp-grid pp-steps"
+          style="margin-top:30px">
+
+          <article class="pp-card pp-step pp-reveal">
+            <h3>Kies je afstand</h3>
+            <p class="pp-muted">
+              Bekijk welke wandelafstand
+              het beste bij je past.
+            </p>
+          </article>
+
+          <article class="pp-card pp-step pp-reveal">
+            <h3>Bekijk de route</h3>
+            <p class="pp-muted">
+              Zodra de routes bekend zijn,
+              verschijnen de officiële
+              routekaarten hier.
+            </p>
+          </article>
+
+          <article class="pp-card pp-step pp-reveal">
+            <h3>Wandel samen</h3>
+            <p class="pp-muted">
+              Neem je wandelschoenen en
+              water mee en geniet van
+              vier gezellige avonden.
+            </p>
+          </article>
+
+        </div>
+
+        <div style="margin-top:35px">
+          <a href="inschrijven.html"
+            class="pp-btn pp-btn--dark">
+            Naar inschrijven →
+          </a>
+        </div>
+
+      </div>
+    </section>
+
+  </main>
+
+  <footer class="pp-footer">
+    <div class="pp-shell pp-footer-inner">
+      <div>
+        <strong>AVOND4DAAGSE 2027</strong>
+        <p>Vier avonden. Duizend herinneringen.</p>
+      </div>
+
+      <div class="pp-footer-links">
+        <a href="index.html">Home</a>
+        <a href="praktische-informatie.html">
+          Praktische informatie
+        </a>
+        <a href="contact.html">Contact</a>
+      </div>
+    </div>
+  </footer>
 
 </body>
 </html>
