@@ -1,962 +1,1086 @@
 
 // ==========================================
 // AVOND4DAAGSE 2027
-// CONTACTVRAGEN - FRONTENDDEMO
+// CONTACTVRAGEN - BACKENDKOPPELING
 // ==========================================
 
 document.addEventListener("DOMContentLoaded", () => {
 
-  const $ = id => document.getElementById(id);
+    const API_URL = "http://localhost:5278/api/ContactVraag";
 
-  const STORAGE_KEY = "a4d-contactvragen-demo-v1";
+    const $ = (id) => document.getElementById(id);
 
-  const STATUSES = [
-    "Open",
-    "In behandeling",
-    "Beantwoord"
-  ];
+    const STATUSES = [
+        "Nieuw",
+        "Open",
+        "In behandeling",
+        "Beantwoord"
+    ];
 
-
-  // ========================================
-  // 1. BESTAANDE VOORBEELDBERICHTEN
-  // ========================================
-
-  const EXAMPLES = [
-    {
-      id: "voorbeeld-1",
-      naam: "Marieka van Leeuwen",
-      email: "marieka@example.nl",
-      onderwerp: "Vraag over inschrijving",
-      bericht:
-        "Beste organisatie,\n\n" +
-        "Kan ik de afstand van mijn zoon nog aanpassen " +
-        "van 10 km naar 5 km? Zijn inschrijfnummer " +
-        "is A4D-0982.\n\n" +
-        "Alvast bedankt!",
-      datum: "2027-06-12",
-      tijd: "10:24",
-      status: "Open",
-      lokaal: false
-    },
-    {
-      id: "voorbeeld-2",
-      naam: "Jan Jansen",
-      email: "jan.jansen@example.nl",
-      onderwerp: "Probleem met betaling",
-      bericht:
-        "Ik heb betaald, maar mijn inschrijving " +
-        "staat nog niet op bevestigd.",
-      datum: "2027-06-10",
-      tijd: "14:35",
-      status: "Beantwoord",
-      lokaal: false
-    }
-  ];
+    let berichten = [];
+    let geselecteerdId = null;
+    let getoondId = null;
 
 
-  // ========================================
-  // 2. LOKALE OPSLAG
-  // ========================================
+    // ======================================
+    // 1. API VERBINDING
+    // ======================================
 
-  function initialState() {
-    return {
-      berichten: EXAMPLES.map(item => ({ ...item })),
-      concepten: {}
-    };
-  }
+    async function apiRequest(path = "", options = {}) {
 
-
-  function loadState() {
-
-    try {
-      const raw = localStorage.getItem(STORAGE_KEY);
-
-      if (!raw) {
-        return initialState();
-      }
-
-      const parsed = JSON.parse(raw);
-
-      if (
-        !parsed ||
-        !Array.isArray(parsed.berichten)
-      ) {
-        return initialState();
-      }
-
-      const berichten = parsed.berichten
-        .filter(item =>
-          item &&
-          typeof item.id === "string" &&
-          typeof item.naam === "string" &&
-          typeof item.email === "string" &&
-          typeof item.onderwerp === "string" &&
-          typeof item.bericht === "string"
-        )
-        .map(item => ({
-          id: item.id,
-          naam: item.naam.slice(0, 100),
-          email: item.email.slice(0, 150),
-          onderwerp: item.onderwerp.slice(0, 150),
-          bericht: item.bericht.slice(0, 3000),
-          datum: typeof item.datum === "string"
-            ? item.datum
-            : "",
-          tijd: typeof item.tijd === "string"
-            ? item.tijd
-            : "",
-          status: STATUSES.includes(item.status)
-            ? item.status
-            : "Open",
-          lokaal: item.lokaal === true
-        }));
-
-      const concepten = {};
-
-      if (
-        parsed.concepten &&
-        typeof parsed.concepten === "object"
-      ) {
-        Object.entries(parsed.concepten)
-          .forEach(([id, value]) => {
-
-            if (typeof value === "string") {
-              concepten[id] = value.slice(0, 3000);
+        const response = await fetch(
+            API_URL + path,
+            {
+                credentials: "include",
+                cache: "no-store",
+                ...options
             }
-          });
-      }
-
-      return { berichten, concepten };
-
-    } catch (error) {
-
-      console.warn(
-        "Contactvragen konden niet worden geladen.",
-        error
-      );
-
-      return initialState();
-    }
-  }
-
-
-  let state = loadState();
-
-  let selectedId =
-    state.berichten[0]?.id || null;
-
-
-  function saveState() {
-
-    try {
-      localStorage.setItem(
-        STORAGE_KEY,
-        JSON.stringify(state)
-      );
-
-      return true;
-
-    } catch (error) {
-
-      console.warn(
-        "Contactvragen opslaan mislukt.",
-        error
-      );
-
-      return false;
-    }
-  }
-
-
-  // ========================================
-  // 3. HULPFUNCTIES
-  // ========================================
-
-  function create(tag, className = "", text) {
-
-    const element = document.createElement(tag);
-
-    if (className) {
-      element.className = className;
-    }
-
-    if (text !== undefined) {
-      element.textContent = String(text);
-    }
-
-    return element;
-  }
-
-
-  function createId() {
-
-    if (window.crypto?.randomUUID) {
-      return window.crypto.randomUUID();
-    }
-
-    return (
-      "bericht-" +
-      Date.now() + "-" +
-      Math.random().toString(36).slice(2)
-    );
-  }
-
-
-  function currentDate() {
-
-    const now = new Date();
-
-    const year = now.getFullYear();
-    const month = String(
-      now.getMonth() + 1
-    ).padStart(2, "0");
-
-    const day = String(
-      now.getDate()
-    ).padStart(2, "0");
-
-    return `${year}-${month}-${day}`;
-  }
-
-
-  function currentTime() {
-
-    return new Date().toLocaleTimeString(
-      "nl-NL",
-      {
-        hour: "2-digit",
-        minute: "2-digit"
-      }
-    );
-  }
-
-
-  function formatDate(date) {
-
-    if (!/^\d{4}-\d{2}-\d{2}$/.test(date)) {
-      return "Datum onbekend";
-    }
-
-    return new Date(
-      date + "T12:00:00"
-    ).toLocaleDateString("nl-NL", {
-      day: "numeric",
-      month: "short",
-      year: "numeric"
-    });
-  }
-
-
-  function badgeClass(status) {
-
-    if (status === "Beantwoord") {
-      return "cv-badge is-answered";
-    }
-
-    if (status === "In behandeling") {
-      return "cv-badge is-progress";
-    }
-
-    return "cv-badge";
-  }
-
-
-  function messageById(id) {
-
-    return state.berichten.find(
-      item => item.id === id
-    ) || null;
-  }
-
-
-  function selectedMessage() {
-    return messageById(selectedId);
-  }
-
-
-  function notify(text) {
-    $("cvFeedback").textContent = text;
-  }
-
-
-  // ========================================
-  // 4. ZOEKEN EN FILTEREN
-  // ========================================
-
-  function filteredMessages() {
-
-    const query = $("cvSearch").value
-      .trim()
-      .toLocaleLowerCase("nl-NL");
-
-    const status = $("cvStatusFilter").value;
-
-    return state.berichten
-      .filter(item => {
-
-        const searchable = [
-          item.naam,
-          item.email,
-          item.onderwerp,
-          item.bericht
-        ].join(" ").toLocaleLowerCase("nl-NL");
-
-        return (
-          (!query || searchable.includes(query)) &&
-          (status === "all" || item.status === status)
         );
 
-      })
-      .sort((a, b) => {
-        return (
-          b.datum.localeCompare(a.datum) ||
-          b.tijd.localeCompare(a.tijd)
-        );
-      });
-  }
-
-
-  // ========================================
-  // 5. STATISTIEKEN
-  // ========================================
-
-  function renderStatistics() {
-
-    const total = state.berichten.length;
-
-    const answered = state.berichten.filter(
-      item => item.status === "Beantwoord"
-    ).length;
-
-    $("cvTotal").textContent =
-      String(total);
-
-    $("cvOpen").textContent =
-      String(total - answered);
-
-    $("cvAnswered").textContent =
-      String(answered);
-  }
-
-
-  // ========================================
-  // 6. INBOX TONEN
-  // ========================================
-
-  function renderInbox() {
-
-    const visible = filteredMessages();
-
-    // Selectie aanpassen als het bericht
-    // niet meer bij het filter past.
-    if (
-      !visible.some(item => item.id === selectedId)
-    ) {
-      selectedId = visible[0]?.id || null;
-    }
-
-    const list = $("cvMessageList");
-
-    list.replaceChildren();
-
-    $("cvResultCount").textContent =
-      visible.length +
-      (visible.length === 1
-        ? " bericht"
-        : " berichten");
-
-
-    if (visible.length === 0) {
-
-      list.appendChild(
-        create(
-          "p",
-          "cv-empty",
-          "Geen berichten gevonden. " +
-          "Pas je zoekopdracht of statusfilter aan."
-        )
-      );
-
-      return;
-    }
-
-
-    visible.forEach(item => {
-
-      const button = create(
-        "button",
-        "cv-message-item"
-      );
-
-      button.type = "button";
-      button.dataset.id = item.id;
-
-      const active = item.id === selectedId;
-
-      button.classList.toggle(
-        "is-selected",
-        active
-      );
-
-      button.setAttribute(
-        "aria-pressed",
-        String(active)
-      );
-
-      button.setAttribute(
-        "aria-label",
-        "Bekijk bericht: " + item.onderwerp +
-        " van " + item.naam
-      );
-
-
-      const top = create(
-        "div",
-        "cv-message-top"
-      );
-
-      const badge = create(
-        "span",
-        badgeClass(item.status),
-        item.status
-      );
-
-      const date = create(
-        "span",
-        "cv-message-date",
-        formatDate(item.datum)
-      );
-
-      top.append(badge, date);
-
-
-      button.appendChild(top);
-
-      button.appendChild(
-        create(
-          "strong",
-          "cv-message-subject",
-          item.onderwerp
-        )
-      );
-
-      button.appendChild(
-        create(
-          "span",
-          "cv-message-name",
-          item.naam
-        )
-      );
-
-      button.appendChild(
-        create(
-          "p",
-          "cv-message-preview",
-          item.bericht
-        )
-      );
-
-      list.appendChild(button);
-    });
-  }
-
-
-  // ========================================
-  // 7. BERICHTDETAILS TONEN
-  // ========================================
-
-  function renderDetails() {
-
-    const item = selectedMessage();
-
-    $("cvNoSelection").hidden = Boolean(item);
-    $("cvSelectedMessage").hidden = !item;
-
-    if (!item) {
-      return;
-    }
-
-    $("cvDetailTitle").textContent =
-      item.onderwerp;
-
-    $("cvDetailName").textContent =
-      item.naam;
-
-    $("cvDetailEmail").textContent =
-      item.email;
-
-    $("cvDetailDate").textContent =
-      formatDate(item.datum) +
-      (item.tijd ? " · " + item.tijd : "");
-
-    $("cvDetailMessage").textContent =
-      item.bericht;
-
-    $("cvAvatar").textContent =
-      item.naam.trim().charAt(0).toUpperCase() || "?";
-
-    const badge = $("cvDetailBadge");
-
-    badge.className = badgeClass(item.status);
-    badge.textContent = item.status;
-
-    $("cvDetailStatus").value = item.status;
-
-    const draft = state.concepten[item.id] || "";
-
-    $("cvReply").value = draft;
-
-    $("cvDraftStatus").textContent = draft
-      ? "Concept lokaal opgeslagen"
-      : "Nog geen concept";
-
-    $("cvMessageSource").textContent =
-      item.lokaal
-        ? "Zelf toegevoegd demobericht"
-        : "Oorspronkelijk voorbeeldbericht";
-
-    $("cvDelete").hidden = !item.lokaal;
-  }
-
-
-  function render() {
-    renderStatistics();
-    renderInbox();
-    renderDetails();
-  }
-
-
-  // ========================================
-  // 8. BERICHT SELECTEREN
-  // ========================================
-
-  $("cvMessageList").addEventListener(
-    "click",
-    event => {
-
-      const button = event.target.closest(
-        "button[data-id]"
-      );
-
-      if (!button) return;
-
-      selectedId = button.dataset.id;
-
-      notify("");
-      render();
-    }
-  );
-
-
-  // ========================================
-  // 9. FILTERS
-  // ========================================
-
-  $("cvSearch").addEventListener(
-    "input",
-    render
-  );
-
-  $("cvStatusFilter").addEventListener(
-    "change",
-    render
-  );
-
-  $("cvFilters").addEventListener(
-    "submit",
-    event => event.preventDefault()
-  );
-
-  $("cvFilters").addEventListener(
-    "reset",
-    () => {
-
-      // De browser herstelt eerst de velden.
-      setTimeout(() => render(), 0);
-    }
-  );
-
-
-  // ========================================
-  // 10. STATUS WIJZIGEN
-  // ========================================
-
-  $("cvDetailStatus").addEventListener(
-    "change",
-    event => {
-
-      const item = selectedMessage();
-
-      if (!item) return;
-
-      const newStatus = event.target.value;
-
-      if (!STATUSES.includes(newStatus)) return;
-
-      const previousStatus = item.status;
-
-      item.status = newStatus;
-
-      if (!saveState()) {
-
-        item.status = previousStatus;
-        render();
-
-        notify(
-          "De status kon niet lokaal worden opgeslagen."
-        );
-
-        return;
-      }
-
-      render();
-
-      notify(
-        "Status gewijzigd naar " + newStatus +
-        ". Dit is alleen lokaal opgeslagen."
-      );
-    }
-  );
-
-
-  // ========================================
-  // 11. CONCEPT OPSLAAN
-  // ========================================
-
-  function saveCurrentDraft(showFeedback = true) {
-
-    const item = selectedMessage();
-
-    if (!item) return false;
-
-    const text = $("cvReply").value.slice(0, 3000);
-
-    const previous = state.concepten[item.id];
-
-    if (text.trim()) {
-      state.concepten[item.id] = text;
-    } else {
-      delete state.concepten[item.id];
-    }
-
-    if (!saveState()) {
-
-      if (previous === undefined) {
-        delete state.concepten[item.id];
-      } else {
-        state.concepten[item.id] = previous;
-      }
-
-      $("cvDraftStatus").textContent =
-        "Opslaan mislukt";
-
-      if (showFeedback) {
-        notify(
-          "Het concept kon niet worden opgeslagen."
-        );
-      }
-
-      return false;
-    }
-
-    $("cvDraftStatus").textContent = text.trim()
-      ? "Concept lokaal opgeslagen"
-      : "Geen concept opgeslagen";
-
-    if (showFeedback) {
-      notify(
-        "Concept opgeslagen in deze browser. " +
-        "Er is geen e-mail verzonden."
-      );
-    }
-
-    return true;
-  }
-
-
-  $("cvReply").addEventListener("input", () => {
-    $("cvDraftStatus").textContent =
-      "Niet-opgeslagen wijzigingen";
-  });
-
-
-  $("cvSaveDraft").addEventListener("click", () => {
-    saveCurrentDraft();
-  });
-
-
-  // Bij wisselen van bericht eerst het
-  // huidige concept automatisch bewaren.
-  $("cvMessageList").addEventListener(
-    "pointerdown",
-    event => {
-
-      const button = event.target.closest(
-        "button[data-id]"
-      );
-
-      if (
-        button &&
-        button.dataset.id !== selectedId
-      ) {
-        saveCurrentDraft(false);
-      }
-    }
-  );
-
-
-  // ========================================
-  // 12. ANTWOORD KOPIËREN
-  // ========================================
-
-  $("cvCopyReply").addEventListener(
-    "click",
-    async () => {
-
-      const text = $("cvReply").value.trim();
-
-      if (!text) {
-        notify("Schrijf eerst een antwoord.");
-        return;
-      }
-
-      saveCurrentDraft(false);
-
-      try {
-
-        if (!navigator.clipboard?.writeText) {
-          throw new Error(
-            "Klembord niet beschikbaar."
-          );
+        if (response.status === 401) {
+            window.location.replace("login.html");
+            throw new Error("Je moet opnieuw inloggen.");
         }
 
-        await navigator.clipboard.writeText(text);
+        if (response.status === 403) {
+            throw new Error(
+                "Je account heeft geen toegang tot contactvragen. " +
+                "Hiervoor is de rol Secretaris nodig."
+            );
+        }
 
-        notify(
-          "Antwoord gekopieerd naar het klembord."
+        if (!response.ok) {
+            throw new Error(
+                "De API gaf foutcode " + response.status + "."
+            );
+        }
+
+        if (response.status === 204) {
+            return null;
+        }
+
+        return await response.json();
+    }
+
+
+    // ======================================
+    // 2. GEGEVENS OMZETTEN
+    // ======================================
+
+    function normaliseerBericht(data) {
+
+        return {
+            id: Number(data.contactvraagId),
+            voornaam: data.voornaam || "",
+            achternaam: data.achternaam || "",
+            naam: [
+                data.voornaam,
+                data.achternaam
+            ].filter(Boolean).join(" "),
+            email: data.email || "",
+            onderwerp: data.onderwerp || "",
+            bericht: data.bericht || "",
+            datum: data.datum || "",
+            status: data.status || "Nieuw",
+            conceptreactie: data.conceptreactie || "",
+            gebruikerId: data.gebruikerId ?? null
+        };
+    }
+
+
+    // ======================================
+    // 3. HULPFUNCTIES
+    // ======================================
+
+    function notify(tekst) {
+        $("cvFeedback").textContent = tekst;
+    }
+
+    function maakElement(tag, className, tekst) {
+
+        const element = document.createElement(tag);
+
+        if (className) {
+            element.className = className;
+        }
+
+        if (tekst !== undefined) {
+            element.textContent = String(tekst);
+        }
+
+        return element;
+    }
+
+    function huidigBericht() {
+
+        return berichten.find(
+            bericht => bericht.id === geselecteerdId
+        ) || null;
+    }
+
+    function datumTonen(datum) {
+
+        if (!/^\d{4}-\d{2}-\d{2}$/.test(datum)) {
+            return "Datum onbekend";
+        }
+
+        return new Date(
+            datum + "T12:00:00"
+        ).toLocaleDateString("nl-NL", {
+            day: "numeric",
+            month: "short",
+            year: "numeric"
+        });
+    }
+
+    function statusClass(status) {
+
+        if (status === "Beantwoord") {
+            return "cv-badge is-answered";
+        }
+
+        if (status === "In behandeling") {
+            return "cv-badge is-progress";
+        }
+
+        return "cv-badge";
+    }
+
+
+    // ======================================
+    // 4. DEMOTEKSTEN AANPASSEN
+    // ======================================
+
+    function updatePaginaTeksten() {
+
+        $("cvAdd").textContent = "+ Contactvraag toevoegen";
+
+        $("cvDialogTitle").textContent =
+            "Contactvraag toevoegen";
+
+        $("cvDelete").textContent =
+            "Contactvraag verwijderen";
+
+        $("cvNewName").placeholder =
+            "Voornaam Achternaam";
+
+        const verzendKnop = document.querySelector(
+            "#cvNewForm button[type='submit']"
         );
 
-      } catch (error) {
+        if (verzendKnop) {
+            verzendKnop.textContent = "Contactvraag opslaan";
+        }
 
-        notify(
-          "Kopiëren lukt niet automatisch. " +
-          "Selecteer de tekst en gebruik Command + C."
+        const melding = document.querySelector(
+            ".bm-content > .bm-notice"
         );
-      }
-    }
-  );
 
+        if (melding) {
 
-  // ========================================
-  // 13. ANTWOORD OPENEN IN E-MAILAPP
-  // ========================================
+            const titel = melding.querySelector("strong");
+            const beschrijving = melding.querySelector("p");
 
-  $("cvEmailReply").addEventListener(
-    "click",
-    () => {
+            if (titel) {
+                titel.textContent =
+                    "Verbonden met de database";
+            }
 
-      const item = selectedMessage();
+            if (beschrijving) {
+                beschrijving.textContent =
+                    "Contactvragen worden opgehaald uit " +
+                    "de Avond4daagse database. " +
+                    "Statuswijzigingen en conceptantwoorden " +
+                    "worden opgeslagen via de backend. " +
+                    "E-mails worden niet automatisch verstuurd.";
+            }
+        }
 
-      if (!item) return;
+        const statistiekTeksten =
+            document.querySelectorAll(".cv-stat small");
 
-      const reply = $("cvReply").value.trim();
+        if (statistiekTeksten[0]) {
+            statistiekTeksten[0].textContent =
+                "In de database";
+        }
 
-      if (!reply) {
-        notify("Schrijf eerst een antwoord.");
-        return;
-      }
+        if (statistiekTeksten[2]) {
+            statistiekTeksten[2].textContent =
+                "Gemarkeerd als beantwoord";
+        }
 
-      if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(
-        item.email
-      )) {
-        notify(
-          "Dit bericht heeft geen geldig e-mailadres."
+        const statusUitleg = document.querySelector(
+            ".cv-status-area p"
         );
-        return;
-      }
 
-      saveCurrentDraft(false);
+        if (statusUitleg) {
+            statusUitleg.textContent =
+                "Een statuswijziging wordt direct " +
+                "opgeslagen in de database.";
+        }
 
-      const subject = "Re: " + item.onderwerp;
+        const footer = document.querySelector(
+            ".bm-content-footer"
+        );
 
-      const url =
-        "mailto:" + item.email +
-        "?subject=" + encodeURIComponent(subject) +
-        "&body=" + encodeURIComponent(reply);
+        if (footer) {
+            footer.textContent =
+                "Avond4daagse 2027 · Contactvragen · Database";
+        }
 
-      notify(
-        "De e-mailapp wordt geopend. " +
-        "Het bericht is nog niet verzonden."
-      );
+        const accountLabel = document.querySelector(
+            ".bm-account small"
+        );
 
-      window.location.href = url;
-    }
-  );
+        if (accountLabel) {
+            accountLabel.textContent =
+                "Beheeromgeving";
+        }
 
+        // De backend gebruikt ook de status "Nieuw".
+        // Deze toevoegen aan de bestaande selectievakken.
+        for (const id of [
+            "cvStatusFilter",
+            "cvDetailStatus"
+        ]) {
 
-  // ========================================
-  // 14. DEMOBERICHT TOEVOEGEN
-  // ========================================
+            const select = $(id);
 
-  const dialog = $("cvDialog");
-  const newForm = $("cvNewForm");
+            if (
+                !select.querySelector(
+                    'option[value="Nieuw"]'
+                )
+            ) {
 
-  function closeDialog() {
-    dialog.close();
-  }
+                const option = document.createElement("option");
 
+                option.value = "Nieuw";
+                option.textContent = "Nieuw";
 
-  $("cvAdd").addEventListener("click", () => {
-    newForm.reset();
-    dialog.showModal();
-    $("cvNewName").focus();
-  });
-
-
-  $("cvCloseDialog").addEventListener(
-    "click",
-    closeDialog
-  );
-
-  $("cvCancelDialog").addEventListener(
-    "click",
-    closeDialog
-  );
-
-
-  newForm.addEventListener("submit", event => {
-
-    event.preventDefault();
-
-    if (!newForm.reportValidity()) return;
-
-    const name = $("cvNewName").value.trim();
-    const email = $("cvNewEmail").value.trim();
-    const subject = $("cvNewSubject").value.trim();
-    const body = $("cvNewMessage").value.trim();
-
-    if (!name || !email || !subject || !body) {
-      return;
+                if (id === "cvStatusFilter") {
+                    select.insertBefore(
+                        option,
+                        select.options[1]
+                    );
+                } else {
+                    select.prepend(option);
+                }
+            }
+        }
     }
 
-    const item = {
-      id: createId(),
-      naam: name,
-      email: email,
-      onderwerp: subject,
-      bericht: body,
-      datum: currentDate(),
-      tijd: currentTime(),
-      status: "Open",
-      lokaal: true
-    };
 
-    state.berichten.unshift(item);
+    // ======================================
+    // 5. FILTEREN EN SORTEREN
+    // ======================================
 
-    if (!saveState()) {
+    function gefilterdeBerichten() {
 
-      state.berichten.shift();
+        const zoekterm = $("cvSearch")
+            .value.trim()
+            .toLocaleLowerCase("nl-NL");
 
-      notify(
-        "Het nieuwe bericht kon niet lokaal " +
-        "worden opgeslagen."
-      );
+        const statusFilter =
+            $("cvStatusFilter").value;
 
-      closeDialog();
-      return;
+        return berichten
+            .filter(bericht => {
+
+                const zoekbareTekst = [
+                    bericht.naam,
+                    bericht.email,
+                    bericht.onderwerp,
+                    bericht.bericht
+                ]
+                    .join(" ")
+                    .toLocaleLowerCase("nl-NL");
+
+                const kloptZoekterm =
+                    !zoekterm ||
+                    zoekbareTekst.includes(zoekterm);
+
+                const kloptStatus =
+                    statusFilter === "all" ||
+                    bericht.status === statusFilter;
+
+                return kloptZoekterm && kloptStatus;
+            })
+            .sort((a, b) => {
+
+                return (
+                    b.datum.localeCompare(a.datum) ||
+                    b.id - a.id
+                );
+            });
     }
 
-    $("cvSearch").value = "";
-    $("cvStatusFilter").value = "all";
 
-    selectedId = item.id;
+    // ======================================
+    // 6. STATISTIEKEN
+    // ======================================
 
-    closeDialog();
-    render();
+    function renderStatistieken() {
 
-    notify(
-      "Demobericht toegevoegd. " +
-      "Het is niet vanuit het publieke " +
-      "contactformulier ontvangen."
+        $("cvTotal").textContent =
+            String(berichten.length);
+
+        $("cvOpen").textContent = String(
+            berichten.filter(
+                bericht => bericht.status !== "Beantwoord"
+            ).length
+        );
+
+        $("cvAnswered").textContent = String(
+            berichten.filter(
+                bericht => bericht.status === "Beantwoord"
+            ).length
+        );
+    }
+
+
+    // ======================================
+    // 7. INBOX WEERGEVEN
+    // ======================================
+
+    function renderInbox() {
+
+        const lijst = $("cvMessageList");
+
+        const zichtbaar = gefilterdeBerichten();
+
+        lijst.replaceChildren();
+
+        $("cvResultCount").textContent =
+            zichtbaar.length +
+            (zichtbaar.length === 1
+                ? " bericht"
+                : " berichten");
+
+        if (
+            !zichtbaar.some(
+                bericht => bericht.id === geselecteerdId
+            )
+        ) {
+            geselecteerdId = zichtbaar[0]?.id ?? null;
+        }
+
+        if (zichtbaar.length === 0) {
+
+            lijst.appendChild(
+                maakElement(
+                    "p",
+                    "cv-empty",
+                    "Geen contactvragen gevonden."
+                )
+            );
+
+            return;
+        }
+
+        zichtbaar.forEach(bericht => {
+
+            const knop = maakElement(
+                "button",
+                "cv-message-item"
+            );
+
+            knop.type = "button";
+            knop.dataset.id = String(bericht.id);
+
+            const actief =
+                bericht.id === geselecteerdId;
+
+            knop.classList.toggle(
+                "is-selected",
+                actief
+            );
+
+            knop.setAttribute(
+                "aria-pressed",
+                String(actief)
+            );
+
+            const bovenkant = maakElement(
+                "div",
+                "cv-message-top"
+            );
+
+            bovenkant.appendChild(
+                maakElement(
+                    "span",
+                    statusClass(bericht.status),
+                    bericht.status
+                )
+            );
+
+            bovenkant.appendChild(
+                maakElement(
+                    "span",
+                    "cv-message-date",
+                    datumTonen(bericht.datum)
+                )
+            );
+
+            knop.appendChild(bovenkant);
+
+            knop.appendChild(
+                maakElement(
+                    "strong",
+                    "cv-message-subject",
+                    bericht.onderwerp
+                )
+            );
+
+            knop.appendChild(
+                maakElement(
+                    "span",
+                    "cv-message-name",
+                    bericht.naam
+                )
+            );
+
+            knop.appendChild(
+                maakElement(
+                    "p",
+                    "cv-message-preview",
+                    bericht.bericht
+                )
+            );
+
+            lijst.appendChild(knop);
+        });
+    }
+
+
+    // ======================================
+    // 8. BERICHTDETAILS
+    // ======================================
+
+    function renderDetails(verversConcept = false) {
+
+        const bericht = huidigBericht();
+
+        $("cvNoSelection").hidden = Boolean(bericht);
+
+        $("cvSelectedMessage").hidden = !bericht;
+
+        if (!bericht) {
+            getoondId = null;
+            return;
+        }
+
+        $("cvDetailTitle").textContent =
+            bericht.onderwerp;
+
+        $("cvDetailName").textContent =
+            bericht.naam;
+
+        $("cvDetailEmail").textContent =
+            bericht.email;
+
+        $("cvDetailDate").textContent =
+            datumTonen(bericht.datum);
+
+        $("cvDetailMessage").textContent =
+            bericht.bericht;
+
+        $("cvAvatar").textContent =
+            bericht.naam.charAt(0).toUpperCase() || "?";
+
+        const badge = $("cvDetailBadge");
+
+        badge.className = statusClass(bericht.status);
+        badge.textContent = bericht.status;
+
+        $("cvDetailStatus").value = bericht.status;
+
+        if (
+            getoondId !== bericht.id ||
+            verversConcept
+        ) {
+
+            $("cvReply").value =
+                bericht.conceptreactie;
+
+            $("cvDraftStatus").textContent =
+                bericht.conceptreactie
+                    ? "Concept opgeslagen in database"
+                    : "Nog geen concept";
+        }
+
+        $("cvMessageSource").textContent =
+            "Opgeslagen in de database";
+
+        $("cvDelete").hidden = false;
+
+        getoondId = bericht.id;
+    }
+
+
+    function render(verversConcept = false) {
+
+        renderStatistieken();
+        renderInbox();
+        renderDetails(verversConcept);
+    }
+
+
+    // ======================================
+    // 9. BERICHTEN UIT DATABASE OPHALEN
+    // ======================================
+
+    async function laadContactvragen() {
+
+        try {
+
+            notify("Contactvragen ophalen...");
+
+            const data = await apiRequest();
+
+            if (!Array.isArray(data)) {
+                throw new Error(
+                    "De API gaf geen geldige berichtenlijst terug."
+                );
+            }
+
+            berichten = data.map(normaliseerBericht);
+
+            render(true);
+
+            notify(
+                berichten.length === 0
+                    ? "Er zijn nog geen contactvragen in de database."
+                    : berichten.length +
+                      " contactvragen geladen uit de database."
+            );
+
+        } catch (error) {
+
+            console.error(error);
+
+            berichten = [];
+            render(true);
+
+            notify(error.message);
+        }
+    }
+
+
+    // ======================================
+    // 10. CONTACTVRAAG BIJWERKEN
+    // ======================================
+
+    async function wijzigContactvraag(bericht, wijzigingen) {
+
+        const body = {
+            status: wijzigingen.status ?? bericht.status,
+
+            conceptreactie:
+                wijzigingen.conceptreactie !== undefined
+                    ? wijzigingen.conceptreactie
+                    : bericht.conceptreactie,
+
+            gebruikerId: bericht.gebruikerId
+        };
+
+        const data = await apiRequest(
+            "/" + bericht.id,
+            {
+                method: "PUT",
+
+                headers: {
+                    "Content-Type": "application/json"
+                },
+
+                body: JSON.stringify(body)
+            }
+        );
+
+        const bijgewerkt = normaliseerBericht(data);
+
+        const index = berichten.findIndex(
+            item => item.id === bericht.id
+        );
+
+        if (index !== -1) {
+            berichten[index] = bijgewerkt;
+        }
+
+        return bijgewerkt;
+    }
+
+
+    // ======================================
+    // 11. BERICHT SELECTEREN
+    // ======================================
+
+    $("cvMessageList").addEventListener(
+        "click",
+        event => {
+
+            const knop = event.target.closest(
+                "button[data-id]"
+            );
+
+            if (!knop) {
+                return;
+            }
+
+            const volgendId =
+                Number(knop.dataset.id);
+
+            if (volgendId === geselecteerdId) {
+                return;
+            }
+
+            const huidig = huidigBericht();
+
+            if (
+                huidig &&
+                $("cvReply").value !== huidig.conceptreactie
+            ) {
+
+                const doorgaan = window.confirm(
+                    "Je hebt een niet-opgeslagen concept. " +
+                    "Wil je zonder opslaan verdergaan?"
+                );
+
+                if (!doorgaan) {
+                    return;
+                }
+            }
+
+            geselecteerdId = volgendId;
+            getoondId = null;
+
+            render();
+
+            notify("");
+        }
     );
-  });
 
 
-  // ========================================
-  // 15. DEMOBERICHT VERWIJDEREN
-  // ========================================
+    // ======================================
+    // 12. FILTERS
+    // ======================================
 
-  $("cvDelete").addEventListener(
-    "click",
-    () => {
+    $("cvSearch").addEventListener(
+        "input",
+        () => render()
+    );
 
-      const item = selectedMessage();
+    $("cvStatusFilter").addEventListener(
+        "change",
+        () => render()
+    );
 
-      if (!item || !item.lokaal) return;
+    $("cvFilters").addEventListener(
+        "submit",
+        event => event.preventDefault()
+    );
 
-      const confirmed = window.confirm(
-        'Wil je "' + item.onderwerp +
-        '" verwijderen uit deze frontenddemo?'
-      );
-
-      if (!confirmed) return;
-
-      const oldState = JSON.parse(
-        JSON.stringify(state)
-      );
-
-      state.berichten = state.berichten.filter(
-        message => message.id !== item.id
-      );
-
-      delete state.concepten[item.id];
-
-      if (!saveState()) {
-
-        state = oldState;
-
-        notify(
-          "Verwijderen kon niet lokaal " +
-          "worden opgeslagen."
-        );
-
-        return;
-      }
-
-      selectedId = null;
-
-      render();
-
-      notify("Demobericht lokaal verwijderd.");
-    }
-  );
+    $("cvFilters").addEventListener(
+        "reset",
+        () => {
+            setTimeout(() => render(), 0);
+        }
+    );
 
 
-  // ========================================
-  // 16. ANDER BROWSERTABBLAD
-  // ========================================
+    // ======================================
+    // 13. STATUS OPSLAAN IN DATABASE
+    // ======================================
 
-  window.addEventListener(
-    "storage",
-    event => {
+    $("cvDetailStatus").addEventListener(
+        "change",
+        async event => {
 
-      if (event.key !== STORAGE_KEY) return;
+            const bericht = huidigBericht();
 
-      state = loadState();
-      render();
+            if (!bericht) {
+                return;
+            }
 
-      notify(
-        "Contactvragen bijgewerkt vanuit " +
-        "een ander browsertabblad."
-      );
-    }
-  );
+            const nieuweStatus = event.target.value;
+
+            if (!STATUSES.includes(nieuweStatus)) {
+                return;
+            }
+
+            const concept = $("cvReply").value;
+
+            try {
+
+                notify("Status opslaan...");
+
+                await wijzigContactvraag(
+                    bericht,
+                    {
+                        status: nieuweStatus,
+                        conceptreactie: concept
+                    }
+                );
+
+                render(true);
+
+                notify(
+                    "Status en eventueel concept opgeslagen " +
+                    "in de database."
+                );
+
+            } catch (error) {
+
+                render(true);
+                notify(error.message);
+            }
+        }
+    );
 
 
-  // ========================================
-  // 17. START
-  // ========================================
+    // ======================================
+    // 14. CONCEPT OPSLAAN
+    // ======================================
 
-  render();
+    $("cvReply").addEventListener(
+        "input",
+        () => {
+
+            $("cvDraftStatus").textContent =
+                "Niet-opgeslagen wijzigingen";
+        }
+    );
+
+    $("cvSaveDraft").addEventListener(
+        "click",
+        async () => {
+
+            const bericht = huidigBericht();
+
+            if (!bericht) {
+                return;
+            }
+
+            const knop = $("cvSaveDraft");
+
+            knop.disabled = true;
+
+            try {
+
+                await wijzigContactvraag(
+                    bericht,
+                    {
+                        conceptreactie: $("cvReply").value
+                    }
+                );
+
+                render(true);
+
+                notify(
+                    "Concept opgeslagen in de database. " +
+                    "Er is geen e-mail verstuurd."
+                );
+
+            } catch (error) {
+
+                notify(error.message);
+
+            } finally {
+
+                knop.disabled = false;
+            }
+        }
+    );
+
+
+    // ======================================
+    // 15. ANTWOORD KOPIËREN
+    // ======================================
+
+    $("cvCopyReply").addEventListener(
+        "click",
+        async () => {
+
+            const tekst = $("cvReply").value.trim();
+
+            if (!tekst) {
+                notify("Schrijf eerst een antwoord.");
+                return;
+            }
+
+            try {
+
+                await navigator.clipboard.writeText(
+                    tekst
+                );
+
+                notify(
+                    "Antwoord gekopieerd. " +
+                    "Sla je concept apart op als je " +
+                    "het wilt bewaren in de database."
+                );
+
+            } catch (error) {
+
+                notify(
+                    "Automatisch kopiëren mislukt. " +
+                    "Gebruik Command + C."
+                );
+            }
+        }
+    );
+
+
+    // ======================================
+    // 16. E-MAILAPP OPENEN
+    // ======================================
+
+    $("cvEmailReply").addEventListener(
+        "click",
+        () => {
+
+            const bericht = huidigBericht();
+
+            if (!bericht) {
+                return;
+            }
+
+            const antwoord =
+                $("cvReply").value.trim();
+
+            if (!antwoord) {
+                notify("Schrijf eerst een antwoord.");
+                return;
+            }
+
+            const onderwerp =
+                "Re: " + bericht.onderwerp;
+
+            const url =
+                "mailto:" + bericht.email +
+                "?subject=" +
+                encodeURIComponent(onderwerp) +
+                "&body=" +
+                encodeURIComponent(antwoord);
+
+            notify(
+                "De e-mailapp wordt geopend. " +
+                "Het bericht is nog niet verzonden."
+            );
+
+            window.location.href = url;
+        }
+    );
+
+
+    // ======================================
+    // 17. CONTACTVRAAG TOEVOEGEN
+    // ======================================
+
+    const dialog = $("cvDialog");
+    const nieuwFormulier = $("cvNewForm");
+
+    $("cvAdd").addEventListener(
+        "click",
+        () => {
+
+            nieuwFormulier.reset();
+            dialog.showModal();
+            $("cvNewName").focus();
+        }
+    );
+
+    $("cvCloseDialog").addEventListener(
+        "click",
+        () => dialog.close()
+    );
+
+    $("cvCancelDialog").addEventListener(
+        "click",
+        () => dialog.close()
+    );
+
+    nieuwFormulier.addEventListener(
+        "submit",
+        async event => {
+
+            event.preventDefault();
+
+            if (!nieuwFormulier.reportValidity()) {
+                return;
+            }
+
+            const volledigeNaam =
+                $("cvNewName").value.trim();
+
+            const naamdelen =
+                volledigeNaam.split(/\s+/);
+
+            const voornaam =
+                naamdelen.shift() || "";
+
+            const achternaam =
+                naamdelen.join(" ");
+
+            if (!voornaam || !achternaam) {
+
+                notify(
+                    "Vul een voornaam én achternaam in."
+                );
+
+                return;
+            }
+
+            const email =
+                $("cvNewEmail").value.trim();
+
+            const onderwerp =
+                $("cvNewSubject").value.trim();
+
+            const bericht =
+                $("cvNewMessage").value.trim();
+
+            if (
+                voornaam.length > 50 ||
+                achternaam.length > 50
+            ) {
+
+                notify(
+                    "Voornaam en achternaam mogen " +
+                    "elk maximaal 50 tekens bevatten."
+                );
+
+                return;
+            }
+
+            if (bericht.length > 2000) {
+
+                notify(
+                    "Het bericht mag maximaal " +
+                    "2000 tekens bevatten."
+                );
+
+                return;
+            }
+
+            const verzendKnop =
+                nieuwFormulier.querySelector(
+                    'button[type="submit"]'
+                );
+
+            verzendKnop.disabled = true;
+
+            try {
+
+                const data = await apiRequest(
+                    "",
+                    {
+                        method: "POST",
+
+                        headers: {
+                            "Content-Type": "application/json"
+                        },
+
+                        body: JSON.stringify({
+                            voornaam,
+                            achternaam,
+                            email,
+                            onderwerp,
+                            bericht
+                        })
+                    }
+                );
+
+                const nieuwBericht =
+                    normaliseerBericht(data);
+
+                berichten.unshift(nieuwBericht);
+
+                geselecteerdId = nieuwBericht.id;
+                getoondId = null;
+
+                $("cvSearch").value = "";
+                $("cvStatusFilter").value = "all";
+
+                dialog.close();
+
+                render(true);
+
+                notify(
+                    "Contactvraag opgeslagen in de database."
+                );
+
+            } catch (error) {
+
+                notify(error.message);
+
+            } finally {
+
+                verzendKnop.disabled = false;
+            }
+        }
+    );
+
+
+    // ======================================
+    // 18. CONTACTVRAAG VERWIJDEREN
+    // ======================================
+
+    $("cvDelete").addEventListener(
+        "click",
+        async () => {
+
+            const bericht = huidigBericht();
+
+            if (!bericht) {
+                return;
+            }
+
+            const akkoord = window.confirm(
+                'Weet je zeker dat je "' +
+                bericht.onderwerp +
+                '" definitief wilt verwijderen ' +
+                "uit de database?"
+            );
+
+            if (!akkoord) {
+                return;
+            }
+
+            try {
+
+                await apiRequest(
+                    "/" + bericht.id,
+                    {
+                        method: "DELETE"
+                    }
+                );
+
+                berichten = berichten.filter(
+                    item => item.id !== bericht.id
+                );
+
+                geselecteerdId = null;
+                getoondId = null;
+
+                render(true);
+
+                notify(
+                    "Contactvraag verwijderd uit de database."
+                );
+
+            } catch (error) {
+
+                notify(error.message);
+            }
+        }
+    );
+
+
+    // ======================================
+    // 19. PAGINA STARTEN
+    // ======================================
+
+    updatePaginaTeksten();
+    laadContactvragen();
 
 });

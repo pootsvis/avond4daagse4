@@ -1,8 +1,84 @@
 
-// =============================================
+// ==========================================
 // AVOND4DAAGSE 2027
-// BEHEEROMGEVING - GEDEELDE INTERACTIES
-// =============================================
+// BEHEEROMGEVING - LOGINCONTROLE EN NAVIGATIE
+// ==========================================
+
+// ==========================================
+// 1. TOEGANG CONTROLEREN
+// ==========================================
+
+const BEHEER_API_URL = "http://localhost:5278";
+
+const TOEGESTANE_ROLLEN = [
+    "Voorzitter",
+    "Beheerder",
+    "Secretaris",
+    "Penningmeester",
+    "Vrijwilliger",
+    "Verkeersregelaars"
+];
+
+// Verberg de beheerpagina totdat de login is gecontroleerd.
+document.documentElement.style.visibility = "hidden";
+
+async function controleerBeheerToegang() {
+
+    try {
+
+        const response = await fetch(
+            `${BEHEER_API_URL}/api/Auth/me`,
+            {
+                method: "GET",
+                credentials: "include",
+                cache: "no-store"
+            }
+        );
+
+        // Niet ingelogd of verlopen sessie.
+        if (!response.ok) {
+            window.location.replace("login.html");
+            return;
+        }
+
+        const gebruiker = await response.json();
+
+        const rollen = Array.isArray(gebruiker.rollen)
+            ? gebruiker.rollen
+            : [];
+
+        // Wel ingelogd, maar geen organisatierol.
+        const heeftToegang = rollen.some(rol =>
+            TOEGESTANE_ROLLEN.includes(rol)
+        );
+
+        if (!heeftToegang) {
+            window.location.replace("login.html");
+            return;
+        }
+
+        // Login en rol zijn gecontroleerd.
+        document.documentElement.style.visibility = "visible";
+
+    } catch (error) {
+
+        console.error(
+            "Beheersessie controleren mislukt:",
+            error
+        );
+
+        // Bij een verbindingsfout geen beheerpagina tonen.
+        window.location.replace("login.html");
+    }
+}
+
+// Controleer bij iedere geopende beheerpagina opnieuw.
+controleerBeheerToegang();
+
+
+// ==========================================
+// 2. MOBIELE NAVIGATIE
+// ==========================================
 
 document.addEventListener("DOMContentLoaded", () => {
 
@@ -27,9 +103,9 @@ document.addEventListener("DOMContentLoaded", () => {
     );
 
 
-    // =========================================
+    // ======================================
     // MENU OPENEN
-    // =========================================
+    // ======================================
 
     function openMenu() {
 
@@ -59,9 +135,9 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
 
-    // =========================================
+    // ======================================
     // MENU SLUITEN
-    // =========================================
+    // ======================================
 
     function closeMenu(restoreFocus = false) {
 
@@ -89,9 +165,9 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
 
-    // =========================================
-    // MENU KNOP
-    // =========================================
+    // ======================================
+    // MENUKNOP
+    // ======================================
 
     menuButton.addEventListener("click", () => {
 
@@ -108,18 +184,18 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 
 
-    // =========================================
+    // ======================================
     // KLIKKEN BUITEN HET MENU
-    // =========================================
+    // ======================================
 
     backdrop.addEventListener("click", () => {
         closeMenu(true);
     });
 
 
-    // =========================================
+    // ======================================
     // ESCAPE-TOETS
-    // =========================================
+    // ======================================
 
     document.addEventListener("keydown", event => {
 
@@ -135,18 +211,18 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 
 
-    // =========================================
+    // ======================================
     // SCHERMGROOTTE VERANDERT
-    // =========================================
+    // ======================================
 
     mobileScreen.addEventListener("change", () => {
         closeMenu();
     });
 
 
-    // =========================================
+    // ======================================
     // STARTINSTELLING
-    // =========================================
+    // ======================================
 
     sidebar.inert = mobileScreen.matches;
     backdrop.hidden = true;
