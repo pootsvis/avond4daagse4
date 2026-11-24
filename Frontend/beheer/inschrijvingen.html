@@ -2,207 +2,504 @@
 <!DOCTYPE html>
 <html lang="nl">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Inschrijvingen | Avond4daagse 2027</title>
-  <link rel="stylesheet" href="../css/beheer.css">
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <meta name="description"
+          content="Beheer inschrijvingen voor de Avond4daagse 2027.">
+
+    <title>Inschrijvingen | Avond4daagse Beheer</title>
+
+    <link rel="stylesheet" href="../css/beheer.css">
+    <link rel="stylesheet" href="../css/beheer-polish.css">
+    <link rel="stylesheet" href="../css/beheer-inschrijvingen.css">
+
+    <script src="../js/beheer-ui.js" defer></script>
+    <script src="../js/beheer-inschrijvingen.js" defer></script>
 </head>
 
-<body class="inschrijvingen-pagina">
-  <div class="ins-layout">
+<body class="bm-page bi-page">
+
+<div class="bm-layout">
 
     <!-- ZIJMENU -->
-    <aside class="ins-sidebar">
-      <div>
-        <div class="ins-logo">
-          <strong>AVOND4DAAGSE</strong>
-          <small>BEHEER 2027</small>
+    <aside class="bm-sidebar" id="bmSidebar">
+
+        <a href="dashboard.html" class="bm-brand">
+            <span class="bm-brand-symbol" aria-hidden="true">4</span>
+            <span>
+                <strong>AVOND4DAAGSE</strong>
+                <small>BEHEEROMGEVING 2027</small>
+            </span>
+        </a>
+
+        <div class="bm-sidebar-content">
+
+            <p class="bm-nav-label">OVERZICHT</p>
+
+            <nav class="bm-navigation"
+                 aria-label="Beheernavigatie">
+
+                <a href="dashboard.html">
+                    <span class="bm-nav-icon" aria-hidden="true">▦</span>
+                    Dashboard
+                </a>
+
+                <a href="inschrijvingen.html"
+                   class="bm-nav-active"
+                   aria-current="page">
+                    <span class="bm-nav-icon" aria-hidden="true">◎</span>
+                    Inschrijvingen
+                </a>
+
+                <a href="routebeheer.html">
+                    <span class="bm-nav-icon" aria-hidden="true">◇</span>
+                    Routebeheer
+                </a>
+
+                <a href="vrijwilligers.html">
+                    <span class="bm-nav-icon" aria-hidden="true">♧</span>
+                    Vrijwilligers &amp; inzet
+                </a>
+
+                <a href="mijn-beschikbaarheid.html">
+                    <span class="bm-nav-icon" aria-hidden="true">◷</span>
+                    Mijn beschikbaarheid
+                </a>
+
+                <a href="draaiboek.html">
+                    <span class="bm-nav-icon" aria-hidden="true">☷</span>
+                    Draaiboek
+                </a>
+
+                <a href="financien.html">
+                    <span class="bm-nav-icon" aria-hidden="true">€</span>
+                    Financiën
+                </a>
+
+                <a href="contactvragen.html">
+                    <span class="bm-nav-icon" aria-hidden="true">✉</span>
+                    Contactvragen
+                </a>
+
+            </nav>
         </div>
 
-        <nav class="ins-menu" aria-label="Beheermenu">
-          <a href="dashboard.html">Dashboard</a>
-          <a href="inschrijvingen.html" class="actief" aria-current="page">Inschrijvingen</a>
-          <a href="routebeheer.html">Routebeheer</a>
-          <a href="vrijwilligers.html">Vrijwilligers & inzet</a>
-          <a href="mijn-beschikbaarheid.html">Mijn beschikbaarheid</a>
-          <a href="draaiboek.html">Draaiboek</a>
-          <a href="financien.html">Financiën</a>
-          <a href="contactvragen.html">Contactvragen</a>
-        </nav>
-      </div>
+        <div class="bm-sidebar-footer">
 
-      <div class="ins-account">
-        <span>Beheerder</span>
-        <a href="login.html">Uitloggen</a>
-      </div>
+            <div class="bm-account">
+
+                <span class="bm-account-avatar" aria-hidden="true">
+                    B
+                </span>
+
+                <span>
+                    <strong>Beheeromgeving</strong>
+                    <small>Frontenddemo</small>
+                </span>
+
+            </div>
+
+            <a href="login.html" class="bm-sidebar-exit">
+                Terug naar inloggen
+                <span aria-hidden="true">↗</span>
+            </a>
+
+        </div>
     </aside>
 
-    <!-- HOOFDINHOUD -->
-    <main class="ins-main">
 
-      <!-- PAGINATITEL -->
-      <header class="ins-header">
+    <!-- RECHTER GEDEELTE -->
+    <div class="bm-main-area">
+
+        <!-- BOVENBALK -->
+        <header class="bm-topbar">
+
+            <div class="bm-topbar-left">
+
+                <button type="button"
+                        class="bm-menu-button"
+                        id="bmMenuButton"
+                        aria-controls="bmSidebar"
+                        aria-expanded="false"
+                        aria-label="Open beheermenu">
+                    <span aria-hidden="true">☰</span>
+                    Menu
+                </button>
+
+                <div class="bm-breadcrumb">
+                    <span>Beheeromgeving</span>
+                    <span aria-hidden="true">/</span>
+                    <strong>Inschrijvingen</strong>
+                </div>
+
+            </div>
+
+            <a href="../../index.html" class="bm-website-link">
+                Bekijk publieke website
+                <span aria-hidden="true">↗</span>
+            </a>
+
+        </header>
+
+
+        <main class="bm-content">
+
+            <!-- PAGINATITEL -->
+            <section class="bi-heading">
+
+                <div>
+                    <p class="bm-eyebrow">DEELNEMERSBEHEER</p>
+
+                    <h1>Inschrijvingen</h1>
+
+                    <p>
+                        Zoek, filter en bekijk inschrijvingen
+                        op één overzichtelijke plek.
+                    </p>
+                </div>
+
+                <span class="bm-demo-tag">
+                    Frontenddemo
+                </span>
+
+            </section>
+
+
+            <!-- DEMOMELDING -->
+            <div class="bm-notice" role="note">
+
+                <span class="bm-notice-icon"
+                      aria-hidden="true">i</span>
+
+                <div>
+                    <strong>Voorbeeldinschrijvingen</strong>
+                    <p>
+                        Deze pagina gebruikt zeven fictieve
+                        inschrijvingen uit de oorspronkelijke
+                        projectmock-up. Wijzigingen worden alleen
+                        op dit scherm toegepast en niet
+                        opgeslagen in de database.
+                    </p>
+                </div>
+
+            </div>
+
+
+            <!-- STATISTIEKEN -->
+            <section class="bi-stats"
+                     aria-label="Inschrijvingsstatistieken">
+
+                <article class="bi-stat">
+                    <div class="bi-stat-top">
+                        <span>Totaal</span>
+                        <span class="bi-stat-symbol">◎</span>
+                    </div>
+
+                    <strong id="biTotal">7</strong>
+
+                    <small>Voorbeeldinschrijvingen</small>
+                </article>
+
+                <article class="bi-stat">
+                    <div class="bi-stat-top">
+                        <span>Betaald</span>
+                        <span class="bi-stat-symbol">✓</span>
+                    </div>
+
+                    <strong id="biPaid">4</strong>
+
+                    <small>Afgeronde betalingen</small>
+                </article>
+
+                <article class="bi-stat">
+                    <div class="bi-stat-top">
+                        <span>Openstaand</span>
+                        <span class="bi-stat-symbol">◷</span>
+                    </div>
+
+                    <strong id="biOpen">2</strong>
+
+                    <small>Nog niet betaald</small>
+                </article>
+
+                <article class="bi-stat">
+                    <div class="bi-stat-top">
+                        <span>Geannuleerd</span>
+                        <span class="bi-stat-symbol">×</span>
+                    </div>
+
+                    <strong id="biCancelled">1</strong>
+
+                    <small>Niet actieve inschrijvingen</small>
+                </article>
+
+            </section>
+
+
+            <!-- HOOFDPANEEL -->
+            <section class="bi-panel"
+                     aria-labelledby="biListTitle">
+
+                <div class="bi-panel-heading">
+
+                    <div>
+                        <p class="bm-eyebrow">OVERZICHT</p>
+                        <h2 id="biListTitle">
+                            Deelnemerslijst
+                        </h2>
+                        <p>
+                            Gebruik de zoekfunctie en filters om
+                            snel een inschrijving te vinden.
+                        </p>
+                    </div>
+
+                    <button type="button"
+                            class="bi-button bi-button-primary"
+                            id="biExportCSV">
+                        Download CSV
+                        <span aria-hidden="true">↓</span>
+                    </button>
+
+                </div>
+
+
+                <!-- FILTERS -->
+                <form id="biFilters" class="bi-filters">
+
+                    <div class="bi-filter-search">
+                        <label for="biSearch">
+                            Zoeken
+                        </label>
+
+                        <input id="biSearch"
+                               type="search"
+                               autocomplete="off"
+                               placeholder="Naam, school of inschrijfnummer">
+                    </div>
+
+                    <div class="bi-filter-field">
+                        <label for="biDistance">
+                            Afstand
+                        </label>
+
+                        <select id="biDistance">
+                            <option value="all">
+                                Alle afstanden
+                            </option>
+                            <option value="5 km">5 km</option>
+                            <option value="10 km">10 km</option>
+                        </select>
+                    </div>
+
+                    <div class="bi-filter-field">
+                        <label for="biStatus">
+                            Status
+                        </label>
+
+                        <select id="biStatus">
+                            <option value="all">
+                                Alle statussen
+                            </option>
+                            <option value="Betaald">
+                                Betaald
+                            </option>
+                            <option value="Open">
+                                Open
+                            </option>
+                            <option value="Geannuleerd">
+                                Geannuleerd
+                            </option>
+                        </select>
+                    </div>
+
+                    <button type="reset"
+                            class="bi-button bi-button-light">
+                        Filters wissen
+                    </button>
+
+                </form>
+
+
+                <!-- SELECTIEACTIES -->
+                <div class="bi-selection-bar">
+
+                    <span id="biSelectionText">
+                        0 geselecteerd
+                    </span>
+
+                    <button type="button"
+                            id="biCancelSelected"
+                            class="bi-button bi-button-danger"
+                            disabled>
+                        Selectie annuleren
+                    </button>
+
+                </div>
+
+
+                <!-- TABEL -->
+                <div class="bi-table-wrapper">
+
+                    <table class="bi-table">
+
+                        <thead>
+                            <tr>
+                                <th scope="col">
+                                    <input type="checkbox"
+                                           id="biSelectAll"
+                                           aria-label="Selecteer alle zichtbare inschrijvingen">
+                                </th>
+                                <th scope="col">Nummer</th>
+                                <th scope="col">Deelnemer</th>
+                                <th scope="col">School</th>
+                                <th scope="col">Groep</th>
+                                <th scope="col">Afstand</th>
+                                <th scope="col">Status</th>
+                                <th scope="col">Datum</th>
+                                <th scope="col">Actie</th>
+                            </tr>
+                        </thead>
+
+                        <tbody id="biTableBody">
+                            <tr>
+                                <td colspan="9">
+                                    Inschrijvingen laden...
+                                </td>
+                            </tr>
+                        </tbody>
+
+                    </table>
+
+                </div>
+
+
+                <!-- PAGINERING -->
+                <div class="bi-pagination">
+
+                    <p id="biPaginationText">
+                        Inschrijvingen laden...
+                    </p>
+
+                    <div class="bi-pagination-buttons">
+
+                        <button type="button"
+                                id="biPrev"
+                                class="bi-button bi-button-light"
+                                disabled>
+                            ← Vorige
+                        </button>
+
+                        <span id="biCurrentPage"
+                              class="bi-page-number"
+                              aria-live="polite">
+                            1 / 1
+                        </span>
+
+                        <button type="button"
+                                id="biNext"
+                                class="bi-button bi-button-light"
+                                disabled>
+                            Volgende →
+                        </button>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+
+            <p id="biFeedback"
+               class="bi-feedback"
+               role="status"
+               aria-live="polite"></p>
+
+
+            <footer class="bm-content-footer">
+                Avond4daagse 2027 · Beheeromgeving · Frontenddemo
+            </footer>
+
+        </main>
+
+    </div>
+</div>
+
+
+<!-- DETAILS VAN EEN INSCHRIJVING -->
+<dialog id="biDetailDialog"
+        class="bi-dialog"
+        aria-labelledby="biDialogTitle">
+
+    <div class="bi-dialog-header">
         <div>
-          <h1>Inschrijvingen</h1>
-          <p>1.248 deelnemers • 1.176 betalingen afgerond</p>
+            <p class="bm-eyebrow">
+                INSCHRIJVING
+            </p>
+            <h2 id="biDialogTitle">
+                Deelnemergegevens
+            </h2>
         </div>
 
-        <div class="ins-header-buttons">
-          <button type="button" class="ins-btn">
-            − Inschrijving annuleren
-          </button>
-          <button type="button" class="ins-btn ins-dark">
-            + Inschrijving toevoegen
-          </button>
-        </div>
-      </header>
-
-      <!-- ZOEKEN EN FILTEREN -->
-      <form class="ins-filters">
-        <input
-          type="search"
-          aria-label="Zoeken naar inschrijvingen"
-          placeholder="Zoek op naam, school of nummer..."
-        >
-
-        <select aria-label="Filter op afstand">
-          <option>Alle afstanden</option>
-          <option>5 km</option>
-          <option>10 km</option>
-        </select>
-
-        <select aria-label="Filter op status">
-          <option>Alle statussen</option>
-          <option>Betaald</option>
-          <option>Open</option>
-          <option>Geannuleerd</option>
-        </select>
-
-        <button type="reset" class="ins-btn">
-          Filters wissen
+        <button type="button"
+                id="biCloseDialog"
+                class="bi-dialog-close"
+                aria-label="Sluit details">
+            ×
         </button>
-      </form>
+    </div>
 
-      <!-- ACTIEKNOPPEN -->
-      <section class="ins-actions"
-               aria-label="Acties voor inschrijvingen">
-        <span>0 geselecteerd</span>
-
-        <div class="ins-action-buttons">
-          <button type="button" class="ins-btn">
-            Exporteer CSV
-          </button>
-          <button type="button" class="ins-btn">
-            E-mail deelnemers
-          </button>
-          <button type="button" class="ins-btn">
-            Print startlijsten
-          </button>
+    <dl class="bi-details">
+        <div>
+            <dt>Inschrijfnummer</dt>
+            <dd id="biDetailNumber">-</dd>
         </div>
-      </section>
 
-      <!-- INSCHRIJVINGENTABEL -->
-      <div class="ins-table-wrapper">
-        <table class="ins-table">
-          <thead>
-            <tr>
-              <th>NR.</th>
-              <th>DEELNEMER</th>
-              <th>SCHOOL</th>
-              <th>GROEP</th>
-              <th>AFSTAND</th>
-              <th>STATUS</th>
-              <th>DATUM</th>
-            </tr>
-          </thead>
-
-          <tbody>
-            <tr>
-              <td>A4D-1247</td>
-              <td>Milan Jansen</td>
-              <td>De Regenboog</td>
-              <td>5</td>
-              <td>10 km</td>
-              <td>Open</td>
-              <td>14 apr</td>
-            </tr>
-            <tr>
-              <td>A4D-1246</td>
-              <td>Sara Bakker</td>
-              <td>De Horizon</td>
-              <td>3</td>
-              <td>5 km</td>
-              <td>Betaald</td>
-              <td>14 apr</td>
-            </tr>
-            <tr>
-              <td>A4D-1245</td>
-              <td>Finn Smit</td>
-              <td>Particulier</td>
-              <td>7</td>
-              <td>10 km</td>
-              <td>Betaald</td>
-              <td>13 apr</td>
-            </tr>
-            <tr>
-              <td>A4D-1244</td>
-              <td>Nora Visser</td>
-              <td>De Klimboom</td>
-              <td>4</td>
-              <td>5 km</td>
-              <td>Geannuleerd</td>
-              <td>13 apr</td>
-            </tr>
-            <tr>
-              <td>A4D-1243</td>
-              <td>Sem de Boer</td>
-              <td>De Regenboog</td>
-              <td>6</td>
-              <td>5 km</td>
-              <td>Betaald</td>
-              <td>13 apr</td>
-            </tr>
-            <tr>
-              <td>A4D-1242</td>
-              <td>Yara Meijer</td>
-              <td>De Horizon</td>
-              <td>8</td>
-              <td>10 km</td>
-              <td>Open</td>
-              <td>12 apr</td>
-            </tr>
-            <tr>
-              <td>A4D-1241</td>
-              <td>Mees Vos</td>
-              <td>De Klimboom</td>
-              <td>5</td>
-              <td>5 km</td>
-              <td>Betaald</td>
-              <td>12 apr</td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-
-      <!-- PAGINANAVIGATIE -->
-      <footer class="ins-pagination">
-        <p>1–25 van 1.248 inschrijvingen</p>
-
-        <div class="ins-page-buttons">
-          <button type="button" class="ins-btn">
-            ← Vorige
-          </button>
-          <button type="button" class="ins-btn ins-dark"
-                  aria-current="page">1</button>
-          <button type="button" class="ins-btn">2</button>
-          <button type="button" class="ins-btn">3</button>
-          <button type="button" class="ins-btn">
-            Volgende →
-          </button>
+        <div>
+            <dt>Deelnemer</dt>
+            <dd id="biDetailName">-</dd>
         </div>
-      </footer>
 
-    </main>
-  </div>
+        <div>
+            <dt>School</dt>
+            <dd id="biDetailSchool">-</dd>
+        </div>
+
+        <div>
+            <dt>Groep</dt>
+            <dd id="biDetailGroup">-</dd>
+        </div>
+
+        <div>
+            <dt>Afstand</dt>
+            <dd id="biDetailDistance">-</dd>
+        </div>
+
+        <div>
+            <dt>Status</dt>
+            <dd id="biDetailStatus">-</dd>
+        </div>
+
+        <div>
+            <dt>Datum</dt>
+            <dd id="biDetailDate">-</dd>
+        </div>
+    </dl>
+
+    <button type="button"
+            id="biCloseDialogBottom"
+            class="bi-button bi-button-primary">
+        Sluiten
+    </button>
+
+</dialog>
+
+
+<!-- ACHTERGROND MOBIEL ZIJMENU -->
+<div id="bmBackdrop"
+     class="bm-backdrop"
+     hidden></div>
+
 </body>
 </html>
