@@ -1,0 +1,676 @@
+
+/* =========================================
+   AVOND4DAAGSE 2027
+   PUBLIEKE HOMEPAGE - VISUAL DESIGN
+   ========================================= */
+
+/* ALGEMEEN */
+
+body.pub-home {
+    background-color: #ffffff;
+}
+
+.pub-home .site-header {
+    position: relative;
+    z-index: 20;
+    background: #ffffff;
+    border-bottom: 1px solid rgba(23, 40, 32, 0.1);
+}
+
+.pub-home .header-inner {
+    max-width: 1180px;
+}
+
+.pub-home .site-header nav a,
+.pub-home .site-header .login-btn {
+    transition:
+        color 0.22s ease,
+        background-color 0.22s ease,
+        transform 0.22s ease;
+}
+
+.pub-home .site-header nav a:hover {
+    color: #c46a15;
+}
+
+.pub-home .site-header .login-btn {
+    border-radius: 999px;
+}
+
+.pub-home .site-header .login-btn:hover {
+    background: #334f41;
+    transform: translateY(-2px);
+}
+
+
+/* =========================================
+   CINEMATIC HERO
+   ========================================= */
+
+.pub-home .hero.pub-hero {
+    position: relative;
+    isolation: isolate;
+    overflow: hidden;
+    min-height: 680px;
+
+    background: linear-gradient(
+        120deg,
+        #284f44 0%,
+        #396d5c 53%,
+        #d1a46b 100%
+    );
+
+    color: #ffffff;
+}
+
+
+/* GROTE ACHTERGRONDFOTO */
+
+.pub-home .pub-hero-photo {
+    position: absolute;
+    z-index: 0;
+    inset: 0;
+
+    display: block;
+    width: 100%;
+    height: 100%;
+    max-width: none;
+
+    object-fit: cover;
+    object-position: 50% 45%;
+
+    opacity: 1;
+
+    animation:
+        pub-photo-enter 1.5s
+        cubic-bezier(0.2, 0.65, 0.25, 1)
+        both;
+}
+
+.pub-home .pub-hero-photo[hidden] {
+    display: none;
+}
+
+
+/* DONKERE OVERLAY VOOR LEESBARE TEKST */
+
+.pub-home .pub-hero-overlay {
+    position: absolute;
+    z-index: 1;
+    inset: 0;
+
+    background:
+        linear-gradient(
+            90deg,
+            rgba(13, 36, 30, 0.85) 0%,
+            rgba(16, 43, 35, 0.72) 32%,
+            rgba(21, 42, 32, 0.29) 70%,
+            rgba(14, 29, 25, 0.13) 100%
+        ),
+        linear-gradient(
+            0deg,
+            rgba(10, 25, 21, 0.28),
+            transparent 35%
+        );
+
+    pointer-events: none;
+}
+
+
+/* HERO INHOUD */
+
+.pub-home .hero-layout {
+    position: relative;
+    z-index: 2;
+
+    display: flex;
+    align-items: center;
+
+    width: calc(100% - 72px);
+    max-width: 1180px;
+    min-height: 680px;
+
+    margin-inline: auto;
+    padding-block: 95px 120px;
+}
+
+.pub-home .hero-content {
+    position: relative;
+    max-width: 710px;
+    min-width: 0;
+
+    animation:
+        pub-text-enter 0.95s
+        0.15s ease-out both;
+}
+
+
+/* KLEINE TEKST BOVENAAN */
+
+.pub-home .hero-label {
+    display: inline-flex;
+    align-items: center;
+    gap: 11px;
+
+    margin: 0 0 25px;
+
+    color: #f3f6ef;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.11em;
+    text-transform: uppercase;
+}
+
+.pub-home .pub-hero-dot {
+    display: inline-block;
+    flex: 0 0 10px;
+
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+
+    background: #ffc16d;
+
+    box-shadow:
+        0 0 0 5px rgba(255, 193, 109, 0.14);
+}
+
+
+/* GROTE TITEL */
+
+.pub-home .hero h1 {
+    max-width: 830px;
+    margin: 0 0 24px;
+
+    color: #ffffff;
+    font-size: clamp(48px, 6.1vw, 88px);
+    line-height: 1.02;
+    letter-spacing: -0.055em;
+    font-weight: 800;
+    text-wrap: balance;
+}
+
+.pub-home .pub-hero-accent {
+    display: block;
+    color: #ffc16d;
+}
+
+
+/* SUBTITEL */
+
+.pub-home .hero h2 {
+    margin: 0 0 16px;
+
+    color: rgba(255, 255, 255, 0.94);
+    font-size: 20px;
+    font-weight: 600;
+    letter-spacing: 0;
+}
+
+
+/* BESCHRIJVING */
+
+.pub-home .hero-description {
+    max-width: 530px;
+    margin: 0 0 32px;
+
+    color: rgba(255, 255, 255, 0.87);
+    font-size: 16px;
+    line-height: 1.8;
+}
+
+
+/* =========================================
+   HERO KNOPPEN
+   ========================================= */
+
+.pub-home .hero-buttons {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 12px;
+}
+
+.pub-home .hero-buttons .btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 24px;
+
+    min-height: 53px;
+    padding: 14px 24px;
+
+    border-radius: 100px;
+    font-size: 14px;
+    font-weight: 700;
+    line-height: 1.2;
+    text-decoration: none;
+
+    transition:
+        transform 0.25s ease,
+        background-color 0.25s ease,
+        box-shadow 0.25s ease;
+}
+
+.pub-home .hero-buttons .btn:hover {
+    transform: translateY(-3px);
+}
+
+
+/* PRIMAIRE KNOP */
+
+.pub-home .hero-buttons .btn-primary {
+    background: #ffc16d;
+    border: 1px solid #ffc16d;
+    color: #18362b;
+}
+
+.pub-home .hero-buttons .btn-primary:hover {
+    background: #ffd192;
+
+    box-shadow:
+        0 12px 30px rgba(255, 193, 109, 0.2);
+}
+
+
+/* SECUNDAIRE KNOP */
+
+.pub-home .hero-buttons .btn-secondary {
+    color: #ffffff;
+
+    border:
+        1px solid rgba(255, 255, 255, 0.62);
+
+    background:
+        rgba(255, 255, 255, 0.13);
+
+    backdrop-filter: blur(12px);
+}
+
+.pub-home .hero-buttons .btn-secondary:hover {
+    background:
+        rgba(255, 255, 255, 0.26);
+}
+
+
+/* =========================================
+   EVENEMENTDETAILS
+   ========================================= */
+
+.pub-home .pub-hero-details {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 13px;
+
+    margin-top: 42px;
+
+    color: rgba(255, 255, 255, 0.86);
+    font-size: 12px;
+    line-height: 1.5;
+}
+
+.pub-home .pub-detail-divider {
+    flex: 0 0 4px;
+    width: 4px;
+    height: 4px;
+
+    border-radius: 50%;
+    background: #ffc16d;
+}
+
+
+/* SCROLL INDICATOR */
+
+.pub-home .pub-scroll-cue {
+    position: absolute;
+    z-index: 3;
+    left: 50%;
+    bottom: 28px;
+
+    transform: translateX(-50%);
+
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+
+    color: rgba(255, 255, 255, 0.9);
+    font-size: 12px;
+    font-weight: 600;
+    text-decoration: none;
+}
+
+.pub-home .pub-scroll-cue span {
+    display: inline-block;
+    font-size: 19px;
+
+    animation:
+        pub-arrow-float 2s
+        ease-in-out infinite;
+}
+
+
+/* =========================================
+   INFORMATIEKAARTEN
+   ========================================= */
+
+.pub-home .info-grid {
+    gap: 22px;
+    padding-block: 50px;
+}
+
+.pub-home .info-card {
+    padding: 28px;
+
+    border: 1px solid #e7eae6;
+    border-radius: 18px;
+    background: #ffffff;
+
+    box-shadow:
+        0 7px 22px rgba(31, 58, 47, 0.045);
+
+    transition:
+        transform 0.26s ease,
+        border-color 0.26s ease,
+        box-shadow 0.26s ease;
+}
+
+.pub-home .info-card:hover {
+    transform: translateY(-5px);
+
+    border-color: #c5d4ca;
+
+    box-shadow:
+        0 18px 38px rgba(31, 58, 47, 0.1);
+}
+
+.pub-home .info-card a:hover {
+    color: #a75f16;
+}
+
+
+/* =========================================
+   LOCATIEKAARTEN
+   ========================================= */
+
+.pub-home .locations-section,
+.pub-home .selected-section {
+    scroll-margin-top: 25px;
+}
+
+.pub-home .location-card {
+    border-radius: 15px;
+
+    transition:
+        transform 0.26s ease,
+        box-shadow 0.26s ease,
+        border-color 0.26s ease;
+}
+
+.pub-home .location-card:hover {
+    transform: translateY(-5px);
+
+    border-color: #c5d4ca;
+
+    box-shadow:
+        0 18px 38px rgba(31, 58, 47, 0.1);
+}
+
+.pub-home .location-card.selected {
+    border-color: #264d3c;
+
+    box-shadow:
+        0 0 0 1px rgba(38, 77, 60, 0.22);
+}
+
+
+/* =========================================
+   SCROLL ANIMATIES
+   ========================================= */
+
+.pub-home .pub-reveal-ready {
+    opacity: 0;
+    transform: translateY(18px);
+
+    transition:
+        opacity 0.7s ease,
+        transform 0.7s ease;
+}
+
+.pub-home .pub-reveal-ready.pub-visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+
+/* =========================================
+   KEYFRAMES
+   ========================================= */
+
+@keyframes pub-photo-enter {
+    from {
+        opacity: 0.15;
+        transform: scale(1.075);
+    }
+
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+@keyframes pub-text-enter {
+    from {
+        opacity: 0;
+        transform: translateY(24px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes pub-arrow-float {
+    0%, 100% {
+        transform: translateY(0);
+    }
+
+    50% {
+        transform: translateY(6px);
+    }
+}
+
+
+/* =========================================
+   TABLET
+   ========================================= */
+
+@media (max-width: 900px) {
+
+    .pub-home .header-inner {
+        width: calc(100% - 32px);
+        flex-wrap: wrap;
+        padding-block: 12px;
+    }
+
+    .pub-home .site-header nav {
+        flex: 1 1 100%;
+        order: 3;
+        overflow-x: auto;
+        gap: 18px;
+    }
+
+    .pub-home .site-header nav a {
+        height: 38px;
+    }
+
+    .pub-home .hero-layout {
+        width: calc(100% - 48px);
+        min-height: 660px;
+    }
+}
+
+
+/* =========================================
+   MOBIEL
+   ========================================= */
+
+@media (max-width: 650px) {
+
+    .pub-home .hero.pub-hero {
+        min-height: 660px;
+    }
+
+    .pub-home .hero-layout {
+        width: calc(100% - 36px);
+        min-height: 660px;
+        padding-block: 70px 115px;
+    }
+
+    .pub-home .pub-hero-photo {
+        object-position: 62% center;
+    }
+
+    .pub-home .pub-hero-overlay {
+        background: linear-gradient(
+            90deg,
+            rgba(13, 36, 30, 0.86),
+            rgba(13, 36, 30, 0.52)
+        );
+    }
+
+    .pub-home .hero h1 {
+        font-size: clamp(38px, 10vw, 58px);
+    }
+
+    .pub-home .hero h2 {
+        font-size: 17px;
+    }
+
+    .pub-home .hero-description {
+        font-size: 14px;
+    }
+
+    .pub-home .hero-buttons .btn {
+        width: 100%;
+    }
+
+    .pub-home .pub-hero-details {
+        gap: 9px;
+        font-size: 11px;
+    }
+
+    .pub-home .info-grid {
+        padding-block: 34px;
+    }
+
+    .pub-home .info-card {
+        padding: 22px;
+    }
+
+    .pub-home .pub-scroll-cue {
+        bottom: 22px;
+    }
+}
+
+
+/* =========================================
+   TOEGANKELIJKHEID
+   ========================================= */
+
+@media (prefers-reduced-motion: reduce) {
+
+    .pub-home .pub-hero-photo,
+    .pub-home .hero-content,
+    .pub-home .pub-scroll-cue span {
+        animation: none;
+    }
+
+    .pub-home .pub-reveal-ready {
+        opacity: 1;
+        transform: none;
+        transition: none;
+    }
+
+    .pub-home .info-card,
+    .pub-home .location-card,
+    .pub-home .hero-buttons .btn {
+        transition: none;
+    }
+}
+
+
+/* =====================================
+   HOMEPAGE - AFWISSELENDE SECTIES
+   ===================================== */
+
+/* Snelle informatie */
+.pub-home .informatie {
+  background: linear-gradient(
+    180deg,
+    #f9faf5 0%,
+    #edf2e9 100%
+  );
+}
+
+.pub-home .info-card {
+  background: #fff;
+  border-radius: 20px;
+  border: 1px solid #e0e9e0;
+}
+
+/* Donkergroen locatiegedeelte */
+.pub-home .locations-section {
+  background: linear-gradient(
+    125deg,
+    #153629 0%,
+    #20543c 100%
+  );
+  color: #fff;
+  padding-block: 80px;
+}
+
+.pub-home .locations-section .section-heading h2 {
+  color: #fff;
+}
+
+.pub-home .locations-section .section-heading p {
+  color: #dbe8dc;
+}
+
+.pub-home .locations-section .section-label {
+  color: #ffc16d;
+}
+
+.pub-home .locations-section .map-card,
+.pub-home .locations-section .location-card {
+  background: #fff;
+  color: #172923;
+  border-radius: 18px;
+}
+
+.pub-home .locations-section .location-description,
+.pub-home .locations-section .location-identity p {
+  color: #5d6b62;
+}
+
+/* Gekozen locatie - lichte afwisseling */
+.pub-home .selected-section {
+  padding-block: 80px;
+  background: #f1f5ef;
+}
+
+.pub-home .selected-section .sponsor-card,
+.pub-home .selected-section .photos-card {
+  background: #fff;
+  border-radius: 22px;
+  border: 1px solid #dfe8df;
+  box-shadow: 0 12px 34px rgba(23, 50, 35, .05);
+}
+
+/* Smoother section appearance */
+.pub-home .locations-section,
+.pub-home .selected-section {
+  transition: background-color .3s ease;
+}
