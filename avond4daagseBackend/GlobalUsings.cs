@@ -1,0 +1,9 @@
+global using Avond4DaagseBackend.Data;
+global using Avond4DaagseBackend.DTOs;
+global using Avond4DaagseBackend.Interfaces;
+global using Avond4DaagseBackend.Models;
+global using Avond4DaagseBackend.Services;
+global using Microsoft.AspNetCore.Authorization;
+global using Microsoft.AspNetCore.Identity;
+global using Microsoft.AspNetCore.Mvc;
+global using Microsoft.EntityFrameworkCore;
