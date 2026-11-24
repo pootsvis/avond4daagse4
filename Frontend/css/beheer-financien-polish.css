@@ -1,0 +1,580 @@
+
+/* ==========================================
+   AVOND4DAAGSE 2027
+   FINANCIEEL BEHEER - GEDEELDE STIJL
+   ========================================== */
+
+.bf-page {
+  --bf-dark: #193b2b;
+  --bf-green: #246847;
+  --bf-muted: #6b7e70;
+  --bf-border: #dfe9e1;
+}
+
+.bf-page .bf-loading {
+  padding: 50px;
+  color: var(--bf-muted);
+}
+
+/* TITELS */
+
+.bf-page .bf-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 22px;
+  margin-bottom: 25px;
+}
+
+.bf-page .bf-heading h1 {
+  margin: 8px 0 11px;
+  color: var(--bf-dark);
+  font-size: clamp(30px, 3vw, 40px);
+  line-height: 1.15;
+  letter-spacing: -.045em;
+}
+
+.bf-page .bf-heading > div > p:last-child {
+  max-width: 640px;
+  color: var(--bf-muted);
+  font-size: 13px;
+  line-height: 1.75;
+}
+
+/* KNOPPEN */
+
+.bf-page .bf-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  min-height: 43px;
+  padding: 11px 16px;
+  border: 1px solid #d6e3d9;
+  border-radius: 11px;
+  background: #fff;
+  color: #315c42;
+  font: inherit;
+  font-size: 12px;
+  font-weight: 800;
+  text-decoration: none;
+  cursor: pointer;
+  transition:
+    transform .2s ease,
+    background-color .2s ease;
+}
+
+.bf-page .bf-button:hover:not(:disabled) {
+  transform: translateY(-2px);
+  background: #eef6ef;
+}
+
+.bf-page .bf-button-primary {
+  border-color: var(--bf-green);
+  background: var(--bf-green);
+  color: #fff;
+}
+
+.bf-page .bf-button-primary:hover:not(:disabled) {
+  background: #347f56;
+}
+
+.bf-page .bf-button-danger {
+  border-color: #eed6d1;
+  background: #fff1ed;
+  color: #a3483c;
+}
+
+.bf-page .bf-button-danger:hover:not(:disabled) {
+  background: #ffe4de;
+}
+
+.bf-page .bf-button-small {
+  min-height: 32px;
+  padding: 7px 10px;
+  font-size: 11px;
+}
+
+.bf-page .bf-button:disabled {
+  opacity: .45;
+  cursor: not-allowed;
+  transform: none;
+}
+
+/* CIJFERKAARTEN */
+
+.bf-page .bf-stats {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 15px;
+  margin: 27px 0;
+}
+
+.bf-page .bf-stat {
+  min-width: 0;
+  padding: 23px;
+  border: 1px solid var(--bf-border);
+  border-radius: 19px;
+  background: #fff;
+  box-shadow: 0 9px 28px rgba(20, 55, 34, .035);
+}
+
+.bf-page .bf-stat > span {
+  display: block;
+  color: var(--bf-muted);
+  font-size: 12px;
+  font-weight: 650;
+}
+
+.bf-page .bf-stat strong {
+  display: block;
+  margin: 15px 0 12px;
+  color: var(--bf-dark);
+  font-size: clamp(22px, 2.5vw, 31px);
+  letter-spacing: -.045em;
+  overflow-wrap: anywhere;
+}
+
+.bf-page .bf-stat small {
+  color: #879589;
+  font-size: 11px;
+  line-height: 1.6;
+}
+
+.bf-page .bf-stat.is-positive strong {
+  color: #26734b;
+}
+
+.bf-page .bf-stat.is-negative strong {
+  color: #aa5142;
+}
+
+/* PANELEN */
+
+.bf-page .bf-panel {
+  min-width: 0;
+  margin-bottom: 24px;
+  padding: 27px;
+  border: 1px solid var(--bf-border);
+  border-radius: 21px;
+  background: #fff;
+  box-shadow: 0 12px 34px rgba(20, 55, 34, .035);
+}
+
+.bf-page .bf-panel-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 18px;
+  margin-bottom: 22px;
+}
+
+.bf-page .bf-panel-header h2 {
+  margin: 8px 0;
+  color: var(--bf-dark);
+  font-size: 21px;
+  letter-spacing: -.035em;
+}
+
+.bf-page .bf-panel-header p:last-child {
+  color: var(--bf-muted);
+  font-size: 12px;
+  line-height: 1.7;
+}
+
+.bf-page .bf-label {
+  display: inline-flex;
+  padding: 8px 12px;
+  border-radius: 100px;
+  background: #eaf4ec;
+  color: #2f6e49;
+  font-size: 11px;
+  font-weight: 800;
+}
+
+/* TRANSACTIES */
+
+.bf-page .bf-filters {
+  display: grid;
+  grid-template-columns:
+    minmax(200px, 1.5fr)
+    minmax(150px, .7fr)
+    auto;
+  align-items: end;
+  gap: 13px;
+  margin-bottom: 20px;
+  padding: 18px;
+  border: 1px solid #e4ece5;
+  border-radius: 15px;
+  background: #f7faf7;
+}
+
+.bf-page .bf-field {
+  display: grid;
+  gap: 8px;
+  min-width: 0;
+  color: #4b6754;
+  font-size: 12px;
+  font-weight: 800;
+}
+
+.bf-page .bf-field input,
+.bf-page .bf-field select,
+.bf-page .bf-field textarea {
+  width: 100%;
+  min-height: 43px;
+  padding: 10px 13px;
+  border: 1px solid #d5e3d8;
+  border-radius: 10px;
+  background: #fff;
+  color: #264431;
+  font: inherit;
+  font-size: 12px;
+}
+
+.bf-page .bf-field textarea {
+  min-height: 100px;
+  resize: vertical;
+}
+
+.bf-page .bf-field input:focus-visible,
+.bf-page .bf-field select:focus-visible,
+.bf-page .bf-field textarea:focus-visible,
+.bf-page button:focus-visible,
+.bf-page a:focus-visible {
+  outline: 3px solid #a7d5b4;
+  outline-offset: 3px;
+}
+
+.bf-page .bf-table-scroll {
+  overflow-x: auto;
+}
+
+.bf-page .bf-table {
+  width: 100%;
+  min-width: 840px;
+  border-collapse: collapse;
+  text-align: left;
+}
+
+.bf-page .bf-table th {
+  padding: 16px 13px;
+  border-bottom: 1px solid #e2eae3;
+  background: #f8faf8;
+  color: #7b8b80;
+  font-size: 10px;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: .04em;
+}
+
+.bf-page .bf-table td {
+  padding: 17px 13px;
+  border-bottom: 1px solid #edf1ed;
+  color: #34503d;
+  font-size: 12px;
+  line-height: 1.6;
+}
+
+.bf-page .bf-table tbody tr:last-child td {
+  border-bottom: 0;
+}
+
+.bf-page .bf-table tbody tr:hover {
+  background: #f9fcf9;
+}
+
+.bf-page .bf-table .bf-description {
+  color: #203d2c;
+  font-weight: 800;
+}
+
+.bf-page .bf-table .bf-income {
+  color: #257249;
+  font-weight: 800;
+}
+
+.bf-page .bf-table .bf-expense {
+  color: #a85545;
+  font-weight: 800;
+}
+
+.bf-page .bf-table .bf-empty {
+  padding: 35px;
+  color: #7b8c80;
+  text-align: center;
+}
+
+.bf-page .bf-source,
+.bf-page .bf-status {
+  display: inline-flex;
+  padding: 6px 10px;
+  border-radius: 100px;
+  font-size: 10px;
+  font-weight: 800;
+  white-space: nowrap;
+}
+
+.bf-page .bf-source {
+  background: #edf1ed;
+  color: #65776a;
+}
+
+.bf-page .bf-source-local {
+  background: #e8f3ec;
+  color: #31744f;
+}
+
+.bf-page .bf-status {
+  background: #e6f4e9;
+  color: #26744a;
+}
+
+.bf-page .bf-status-pending {
+  background: #fff0d9;
+  color: #986223;
+}
+
+.bf-page .bf-row-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.bf-page .bf-table-footer {
+  margin-top: 18px;
+  color: #849188;
+  font-size: 11px;
+}
+
+/* GRAFIEK */
+
+.bf-page .bf-chart {
+  display: grid;
+  grid-template-columns: repeat(12, minmax(45px, 1fr));
+  gap: 9px;
+  min-width: 640px;
+  min-height: 270px;
+}
+
+.bf-page .bf-chart-scroll {
+  overflow-x: auto;
+}
+
+.bf-page .bf-chart-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-width: 0;
+}
+
+.bf-page .bf-chart-bars {
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  gap: 5px;
+  width: 100%;
+  height: 226px;
+  padding: 10px 0;
+  border-bottom: 1px solid #dde8de;
+}
+
+.bf-page .bf-chart-bar {
+  width: 17px;
+  min-height: 2px;
+  border-radius: 5px 5px 0 0;
+}
+
+.bf-page .bf-chart-income {
+  background: #34774e;
+}
+
+.bf-page .bf-chart-expense {
+  background: #e2af6c;
+}
+
+.bf-page .bf-chart-item > span {
+  margin-top: 10px;
+  color: #788b7d;
+  font-size: 11px;
+}
+
+.bf-page .bf-chart-legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 18px;
+  margin-bottom: 18px;
+  color: #607665;
+  font-size: 12px;
+}
+
+.bf-page .bf-chart-legend span {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.bf-page .bf-legend-dot {
+  width: 11px;
+  height: 11px;
+  border-radius: 3px;
+  background: #34774e;
+}
+
+.bf-page .bf-legend-dot.is-expense {
+  background: #e2af6c;
+}
+
+.bf-page .bf-help {
+  margin-top: 18px;
+  color: #849188;
+  font-size: 11px;
+  line-height: 1.7;
+}
+
+/* BOEKINGSFORMULIER */
+
+.bf-page .bf-form-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1.5fr) minmax(260px, .65fr);
+  gap: 20px;
+  align-items: start;
+}
+
+.bf-page .bf-form {
+  display: grid;
+  gap: 20px;
+}
+
+.bf-page .bf-form-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 16px;
+}
+
+.bf-page .bf-radio-group {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.bf-page .bf-radio-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 15px;
+  border: 1px solid #dce7de;
+  border-radius: 11px;
+  background: #fafdfa;
+  color: #355740;
+  font-size: 12px;
+  font-weight: 750;
+  cursor: pointer;
+}
+
+.bf-page .bf-radio-label input {
+  accent-color: var(--bf-green);
+}
+
+.bf-page .bf-form-actions {
+  display: flex;
+  justify-content: flex-end;
+  flex-wrap: wrap;
+  gap: 10px;
+  padding-top: 21px;
+  border-top: 1px solid #e7eee8;
+}
+
+.bf-page .bf-info-card {
+  padding: 22px;
+  margin-bottom: 16px;
+  border: 1px solid #dfe9e1;
+  border-radius: 17px;
+  background: #f8fbf8;
+}
+
+.bf-page .bf-info-card h3 {
+  margin-bottom: 11px;
+  color: #244632;
+  font-size: 14px;
+}
+
+.bf-page .bf-info-card p {
+  color: #687f6e;
+  font-size: 12px;
+  line-height: 1.8;
+}
+
+.bf-page .bf-feedback {
+  min-height: 20px;
+  margin: 16px 0;
+  color: #34754d;
+  font-size: 12px;
+  line-height: 1.6;
+}
+
+.bf-page [hidden] {
+  display: none !important;
+}
+
+/* RESPONSIVE */
+
+@media (max-width: 1250px) {
+  .bf-page .bf-stats {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .bf-page .bf-form-layout {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 800px) {
+  .bf-page .bf-filters {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 650px) {
+  .bf-page .bf-stats {
+    gap: 11px;
+  }
+
+  .bf-page .bf-stat {
+    padding: 19px;
+  }
+
+  .bf-page .bf-panel {
+    padding: 19px;
+  }
+
+  .bf-page .bf-form-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .bf-page .bf-heading > .bf-button {
+    width: 100%;
+  }
+
+  .bf-page .bf-form-actions {
+    flex-direction: column;
+  }
+
+  .bf-page .bf-form-actions > * {
+    width: 100%;
+  }
+}
+
+@media (max-width: 380px) {
+  .bf-page .bf-stats {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .bf-page .bf-button {
+    transition: none;
+  }
+}
