@@ -4,40 +4,69 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Vier avonden samen wandelen: ontdek routes, praktische informatie en schrijf je in voor Avond4daagse 2027.">
+
+    <meta name="description"
+          content="Ontdek de Avond4daagse 2027, bekijk de volgende wandelavond en bereid je voor op vier bijzondere wandelavonden.">
+
     <title>Avond4daagse 2027 | Home</title>
 
+    <!-- Bestaande styling -->
     <link rel="stylesheet" href="Frontend/css/style.css">
     <link rel="stylesheet" href="Frontend/css/public-visual.css">
+
+    <!-- Nieuwe styling voor het programma -->
+    <link rel="stylesheet" href="Frontend/css/home-upcoming.css">
+
+    <!-- Bestaande fotoanimaties -->
     <script src="Frontend/js/public-visual.js" defer></script>
+
+    <!-- Nieuwe programmafunctionaliteit -->
+    <script src="Frontend/js/home-upcoming.js" defer></script>
 </head>
 
 <body class="pub-home">
 
-    <!-- Navigatie -->
+    <!-- NAVIGATIE -->
     <header class="site-header">
         <div class="header-inner">
-            <a href="index.html" class="logo">AVOND4DAAGSE</a>
+
+            <a href="index.html" class="logo">
+                AVOND4DAAGSE
+            </a>
 
             <nav aria-label="Hoofdnavigatie">
-                <a href="index.html" class="active">Home</a>
+                <a href="index.html"
+                   class="active"
+                   aria-current="page">Home</a>
+
                 <a href="routes.html">Routes</a>
+
                 <a href="inschrijven.html">Inschrijven</a>
-                <a href="praktische-informatie.html">Praktische informatie</a>
+
+                <a href="praktische-informatie.html">
+                    Praktische informatie
+                </a>
+
                 <a href="contact.html">Contact</a>
+
                 <a href="sponsoren.html">Sponsoren</a>
             </nav>
 
             <a href="inschrijven.html" class="login-btn">
                 INSCHRIJVEN
             </a>
+
         </div>
     </header>
 
     <main>
 
-        <!-- CINEMATIC HOMEPAGE -->
-        <section class="hero pub-hero" aria-labelledby="pub-hero-title">
+        <!-- ===================================
+             HERO - BESTAANDE SFEERFOTO
+             =================================== -->
+
+        <section class="hero pub-hero"
+                 aria-labelledby="pub-hero-title">
 
             <img
                 class="pub-hero-photo"
@@ -49,18 +78,22 @@
                 decoding="async"
             >
 
-            <div class="pub-hero-overlay" aria-hidden="true"></div>
+            <div class="pub-hero-overlay"
+                 aria-hidden="true"></div>
 
             <div class="section-inner hero-layout">
+
                 <div class="hero-content">
 
                     <p class="hero-label">
-                        <span class="pub-hero-dot" aria-hidden="true"></span>
-                        DORPENVELD · 3 T/M 6 JUNI 2027
+                        <span class="pub-hero-dot"
+                              aria-hidden="true"></span>
+                        AVOND4DAAGSE · 2027
                     </p>
 
                     <h1 id="pub-hero-title">
                         Vier avonden.
+
                         <span class="pub-hero-accent">
                             Duizend herinneringen.
                         </span>
@@ -69,36 +102,46 @@
                     <h2>Avond4daagse 2027</h2>
 
                     <p class="hero-description">
-                        Samen op pad, nieuwe herinneringen maken
-                        en genieten van vier bijzondere wandelavonden.
-                        Beleef de Avond4daagse met vrienden,
-                        familie en buurtgenoten.
+                        Samen op pad, nieuwe herinneringen
+                        maken en genieten van vier bijzondere
+                        wandelavonden. Beleef de Avond4daagse
+                        met vrienden, familie en buurtgenoten.
                     </p>
 
                     <div class="hero-buttons">
-                        <a href="inschrijven.html" class="btn btn-primary">
-                            Schrijf je in
+
+                        <a href="inschrijven.html"
+                           class="btn btn-primary">
+                            Bekijk inschrijven
                             <span aria-hidden="true">↗</span>
                         </a>
 
-                        <a href="routes.html" class="btn btn-secondary">
-                            Ontdek de routes
-                            <span aria-hidden="true">→</span>
+                        <a href="#programma"
+                           class="btn btn-secondary">
+                            Bekijk het programma
+                            <span aria-hidden="true">↓</span>
                         </a>
+
                     </div>
 
-                    <div class="pub-hero-details" aria-label="Evenementinformatie">
+                    <div class="pub-hero-details">
                         <span>Vier wandelavonden</span>
-                        <span class="pub-detail-divider" aria-hidden="true"></span>
-                        <span>5 km &amp; 10 km</span>
-                        <span class="pub-detail-divider" aria-hidden="true"></span>
+
+                        <span class="pub-detail-divider"
+                              aria-hidden="true"></span>
+
+                        <span>Samen bewegen</span>
+
+                        <span class="pub-detail-divider"
+                              aria-hidden="true"></span>
+
                         <span>Voor jong en oud</span>
                     </div>
 
                 </div>
             </div>
 
-            <a href="#locaties" class="pub-scroll-cue">
+            <a href="#programma" class="pub-scroll-cue">
                 Ontdek meer
                 <span aria-hidden="true">↓</span>
             </a>
@@ -106,400 +149,454 @@
         </section>
 
 
-        <!-- SNELLE INFORMATIE -->
-        <section class="informatie">
-            <div class="section-inner info-grid">
+        <!-- ===================================
+             VOLGENDE WANDELAVOND
+             =================================== -->
 
-                <article class="info-card">
-                    <h3>Routes</h3>
-                    <p>
-                        Bekijk de afstanden, starttijden en
-                        routekaarten.
-                    </p>
-                    <a href="routes.html">
-                        Meer bekijken →
-                    </a>
-                </article>
+        <section class="hp-program" id="programma"
+                 aria-labelledby="hp-program-title">
 
-                <article class="info-card">
-                    <h3>Praktische info</h3>
-                    <p>
-                        Alles over startlocatie, veiligheid
-                        en medailles.
-                    </p>
-                    <a href="praktische-informatie.html">
-                        Meer bekijken →
-                    </a>
-                </article>
+            <div class="hp-container">
 
-                <article class="info-card">
-                    <h3>Contact</h3>
-                    <p>
-                        Een vraag? Neem contact op met
-                        de organisatie.
-                    </p>
-                    <a href="contact.html">
-                        Meer bekijken →
-                    </a>
-                </article>
+                <div class="hp-section-heading hp-reveal">
 
-            </div>
-        </section>
-
-
-        <!-- LOCATIES -->
-        <section class="locations-section" id="locaties">
-            <div class="section-inner">
-
-                <div class="section-heading">
-                    <p class="section-label">
-                        MEERDERE LOCATIES
+                    <p class="hp-eyebrow">
+                        WANDELPROGRAMMA 2027
                     </p>
 
-                    <h2>Kies je Avond4daagse-locatie</h2>
-
-                    <p>
-                        Iedere locatie heeft haar eigen kleur,
-                        logo en lokale partners. Kies een locatie
-                        om de lokale editie te bekijken.
-                    </p>
-                </div>
-
-                <div class="locations-layout">
-
-                    <!-- LOCATIEKAART -->
-                    <aside class="map-card">
-                        <h3>Locaties in Nederland</h3>
-
-                        <div class="map-preview" aria-label="Schematisch overzicht van vier locaties">
-                            <span class="map-count">
-                                4 LOCATIES
-                            </span>
-
-                            <span class="map-dot dot-orange" title="Dorpenveld"></span>
-                            <span class="map-dot dot-purple" title="Havenstad"></span>
-                            <span class="map-dot dot-green" title="Buitenwijk"></span>
-                            <span class="map-dot dot-blue" title="Vallei"></span>
-                        </div>
-                    </aside>
-
-                    <!-- LOCATIEKAARTEN -->
-                    <div class="location-list">
-
-                        <!-- DORPENVELD -->
-                        <article class="location-card selected" data-location="dorpenveld">
-
-                            <div class="location-top">
-                                <div class="location-identity">
-                                    <span class="location-logo orange">D</span>
-
-                                    <div>
-                                        <h3>Dorpenveld</h3>
-                                        <p>3 t/m 6 juni 2027</p>
-                                    </div>
-                                </div>
-
-                                <button
-                                    class="location-choice"
-                                    type="button"
-                                    data-location="dorpenveld"
-                                    aria-pressed="true"
-                                >
-                                    Gekozen
-                                </button>
-                            </div>
-
-                            <p class="location-description">
-                                De Dorpenveld-editie heeft een warme
-                                oranje-blauwe uitstraling en een lokale
-                                route door het dorp en de omliggende velden.
-                            </p>
-
-                            <div class="location-footer">
-                                <span>5 km • 10 km</span>
-                                <a href="routes.html">
-                                    Bekijk routes →
-                                </a>
-                            </div>
-
-                        </article>
-
-
-                        <!-- HAVENSTAD -->
-                        <article class="location-card" data-location="havenstad">
-
-                            <div class="location-top">
-                                <div class="location-identity">
-                                    <span class="location-logo purple">H</span>
-
-                                    <div>
-                                        <h3>Havenstad</h3>
-                                        <p>10 t/m 13 juni 2027</p>
-                                    </div>
-                                </div>
-
-                                <button
-                                    class="location-choice"
-                                    type="button"
-                                    data-location="havenstad"
-                                    aria-pressed="false"
-                                >
-                                    Kies
-                                </button>
-                            </div>
-
-                            <p class="location-description">
-                                Havenstad draait om een frisse paarse
-                                en blauwe uitstraling met een route
-                                langs de haven, parken en woonwijken.
-                            </p>
-
-                            <div class="location-footer">
-                                <span>5 km • 10 km</span>
-                                <a href="routes.html">
-                                    Bekijk routes →
-                                </a>
-                            </div>
-
-                        </article>
-
-
-                        <!-- BUITENWIJK -->
-                        <article class="location-card" data-location="buitenwijk">
-
-                            <div class="location-top">
-                                <div class="location-identity">
-                                    <span class="location-logo green">B</span>
-
-                                    <div>
-                                        <h3>Buitenwijk</h3>
-                                        <p>17 t/m 20 juni 2027</p>
-                                    </div>
-                                </div>
-
-                                <button
-                                    class="location-choice"
-                                    type="button"
-                                    data-location="buitenwijk"
-                                    aria-pressed="false"
-                                >
-                                    Kies
-                                </button>
-                            </div>
-
-                            <p class="location-description">
-                                Buitenwijk combineert groen en groene
-                                energie met een route door parken,
-                                sportvelden en kindvriendelijke straten.
-                            </p>
-
-                            <div class="location-footer">
-                                <span>5 km • 10 km</span>
-                                <a href="routes.html">
-                                    Bekijk routes →
-                                </a>
-                            </div>
-
-                        </article>
-
-
-                        <!-- VALLEI -->
-                        <article class="location-card" data-location="vallei">
-
-                            <div class="location-top">
-                                <div class="location-identity">
-                                    <span class="location-logo blue">V</span>
-
-                                    <div>
-                                        <h3>Vallei</h3>
-                                        <p>24 t/m 27 juni 2027</p>
-                                    </div>
-                                </div>
-
-                                <button
-                                    class="location-choice"
-                                    type="button"
-                                    data-location="vallei"
-                                    aria-pressed="false"
-                                >
-                                    Kies
-                                </button>
-                            </div>
-
-                            <p class="location-description">
-                                Vallei kiest voor een frisse blauwe
-                                uitstraling met een route door het
-                                centrum, langs water en over
-                                sportieve afstanden.
-                            </p>
-
-                            <div class="location-footer">
-                                <span>5 km • 10 km</span>
-                                <a href="routes.html">
-                                    Bekijk routes →
-                                </a>
-                            </div>
-
-                        </article>
-
-                    </div>
-                </div>
-
-            </div>
-        </section>
-
-
-        <!-- GEKOZEN LOCATIE -->
-        <section class="selected-section" id="gekozen-locatie">
-
-            <div class="section-inner">
-
-                <div class="section-heading">
-                    <p class="section-label">
-                        GEKOZEN LOCATIE
-                    </p>
-
-                    <h2 id="selected-location-name">
-                        Dorpenveld
+                    <h2 id="hp-program-title">
+                        Vier avonden.
+                        Eén bijzonder avontuur.
                     </h2>
 
-                    <p id="selected-location-description">
-                        Bekijk de lokale sfeer, partners en foto's
-                        van de Dorpenveld-editie. Deze locatie
-                        houdt vast aan de bestaande evenementgegevens
-                        en voegt een eigen lokale identiteit toe.
+                    <p>
+                        Bekijk welke wandelavond eraan komt
+                        en volg het programma. Zodra de
+                        organisatie de planning bevestigt,
+                        verschijnen de juiste datums en
+                        routegegevens.
                     </p>
+
                 </div>
 
-                <div class="selected-layout">
 
-                    <!-- LOKALE SPONSOREN -->
-                    <div class="sponsor-card" id="sponsoren">
+                <!-- UITGELICHTE VOLGENDE AVOND -->
 
-                        <h3>Lokale sponsoren</h3>
+                <article class="hp-feature hp-reveal"
+                         aria-labelledby="hpNextTitle">
 
-                        <p class="sponsor-description">
-                            Deze partners ondersteunen de
-                            Dorpenveld-editie met lokale energie,
-                            catering en activiteiten langs de route.
-                        </p>
+                    <div class="hp-feature-content">
 
-                        <div class="sponsor-list">
+                        <div class="hp-feature-label">
 
-                            <div class="sponsor-row">
-                                <div class="sponsor-identity">
-                                    <span class="sponsor-logo orange">DV</span>
+                            <span class="hp-pulse"
+                                  aria-hidden="true"></span>
 
-                                    <div>
-                                        <h4>Dorpenveld Bakkerij</h4>
-                                        <p>Catering</p>
-                                    </div>
-                                </div>
-
-                                <span class="sponsor-badge">
-                                    Hoofdsponsor
-                                </span>
-                            </div>
-
-                            <div class="sponsor-row">
-                                <div class="sponsor-identity">
-                                    <span class="sponsor-logo dark">V</span>
-
-                                    <div>
-                                        <h4>Veld &amp; Vrienden</h4>
-                                        <p>Activiteiten</p>
-                                    </div>
-                                </div>
-
-                                <span class="sponsor-badge">
-                                    Activiteit
-                                </span>
-                            </div>
-
-                            <div class="sponsor-row">
-                                <div class="sponsor-identity">
-                                    <span class="sponsor-logo dark">D</span>
-
-                                    <div>
-                                        <h4>Dorpshuis Café</h4>
-                                        <p>Finish</p>
-                                    </div>
-                                </div>
-
-                                <span class="sponsor-badge">
-                                    Finish
-                                </span>
-                            </div>
+                            <span id="hpNextBadge"
+                                  role="status"
+                                  aria-live="polite">
+                                PLANNING VOLGT
+                            </span>
 
                         </div>
+
+                        <p class="hp-feature-kicker">
+                            JOUW WANDELOVERZICHT
+                        </p>
+
+                        <h3 id="hpNextTitle">
+                            Avond 1 van 4
+                        </h3>
+
+                        <p id="hpNextIntro">
+                            De eerste wandelavond komt als
+                            eerste in het programma.
+                            De definitieve planning wordt
+                            nog bekendgemaakt.
+                        </p>
+
+                        <a href="routes.html"
+                           class="hp-feature-link">
+                            Bekijk de route-informatie
+                            <span aria-hidden="true">↗</span>
+                        </a>
+
                     </div>
 
 
-                    <!-- SFEERFOTO'S -->
-                    <div class="photos-card">
+                    <!-- GEGEVENS -->
 
-                        <h3>Sfeerfoto's Dorpenveld</h3>
+                    <div class="hp-feature-details">
 
-                        <p class="photos-description">
-                            Een voorbeeld van hoe de lokale editie
-                            eruit kan zien: warme avondkleuren,
-                            lokaal logo en een feestelijke finish.
-                        </p>
+                        <div class="hp-detail">
 
-                        <div class="photos-grid">
+                            <div class="hp-detail-icon"
+                                 aria-hidden="true">
+                                <svg width="22" height="22"
+                                     viewBox="0 0 24 24"
+                                     fill="none"
+                                     stroke="currentColor"
+                                     stroke-width="1.8"
+                                     stroke-linecap="round"
+                                     stroke-linejoin="round">
+                                    <rect x="3" y="5"
+                                          width="18" height="16"
+                                          rx="2"></rect>
+                                    <path d="M16 3v4M8 3v4M3 10h18"></path>
+                                </svg>
+                            </div>
 
-                            <figure class="photo-item">
-                                <div class="photo-placeholder dark">
-                                    STARTLOCATIE
-                                </div>
-
-                                <figcaption>
-                                    <h4>Startlocatie</h4>
-                                    <p>
-                                        Dorpsplein met lokale
-                                        branding en startbord.
-                                    </p>
-                                </figcaption>
-                            </figure>
-
-                            <figure class="photo-item">
-                                <div class="photo-placeholder orange">
-                                    ROUTE WANDELAARS
-                                </div>
-
-                                <figcaption>
-                                    <h4>Route</h4>
-                                    <p>
-                                        Wandelgroepen in de avondzon
-                                        met lokale borden.
-                                    </p>
-                                </figcaption>
-                            </figure>
-
-                            <figure class="photo-item photo-wide">
-                                <div class="photo-placeholder dark">
-                                    FEESTELIJKE FINISH
-                                </div>
-
-                                <figcaption>
-                                    <h4>Finish</h4>
-                                    <p>
-                                        Feestelijke eindzone
-                                        met lokale partners
-                                        en medailles.
-                                    </p>
-                                </figcaption>
-                            </figure>
+                            <div>
+                                <span>Datum</span>
+                                <strong id="hpNextDate">
+                                    Wordt bekendgemaakt
+                                </strong>
+                            </div>
 
                         </div>
+
+                        <div class="hp-detail">
+
+                            <div class="hp-detail-icon"
+                                 aria-hidden="true">
+                                <svg width="22" height="22"
+                                     viewBox="0 0 24 24"
+                                     fill="none"
+                                     stroke="currentColor"
+                                     stroke-width="1.8"
+                                     stroke-linecap="round">
+                                    <circle cx="12" cy="12"
+                                            r="9"></circle>
+                                    <path d="M12 7v5l3 2"></path>
+                                </svg>
+                            </div>
+
+                            <div>
+                                <span>Starttijd</span>
+                                <strong id="hpNextTime">
+                                    Wordt bekendgemaakt
+                                </strong>
+                            </div>
+
+                        </div>
+
+                        <div class="hp-detail">
+
+                            <div class="hp-detail-icon"
+                                 aria-hidden="true">
+                                <svg width="22" height="22"
+                                     viewBox="0 0 24 24"
+                                     fill="none"
+                                     stroke="currentColor"
+                                     stroke-width="1.8"
+                                     stroke-linecap="round"
+                                     stroke-linejoin="round">
+                                    <path d="M3 17l6-8 4 4 4-7 4 2"></path>
+                                    <circle cx="3" cy="17" r="1"></circle>
+                                    <circle cx="21" cy="8" r="1"></circle>
+                                </svg>
+                            </div>
+
+                            <div>
+                                <span>Route</span>
+                                <strong id="hpNextRoute">
+                                    Nog niet gepubliceerd
+                                </strong>
+                            </div>
+
+                        </div>
+
                     </div>
 
+                </article>
+
+
+                <!-- ALLE VIER DE AVONDEN -->
+
+                <div class="hp-evenings-heading">
+
+                    <div>
+                        <p class="hp-eyebrow">
+                            HET COMPLETE OVERZICHT
+                        </p>
+
+                        <h3>Alle vier de wandelavonden</h3>
+                    </div>
+
+                    <span class="hp-planning-note">
+                        Planning onder voorbehoud
+                    </span>
+
                 </div>
+
+                <div class="hp-evenings">
+
+                    <!-- AVOND 1 -->
+                    <article class="hp-evening hp-reveal"
+                             data-evening="1">
+
+                        <div class="hp-evening-number">01</div>
+
+                        <div class="hp-evening-info">
+                            <h4>Avond 1</h4>
+                            <p class="hp-evening-date">
+                                Datum volgt
+                            </p>
+                        </div>
+
+                        <span class="hp-evening-state">
+                            Nog te plannen
+                        </span>
+
+                    </article>
+
+
+                    <!-- AVOND 2 -->
+                    <article class="hp-evening hp-reveal"
+                             data-evening="2">
+
+                        <div class="hp-evening-number">02</div>
+
+                        <div class="hp-evening-info">
+                            <h4>Avond 2</h4>
+                            <p class="hp-evening-date">
+                                Datum volgt
+                            </p>
+                        </div>
+
+                        <span class="hp-evening-state">
+                            Nog te plannen
+                        </span>
+
+                    </article>
+
+
+                    <!-- AVOND 3 -->
+                    <article class="hp-evening hp-reveal"
+                             data-evening="3">
+
+                        <div class="hp-evening-number">03</div>
+
+                        <div class="hp-evening-info">
+                            <h4>Avond 3</h4>
+                            <p class="hp-evening-date">
+                                Datum volgt
+                            </p>
+                        </div>
+
+                        <span class="hp-evening-state">
+                            Nog te plannen
+                        </span>
+
+                    </article>
+
+
+                    <!-- AVOND 4 -->
+                    <article class="hp-evening hp-reveal"
+                             data-evening="4">
+
+                        <div class="hp-evening-number">04</div>
+
+                        <div class="hp-evening-info">
+                            <h4>Avond 4 · Finish</h4>
+                            <p class="hp-evening-date">
+                                Datum volgt
+                            </p>
+                        </div>
+
+                        <span class="hp-evening-state">
+                            Nog te plannen
+                        </span>
+
+                    </article>
+
+                </div>
+
+                <p class="hp-program-disclaimer">
+                    De route- en datumgegevens zijn nog
+                    niet definitief. De organisatie
+                    maakt de officiële planning bekend.
+                </p>
+
+            </div>
+        </section>
+
+
+        <!-- ===================================
+             PRAKTISCHE INFORMATIE
+             =================================== -->
+
+        <section class="hp-explore"
+                 aria-labelledby="hp-explore-title">
+
+            <div class="hp-container">
+
+                <div class="hp-section-heading hp-reveal">
+
+                    <p class="hp-eyebrow">
+                        GOED VOORBEREID OP PAD
+                    </p>
+
+                    <h2 id="hp-explore-title">
+                        Alles wat je moet weten.
+                    </h2>
+
+                    <p>
+                        Van deelnemen tot praktische
+                        informatie: alles staat op
+                        één overzichtelijke plek.
+                    </p>
+
+                </div>
+
+                <div class="hp-explore-grid">
+
+                    <article class="hp-explore-card hp-reveal">
+
+                        <span class="hp-explore-number">
+                            01
+                        </span>
+
+                        <h3>Inschrijven</h3>
+
+                        <p>
+                            Ontdek hoe deelname werkt
+                            en bekijk de inschrijfpagina
+                            voor het evenement.
+                        </p>
+
+                        <a href="inschrijven.html">
+                            Bekijk inschrijven
+                            <span aria-hidden="true">↗</span>
+                        </a>
+
+                    </article>
+
+
+                    <article class="hp-explore-card hp-reveal">
+
+                        <span class="hp-explore-number">
+                            02
+                        </span>
+
+                        <h3>Praktische informatie</h3>
+
+                        <p>
+                            Lees wat je mee moet nemen,
+                            hoe je je voorbereidt en
+                            bekijk de veelgestelde vragen.
+                        </p>
+
+                        <a href="praktische-informatie.html">
+                            Lees meer
+                            <span aria-hidden="true">↗</span>
+                        </a>
+
+                    </article>
+
+
+                    <article class="hp-explore-card hp-reveal">
+
+                        <span class="hp-explore-number">
+                            03
+                        </span>
+
+                        <h3>Contact</h3>
+
+                        <p>
+                            Een vraag over het evenement,
+                            vrijwilligerswerk of sponsoring?
+                            Hier vind je meer informatie.
+                        </p>
+
+                        <a href="contact.html">
+                            Naar contact
+                            <span aria-hidden="true">↗</span>
+                        </a>
+
+                    </article>
+
+                </div>
+
+            </div>
+        </section>
+
+
+        <!-- ===================================
+             AFSLUITENDE SECTIE
+             =================================== -->
+
+        <section class="hp-closing"
+                 aria-labelledby="hp-closing-title">
+
+            <div class="hp-container hp-closing-inner">
+
+                <p class="hp-eyebrow hp-eyebrow-light">
+                    SAMEN OP PAD
+                </p>
+
+                <h2 id="hp-closing-title">
+                    De mooiste herinneringen
+                    maak je samen.
+                </h2>
+
+                <p>
+                    Vier avonden vol beweging,
+                    gezelligheid en bijzondere
+                    momenten. Ontdek de Avond4daagse
+                    en maak je klaar voor 2027.
+                </p>
+
+                <a href="praktische-informatie.html"
+                   class="hp-closing-link">
+                    Meer over de Avond4daagse
+                    <span aria-hidden="true">↗</span>
+                </a>
 
             </div>
         </section>
 
     </main>
+
+
+    <!-- ===================================
+         FOOTER
+         =================================== -->
+
+    <footer class="hp-footer">
+
+        <div class="hp-container hp-footer-inner">
+
+            <div>
+                <a href="index.html"
+                   class="hp-footer-logo">
+                    AVOND4DAAGSE
+                </a>
+
+                <p>
+                    Vier avonden. Duizend herinneringen.
+                </p>
+            </div>
+
+            <nav aria-label="Footernavigatie">
+                <a href="routes.html">Routes</a>
+                <a href="inschrijven.html">Inschrijven</a>
+                <a href="praktische-informatie.html">
+                    Praktische informatie
+                </a>
+                <a href="contact.html">Contact</a>
+                <a href="sponsoren.html">Sponsoren</a>
+            </nav>
+
+        </div>
+
+        <div class="hp-footer-bottom">
+            <div class="hp-container">
+                Avond4daagse 2027 · Samen in beweging
+            </div>
+        </div>
+
+    </footer>
 
 </body>
 </html>
