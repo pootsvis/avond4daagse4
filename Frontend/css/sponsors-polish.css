@@ -1,0 +1,646 @@
+
+/* =========================================
+   AVOND4DAAGSE - SPONSORENPAGINA
+   Alleen gebruikt door sponsoren.html
+   ========================================= */
+
+.pp-sponsors {
+    --sp-deep: #112e25;
+    --sp-green: #255c45;
+    --sp-accent: #ffc16d;
+    --sp-ink: #19332a;
+    --sp-muted: #68796e;
+    --sp-line: #e1e9e2;
+}
+
+
+/* =========================================
+   HERO
+   ========================================= */
+
+.pp-sponsors .sp-hero {
+    position: relative;
+    overflow: hidden;
+
+    padding: 90px 0 105px;
+
+    background: linear-gradient(
+        120deg,
+        #112e25 0%,
+        #21573f 65%,
+        #337356 100%
+    );
+
+    color: #fff;
+}
+
+.pp-sponsors .sp-hero::after {
+    content: "";
+
+    position: absolute;
+    z-index: 0;
+
+    width: 550px;
+    height: 550px;
+
+    right: -180px;
+    top: -230px;
+
+    border: 1px solid rgba(255, 255, 255, .16);
+    border-radius: 50%;
+
+    pointer-events: none;
+}
+
+.pp-sponsors .sp-hero-layout {
+    position: relative;
+    z-index: 1;
+
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 210px;
+    align-items: center;
+    gap: 65px;
+}
+
+.pp-sponsors .sp-hero-copy {
+    max-width: 780px;
+}
+
+.pp-sponsors .sp-eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 11px;
+
+    color: #387859;
+
+    font-size: 12px;
+    font-weight: 800;
+    letter-spacing: .13em;
+    text-transform: uppercase;
+}
+
+.pp-sponsors .sp-eyebrow::before {
+    content: "";
+    width: 8px;
+    height: 8px;
+    flex: 0 0 8px;
+
+    border-radius: 50%;
+    background: currentColor;
+}
+
+.pp-sponsors .sp-eyebrow-light {
+    color: #ffcf91;
+}
+
+.pp-sponsors .sp-hero-title {
+    max-width: 850px;
+
+    margin: 22px 0 24px;
+
+    color: #fff;
+
+    font-size: clamp(40px, 5.6vw, 75px);
+    line-height: 1.06;
+    letter-spacing: -.055em;
+    font-weight: 800;
+}
+
+.pp-sponsors .sp-hero-title span {
+    color: var(--sp-accent);
+}
+
+.pp-sponsors .sp-hero-description {
+    max-width: 590px;
+
+    margin-bottom: 30px;
+
+    color: #dceae0;
+    font-size: 16px;
+    line-height: 1.85;
+}
+
+
+/* HERO DECORATIE */
+
+.pp-sponsors .sp-hero-side {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 20px;
+}
+
+.pp-sponsors .sp-hero-circle {
+    width: 178px;
+    height: 178px;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    border: 1px solid rgba(255, 255, 255, .35);
+    border-radius: 50%;
+
+    background: rgba(255, 255, 255, .07);
+
+    box-shadow:
+        0 0 0 14px rgba(255, 255, 255, .025);
+}
+
+.pp-sponsors .sp-hero-circle span {
+    font-size: 98px;
+    line-height: 1;
+    letter-spacing: -.08em;
+    font-weight: 850;
+    color: var(--sp-accent);
+}
+
+.pp-sponsors .sp-hero-circle small {
+    font-size: 11px;
+    font-weight: 800;
+    letter-spacing: .16em;
+}
+
+.pp-sponsors .sp-side-caption {
+    max-width: 180px;
+
+    color: #dceadd;
+    text-align: center;
+
+    font-size: 13px;
+    line-height: 1.6;
+    font-weight: 600;
+}
+
+
+/* =========================================
+   KNOPPEN
+   ========================================= */
+
+.pp-sponsors .sp-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 17px;
+
+    min-height: 51px;
+
+    padding: 13px 23px;
+
+    border-radius: 100px;
+
+    font-size: 13px;
+    font-weight: 800;
+    line-height: 1.3;
+    text-decoration: none;
+
+    transition:
+        transform .25s ease,
+        background-color .25s ease;
+}
+
+.pp-sponsors .sp-button:hover {
+    transform: translateY(-3px);
+}
+
+.pp-sponsors .sp-button-light {
+    background: #fff;
+    color: var(--sp-ink);
+}
+
+.pp-sponsors .sp-button-light:hover {
+    background: #eff8ee;
+}
+
+.pp-sponsors .sp-button-orange {
+    background: var(--sp-accent);
+    color: var(--sp-ink);
+}
+
+.pp-sponsors .sp-button-orange:hover {
+    background: #ffda9f;
+}
+
+
+/* =========================================
+   SPONSORENOVERZICHT
+   ========================================= */
+
+.pp-sponsors .sp-partners {
+    padding: 90px 0 105px;
+    scroll-margin-top: 20px;
+
+    background: #f7faf6;
+}
+
+.pp-sponsors .sp-section-intro {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    gap: 40px;
+
+    margin-bottom: 38px;
+}
+
+.pp-sponsors .sp-section-intro > div:first-child {
+    max-width: 680px;
+}
+
+.pp-sponsors .sp-section-intro h2 {
+    margin: 16px 0 17px;
+
+    color: var(--sp-ink);
+
+    font-size: clamp(31px, 4vw, 48px);
+    line-height: 1.1;
+    letter-spacing: -.045em;
+    font-weight: 800;
+}
+
+.pp-sponsors .sp-section-intro p {
+    max-width: 630px;
+
+    color: var(--sp-muted);
+    font-size: 15px;
+    line-height: 1.8;
+}
+
+.pp-sponsors .sp-total {
+    display: flex;
+    flex-direction: column;
+    flex: 0 0 auto;
+    align-items: center;
+    justify-content: center;
+
+    min-width: 125px;
+    min-height: 125px;
+
+    padding: 15px;
+
+    border-radius: 24px;
+    background: #e9f2e9;
+}
+
+.pp-sponsors .sp-total strong {
+    color: #256a48;
+
+    font-size: 49px;
+    line-height: 1;
+    letter-spacing: -.05em;
+    font-weight: 850;
+}
+
+.pp-sponsors .sp-total span {
+    margin-top: 9px;
+
+    color: #536e5c;
+    font-size: 12px;
+    font-weight: 700;
+}
+
+
+/* =========================================
+   LOGO GRID
+   ========================================= */
+
+.pp-sponsors .sp-logo-grid {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 17px;
+
+    margin: 0;
+    padding: 0;
+
+    list-style: none;
+}
+
+.pp-sponsors .sp-logo-card {
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+    overflow: hidden;
+
+    background: #fff;
+
+    border: 1px solid var(--sp-line);
+    border-radius: 20px;
+
+    box-shadow:
+        0 10px 30px rgba(25, 57, 39, .035);
+
+    transition:
+        transform .28s ease,
+        box-shadow .28s ease,
+        border-color .28s ease;
+}
+
+.pp-sponsors .sp-logo-card:hover {
+    transform: translateY(-5px);
+
+    border-color: #bfd6c4;
+
+    box-shadow:
+        0 18px 38px rgba(25, 57, 39, .10);
+}
+
+
+/* ALLE LOGO'S EVENVEEL RUIMTE */
+
+.pp-sponsors .sp-logo-stage {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    flex: 1 1 auto;
+
+    min-height: 175px;
+    padding: 26px;
+
+    background: #fff;
+}
+
+.pp-sponsors .sp-logo-stage img {
+    display: block;
+
+    width: 100%;
+    max-width: 210px;
+    height: 105px;
+
+    object-fit: contain;
+    object-position: center;
+
+    transition: transform .3s ease;
+}
+
+.pp-sponsors .sp-logo-card:hover img {
+    transform: scale(1.045);
+}
+
+
+/* NAAM ONDER HET LOGO */
+
+.pp-sponsors .sp-logo-info {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    min-height: 76px;
+    padding: 15px 20px;
+
+    border-top: 1px solid #edf0eb;
+
+    background: #fcfdfb;
+    text-align: center;
+}
+
+.pp-sponsors .sp-logo-info h3 {
+    margin: 0;
+
+    color: #243b2d;
+    font-size: 13px;
+    line-height: 1.5;
+    font-weight: 750;
+}
+
+
+/* ONDERSTE BRONVERMELDING */
+
+.pp-sponsors .sp-source-note {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 14px;
+
+    margin-top: 35px;
+    padding: 21px 23px;
+
+    background: #edf3ed;
+    border-radius: 15px;
+}
+
+.pp-sponsors .sp-source-note p {
+    max-width: 600px;
+
+    color: #627467;
+    font-size: 12px;
+    line-height: 1.7;
+}
+
+.pp-sponsors .sp-source-note a {
+    color: #266145;
+    font-size: 12px;
+    font-weight: 800;
+}
+
+.pp-sponsors .sp-source-note a:hover {
+    text-decoration: underline;
+}
+
+
+/* =========================================
+   SPONSOR WORDEN
+   ========================================= */
+
+.pp-sponsors .sp-join {
+    padding: 85px 0;
+
+    background: #fff;
+}
+
+.pp-sponsors .sp-join-panel {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 280px;
+    align-items: center;
+    gap: 50px;
+
+    padding: clamp(28px, 5vw, 65px);
+
+    border-radius: 28px;
+
+    background: linear-gradient(
+        115deg,
+        #163729 0%,
+        #285942 100%
+    );
+
+    color: #fff;
+}
+
+.pp-sponsors .sp-join h2 {
+    margin: 17px 0 21px;
+
+    color: #fff;
+
+    font-size: clamp(32px, 4.1vw, 48px);
+    line-height: 1.1;
+    letter-spacing: -.045em;
+    font-weight: 800;
+}
+
+.pp-sponsors .sp-join-text > p {
+    max-width: 610px;
+
+    color: #d8e8db;
+    font-size: 15px;
+    line-height: 1.85;
+}
+
+.pp-sponsors .sp-join-action {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.pp-sponsors .sp-join-action p {
+    color: #bed2c4;
+
+    font-size: 11px;
+    line-height: 1.6;
+}
+
+
+/* =========================================
+   TABLET
+   ========================================= */
+
+@media (max-width: 1000px) {
+
+    .pp-sponsors .sp-logo-grid {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+
+    .pp-sponsors .sp-hero-layout {
+        grid-template-columns: 1fr 160px;
+        gap: 25px;
+    }
+
+    .pp-sponsors .sp-hero-circle {
+        width: 145px;
+        height: 145px;
+    }
+
+    .pp-sponsors .sp-hero-circle span {
+        font-size: 78px;
+    }
+
+}
+
+@media (max-width: 760px) {
+
+    .pp-sponsors .sp-hero-side {
+        display: none;
+    }
+
+    .pp-sponsors .sp-hero-layout {
+        grid-template-columns: 1fr;
+    }
+
+    .pp-sponsors .sp-section-intro {
+        align-items: flex-start;
+    }
+
+    .pp-sponsors .sp-logo-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .pp-sponsors .sp-join-panel {
+        grid-template-columns: 1fr;
+        gap: 30px;
+    }
+
+}
+
+
+/* =========================================
+   MOBIEL
+   ========================================= */
+
+@media (max-width: 520px) {
+
+    .pp-sponsors .sp-hero {
+        padding: 65px 0 75px;
+    }
+
+    .pp-sponsors .sp-hero-title {
+        font-size: 40px;
+    }
+
+    .pp-sponsors .sp-partners {
+        padding: 65px 0;
+    }
+
+    .pp-sponsors .sp-section-intro {
+        flex-direction: column;
+        gap: 22px;
+    }
+
+    .pp-sponsors .sp-total {
+        flex-direction: row;
+        gap: 13px;
+        min-height: auto;
+        min-width: 0;
+        padding: 14px 18px;
+    }
+
+    .pp-sponsors .sp-total strong {
+        font-size: 31px;
+    }
+
+    .pp-sponsors .sp-total span {
+        margin: 0;
+    }
+
+    .pp-sponsors .sp-logo-grid {
+        gap: 12px;
+    }
+
+    .pp-sponsors .sp-logo-stage {
+        min-height: 132px;
+        padding: 14px;
+    }
+
+    .pp-sponsors .sp-logo-stage img {
+        height: 80px;
+    }
+
+    .pp-sponsors .sp-logo-info {
+        min-height: 80px;
+        padding: 12px;
+    }
+
+    .pp-sponsors .sp-logo-info h3 {
+        font-size: 11px;
+    }
+
+    .pp-sponsors .sp-join {
+        padding: 55px 0;
+    }
+
+    .pp-sponsors .sp-join-panel {
+        padding: 28px;
+        border-radius: 22px;
+    }
+
+    .pp-sponsors .sp-button {
+        width: 100%;
+    }
+
+}
+
+
+/* =========================================
+   TOEGANKELIJKHEID
+   ========================================= */
+
+@media (prefers-reduced-motion: reduce) {
+
+    .pp-sponsors .sp-logo-card,
+    .pp-sponsors .sp-logo-stage img,
+    .pp-sponsors .sp-button {
+        transition: none;
+    }
+
+}
