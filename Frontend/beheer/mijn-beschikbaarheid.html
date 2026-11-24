@@ -4,527 +4,624 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Mijn beschikbaarheid - Avond4daagse</title>
+  <meta name="description"
+        content="Geef je beschikbaarheid door voor de Avond4daagse 2027.">
+
+  <title>Mijn beschikbaarheid | Avond4daagse Beheer</title>
+
   <link rel="stylesheet" href="../css/beheer.css">
+  <link rel="stylesheet" href="../css/beheer-polish.css">
+  <link rel="stylesheet" href="../css/beheer-beschikbaarheid.css">
+
+  <script src="../js/beheer-ui.js" defer></script>
+  <script src="../js/beheer-beschikbaarheid.js" defer></script>
 </head>
 
-<body class="vrij-page besch-page">
+<body class="bm-page ba-page">
 
-<div class="vrij-layout">
+<div class="bm-layout">
 
-  <!-- SIDEBAR -->
-  <aside class="vrij-sidebar">
+  <!-- ==================================
+       ZIJMENU
+       ================================== -->
 
-    <div class="vrij-logo">
-      <strong>AVOND4DAAGSE</strong>
-      <small>BEHEER 2027</small>
+  <aside class="bm-sidebar" id="bmSidebar">
+
+    <a href="dashboard.html" class="bm-brand">
+      <span class="bm-brand-symbol" aria-hidden="true">4</span>
+      <span>
+        <strong>AVOND4DAAGSE</strong>
+        <small>BEHEEROMGEVING 2027</small>
+      </span>
+    </a>
+
+    <div class="bm-sidebar-content">
+
+      <p class="bm-nav-label">OVERZICHT</p>
+
+      <nav class="bm-navigation" aria-label="Beheernavigatie">
+
+        <a href="dashboard.html">
+          <span class="bm-nav-icon" aria-hidden="true">▦</span>
+          Dashboard
+        </a>
+
+        <a href="inschrijvingen.html">
+          <span class="bm-nav-icon" aria-hidden="true">◎</span>
+          Inschrijvingen
+        </a>
+
+        <a href="routebeheer.html">
+          <span class="bm-nav-icon" aria-hidden="true">◇</span>
+          Routebeheer
+        </a>
+
+        <a href="vrijwilligers.html">
+          <span class="bm-nav-icon" aria-hidden="true">♧</span>
+          Vrijwilligers &amp; inzet
+        </a>
+
+        <a href="mijn-beschikbaarheid.html"
+           class="bm-nav-active"
+           aria-current="page">
+          <span class="bm-nav-icon" aria-hidden="true">◷</span>
+          Mijn beschikbaarheid
+        </a>
+
+        <a href="draaiboek.html">
+          <span class="bm-nav-icon" aria-hidden="true">☷</span>
+          Draaiboek
+        </a>
+
+        <a href="financien.html">
+          <span class="bm-nav-icon" aria-hidden="true">€</span>
+          Financiën
+        </a>
+
+        <a href="contactvragen.html">
+          <span class="bm-nav-icon" aria-hidden="true">✉</span>
+          Contactvragen
+        </a>
+
+      </nav>
     </div>
 
-    <nav class="vrij-menu">
-      <a href="dashboard.html">Dashboard</a>
-      <a href="inschrijvingen.html">Inschrijvingen</a>
-      <a href="routebeheer.html">Routebeheer</a>
-      <a href="vrijwilligers.html">Vrijwilligers & inzet</a>
-      <a href="mijn-beschikbaarheid.html" class="vrij-active" aria-current="page">Mijn beschikbaarheid</a>
-      <a href="draaiboek.html">Draaiboek</a>
-      <a href="financien.html">Financiën</a>
-      <a href="contactvragen.html">Contactvragen</a>
-    </nav>
+    <div class="bm-sidebar-footer">
 
-    <div class="vrij-sidebar-bottom">
-      <p>Anja Mulder</p>
-      <p>Vrijwilliger</p>
-      <a href="login.html">Uitloggen</a>
+      <div class="bm-account">
+        <span class="bm-account-avatar" aria-hidden="true">V</span>
+        <span>
+          <strong>Vrijwilligersomgeving</strong>
+          <small>Frontenddemo</small>
+        </span>
+      </div>
+
+      <a href="login.html" class="bm-sidebar-exit">
+        Terug naar inloggen
+        <span aria-hidden="true">↗</span>
+      </a>
+
     </div>
 
   </aside>
 
-  <!-- HOOFDINHOUD -->
-  <main class="vrij-main besch-main">
 
-    <header class="besch-header">
-      <div>
-        <h1>Mijn beschikbaarheid</h1>
-        <p>
-          Geef per avond aan of je kunt helpen en bekijk
-          daarna direct welke diensten je hebt gekregen,
-          wanneer je moet verschijnen en of je aanwezigheid
-          is geregistreerd.
-        </p>
-      </div>
+  <!-- ==================================
+       HOOFDGEDEELTE
+       ================================== -->
 
-      <span class="besch-editie">
-        Editie 2027 - 1 t/m 4 juni
-      </span>
-    </header>
+  <div class="bm-main-area">
 
-    <!-- INFORMATIE -->
-    <div class="besch-info-box">
-      <strong>
-        Beschikbaarheid doorgeven is nog geen definitieve inplanning
-      </strong>
+    <header class="bm-topbar">
 
-      <p>
-        De organisatie maakt het inzetschema op basis van je
-        beschikbaarheid. Je ontvangt apart een bevestiging van je
-        diensten. Zodra je bent ingepland, zie je hier direct je
-        diensten, tijden en aanwezigheidsstatus.
-      </p>
-    </div>
+      <div class="bm-topbar-left">
 
-    <!-- BESCHIKBAARHEID -->
-    <section class="besch-section">
+        <button type="button"
+                class="bm-menu-button"
+                id="bmMenuButton"
+                aria-controls="bmSidebar"
+                aria-expanded="false"
+                aria-label="Open beheermenu">
+          <span aria-hidden="true">☰</span>
+          Menu
+        </button>
 
-      <div class="besch-section-header">
-        <div>
-          <h2>Beschikbaarheid per avond</h2>
-          <p>Kies voor elke avond een optie.</p>
+        <div class="bm-breadcrumb">
+          <span>Beheeromgeving</span>
+          <span aria-hidden="true">/</span>
+          <strong>Mijn beschikbaarheid</strong>
         </div>
 
-        <span id="besch-aantal">
-          3 van 4 avonden beschikbaar
-        </span>
       </div>
 
-      <form id="besch-form">
+      <a href="../../index.html" class="bm-website-link">
+        Bekijk publieke website ↗
+      </a>
 
-        <div class="besch-tabel-wrapper">
+    </header>
 
-          <table class="besch-tabel">
+
+    <main class="bm-content">
+
+      <!-- PAGINATITEL -->
+      <section class="ba-heading">
+
+        <div>
+          <p class="bm-eyebrow">VRIJWILLIGERSPLANNING</p>
+
+          <h1>Mijn beschikbaarheid</h1>
+
+          <p>
+            Geef per wandelavond aan of je kunt helpen.
+            Zo weet de organisatie wanneer vrijwilligers
+            beschikbaar zijn.
+          </p>
+        </div>
+
+        <span class="bm-demo-tag">Frontenddemo</span>
+
+      </section>
+
+
+      <!-- UITLEG -->
+      <div class="bm-notice" role="note">
+
+        <span class="bm-notice-icon" aria-hidden="true">i</span>
+
+        <div>
+          <strong>Beschikbaarheid is nog geen inplanning</strong>
+
+          <p>
+            De definitieve evenementdatums zijn nog niet
+            bevestigd. We gebruiken daarom Avond 1 t/m 4.
+            Je keuzes worden voorlopig alleen in deze browser
+            opgeslagen en niet naar de organisatie verzonden.
+          </p>
+        </div>
+
+      </div>
+
+
+      <!-- ==================================
+           STATISTIEKEN
+           ================================== -->
+
+      <section class="ba-stats"
+               aria-label="Overzicht van je beschikbaarheid">
+
+        <article class="ba-stat">
+          <span>Ingevuld</span>
+          <strong id="baFilled">0 / 4</strong>
+          <small>Wandelavonden</small>
+        </article>
+
+        <article class="ba-stat">
+          <span>Beschikbaar</span>
+          <strong id="baAvailable">0</strong>
+          <small>Avonden waarop je kunt helpen</small>
+        </article>
+
+        <article class="ba-stat">
+          <span>Misschien</span>
+          <strong id="baMaybe">0</strong>
+          <small>Beschikbaarheid onzeker</small>
+        </article>
+
+        <article class="ba-stat">
+          <span>Niet beschikbaar</span>
+          <strong id="baUnavailable">0</strong>
+          <small>Avonden waarop je niet kunt</small>
+        </article>
+
+      </section>
+
+
+      <!-- ==================================
+           BESCHIKBAARHEIDSFORMULIER
+           ================================== -->
+
+      <section class="ba-panel"
+               aria-labelledby="baFormTitle">
+
+        <div class="ba-panel-header">
+
+          <div>
+            <p class="bm-eyebrow">JOUW PLANNING</p>
+
+            <h2 id="baFormTitle">
+              Beschikbaarheid per avond
+            </h2>
+
+            <p>
+              Selecteer je beschikbaarheid. Je mag ook
+              een avond nog onbeantwoord laten.
+            </p>
+          </div>
+
+          <span id="baProgressLabel" class="ba-progress-label">
+            0 van 4 ingevuld
+          </span>
+
+        </div>
+
+        <div class="ba-progress-track"
+             role="progressbar"
+             aria-label="Ingevulde wandelavonden"
+             aria-valuemin="0"
+             aria-valuemax="4"
+             aria-valuenow="0"
+             id="baProgress">
+
+          <span id="baProgressFill"></span>
+
+        </div>
+
+
+        <form id="baForm">
+
+          <div class="ba-evenings">
+
+            <!-- AVOND 1 -->
+            <fieldset class="ba-evening" data-evening="1">
+
+              <legend>Avond 1</legend>
+
+              <p class="ba-evening-date">
+                Datum wordt nog bekendgemaakt
+              </p>
+
+              <div class="ba-choices">
+
+                <label class="ba-choice">
+                  <input type="radio"
+                         name="avond-1"
+                         value="beschikbaar">
+                  <span>Beschikbaar</span>
+                </label>
+
+                <label class="ba-choice">
+                  <input type="radio"
+                         name="avond-1"
+                         value="misschien">
+                  <span>Misschien</span>
+                </label>
+
+                <label class="ba-choice">
+                  <input type="radio"
+                         name="avond-1"
+                         value="niet">
+                  <span>Niet beschikbaar</span>
+                </label>
+
+              </div>
+
+              <span class="ba-evening-status">
+                Nog niet ingevuld
+              </span>
+
+            </fieldset>
+
+
+            <!-- AVOND 2 -->
+            <fieldset class="ba-evening" data-evening="2">
+
+              <legend>Avond 2</legend>
+
+              <p class="ba-evening-date">
+                Datum wordt nog bekendgemaakt
+              </p>
+
+              <div class="ba-choices">
+
+                <label class="ba-choice">
+                  <input type="radio"
+                         name="avond-2"
+                         value="beschikbaar">
+                  <span>Beschikbaar</span>
+                </label>
+
+                <label class="ba-choice">
+                  <input type="radio"
+                         name="avond-2"
+                         value="misschien">
+                  <span>Misschien</span>
+                </label>
+
+                <label class="ba-choice">
+                  <input type="radio"
+                         name="avond-2"
+                         value="niet">
+                  <span>Niet beschikbaar</span>
+                </label>
+
+              </div>
+
+              <span class="ba-evening-status">
+                Nog niet ingevuld
+              </span>
+
+            </fieldset>
+
+
+            <!-- AVOND 3 -->
+            <fieldset class="ba-evening" data-evening="3">
+
+              <legend>Avond 3</legend>
+
+              <p class="ba-evening-date">
+                Datum wordt nog bekendgemaakt
+              </p>
+
+              <div class="ba-choices">
+
+                <label class="ba-choice">
+                  <input type="radio"
+                         name="avond-3"
+                         value="beschikbaar">
+                  <span>Beschikbaar</span>
+                </label>
+
+                <label class="ba-choice">
+                  <input type="radio"
+                         name="avond-3"
+                         value="misschien">
+                  <span>Misschien</span>
+                </label>
+
+                <label class="ba-choice">
+                  <input type="radio"
+                         name="avond-3"
+                         value="niet">
+                  <span>Niet beschikbaar</span>
+                </label>
+
+              </div>
+
+              <span class="ba-evening-status">
+                Nog niet ingevuld
+              </span>
+
+            </fieldset>
+
+
+            <!-- AVOND 4 -->
+            <fieldset class="ba-evening" data-evening="4">
+
+              <legend>Avond 4 · Finish</legend>
+
+              <p class="ba-evening-date">
+                Datum wordt nog bekendgemaakt
+              </p>
+
+              <div class="ba-choices">
+
+                <label class="ba-choice">
+                  <input type="radio"
+                         name="avond-4"
+                         value="beschikbaar">
+                  <span>Beschikbaar</span>
+                </label>
+
+                <label class="ba-choice">
+                  <input type="radio"
+                         name="avond-4"
+                         value="misschien">
+                  <span>Misschien</span>
+                </label>
+
+                <label class="ba-choice">
+                  <input type="radio"
+                         name="avond-4"
+                         value="niet">
+                  <span>Niet beschikbaar</span>
+                </label>
+
+              </div>
+
+              <span class="ba-evening-status">
+                Nog niet ingevuld
+              </span>
+
+            </fieldset>
+
+          </div>
+
+
+          <!-- TOELICHTING -->
+          <div class="ba-notes">
+
+            <label for="baNote">
+              Extra toelichting
+              <span>(optioneel)</span>
+            </label>
+
+            <p>
+              Bijvoorbeeld als je alleen op een bepaald
+              tijdstip kunt helpen. Zet hier geen
+              gevoelige persoonsgegevens in.
+            </p>
+
+            <textarea id="baNote"
+                      rows="4"
+                      maxlength="600"
+                      placeholder="Bijvoorbeeld: Op de vierde avond kan ik pas vanaf 18:30 helpen."></textarea>
+
+            <span id="baNoteCount"
+                  class="ba-note-count">
+              0 / 600 tekens
+            </span>
+
+          </div>
+
+
+          <!-- OPSLAAN -->
+          <div class="ba-save-area">
+
+            <div>
+              <strong id="baSavedStatus">
+                Nog niet opgeslagen
+              </strong>
+
+              <p>
+                Opslaan geldt alleen voor deze browser.
+              </p>
+            </div>
+
+            <div class="ba-save-buttons">
+
+              <button type="button"
+                      id="baRestore"
+                      class="ba-button ba-button-light">
+                Herstel opgeslagen keuzes
+              </button>
+
+              <button type="submit"
+                      id="baSave"
+                      class="ba-button ba-button-primary">
+                Beschikbaarheid opslaan
+              </button>
+
+            </div>
+
+          </div>
+
+          <p id="baFeedback"
+             class="ba-feedback"
+             role="status"
+             aria-live="polite"></p>
+
+        </form>
+
+      </section>
+
+
+      <!-- ==================================
+           VOORBEELDDIENSTEN
+           ================================== -->
+
+      <section class="ba-panel"
+               aria-labelledby="baShiftsTitle">
+
+        <div class="ba-panel-header">
+
+          <div>
+            <p class="bm-eyebrow">VOORBEELDPLANNING</p>
+
+            <h2 id="baShiftsTitle">
+              Mijn diensten
+            </h2>
+
+            <p>
+              Zo kunnen toegewezen diensten er later
+              uitzien. Deze gegevens zijn nog niet
+              gekoppeld aan jouw beschikbaarheid.
+            </p>
+          </div>
+
+          <a href="inzetschema.html"
+             class="ba-text-link">
+            Bekijk inzetschema ↗
+          </a>
+
+        </div>
+
+        <div class="ba-table-scroll">
+
+          <table class="ba-table">
+
             <thead>
               <tr>
-                <th>EVENEMENTAVOND</th>
-                <th>BESCHIKBAARHEID</th>
+                <th scope="col">Wandelavond</th>
+                <th scope="col">Dienst</th>
+                <th scope="col">Tijd</th>
+                <th scope="col">Locatie</th>
+                <th scope="col">Status</th>
               </tr>
             </thead>
 
             <tbody>
-
-              <tr class="besch-dag" data-datum="2027-06-01">
-                <td>1 juni 2027 (dinsdag)</td>
+              <tr>
+                <td>Avond 1</td>
+                <td><strong>Startbureau</strong></td>
+                <td>18:00–19:00</td>
+                <td>Startlocatie</td>
                 <td>
-                  <label>
-                    <input type="radio" name="avond-1"
-                           value="ja" checked>
-                    Beschikbaar
-                  </label>
-
-                  <label>
-                    <input type="radio" name="avond-1"
-                           value="nee">
-                    Niet beschikbaar
-                  </label>
+                  <span class="ba-demo-badge">
+                    Voorbeeld
+                  </span>
                 </td>
               </tr>
 
-              <tr class="besch-dag" data-datum="2027-06-02">
-                <td>2 juni 2027 (woensdag)</td>
+              <tr>
+                <td>Avond 2</td>
+                <td><strong>Routeposten</strong></td>
+                <td>18:15–20:30</td>
+                <td>Post 3</td>
                 <td>
-                  <label>
-                    <input type="radio" name="avond-2"
-                           value="ja" checked>
-                    Beschikbaar
-                  </label>
-
-                  <label>
-                    <input type="radio" name="avond-2"
-                           value="nee">
-                    Niet beschikbaar
-                  </label>
+                  <span class="ba-demo-badge">
+                    Voorbeeld
+                  </span>
                 </td>
               </tr>
 
-              <tr class="besch-dag" data-datum="2027-06-03">
-                <td>3 juni 2027 (donderdag)</td>
+              <tr>
+                <td>Avond 4</td>
+                <td><strong>Finishteam</strong></td>
+                <td>19:30–21:30</td>
+                <td>Finishlocatie</td>
                 <td>
-                  <label>
-                    <input type="radio" name="avond-3"
-                           value="ja">
-                    Beschikbaar
-                  </label>
-
-                  <label>
-                    <input type="radio" name="avond-3"
-                           value="nee" checked>
-                    Niet beschikbaar
-                  </label>
+                  <span class="ba-demo-badge">
+                    Voorbeeld
+                  </span>
                 </td>
               </tr>
-
-              <tr class="besch-dag" data-datum="2027-06-04">
-                <td>4 juni 2027 (vrijdag)</td>
-                <td>
-                  <label>
-                    <input type="radio" name="avond-4"
-                           value="ja" checked>
-                    Beschikbaar
-                  </label>
-
-                  <label>
-                    <input type="radio" name="avond-4"
-                           value="nee">
-                    Niet beschikbaar
-                  </label>
-                </td>
-              </tr>
-
             </tbody>
+
           </table>
+
         </div>
 
-        <!-- TOELICHTING -->
-        <div class="besch-toelichting">
+        <p class="ba-table-note">
+          Deze drie diensten komen uit het eerdere
+          projectontwerp. Er zijn nog geen bevestigde
+          persoonlijke diensten of aanwezigheidsgegevens.
+        </p>
 
-          <label for="besch-opmerking">
-            Toelichting (optioneel)
-          </label>
+      </section>
 
-          <textarea id="besch-opmerking" rows="3"
-            placeholder="Bijvoorbeeld: Ik kan pas vanaf 18:30 helpen.">Op 4 juni kan ik pas vanaf 18:30 helpen.</textarea>
+
+      <!-- UITLEG ONDERAAN -->
+      <div class="ba-bottom-info">
+
+        <div class="ba-bottom-icon" aria-hidden="true">✓</div>
+
+        <div>
+          <h2>Wat gebeurt er na het doorgeven?</h2>
 
           <p>
-            Zijn er bijzonderheden waar de organisatie
-            rekening mee kan houden? Vermeld ze hier.
+            In de definitieve versie kan de organisatie
+            je beschikbaarheid bekijken, je aan een dienst
+            koppelen en je inplanning bevestigen.
+            Die koppeling bestaat in deze demo nog niet.
           </p>
         </div>
 
-        <!-- OPSLAAN -->
-        <div class="besch-opslaan">
-          <div>
-            <strong id="besch-status">
-              Voorbeeldbeschikbaarheid - nog niet opgeslagen
-            </strong>
-            <p>
-              Je kunt je beschikbaarheid hier aanpassen.
-              Dit wordt voorlopig alleen lokaal opgeslagen.
-            </p>
-          </div>
-
-          <button type="submit" class="vrij-dark-btn">
-            Beschikbaarheid opslaan
-          </button>
-        </div>
-
-      </form>
-
-    </section>
-
-    <!-- INGEPLANDE DIENSTEN -->
-    <section class="besch-section">
-
-      <h2>Overzicht ingeplande diensten</h2>
-
-      <p class="besch-uitleg">
-        Hier staat een compact overzicht van je toegewezen
-        diensten, inclusief tijden, locatie en aanwezigheidsstatus.
-      </p>
-
-      <div class="besch-tabel-wrapper">
-
-        <table class="besch-tabel besch-diensten-tabel">
-          <thead>
-            <tr>
-              <th>DIENST</th>
-              <th>TIJD</th>
-              <th>LOCATIE</th>
-              <th>AANWEZIG</th>
-              <th>ACTIE</th>
-            </tr>
-          </thead>
-
-          <tbody>
-
-            <tr>
-              <td><strong>Startbureau</strong></td>
-              <td>18:00–19:00</td>
-              <td>Startlocatie</td>
-              <td><strong>Aanwezig</strong></td>
-              <td>
-                <button class="besch-corrigeer"
-                        data-dienst="Startbureau"
-                        type="button">
-                  Corrigeer
-                </button>
-              </td>
-            </tr>
-
-            <tr>
-              <td><strong>Routeposten</strong></td>
-              <td>18:15–20:30</td>
-              <td>Post 3</td>
-              <td><strong>Aanwezig</strong></td>
-              <td>
-                <button class="besch-corrigeer"
-                        data-dienst="Routeposten"
-                        type="button">
-                  Corrigeer
-                </button>
-              </td>
-            </tr>
-
-            <tr>
-              <td><strong>Finishteam</strong></td>
-              <td>19:30–21:30</td>
-              <td>Eindlocatie</td>
-              <td><strong>Aanwezig</strong></td>
-              <td>
-                <button class="besch-corrigeer"
-                        data-dienst="Finishteam"
-                        type="button">
-                  Corrigeer
-                </button>
-              </td>
-            </tr>
-
-          </tbody>
-        </table>
-
       </div>
 
-    </section>
 
-    <!-- AANWEZIGHEIDSREGISTRATIE -->
-    <section class="besch-section">
+      <footer class="bm-content-footer">
+        Avond4daagse 2027 · Mijn beschikbaarheid · Frontenddemo
+      </footer>
 
-      <h2>Aanwezigheidsregistratie</h2>
-
-      <p class="besch-uitleg">
-        Zodra je op de locatie bent, registreer je
-        aanwezigheid per dienst. Zo weet de organisatie
-        direct wie er aanwezig is.
-      </p>
-
-      <!-- KAART 1 -->
-      <div class="besch-dienst-kaart">
-
-        <div class="besch-kaart-header">
-          <div>
-            <h3>Startbureau</h3>
-            <p>1 juni 2027 · 18:00–19:00</p>
-          </div>
-
-          <span class="besch-badge">AANWEZIG</span>
-        </div>
-
-        <strong>Aanwezigheid registreren</strong>
-
-        <p>
-          Je bent al geregistreerd voor deze dienst.
-          Als je je aanwezigheid wilt corrigeren,
-          dan kan dat via de coördinator.
-        </p>
-
-        <button class="vrij-dark-btn besch-corrigeer"
-                data-dienst="Startbureau"
-                type="button">
-          Aanwezigheid corrigeren
-        </button>
-
-      </div>
-
-      <!-- KAART 2 -->
-      <div class="besch-dienst-kaart">
-
-        <div class="besch-kaart-header">
-          <div>
-            <h3>Routeposten</h3>
-            <p>2 juni 2027 · 18:15–20:30</p>
-          </div>
-
-          <span class="besch-badge">AANWEZIG</span>
-        </div>
-
-        <strong>Aanwezigheid registreren</strong>
-
-        <p>
-          Je bent al geregistreerd voor deze dienst.
-          Als je je aanwezigheid wilt corrigeren,
-          dan kan dat via de coördinator.
-        </p>
-
-        <button class="vrij-dark-btn besch-corrigeer"
-                data-dienst="Routeposten"
-                type="button">
-          Aanwezigheid corrigeren
-        </button>
-
-      </div>
-
-      <!-- KAART 3 -->
-      <div class="besch-dienst-kaart">
-
-        <div class="besch-kaart-header">
-          <div>
-            <h3>Finishteam</h3>
-            <p>4 juni 2027 · 19:30–21:30</p>
-          </div>
-
-          <span class="besch-badge">AANWEZIG</span>
-        </div>
-
-        <strong>Aanwezigheid registreren</strong>
-
-        <p>
-          Je bent al geregistreerd voor deze dienst.
-          Als je je aanwezigheid wilt corrigeren,
-          dan kan dat via de coördinator.
-        </p>
-
-        <button class="vrij-dark-btn besch-corrigeer"
-                data-dienst="Finishteam"
-                type="button">
-          Aanwezigheid corrigeren
-        </button>
-
-      </div>
-
-      <p id="besch-feedback"
-         class="besch-feedback"
-         role="status"
-         hidden>
-      </p>
-
-    </section>
-
-  </main>
+    </main>
+  </div>
 
 </div>
 
-<!-- JAVASCRIPT -->
-<script>
-
-  const opslagSleutel = "avond4daagse-beschikbaarheid-demo";
-
-  const formulier = document.getElementById("besch-form");
-  const dagen = Array.from(
-    document.querySelectorAll(".besch-dag")
-  );
-
-  const opmerking = document.getElementById("besch-opmerking");
-  const statusTekst = document.getElementById("besch-status");
-  const aantalTekst = document.getElementById("besch-aantal");
-
-  // Eerder lokaal opgeslagen gegevens ophalen
-  function laadBeschikbaarheid() {
-    try {
-      const opgeslagen = JSON.parse(
-        localStorage.getItem(opslagSleutel)
-      );
-
-      if (!opgeslagen) return;
-
-      dagen.forEach((dag) => {
-        const datum = dag.dataset.datum;
-        const waarde = opgeslagen.avonden?.[datum];
-
-        if (waarde === "ja" || waarde === "nee") {
-          const radio = dag.querySelector(
-            `input[value="${waarde}"]`
-          );
-
-          if (radio) radio.checked = true;
-        }
-      });
-
-      opmerking.value = opgeslagen.toelichting ?? "";
-      statusTekst.textContent =
-        "Beschikbaarheid lokaal opgeslagen";
-
-    } catch (fout) {
-      statusTekst.textContent =
-        "Voorbeeldbeschikbaarheid - nog niet opgeslagen";
-    }
-  }
-
-  // Aantal beschikbare avonden berekenen
-  function updateAantal() {
-    let aantal = 0;
-
-    dagen.forEach((dag) => {
-      const beschikbaar = dag.querySelector(
-        'input[value="ja"]'
-      );
-
-      if (beschikbaar.checked) aantal++;
-    });
-
-    aantalTekst.textContent =
-      `${aantal} van 4 avonden beschikbaar`;
-  }
-
-  // Aangeven wanneer er wijzigingen zijn
-  function wijzigingGemaakt() {
-    statusTekst.textContent =
-      "Wijzigingen nog niet opgeslagen";
-    updateAantal();
-  }
-
-  dagen.forEach((dag) => {
-    dag.querySelectorAll("input").forEach((radio) => {
-      radio.addEventListener("change", wijzigingGemaakt);
-    });
-  });
-
-  opmerking.addEventListener("input", wijzigingGemaakt);
-
-  // Beschikbaarheid lokaal opslaan
-  formulier.addEventListener("submit", (event) => {
-    event.preventDefault();
-
-    const gegevens = {
-      avonden: {},
-      toelichting: opmerking.value
-    };
-
-    dagen.forEach((dag) => {
-      const geselecteerd = dag.querySelector(
-        'input[type="radio"]:checked'
-      );
-
-      gegevens.avonden[dag.dataset.datum] =
-        geselecteerd.value;
-    });
-
-    try {
-      localStorage.setItem(
-        opslagSleutel,
-        JSON.stringify(gegevens)
-      );
-
-      statusTekst.textContent =
-        "Beschikbaarheid opgeslagen op dit apparaat";
-
-    } catch (fout) {
-      statusTekst.textContent =
-        "Opslaan mislukt. Probeer het opnieuw.";
-    }
-  });
-
-  // Correctieknoppen - alleen demonstratie
-  document.querySelectorAll(".besch-corrigeer")
-    .forEach((knop) => {
-
-      knop.addEventListener("click", () => {
-        const dienst = knop.dataset.dienst;
-        const feedback = document.getElementById(
-          "besch-feedback"
-        );
-
-        feedback.hidden = false;
-
-        feedback.textContent =
-          `Demo: voor ${dienst} zou hier een ` +
-          `correctie aangevraagd worden. ` +
-          `Er is nog niets naar de organisatie verstuurd.`;
-      });
-
-    });
-
-  // Pagina initialiseren
-  laadBeschikbaarheid();
-  updateAantal();
-
-</script>
+<!-- Achtergrond bij mobiel menu -->
+<div class="bm-backdrop"
+     id="bmBackdrop"
+     hidden></div>
 
 </body>
 </html>
