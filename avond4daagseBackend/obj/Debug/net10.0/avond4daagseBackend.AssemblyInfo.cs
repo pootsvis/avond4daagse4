@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("avond4daagseBackend")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+6ac3ddd6fcfe4336dbff274dcea43fdaee7ae09e")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+111c480056ae25ddc525fba41bc899eab8f0d787")]
 [assembly: System.Reflection.AssemblyProductAttribute("avond4daagseBackend")]
 [assembly: System.Reflection.AssemblyTitleAttribute("avond4daagseBackend")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

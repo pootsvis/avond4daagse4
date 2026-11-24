@@ -1,3 +1,9 @@
+using Avond4DaagseBackend.DTOs;
+using Avond4DaagseBackend.Interfaces;
+using Avond4DaagseBackend.Models;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+
 namespace avond4daagseBackend.Controllers;
 [ApiController]
 [Route("api/[controller]")]
@@ -7,57 +13,83 @@ public class VrijwilligerController(
 {
     [Authorize(Roles = "Voorzitter")]
     [HttpGet]
-    public async Task<ActionResult<IEnumerable<Vrijwilliger>>> GetVrijwilligers()
+    [ProducesResponseType(typeof(List<VrijwilligerResponse>), StatusCodes.Status200OK)]
+    public async Task<ActionResult<List<VrijwilligerResponse>>> GetVrijwilligers()
     {
-        var vrijwilligers = await vrijwilligerService.GetAllVrijwilligers();
-        return Ok(vrijwilligers);
+        List<Vrijwilliger> vrijwilligers = await vrijwilligerService.GetAllVrijwilligers();
+        return Ok(vrijwilligers.Select(v => v.ToResponse()).ToList());
     }
 
     [Authorize(Roles = "Voorzitter")]
     [HttpGet("{id}")]
-    public async Task<ActionResult<Vrijwilliger>> GetVrijwilliger(int id)
-    {  
-        var vrijwilliger = await vrijwilligerService.GetVrijwilligerById(id);
-            if (vrijwilliger == null)
-            {
-                return NotFound();
-            }
-            return Ok(vrijwilliger);
+    [ProducesResponseType(typeof(VrijwilligerResponse), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public async Task<ActionResult<VrijwilligerResponse>> GetVrijwilliger(int id)
+    {
+        try
+        {
+            Vrijwilliger vrijwilliger = await vrijwilligerService.GetVrijwilligerById(id);
+            return Ok(vrijwilliger.ToResponse());
+        }
+        catch (InvalidOperationException ex)
+        {
+            return NotFound(ex.Message);
+        }
     }
-
+    
     [Authorize(Roles = "Voorzitter")]
     [HttpPost]
-    public async Task<ActionResult<Vrijwilliger>> CreateVrijwilliger(CreateVrijwilligerDto vrijwilliger)
+    [ProducesResponseType(typeof(VrijwilligerResponse), StatusCodes.Status201Created)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    public async Task<ActionResult<VrijwilligerResponse>> CreateVrijwilliger(CreateVrijwilligerDto dto)
     {
-        var createdVrijwilliger = await vrijwilligerService.CreateVrijwilliger(vrijwilliger);
-        return CreatedAtAction(nameof(GetVrijwilliger), new { id = createdVrijwilliger.VrijwilligersId }, createdVrijwilliger);
+        try
+        {
+            Vrijwilliger aangemaakt = await vrijwilligerService.CreateVrijwilliger(dto);
+
+            // Opnieuw ophalen zodat de gekoppelde gebruikers zeker geladen zijn voor de response
+            Vrijwilliger vrijwilliger = await vrijwilligerService.GetVrijwilligerById(aangemaakt.VrijwilligersId);
+            return CreatedAtAction(nameof(GetVrijwilliger), new { id = vrijwilliger.VrijwilligersId }, vrijwilliger.ToResponse());
+        }
+        catch (InvalidOperationException ex)
+        {
+            // bijvoorbeeld: een opgegeven GebruikerId bestaat niet
+            return BadRequest(ex.Message);
+        }
     }
 
     [Authorize(Roles = "Voorzitter")]
     [HttpPut("{id}")]
-    public async Task<ActionResult> UpdateVrijwilliger(int id, UpdateVrijwilligerDto vrijwilliger)
+    [ProducesResponseType(typeof(VrijwilligerResponse), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public async Task<ActionResult<VrijwilligerResponse>> UpdateVrijwilliger(int id, UpdateVrijwilligerDto dto)
     {
-        var existingVrijwilliger = await vrijwilligerService.GetVrijwilligerById(id);
-        if (existingVrijwilliger == null)
+        try
         {
-            return NotFound();
+            await vrijwilligerService.UpdateVrijwilliger(id, dto);
+            Vrijwilliger vrijwilliger = await vrijwilligerService.GetVrijwilligerById(id);
+            return Ok(vrijwilliger.ToResponse());
         }
-
-        await vrijwilligerService.UpdateVrijwilliger(id, vrijwilliger);
-        return NoContent();
+        catch (InvalidOperationException ex)
+        {
+            return NotFound(ex.Message);
+        }
     }
 
     [Authorize(Roles = "Voorzitter")]
     [HttpDelete("{id}")]
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<ActionResult> DeleteVrijwilliger(int id)
     {
-        var existingVrijwilliger = await vrijwilligerService.GetVrijwilligerById(id);
-        if (existingVrijwilliger == null)
+        try
         {
-            return NotFound();
+            await vrijwilligerService.DeleteVrijwilliger(id);
+            return NoContent();
         }
-
-        await vrijwilligerService.DeleteVrijwilliger(id);
-        return NoContent();
+        catch (InvalidOperationException ex)
+        {
+            return NotFound(ex.Message);
+        }
     }
 }

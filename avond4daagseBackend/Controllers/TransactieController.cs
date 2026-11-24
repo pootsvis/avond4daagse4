@@ -1,3 +1,9 @@
+using Avond4DaagseBackend.DTOs;
+using Avond4DaagseBackend.Interfaces;
+using Avond4DaagseBackend.Models;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+
 namespace Avond4DaagseBackend.Controllers;
 [ApiController]
 [Route("api/[controller]")]
@@ -7,55 +13,83 @@ public class TransactieController(
 {
     [Authorize(Roles = "Penningmeester")]
     [HttpGet]
-    public async Task<ActionResult<IEnumerable<Transactie>>> GetTransacties()
+    [ProducesResponseType(typeof(List<TransactieResponse>), StatusCodes.Status200OK)]
+    public async Task<ActionResult<List<TransactieResponse>>> GetTransacties()
     {
-        var transacties = await transactieService.GetAllTransacties();
-        return Ok(transacties);
+        List<Transactie> transacties = await transactieService.GetAllTransacties();
+        return Ok(transacties.Select(t => t.ToResponse()).ToList());
     }
 
     [Authorize(Roles = "Penningmeester")]
     [HttpGet("{id}")]
-    public async Task<ActionResult<Transactie>> GetTransactie(int id)
+    [ProducesResponseType(typeof(TransactieResponse), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public async Task<ActionResult<TransactieResponse>> GetTransactie(int id)
     {
-        var transactie = await transactieService.GetTransactieById(id);
-        if (transactie == null)
+        try
         {
-            return NotFound();
+            Transactie transactie = await transactieService.GetTransactieById(id);
+            return Ok(transactie.ToResponse());
         }
-        return Ok(transactie);
+        catch (InvalidOperationException ex)
+        {
+            return NotFound(ex.Message);
+        }
     }
     
     [Authorize(Roles = "Penningmeester")]
     [HttpPost]
-    public async Task<ActionResult<Transactie>> CreateTransactie(CreateTransactieDto transactieDto)
+    [ProducesResponseType(typeof(TransactieResponse), StatusCodes.Status201Created)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    public async Task<ActionResult<TransactieResponse>> CreateTransactie(CreateTransactieDto dto)
     {
-        var createdTransactie = await transactieService.CreateTransactie(transactieDto);
-        return CreatedAtAction(nameof(GetTransactie), new { id = createdTransactie.TransactieId }, createdTransactie);
+        try
+        {
+            Transactie aangemaakt = await transactieService.CreateTransactie(dto);
+
+            // Opnieuw ophalen zodat de gekoppelde gebruikers zeker geladen zijn voor de response
+            Transactie transactie = await transactieService.GetTransactieById(aangemaakt.TransactieId);
+            return CreatedAtAction(nameof(GetTransactie), new { id = transactie.TransactieId }, transactie.ToResponse());
+        }
+        catch (InvalidOperationException ex)
+        {
+            // bijvoorbeeld: een opgegeven GebruikerId bestaat niet
+            return BadRequest(ex.Message);
+        }
     }
     
     [Authorize(Roles = "Penningmeester")]
     [HttpPut("{id}")]
-    public async Task<ActionResult<Transactie>> UpdateTransactie(int id, UpdateTransactieDto transactieDto)
+    [ProducesResponseType(typeof(TransactieResponse), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public async Task<ActionResult<TransactieResponse>> UpdateTransactie(int id, UpdateTransactieDto dto)
     {
-        var updatedTransactie = await transactieService.UpdateTransactie(id, transactieDto);
-        if (updatedTransactie == null)
+        try
         {
-            return NotFound();
+            await transactieService.UpdateTransactie(id, dto);
+            Transactie transactie = await transactieService.GetTransactieById(id);
+            return Ok(transactie.ToResponse());
         }
-
-        return Ok(updatedTransactie);
+        catch (InvalidOperationException ex)
+        {
+            return NotFound(ex.Message);
+        }
     }
 
     [Authorize(Roles = "Penningmeester")]
     [HttpDelete("{id}")]
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<ActionResult> DeleteTransactie(int id)
     {
-        var transactie = await transactieService.GetTransactieById(id);
-        if (transactie == null)
+        try
         {
-            return NotFound();
+            await transactieService.DeleteTransactie(id);
+            return NoContent();
         }
-        await transactieService.DeleteTransactie(id);
-        return NoContent();
+        catch (InvalidOperationException ex)
+        {
+            return NotFound(ex.Message);
+        }
     }
 }

@@ -1,3 +1,8 @@
+using Avond4DaagseBackend.DTOs;
+using Avond4DaagseBackend.Interfaces;
+using Avond4DaagseBackend.Models;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Route = Avond4DaagseBackend.Models.Route;
 
 namespace Avond4DaagseBackend.Controllers;
@@ -9,54 +14,83 @@ public class RouteController(
 {
     [AllowAnonymous]
     [HttpGet]
-    public async Task<ActionResult<IEnumerable<Route>>> GetRoutes()
+    [ProducesResponseType(typeof(List<RouteResponse>), StatusCodes.Status200OK)]
+    public async Task<ActionResult<List<RouteResponse>>> GetRoutes()
     {
-        var routes = await routeService.GetAllRoutes();
-        return Ok(routes);
+        List<Route> routes = await routeService.GetAllRoutes();
+        return Ok(routes.Select(r => r.ToResponse()).ToList());
     }
 
     [AllowAnonymous]
     [HttpGet("{id}")]
-    public async Task<ActionResult<Route>> GetRoute(int id)
+    [ProducesResponseType(typeof(RouteResponse), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public async Task<ActionResult<RouteResponse>> GetRoute(int id)
     {
-        var route = await routeService.GetRouteById(id);
-        if (route == null)
+        try
         {
-            return NotFound();
+            Route route = await routeService.GetRouteById(id);
+            return Ok(route.ToResponse());
         }
-        return Ok(route);
+        catch (InvalidOperationException ex)
+        {
+            return NotFound(ex.Message);
+        }
     }
 
     [Authorize(Roles = "Voorzitter")]
     [HttpPost]
-    public async Task<ActionResult<Route>> CreateRoute(CreateRouteDto route)
+    [ProducesResponseType(typeof(RouteResponse), StatusCodes.Status201Created)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    public async Task<ActionResult<RouteResponse>> CreateRoute(CreateRouteDto dto)
     {
-        var createdRoute = await routeService.CreateRoute(route);
-        return CreatedAtAction(nameof(GetRoute), new { id = createdRoute.RouteId }, createdRoute);
+        try
+        {
+            Route route = await routeService.CreateRoute(dto);
+
+            // Opnieuw ophalen zodat de gekoppelde gebruikers zeker geladen zijn voor de response
+            Route createdRoute = await routeService.GetRouteById(route.RouteId);
+            return CreatedAtAction(nameof(GetRoute), new { id = createdRoute.RouteId }, createdRoute.ToResponse());
+        }
+        catch (InvalidOperationException ex)
+        {
+            // bijvoorbeeld: een opgegeven GebruikerId bestaat niet
+            return BadRequest(ex.Message);
+        }
     }
 
     [Authorize(Roles = "voorzitter")]
     [HttpPut("{id}")]
-    public async Task<ActionResult<Route>> UpdateRoute(int id, UpdateRouteDto route)
+    [ProducesResponseType(typeof(RouteResponse), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public async Task<ActionResult<RouteResponse>> UpdateRoute(int id, UpdateRouteDto dto)
     {
-        var updatedRoute = await routeService.UpdateRoute(id, route);
-        if (updatedRoute == null)
+        try
         {
-            return NotFound();
+            await routeService.UpdateRoute(id, dto);
+            Route route = await routeService.GetRouteById(id);
+            return Ok(route.ToResponse());
         }
-        return Ok(updatedRoute);
+        catch (InvalidOperationException ex)
+        {
+            return NotFound(ex.Message);
+        }
     }
 
     [Authorize(Roles = "voorzitter")]
     [HttpDelete("{id}")]
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<ActionResult> DeleteRoute(int id)
     {
-        var route = await routeService.GetRouteById(id);
-        if (route == null)
+        try
         {
-            return NotFound();
+            await routeService.DeleteRoute(id);
+            return NoContent();
         }
-        await routeService.DeleteRoute(id);
-        return NoContent();
+        catch (InvalidOperationException ex)
+        {
+            return NotFound(ex.Message);
+        }
     }
 }

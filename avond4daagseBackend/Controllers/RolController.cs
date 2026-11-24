@@ -1,3 +1,9 @@
+using Avond4DaagseBackend.DTOs;
+using Avond4DaagseBackend.Interfaces;
+using Avond4DaagseBackend.Models;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+
 namespace Avond4DaagseBackend.Controllers;
 [ApiController]
 [Route("api/[controller]")]
@@ -7,22 +13,28 @@ public class RolController(
 {
     [Authorize(Roles = "Voorzitter")]
     [HttpGet]
-    public async Task<ActionResult<IEnumerable<Rol>>> GetRollen()
+    [ProducesResponseType(typeof(List<RolResponse>), StatusCodes.Status200OK)]
+    public async Task<ActionResult<List<RolResponse>>> GetRollen()
     {
-        var rollen = await rolService.GetAllRollen();
-        return Ok(rollen);
+        List<Rol> rollen = await rolService.GetAllRollen();
+        return Ok(rollen.Select(r => r.ToResponse()).ToList());
     }
 
     [Authorize(Roles = "Voorzitter")]
     [HttpGet("{id}")]
-    public async Task<ActionResult<Rol>> GetRol(int id)
+    [ProducesResponseType(typeof(RolResponse), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public async Task<ActionResult<RolResponse>> GetRol(int id)
     {
-        var rol = await rolService.GetRolById(id);
-        if (rol == null)
+        try
         {
-            return NotFound();
+            Rol rol = await rolService.GetRolById(id);
+            return Ok(rol.ToResponse());
         }
-        return Ok(rol);
+        catch (InvalidOperationException ex)
+        {
+            return NotFound(ex.Message);
+        }
     }
     
     [AllowAnonymous]   // TIJDELIJK, alleen om te testen
@@ -32,21 +44,11 @@ public class RolController(
         try
         {
             Rol rol = await rolService.AssignRol(rolId, gebruikerId);
-            return Ok(ToResponse(rol));
+            return Ok(rol.ToResponse());
         }
         catch (InvalidOperationException ex)
         {
             return NotFound(ex.Message);   // "Rol not found" of "Gebruiker not found"
         }
-    }
-
-    private static RolResponse ToResponse(Rol rol)
-    {
-        return new RolResponse
-        {
-            RolId = rol.RolId,
-            Naam = rol.Naam,
-            RechtIds = rol.RolRechten.Select(rr => rr.RechtId).ToList()
-        };
     }
 }

@@ -1,45 +1,61 @@
+using Avond4DaagseBackend.Data;
+using Avond4DaagseBackend.DTOs;
+using Avond4DaagseBackend.Interfaces;
+using Avond4DaagseBackend.Models;
+using Microsoft.EntityFrameworkCore;
+
 namespace Avond4DaagseBackend.Services;
 
-public class TaakToewijzingService(ApplicationDbContext context) : ITaakToewijzingService
+public class TaakToewijzingService(
+    ApplicationDbContext context
+) : ITaakToewijzingService
 {
-    public async Task<List<Taaktoewijzing>> GetAllTaakToewijzingen()
+    public async Task<List<Taaktoewijzing>> GetAllTaaktoewijzingen()
     {
-        return await context.Taaktoewijzingen
-            .Include(t => t.Vrijwilliger)
-            .Include(t => t.Draaiboektaak)
-            .ToListAsync();
+        return await context.Taaktoewijzingen.ToListAsync();
     }
 
-    public async Task<Taaktoewijzing> GetTaakToewijzingById(int id)
+    public async Task<Taaktoewijzing> GetTaaktoewijzingById(int id)
     {
-        Taaktoewijzing? toewijzing = await context.Taaktoewijzingen
-            .Include(t => t.Vrijwilliger)
-            .Include(t => t.Draaiboektaak)
-            .FirstOrDefaultAsync(t => t.ToewijzingId == id);
-        if (toewijzing == null)
+        Taaktoewijzing? taaktoewijzing = await context.Taaktoewijzingen.FindAsync(id);
+        if (taaktoewijzing == null)
         {
             throw new InvalidOperationException("Taaktoewijzing not found");
         }
-        return toewijzing;
+        return taaktoewijzing;
     }
 
-    public async Task<Taaktoewijzing> CreateTaakToewijzing(CreateTaaktoewijzingDto dto)
+    public async Task<Taaktoewijzing> CreateTaaktoewijzing(CreateTaaktoewijzingDto taaktoewijzingDto)
     {
-        Taaktoewijzing toewijzing = new()
+        // Beide FK's moeten bestaan, anders krijg je een databasefout
+        bool vrijwilligerBestaat = await context.Vrijwilligers
+            .AnyAsync(v => v.VrijwilligersId == taaktoewijzingDto.VrijwilligersId);
+        if (!vrijwilligerBestaat)
         {
-            VrijwilligersId = dto.VrijwilligersId,
-            TaakId = dto.TaakId
+            throw new InvalidOperationException("Vrijwilliger not found");
+        }
+
+        bool taakBestaat = await context.Draaiboektaken
+            .AnyAsync(t => t.TaakId == taaktoewijzingDto.TaakId);
+        if (!taakBestaat)
+        {
+            throw new InvalidOperationException("Draaiboektaak not found");
+        }
+
+        Taaktoewijzing taaktoewijzing = new()
+        {
+            VrijwilligersId = taaktoewijzingDto.VrijwilligersId,
+            TaakId = taaktoewijzingDto.TaakId
         };
-        context.Taaktoewijzingen.Add(toewijzing);
+        context.Taaktoewijzingen.Add(taaktoewijzing);
         await context.SaveChangesAsync();
-        return toewijzing;
+        return taaktoewijzing;
     }
 
-    public async Task<bool> DeleteTaakToewijzing(int id)
+    public async Task DeleteTaaktoewijzing(int id)
     {
-        Taaktoewijzing toewijzing = await GetTaakToewijzingById(id);
-        context.Taaktoewijzingen.Remove(toewijzing);
+        Taaktoewijzing taaktoewijzing = await GetTaaktoewijzingById(id);
+        context.Taaktoewijzingen.Remove(taaktoewijzing);
         await context.SaveChangesAsync();
-        return true;
     }
 }

@@ -1,3 +1,9 @@
+using Avond4DaagseBackend.DTOs;
+using Avond4DaagseBackend.Interfaces;
+using Avond4DaagseBackend.Models;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+
 namespace avond4daagseBackend.Controllers;
 [ApiController]
 [Route("api/[controller]")]
@@ -7,54 +13,83 @@ public class GebruikerController(
 {
     [Authorize(Roles = "Voorzitter")]
     [HttpGet]
-    public async Task<ActionResult<IEnumerable<Gebruiker>>> GetGebruikers()
+    [ProducesResponseType(typeof(List<GebruikerResponse>), StatusCodes.Status200OK)]
+    public async Task<ActionResult<List<GebruikerResponse>>> GetGebruikers()
     {
-        var gebruikers = await gebruikerService.GetAllGebruikers();
-        return Ok(gebruikers);
+        List<Gebruiker> gebruikers = await gebruikerService.GetAllGebruikers();
+        return Ok(gebruikers.Select(g => g.ToResponse()).ToList());
     }
 
     [Authorize(Roles = "Voorzitter")]
     [HttpGet("{id}")]
-    public async Task<ActionResult<Gebruiker>> GetGebruiker(int id)
+    [ProducesResponseType(typeof(GebruikerResponse), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public async Task<ActionResult<GebruikerResponse>> GetGebruiker(int id)
     {
-        var gebruiker = await gebruikerService.GetGebruikerById(id);
-        if (gebruiker == null)
+        try
         {
-            return NotFound();
+            Gebruiker gebruiker = await gebruikerService.GetGebruikerById(id);
+            return Ok(gebruiker.ToResponse());
         }
-        return Ok(gebruiker);
+        catch (InvalidOperationException ex)
+        {
+            return NotFound(ex.Message);
+        }
     }
 
     [Authorize(Roles = "Voorzitter")]
     [HttpPost]
-    public async Task<ActionResult<Gebruiker>> CreateGebruiker(CreateGebruikerDto gebruiker)
+    [ProducesResponseType(typeof(GebruikerResponse), StatusCodes.Status201Created)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    public async Task<ActionResult<GebruikerResponse>> CreateGebruiker(CreateGebruikerDto dto)
     {
-        var createdGebruiker = await gebruikerService.CreateGebruiker(gebruiker);
-        return CreatedAtAction(nameof(GetGebruiker), new { id = createdGebruiker.GebruikerId }, createdGebruiker);
+        try
+        {
+            Gebruiker aangemaakt = await gebruikerService.CreateGebruiker(dto);
+
+            // Opnieuw ophalen zodat de gekoppelde gebruikers zeker geladen zijn voor de response
+            Gebruiker gebruiker = await gebruikerService.GetGebruikerById(aangemaakt.GebruikerId);
+            return CreatedAtAction(nameof(GetGebruiker), new { id = gebruiker.GebruikerId }, gebruiker.ToResponse());
+        }
+        catch (InvalidOperationException ex)
+        {
+            // bijvoorbeeld: een opgegeven GebruikerId bestaat niet
+            return BadRequest(ex.Message);
+        }
     }
 
     [Authorize(Roles = "Voorzitter")]
     [HttpPut("{id}")]
-    public async Task<ActionResult<Gebruiker>> UpdateGebruiker(int id, UpdateGebruikerDto gebruiker)
+    [ProducesResponseType(typeof(GebruikerResponse), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public async Task<ActionResult<GebruikerResponse>> UpdateGebruiker(int id, UpdateGebruikerDto dto)
     {
-        var updatedGebruiker = await gebruikerService.UpdateGebruiker(id, gebruiker);
-        if (updatedGebruiker == null)
+        try
         {
-            return NotFound();
+            await gebruikerService.UpdateGebruiker(id, dto);
+            Gebruiker gebruiker = await gebruikerService.GetGebruikerById(id);
+            return Ok(gebruiker.ToResponse());
         }
-        return Ok(updatedGebruiker);
+        catch (InvalidOperationException ex)
+        {
+            return NotFound(ex.Message);
+        }
     }
 
     [Authorize(Roles = "Voorzitter")]
     [HttpDelete("{id}")]
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<ActionResult> DeleteGebruiker(int id)
     {
-        var gebruiker = await gebruikerService.GetGebruikerById(id);
-        if (gebruiker == null)
+        try
         {
-            return NotFound();
+            await gebruikerService.DeleteGebruiker(id);
+            return NoContent();
         }
-        await gebruikerService.DeleteGebruiker(id);
-        return NoContent();
+        catch (InvalidOperationException ex)
+        {
+            return NotFound(ex.Message);
+        }
     }
 }

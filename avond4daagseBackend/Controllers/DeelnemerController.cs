@@ -18,7 +18,7 @@ public class DeelnemerController(
     public async Task<ActionResult<List<DeelnemerResponse>>> GetDeelnemers()
     {
         List<Deelnemer> deelnemers = await deelnemerService.GetAllDeelnemers();
-        return Ok(deelnemers.Select(ToResponse).ToList());
+        return Ok(deelnemers.Select(d => d.ToResponse()).ToList());
     }
 
     [Authorize(Roles = "Voorzitter")]
@@ -30,7 +30,7 @@ public class DeelnemerController(
         try
         {
             Deelnemer deelnemer = await deelnemerService.GetDeelnemerById(id);
-            return Ok(ToResponse(deelnemer));
+            return Ok(deelnemer.ToResponse());
         }
         catch (InvalidOperationException ex)
         {
@@ -47,7 +47,7 @@ public class DeelnemerController(
 
         // Opnieuw ophalen zodat Persoon en Deelname zeker geladen zijn voor de response
         Deelnemer deelnemer = await deelnemerService.GetDeelnemerById(aangemaakt.DeelnemerId);
-        return CreatedAtAction(nameof(GetDeelnemer), new { id = deelnemer.DeelnemerId }, ToResponse(deelnemer));
+        return CreatedAtAction(nameof(GetDeelnemer), new { id = deelnemer.DeelnemerId }, deelnemer.ToResponse());
     }
 
     [Authorize(Roles = "Voorzitter")]
@@ -60,7 +60,7 @@ public class DeelnemerController(
         {
             await deelnemerService.UpdateDeelnemer(id, deelnemerDto);
             Deelnemer deelnemer = await deelnemerService.GetDeelnemerById(id);
-            return Ok(ToResponse(deelnemer));
+            return Ok(deelnemer.ToResponse());
         }
         catch (InvalidOperationException ex)
         {
@@ -84,20 +84,4 @@ public class DeelnemerController(
             return NotFound(ex.Message);
         }
     }
-
-    // Model -> response: zo gaat er geen Persoon -> Deelnemer -> Persoon... naar buiten (cirkelverwijzing)
-    private static DeelnemerResponse ToResponse(Deelnemer d) => new()
-    {
-        DeelnemerId = d.DeelnemerId,
-        Voornaam = d.Persoon.Voornaam,
-        Achternaam = d.Persoon.Achternaam,
-        Deelname = new DeelnameDto
-        {
-            School = d.Deelname.School,
-            Groep = d.Deelname.Groep,
-            Geboortejaar = d.Deelname.Geboortejaar,
-            HoeveelheidKeer = d.Deelname.HoeveelheidKeer,
-            NeemtBegeleiderMee = d.Deelname.NeemtBegeleiderMee
-        }
-    };
 }

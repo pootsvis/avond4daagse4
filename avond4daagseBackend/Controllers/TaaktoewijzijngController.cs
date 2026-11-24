@@ -1,36 +1,78 @@
+using Avond4DaagseBackend.DTOs;
+using Avond4DaagseBackend.Interfaces;
+using Avond4DaagseBackend.Models;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+
 namespace Avond4DaagseBackend.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]
-public class TaaktoewijzingController(ITaakToewijzingService taaktoewijzingService) : ControllerBase
+public class TaaktoewijzingController(
+    ITaakToewijzingService taakToewijzingService
+) : ControllerBase
 {
-    [Authorize(Roles = "Voorzitter, Secretaris, Vrijwilliger, Verkeersregelaar, Penningmeester")]
+    [Authorize(Roles = "Voorzitter,Secretaris,Verkeersregelaars,Penningmeester,Vrijwilliger")]
     [HttpGet]
-    public async Task<ActionResult<IEnumerable<Taaktoewijzing>>> GetTaaktoewijzingen()
+    [ProducesResponseType(typeof(List<TaaktoewijzingResponse>), StatusCodes.Status200OK)]
+    public async Task<ActionResult<List<TaaktoewijzingResponse>>> GetTaaktoewijzingen()
     {
-        return Ok(await taaktoewijzingService.GetAllTaakToewijzingen());
+        List<Taaktoewijzing> taaktoewijzingen = await taakToewijzingService.GetAllTaaktoewijzingen();
+        return Ok(taaktoewijzingen.Select(t => t.ToResponse()).ToList());
     }
 
-    [Authorize(Roles = "Voorzitter, Secretaris, Vrijwilliger, Verkeersregelaar, Penningmeester")]
+    [Authorize(Roles = "Voorzitter,Secretaris,Verkeersregelaars,Penningmeester,Vrijwilliger")]
     [HttpGet("{id}")]
-    public async Task<ActionResult<Taaktoewijzing>> GetTaaktoewijzing(int id)
+    [ProducesResponseType(typeof(TaaktoewijzingResponse), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public async Task<ActionResult<TaaktoewijzingResponse>> GetTaaktoewijzing(int id)
     {
-        return Ok(await taaktoewijzingService.GetTaakToewijzingById(id));
+        try
+        {
+            Taaktoewijzing taaktoewijzing = await taakToewijzingService.GetTaaktoewijzingById(id);
+            return Ok(taaktoewijzing.ToResponse());
+        }
+        catch (InvalidOperationException ex)
+        {
+            return NotFound(ex.Message);
+        }
     }
 
-    [Authorize(Roles = "Voorzitter, Secretaris")]
+    [Authorize(Roles = "Voorzitter,Secretaris")]
     [HttpPost]
-    public async Task<ActionResult<Taaktoewijzing>> CreateTaaktoewijzing(CreateTaaktoewijzingDto taaktoewijzingDto)
+    [ProducesResponseType(typeof(TaaktoewijzingResponse), StatusCodes.Status201Created)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    public async Task<ActionResult<TaaktoewijzingResponse>> CreateTaaktoewijzing(CreateTaaktoewijzingDto taaktoewijzingDto)
     {
-        Taaktoewijzing created = await taaktoewijzingService.CreateTaakToewijzing(taaktoewijzingDto);
-        return CreatedAtAction(nameof(GetTaaktoewijzing), new { id = created.ToewijzingId }, created);
+        try
+        {
+            Taaktoewijzing aangemaakt = await taakToewijzingService.CreateTaaktoewijzing(taaktoewijzingDto);
+            return CreatedAtAction(
+                nameof(GetTaaktoewijzing),
+                new { id = aangemaakt.ToewijzingId },
+                aangemaakt.ToResponse());
+        }
+        catch (InvalidOperationException ex)
+        {
+            // "Vrijwilliger not found" of "Draaiboektaak not found"
+            return BadRequest(ex.Message);
+        }
     }
 
-    [Authorize(Roles = "Voorzitter, Secretaris")]
+    [Authorize(Roles = "Voorzitter,Secretaris")]
     [HttpDelete("{id}")]
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<ActionResult> DeleteTaaktoewijzing(int id)
     {
-        await taaktoewijzingService.DeleteTaakToewijzing(id);
-        return NoContent();
+        try
+        {
+            await taakToewijzingService.DeleteTaaktoewijzing(id);
+            return NoContent();
+        }
+        catch (InvalidOperationException ex)
+        {
+            return NotFound(ex.Message);
+        }
     }
 }

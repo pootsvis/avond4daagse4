@@ -23,6 +23,14 @@ public class TransactieService(ApplicationDbContext context) : ITransactieServic
     
     public async Task<Transactie> CreateTransactie(CreateTransactieDto transactieDto)
     {
+        // De inschrijving waar de transactie bij hoort moet bestaan, anders krijg je een databasefout
+        bool inschrijvingBestaat = await context.Inschrijvingen
+            .AnyAsync(i => i.InschrijvingId == transactieDto.InschrijvingId);
+        if (!inschrijvingBestaat)
+        {
+            throw new InvalidOperationException("Inschrijving not found");
+        }
+ 
         Transactie transactie = new()
         {
             Type = transactieDto.Type,
@@ -33,14 +41,20 @@ public class TransactieService(ApplicationDbContext context) : ITransactieServic
             Rekening = transactieDto.Rekening,
             Betaalstatus = transactieDto.Betaalstatus,
             Factuur = transactieDto.Factuur,
-            InschrijvingId = transactieDto.InschrijvingId,
-            Betaling = new Betaling
+            InschrijvingId = transactieDto.InschrijvingId
+        };
+ 
+        // Betaling is optioneel: alleen aanmaken als ze is meegestuurd
+        if (transactieDto.Betaling != null)
+        {
+            transactie.Betaling = new Betaling
             {
                 Bedrag = transactieDto.Betaling.Bedrag,
                 Betaaldatum = transactieDto.Betaling.Betaaldatum,
                 Status = transactieDto.Betaling.Status
-            }
-        };
+            };
+        }
+ 
         context.Transacties.Add(transactie);
         await context.SaveChangesAsync();
         return transactie;
@@ -48,6 +62,7 @@ public class TransactieService(ApplicationDbContext context) : ITransactieServic
     
     public async Task<Transactie> UpdateTransactie(int id, UpdateTransactieDto transactieDto)
     {
+        // Include Betaling, anders is transactie.Betaling altijd null en maak je steeds een nieuwe aan
         Transactie? transactie = await context.Transacties
             .Include(t => t.Betaling)
             .FirstOrDefaultAsync(t => t.TransactieId == id);
@@ -55,6 +70,7 @@ public class TransactieService(ApplicationDbContext context) : ITransactieServic
         {
             throw new InvalidOperationException("Transactie not found");
         }
+ 
         transactie.Type = transactieDto.Type;
         transactie.Datum = transactieDto.Datum;
         transactie.Bedrag = transactieDto.Bedrag;
@@ -63,18 +79,20 @@ public class TransactieService(ApplicationDbContext context) : ITransactieServic
         transactie.Rekening = transactieDto.Rekening;
         transactie.Betaalstatus = transactieDto.Betaalstatus;
         transactie.Factuur = transactieDto.Factuur;
-        //update betaling if provided
+ 
+        // Betaling alleen bijwerken als ze is meegestuurd (en aanmaken als er nog geen is)
         if (transactieDto.Betaling != null)
         {
             if (transactie.Betaling == null)
             {
                 transactie.Betaling = new Betaling();
-                context.Betalingen.Add(transactie.Betaling);
             }
             transactie.Betaling.Bedrag = transactieDto.Betaling.Bedrag;
             transactie.Betaling.Betaaldatum = transactieDto.Betaling.Betaaldatum;
             transactie.Betaling.Status = transactieDto.Betaling.Status;
         }
+ 
+        // Het return stond bij jou boven het Betaling-blok, daardoor werd dat nooit uitgevoerd
         await context.SaveChangesAsync();
         return transactie;
     }

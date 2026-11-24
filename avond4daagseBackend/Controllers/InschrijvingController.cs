@@ -1,3 +1,9 @@
+using Avond4DaagseBackend.DTOs;
+using Avond4DaagseBackend.Interfaces;
+using Avond4DaagseBackend.Models;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+
 namespace Avond4DaagseBackend.Controllers;
 [ApiController]
 [Route("api/[controller]")]
@@ -7,54 +13,83 @@ public class InschrijvingController(
 {
     [Authorize(Roles = "voorzitter")]
     [HttpGet]
-    public async Task<ActionResult<IEnumerable<Inschrijving>>> GetInschrijvingen()
+    [ProducesResponseType(typeof(List<InschrijvingResponse>), StatusCodes.Status200OK)]
+    public async Task<ActionResult<List<InschrijvingResponse>>> GetInschrijvingen()
     {
-        var inschrijvingen = await inschrijvingService.GetAllInschrijvingen();
-        return Ok(inschrijvingen);
+        List<Inschrijving> inschrijvingen = await inschrijvingService.GetAllInschrijvingen();
+        return Ok(inschrijvingen.Select(i => i.ToResponse()).ToList());
     }
 
     [Authorize(Roles = "voorzitter")]
     [HttpGet("{id}")]
-    public async Task<ActionResult<Inschrijving>> GetInschrijving(int id)
+    [ProducesResponseType(typeof(InschrijvingResponse), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public async Task<ActionResult<InschrijvingResponse>> GetInschrijving(int id)
     {
-        var inschrijving = await inschrijvingService.GetInschrijvingById(id);
-        if (inschrijving == null)
+        try
         {
-            return NotFound();
+            Inschrijving inschrijving = await inschrijvingService.GetInschrijvingById(id);
+            return Ok(inschrijving.ToResponse());
         }
-        return Ok(inschrijving);
+        catch (InvalidOperationException ex)
+        {
+            return NotFound(ex.Message);
+        }
     }
     
     [AllowAnonymous]
     [HttpPost]
-    public async Task<ActionResult<Inschrijving>> CreateInschrijving(CreateInschrijvingDto inschrijvingDto)
+    [ProducesResponseType(typeof(InschrijvingResponse), StatusCodes.Status201Created)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    public async Task<ActionResult<InschrijvingResponse>> CreateInschrijving(CreateInschrijvingDto dto)
     {
-        var createdInschrijving = await inschrijvingService.CreateInschrijving(inschrijvingDto);
-        return CreatedAtAction(nameof(GetInschrijving), new { id = createdInschrijving.InschrijvingId }, createdInschrijving);
+        try
+        {
+            Inschrijving aangemaakt = await inschrijvingService.CreateInschrijving(dto);
+
+            // Opnieuw ophalen zodat de gekoppelde gebruikers zeker geladen zijn voor de response
+            Inschrijving inschrijving = await inschrijvingService.GetInschrijvingById(aangemaakt.InschrijvingId);
+            return CreatedAtAction(nameof(GetInschrijving), new { id = inschrijving.InschrijvingId }, inschrijving.ToResponse());
+        }
+        catch (InvalidOperationException ex)
+        {
+            // bijvoorbeeld: een opgegeven GebruikerId bestaat niet
+            return BadRequest(ex.Message);
+        }
     }
 
     [Authorize(Roles = "voorzitter")]
     [HttpPut("{id}")]
-    public async Task<ActionResult<Inschrijving>> UpdateInschrijving(int id, UpdateInschrijvingDto inschrijvingDto)
+    [ProducesResponseType(typeof(InschrijvingResponse), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public async Task<ActionResult<InschrijvingResponse>> UpdateInschrijving(int id, UpdateInschrijvingDto dto)
     {
-        var updatedInschrijving = await inschrijvingService.UpdateInschrijving(id, inschrijvingDto);
-        if (updatedInschrijving == null)
+        try
         {
-            return NotFound();
+            await inschrijvingService.UpdateInschrijving(id, dto);
+            Inschrijving inschrijving = await inschrijvingService.GetInschrijvingById(id);
+            return Ok(inschrijving.ToResponse());
         }
-        return Ok(updatedInschrijving);
+        catch (InvalidOperationException ex)
+        {
+            return NotFound(ex.Message);
+        }
     }
 
     [Authorize(Roles = "voorzitter")]
     [HttpDelete("{id}")]
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<ActionResult> DeleteInschrijving(int id)
     {
-        var inschrijving = await inschrijvingService.GetInschrijvingById(id);
-        if (inschrijving == null)
+        try
         {
-            return NotFound();
+            await inschrijvingService.DeleteInschrijving(id);
+            return NoContent();
         }
-        await inschrijvingService.DeleteInschrijving(id);
-        return NoContent();
+        catch (InvalidOperationException ex)
+        {
+            return NotFound(ex.Message);
+        }
     }
 }

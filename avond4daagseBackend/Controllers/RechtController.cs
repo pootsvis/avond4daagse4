@@ -1,3 +1,9 @@
+using Avond4DaagseBackend.DTOs;
+using Avond4DaagseBackend.Interfaces;
+using Avond4DaagseBackend.Models;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+
 namespace avond4daagseBackend.Controllers;
 [ApiController]
 [Route("api/[controller]")]
@@ -7,54 +13,83 @@ public class RechtController(
 {
     [Authorize(Roles = "Voorzitter")]
     [HttpGet]
-    public async Task<ActionResult<IEnumerable<Recht>>> GetRechten()
+    [ProducesResponseType(typeof(List<RechtResponse>), StatusCodes.Status200OK)]
+    public async Task<ActionResult<List<RechtResponse>>> GetRechten()
     {
-        var rechten = await rechtService.GetAllRechten();
-        return Ok(rechten);
+        List<Recht> rechten = await rechtService.GetAllRechten();
+        return Ok(rechten.Select(r => r.ToResponse()).ToList());
     }
 
     [Authorize(Roles = "Voorzitter")]
     [HttpGet("{id}")]
-    public async Task<ActionResult<Recht>> GetRecht(int id)
+    [ProducesResponseType(typeof(RechtResponse), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public async Task<ActionResult<RechtResponse>> GetRecht(int id)
     {
-        var recht = await rechtService.GetRechtById(id);
-        if (recht == null)
+        try
         {
-            return NotFound();
+            Recht recht = await rechtService.GetRechtById(id);
+            return Ok(recht.ToResponse());
         }
-        return Ok(recht);
+        catch (InvalidOperationException ex)
+        {
+            return NotFound(ex.Message);
+        }
     }
 
     [Authorize(Roles = "Voorzitter")]
     [HttpPost]
-    public async Task<ActionResult<Recht>> CreateRecht(CreateRechtDto recht)
+    [ProducesResponseType(typeof(RechtResponse), StatusCodes.Status201Created)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    public async Task<ActionResult<RechtResponse>> CreateRecht(CreateRechtDto dto)
     {
-        var createdRecht = await rechtService.CreateRecht(recht);
-        return CreatedAtAction(nameof(GetRecht), new { id = createdRecht.RechtId }, createdRecht);
+        try
+        {
+            Recht recht = await rechtService.CreateRecht(dto);
+
+            // Opnieuw ophalen zodat de gekoppelde gebruikers zeker geladen zijn voor de response
+            Recht createdRecht = await rechtService.GetRechtById(recht.RechtId);
+            return CreatedAtAction(nameof(GetRecht), new { id = createdRecht.RechtId }, createdRecht.ToResponse());
+        }
+        catch (InvalidOperationException ex)
+        {
+            // bijvoorbeeld: een opgegeven GebruikerId bestaat niet
+            return BadRequest(ex.Message);
+        }
     }
 
     [Authorize(Roles = "Voorzitter")]
     [HttpPut("{id}")]
-    public async Task<ActionResult<Recht>> UpdateRecht(int id, UpdateRechtDto recht)
+    [ProducesResponseType(typeof(RechtResponse), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public async Task<ActionResult<RechtResponse>> UpdateRecht(int id, UpdateRechtDto dto)
     {
-        var updatedRecht = await rechtService.UpdateRecht(id, recht);
-        if (updatedRecht == null)
+        try
         {
-            return NotFound();
+            await rechtService.UpdateRecht(id, dto);
+            Recht recht = await rechtService.GetRechtById(id);
+            return Ok(recht.ToResponse());
         }
-        return Ok(updatedRecht);
+        catch (InvalidOperationException ex)
+        {
+            return NotFound(ex.Message);
+        }
     }
 
     [Authorize(Roles = "Voorzitter")]
     [HttpDelete("{id}")]
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<ActionResult> DeleteRecht(int id)
     {
-        var recht = await rechtService.GetRechtById(id);
-        if (recht == null)
+        try
         {
-            return NotFound();
+            await rechtService.DeleteRecht(id);
+            return NoContent();
         }
-        await rechtService.DeleteRecht(id);
-        return NoContent();
+        catch (InvalidOperationException ex)
+        {
+            return NotFound(ex.Message);
+        }
     }
 }

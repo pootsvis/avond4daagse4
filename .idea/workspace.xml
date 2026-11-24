@@ -11,57 +11,41 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="9f81ecf8-4691-4b9c-9276-52e8430180a7" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/avond4daagseBackend/Controllers/AuthController.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/avond4daagseBackend/Controllers/ContactVraagController.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/avond4daagseBackend/Controllers/DeelnemerController.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/avond4daagseBackend/Controllers/DraaiboekController.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/avond4daagseBackend/Controllers/EvenementController.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/avond4daagseBackend/Controllers/GebruikerController.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/avond4daagseBackend/Controllers/InschrijvingController.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/avond4daagseBackend/Controllers/RechtController.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/avond4daagseBackend/Controllers/RolController.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/avond4daagseBackend/Controllers/RouteController.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/avond4daagseBackend/Controllers/SponsorController.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/avond4daagseBackend/Controllers/TaaktoewijzijngController.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/avond4daagseBackend/Controllers/TransactieController.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/avond4daagseBackend/Controllers/VrijwilligerController.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/avond4daagseBackend/DTOs/Rol/AssignRolDto.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/avond4daagseBackend/DTOs/login/LoginDto.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/avond4daagseBackend/DTOs/login/RegistreerDto.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/avond4daagseBackend/Interfaces/ITaakToewijzingService.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/avond4daagseBackend/Services/TaakToewijzingService.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/avond4daagseBackend/ResponseMappings.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/avond4daagseBackend/DTOs/Rol/CreateRolDto.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/avond4daagseBackend/DTOs/Rol/UpdateRolDto.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/avond4daagseBackend/Interfaces/IContactvraagService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/avond4daagseBackend/Interfaces/IContactvraagService.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/avond4daagseBackend/Interfaces/IDeelnemerService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/avond4daagseBackend/Interfaces/IDeelnemerService.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/avond4daagseBackend/Interfaces/IDraaiboektaakService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/avond4daagseBackend/Interfaces/IDraaiboektaakService.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/avond4daagseBackend/Interfaces/IEvenementService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/avond4daagseBackend/Interfaces/IEvenementService.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/avond4daagseBackend/Interfaces/IGebruikerService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/avond4daagseBackend/Interfaces/IGebruikerService.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/avond4daagseBackend/Interfaces/IInschrijvingService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/avond4daagseBackend/Interfaces/IInschrijvingService.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/avond4daagseBackend/Interfaces/IRechtService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/avond4daagseBackend/Interfaces/IRechtService.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/avond4daagseBackend/Interfaces/IRolService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/avond4daagseBackend/Interfaces/IRolService.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/avond4daagseBackend/Interfaces/IRouteService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/avond4daagseBackend/Interfaces/IRouteService.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/avond4daagseBackend/Interfaces/ISponsorService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/avond4daagseBackend/Interfaces/ISponsorService.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/avond4daagseBackend/Interfaces/ITransactieService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/avond4daagseBackend/Interfaces/ITransactieService.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/avond4daagseBackend/Interfaces/IVrijwilligerService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/avond4daagseBackend/Interfaces/IVrijwilligerService.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/avond4daagseBackend/Program.cs" beforeDir="false" afterPath="$PROJECT_DIR$/avond4daagseBackend/Program.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/avond4daagseBackend/Services/ContactvraagService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/avond4daagseBackend/Services/ContactvraagService.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/avond4daagseBackend/Services/DeelnemerService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/avond4daagseBackend/Services/DeelnemerService.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/avond4daagseBackend/Services/DraaiboektaakService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/avond4daagseBackend/Services/DraaiboektaakService.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/avond4daagseBackend/Services/EvenementService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/avond4daagseBackend/Services/EvenementService.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/avond4daagseBackend/Services/GebruikerService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/avond4daagseBackend/Services/GebruikerService.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/avond4daagseBackend/Services/InschrijvingService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/avond4daagseBackend/Services/InschrijvingService.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/avond4daagseBackend/Services/RechtService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/avond4daagseBackend/Services/RechtService.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/avond4daagseBackend/Services/RolService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/avond4daagseBackend/Services/RolService.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/avond4daagseBackend/Services/RouteService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/avond4daagseBackend/Services/RouteService.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/avond4daagseBackend/Services/SponsorService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/avond4daagseBackend/Services/SponsorService.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/avond4daagseBackend.zip" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/avond4daagseBackend/Controllers/ContactVraagController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/avond4daagseBackend/Controllers/ContactVraagController.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/avond4daagseBackend/Controllers/DeelnemerController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/avond4daagseBackend/Controllers/DeelnemerController.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/avond4daagseBackend/Controllers/DraaiboekController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/avond4daagseBackend/Controllers/DraaiboekController.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/avond4daagseBackend/Controllers/EvenementController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/avond4daagseBackend/Controllers/EvenementController.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/avond4daagseBackend/Controllers/GebruikerController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/avond4daagseBackend/Controllers/GebruikerController.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/avond4daagseBackend/Controllers/InschrijvingController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/avond4daagseBackend/Controllers/InschrijvingController.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/avond4daagseBackend/Controllers/RechtController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/avond4daagseBackend/Controllers/RechtController.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/avond4daagseBackend/Controllers/RolController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/avond4daagseBackend/Controllers/RolController.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/avond4daagseBackend/Controllers/RouteController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/avond4daagseBackend/Controllers/RouteController.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/avond4daagseBackend/Controllers/SponsorController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/avond4daagseBackend/Controllers/SponsorController.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/avond4daagseBackend/Controllers/TaaktoewijzijngController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/avond4daagseBackend/Controllers/TaaktoewijzijngController.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/avond4daagseBackend/Controllers/TransactieController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/avond4daagseBackend/Controllers/TransactieController.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/avond4daagseBackend/Controllers/VrijwilligerController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/avond4daagseBackend/Controllers/VrijwilligerController.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/avond4daagseBackend/Interfaces/ITaakToewijzingService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/avond4daagseBackend/Interfaces/ITaakToewijzingService.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/avond4daagseBackend/Services/TaakToewijzingService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/avond4daagseBackend/Services/TaakToewijzingService.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/avond4daagseBackend/Services/TransactieService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/avond4daagseBackend/Services/TransactieService.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/avond4daagseBackend/Services/VrijwilligerService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/avond4daagseBackend/Services/VrijwilligerService.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/avond4daagseBackend/appsettings.json" beforeDir="false" afterPath="$PROJECT_DIR$/avond4daagseBackend/appsettings.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/avond4daagseBackend/compose.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/avond4daagseBackend/compose.yaml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/avond4daagseBackend/data/ApplicationDbContext.cs" beforeDir="false" afterPath="$PROJECT_DIR$/avond4daagseBackend/Data/ApplicationDbContext.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/avond4daagseBackend/bin/Debug/net10.0/avond4daagseBackend.dll" beforeDir="false" afterPath="$PROJECT_DIR$/avond4daagseBackend/bin/Debug/net10.0/avond4daagseBackend.dll" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/avond4daagseBackend/bin/Debug/net10.0/avond4daagseBackend.exe" beforeDir="false" afterPath="$PROJECT_DIR$/avond4daagseBackend/bin/Debug/net10.0/avond4daagseBackend.exe" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/avond4daagseBackend/bin/Debug/net10.0/avond4daagseBackend.pdb" beforeDir="false" afterPath="$PROJECT_DIR$/avond4daagseBackend/bin/Debug/net10.0/avond4daagseBackend.pdb" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/avond4daagseBackend/obj/Debug/net10.0/apphost.exe" beforeDir="false" afterPath="$PROJECT_DIR$/avond4daagseBackend/obj/Debug/net10.0/apphost.exe" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/avond4daagseBackend/obj/Debug/net10.0/avond4daagseBackend.AssemblyInfo.cs" beforeDir="false" afterPath="$PROJECT_DIR$/avond4daagseBackend/obj/Debug/net10.0/avond4daagseBackend.AssemblyInfo.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/avond4daagseBackend/obj/Debug/net10.0/avond4daagseBackend.AssemblyInfoInputs.cache" beforeDir="false" afterPath="$PROJECT_DIR$/avond4daagseBackend/obj/Debug/net10.0/avond4daagseBackend.AssemblyInfoInputs.cache" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/avond4daagseBackend/obj/Debug/net10.0/avond4daagseBackend.csproj.CoreCompileInputs.cache" beforeDir="false" afterPath="$PROJECT_DIR$/avond4daagseBackend/obj/Debug/net10.0/avond4daagseBackend.csproj.CoreCompileInputs.cache" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/avond4daagseBackend/obj/Debug/net10.0/avond4daagseBackend.dll" beforeDir="false" afterPath="$PROJECT_DIR$/avond4daagseBackend/obj/Debug/net10.0/avond4daagseBackend.dll" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/avond4daagseBackend/obj/Debug/net10.0/avond4daagseBackend.pdb" beforeDir="false" afterPath="$PROJECT_DIR$/avond4daagseBackend/obj/Debug/net10.0/avond4daagseBackend.pdb" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/avond4daagseBackend/obj/Debug/net10.0/avond4daagseBackend.sourcelink.json" beforeDir="false" afterPath="$PROJECT_DIR$/avond4daagseBackend/obj/Debug/net10.0/avond4daagseBackend.sourcelink.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/avond4daagseBackend/obj/Debug/net10.0/ref/avond4daagseBackend.dll" beforeDir="false" afterPath="$PROJECT_DIR$/avond4daagseBackend/obj/Debug/net10.0/ref/avond4daagseBackend.dll" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/avond4daagseBackend/obj/Debug/net10.0/refint/avond4daagseBackend.dll" beforeDir="false" afterPath="$PROJECT_DIR$/avond4daagseBackend/obj/Debug/net10.0/refint/avond4daagseBackend.dll" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/avond4daagseBackend/obj/Debug/net10.0/rjsmcshtml.dswa.cache.json" beforeDir="false" afterPath="$PROJECT_DIR$/avond4daagseBackend/obj/Debug/net10.0/rjsmcshtml.dswa.cache.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/avond4daagseBackend/obj/Debug/net10.0/rjsmrazor.dswa.cache.json" beforeDir="false" afterPath="$PROJECT_DIR$/avond4daagseBackend/obj/Debug/net10.0/rjsmrazor.dswa.cache.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/avond4daagseBackend/obj/Debug/net10.0/rpswa.dswa.cache.json" beforeDir="false" afterPath="$PROJECT_DIR$/avond4daagseBackend/obj/Debug/net10.0/rpswa.dswa.cache.json" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -77,14 +61,13 @@
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
   <component name="HighlightingSettingsPerFile">
-    <setting file="file://$PROJECT_DIR$/avond4daagseBackend/Controllers/AuthController.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/avond4daagseBackend/Controllers/AuthController.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/avond4daagseBackend/Controllers/ContactVraagController.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/avond4daagseBackend/Controllers/DeelnemerController.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/avond4daagseBackend/Controllers/DraaiboekController.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/avond4daagseBackend/Controllers/DeelnemerController.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/avond4daagseBackend/Controllers/DraaiboekController.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/avond4daagseBackend/Controllers/EvenementController.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/avond4daagseBackend/Controllers/GebruikerController.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/avond4daagseBackend/Controllers/InschrijvingController.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/avond4daagseBackend/Controllers/LoginController.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/avond4daagseBackend/Controllers/RechtController.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/avond4daagseBackend/Controllers/RolController.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/avond4daagseBackend/Controllers/RouteController.cs" root0="SKIP_HIGHLIGHTING" />
@@ -95,7 +78,8 @@
     <setting file="file://$PROJECT_DIR$/avond4daagseBackend/DTOs/Contactvraag/ContactvraagResponse.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/avond4daagseBackend/DTOs/Contactvraag/CreateContactvraagDto.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/avond4daagseBackend/DTOs/Contactvraag/UpdateContactvraagDto.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/avond4daagseBackend/DTOs/Deelnemer/CreateDeelnemerDto.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/avond4daagseBackend/DTOs/Deelnemer/CreateDeelnemerDto.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/avond4daagseBackend/DTOs/Deelnemer/DeelnameDto.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/avond4daagseBackend/DTOs/Evenement/CreateEvenementDto.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/avond4daagseBackend/DTOs/Evenement/EvenementResponse.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/avond4daagseBackend/DTOs/Evenement/InzetSchemaDto.cs" root0="SKIP_HIGHLIGHTING" />
@@ -110,9 +94,7 @@
     <setting file="file://$PROJECT_DIR$/avond4daagseBackend/DTOs/Inschrijving/UpdateInschrijvingDto.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/avond4daagseBackend/DTOs/Recht/RechtResponse.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/avond4daagseBackend/DTOs/Rol/AssignRolDto.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/avond4daagseBackend/DTOs/Rol/CreateRolDto.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/avond4daagseBackend/DTOs/Rol/RolResponse.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/avond4daagseBackend/DTOs/Rol/UpdateRolDto.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/avond4daagseBackend/DTOs/Route/CreateRouteDto.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/avond4daagseBackend/DTOs/Route/RouteResponse.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/avond4daagseBackend/DTOs/Route/UpdateRouteDto.cs" root0="SKIP_HIGHLIGHTING" />
@@ -127,14 +109,14 @@
     <setting file="file://$PROJECT_DIR$/avond4daagseBackend/DTOs/Vrijwilliger/UpdateVrijwilligerDto.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/avond4daagseBackend/DTOs/Vrijwilliger/VrijwilligerResponse.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/avond4daagseBackend/DTOs/login/LoginDto.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/avond4daagseBackend/DTOs/login/RegistreerDto.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/avond4daagseBackend/Data/ApplicationDbContext.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/avond4daagseBackend/DTOs/login/RegistreerDto.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/avond4daagseBackend/Data/ApplicationDbContext.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/avond4daagseBackend/GlobalUsings.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/avond4daagseBackend/Interfaces/IContactvraagService.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/avond4daagseBackend/Interfaces/IDeelnemerService.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/avond4daagseBackend/Interfaces/IDraaiboektaakService.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/avond4daagseBackend/Interfaces/IEvenementService.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/avond4daagseBackend/Interfaces/IGebruikerService.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/avond4daagseBackend/Interfaces/IGebruikerService.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/avond4daagseBackend/Interfaces/IInschrijvingService.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/avond4daagseBackend/Interfaces/IRechtService.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/avond4daagseBackend/Interfaces/IRolService.cs" root0="SKIP_HIGHLIGHTING" />
@@ -143,84 +125,86 @@
     <setting file="file://$PROJECT_DIR$/avond4daagseBackend/Interfaces/ITaakToewijzingService.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/avond4daagseBackend/Interfaces/ITransactieService.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/avond4daagseBackend/Interfaces/IVrijwilligerService.cs" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/avond4daagseBackend/Migrations/20261117103801_InitialCreate.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/avond4daagseBackend/Migrations/20261117103801_InitialCreate.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/avond4daagseBackend/Program.cs" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/avond4daagseBackend/Services/ContactvraagService.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/avond4daagseBackend/ResponseMappings.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/avond4daagseBackend/Services/ContactvraagService.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/avond4daagseBackend/Services/DeelnemerService.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/avond4daagseBackend/Services/EvenementService.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/avond4daagseBackend/Services/GebruikerService.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/avond4daagseBackend/Services/GebruikerService.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/avond4daagseBackend/Services/InschrijvingService.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/avond4daagseBackend/Services/RechtService.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/avond4daagseBackend/Services/RolService.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/avond4daagseBackend/Services/RouteService.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/avond4daagseBackend/Services/SponsorService.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/avond4daagseBackend/Services/TaakToewijzingService.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/avond4daagseBackend/Services/TaakToewijzingService.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/avond4daagseBackend/Services/TransactieService.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/avond4daagseBackend/Services/VrijwilligerService.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/avond4daagseBackend/data/ApplicationDbContext.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/avond4daagseBackend/models/models.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/avond4daagseBackend/models/models.cs" root0="SKIP_HIGHLIGHTING" />
   </component>
   <component name="McpProjectServerCommands">
     <commands />
     <urls />
   </component>
+  <component name="MetaFilesCheckinStateConfiguration" checkMetaFiles="true" />
   <component name="NextEditCompletionFeaturesState">
     <decayedCancelled>
-      <entry key="MS100" value="1.0000000000015374" />
-      <entry key="MS500" value="1.0099971430074997" />
-      <entry key="S2" value="2.0369482907246432" />
-      <entry key="S5" value="3.9143467551132476" />
-      <entry key="S10" value="5.166601269101303" />
-      <entry key="S30" value="6.3088906035470025" />
-      <entry key="S60" value="6.643758115023947" />
-      <entry key="M2" value="6.8839116052298035" />
-      <entry key="M5" value="8.306746712213805" />
-      <entry key="M10" value="12.510376943425706" />
-      <entry key="M15" value="18.952546456576407" />
-      <entry key="M30" value="49.604794783450004" />
-      <entry key="H1" value="125.58158400812913" />
-      <entry key="H2" value="235.39174222547766" />
-      <entry key="H4" value="336.3669514325559" />
-      <entry key="D1" value="462.49723796048835" />
-      <entry key="W1" value="489.34993732098275" />
+      <entry key="MS100" value="1.1460084162255038" />
+      <entry key="MS500" value="3.1635839634495833" />
+      <entry key="S2" value="6.5406599650433215" />
+      <entry key="S5" value="7.885090709008957" />
+      <entry key="S10" value="8.41779720450193" />
+      <entry key="S30" value="8.80157543449042" />
+      <entry key="S60" value="8.94912510007895" />
+      <entry key="M2" value="9.650359042139975" />
+      <entry key="M5" value="15.835635701727885" />
+      <entry key="M10" value="32.90334316111071" />
+      <entry key="M15" value="51.628922958290815" />
+      <entry key="M30" value="98.4765797273796" />
+      <entry key="H1" value="165.1203533524754" />
+      <entry key="H2" value="275.6125327121123" />
+      <entry key="H4" value="424.78080021499187" />
+      <entry key="D1" value="691.9964291579914" />
+      <entry key="W1" value="761.4981130117792" />
     </decayedCancelled>
     <decayedSelected>
-      <entry key="MS100" value="1.1203022897776563E-85" />
-      <entry key="MS500" value="1.0229797684579286E-17" />
-      <entry key="S2" value="5.655444713686344E-5" />
-      <entry key="S5" value="0.01999800646631732" />
-      <entry key="S10" value="0.14141430785573755" />
-      <entry key="S30" value="0.5209920753283169" />
-      <entry key="S60" value="0.7217978077885224" />
-      <entry key="M2" value="0.8495868470858198" />
-      <entry key="M5" value="0.9371983912033817" />
-      <entry key="M10" value="0.9896137196820042" />
-      <entry key="M15" value="1.0995894749458883" />
-      <entry key="M30" value="2.527344583227085" />
-      <entry key="H1" value="9.267701189308044" />
-      <entry key="H2" value="21.72207031697142" />
-      <entry key="H4" value="34.30284116600231" />
-      <entry key="D1" value="50.791257626479556" />
-      <entry key="W1" value="54.376892164071556" />
+      <entry key="MS100" value="0.0" />
+      <entry key="MS500" value="0.0" />
+      <entry key="S2" value="8.792670069030003E-267" />
+      <entry key="S5" value="3.781362482054991E-107" />
+      <entry key="S10" value="6.149278398361058E-54" />
+      <entry key="S30" value="1.8320876417094793E-18" />
+      <entry key="S60" value="1.358066683733249E-9" />
+      <entry key="M2" value="3.891854673856873E-5" />
+      <entry key="M5" value="0.02235172320537077" />
+      <entry key="M10" value="0.21577537235831834" />
+      <entry key="M15" value="0.49428026286404775" />
+      <entry key="M30" value="1.2861689837563708" />
+      <entry key="H1" value="3.105534698970009" />
+      <entry key="H2" value="9.83214366193272" />
+      <entry key="H4" value="22.76422657706875" />
+      <entry key="D1" value="50.065016671081274" />
+      <entry key="W1" value="57.62572878009247" />
     </decayedSelected>
     <decayedShown>
-      <entry key="MS100" value="1.745338851602954E-7" />
-      <entry key="MS500" value="0.05220582542398249" />
-      <entry key="S2" value="1.368052753437151" />
-      <entry key="S5" value="3.4857653745100428" />
-      <entry key="S10" value="5.012930824802493" />
-      <entry key="S30" value="6.699692751892452" />
-      <entry key="S60" value="7.294050725665648" />
-      <entry key="M2" value="7.69583795477712" />
-      <entry key="M5" value="9.228334067898704" />
-      <entry key="M10" value="13.491918725618909" />
-      <entry key="M15" value="20.04634230638672" />
-      <entry key="M30" value="52.12731039138111" />
-      <entry key="H1" value="134.8430990629013" />
-      <entry key="H2" value="257.107425609902" />
-      <entry key="H4" value="370.6649621743635" />
-      <entry key="D1" value="513.2873350978442" />
-      <entry key="W1" value="543.7266526814359" />
+      <entry key="MS100" value="1.083237041833532" />
+      <entry key="MS500" value="3.1201989119613627" />
+      <entry key="S2" value="6.516377089890095" />
+      <entry key="S5" value="7.873255946935332" />
+      <entry key="S10" value="8.411461062498972" />
+      <entry key="S30" value="8.799296775867768" />
+      <entry key="S60" value="8.947115633414784" />
+      <entry key="M2" value="9.647508651793203" />
+      <entry key="M5" value="15.85442012529393" />
+      <entry key="M10" value="33.11379412225233" />
+      <entry key="M15" value="52.116766479912336" />
+      <entry key="M30" value="99.7556636785441" />
+      <entry key="H1" value="168.21942839514716" />
+      <entry key="H2" value="285.4387142511071" />
+      <entry key="H4" value="447.5399864702735" />
+      <entry key="D1" value="742.0599444626768" />
+      <entry key="W1" value="819.1236019262631" />
     </decayedShown>
   </component>
   <component name="ProjectColorInfo">{
@@ -250,26 +234,32 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "ModuleVcsDetector.initialDetectionPerformed": "true",
-    "RunOnceActivity.MCP Project settings loaded": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "RunOnceActivity.cidr.known.project.marker": "true",
-    "RunOnceActivity.git.unshallow": "true",
-    "RunOnceActivity.readMode.enableVisualFormatting": "true",
-    "RunOnceActivity.typescript.service.memoryLimit.init": "true",
-    "cidr.known.project.marker": "true",
-    "codeWithMe.voiceChat.enabledByDefault": "false",
-    "copilot.chat.legacySessionMetadata.migrated": "true",
-    "git-widget-placeholder": "database",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs_package_manager_path": "npm"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;ModuleVcsDetector.initialDetectionPerformed&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.MCP Project settings loaded&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.cidr.known.project.marker&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.readMode.enableVisualFormatting&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.typescript.service.memoryLimit.init&quot;: &quot;true&quot;,
+    &quot;cidr.known.project.marker&quot;: &quot;true&quot;,
+    &quot;codeWithMe.voiceChat.enabledByDefault&quot;: &quot;false&quot;,
+    &quot;copilot.chat.legacySessionMetadata.migrated&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;database&quot;,
+    &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;
+  },
+  &quot;keyToStringList&quot;: {
+    &quot;DatabaseDriversLRU&quot;: [
+      &quot;postgresql&quot;
+    ]
   }
-}]]></component>
+}</component>
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
       <changelist id="9f81ecf8-4691-4b9c-9276-52e8430180a7" name="Changes" comment="" />
@@ -283,6 +273,7 @@
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
   </component>
+  <component name="UnityCheckinConfiguration" checkUnsavedScenes="true" />
   <component name="UnityProjectConfiguration" hasMinimizedUI="false" />
   <component name="VcsManagerConfiguration">
     <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="true" />

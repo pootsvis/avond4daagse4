@@ -16,7 +16,7 @@ public class DraaiboekController(IDraaiboektaakService draaiboektaakService) : C
     public async Task<ActionResult<List<DraaiboektaakResponse>>> GetDraaiboektaken()
     {
         List<Draaiboektaak> taken = await draaiboektaakService.GetAllDraaiboektaken();
-        return Ok(taken.Select(ToResponse).ToList());
+        return Ok(taken.Select(t => t.ToResponse()).ToList());
     }
 
     [Authorize(Roles = "Voorzitter,Secretaris,Verkeersregelaars,Penningmeester,Vrijwilliger")]
@@ -28,7 +28,7 @@ public class DraaiboekController(IDraaiboektaakService draaiboektaakService) : C
         try
         {
             Draaiboektaak taak = await draaiboektaakService.GetDraaiboektaakById(id);
-            return Ok(ToResponse(taak));
+            return Ok(taak.ToResponse());
         }
         catch (InvalidOperationException ex)
         {
@@ -48,7 +48,7 @@ public class DraaiboekController(IDraaiboektaakService draaiboektaakService) : C
 
             // Opnieuw ophalen zodat de gekoppelde gebruikers zeker geladen zijn voor de response
             Draaiboektaak taak = await draaiboektaakService.GetDraaiboektaakById(aangemaakt.TaakId);
-            return CreatedAtAction(nameof(GetDraaiboektaak), new { id = taak.TaakId }, ToResponse(taak));
+            return CreatedAtAction(nameof(GetDraaiboektaak), new { id = taak.TaakId }, taak.ToResponse());
         }
         catch (InvalidOperationException ex)
         {
@@ -67,7 +67,7 @@ public class DraaiboekController(IDraaiboektaakService draaiboektaakService) : C
         {
             await draaiboektaakService.UpdateDraaiboektaak(id, dto);
             Draaiboektaak taak = await draaiboektaakService.GetDraaiboektaakById(id);
-            return Ok(ToResponse(taak));
+            return Ok(taak.ToResponse());
         }
         catch (InvalidOperationException ex)
         {
@@ -91,17 +91,4 @@ public class DraaiboekController(IDraaiboektaakService draaiboektaakService) : C
             return NotFound(ex.Message);
         }
     }
-
-    // Model -> response: de koppeltabel wordt een lijst met GebruikerIds, zonder cirkelverwijzing
-    private static DraaiboektaakResponse ToResponse(Draaiboektaak t) => new()
-    {
-        TaakId = t.TaakId,
-        Titel = t.Titel,
-        Beschrijving = t.Beschrijving,
-        Datum = t.Datum,
-        Categorie = t.Categorie,
-        Status = t.Status,
-        Verantwoordelijke = t.Verantwoordelijke,
-        GebruikerIds = t.GebruikerDraaiboektaken.Select(gd => gd.GebruikerId).ToList()
-    };
 }
