@@ -4,346 +4,325 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Vrijwilligers & inzet - Avond4daagse</title>
+  <meta name="description" content="Vrijwilligersoverzicht voor Avond4daagse 2027.">
+  <title>Vrijwilligers | Avond4daagse Beheer</title>
+
   <link rel="stylesheet" href="../css/beheer.css">
+  <link rel="stylesheet" href="../css/beheer-polish.css">
+  <link rel="stylesheet" href="../css/beheer-vrijwilligers.css">
+
+  <script src="../js/beheer-ui.js" defer></script>
+  <script src="../js/beheer-vrijwilligers.js" defer></script>
 </head>
 
-<body class="vrij-page">
+<body class="bm-page bv-page">
+<div class="bm-layout">
 
-  <div class="vrij-layout">
-
-    <!-- SIDEBAR -->
-    <aside class="vrij-sidebar">
-
-      <div class="vrij-logo">
+  <!-- ZIJMENU -->
+  <aside class="bm-sidebar" id="bmSidebar">
+    <a href="dashboard.html" class="bm-brand">
+      <span class="bm-brand-symbol" aria-hidden="true">4</span>
+      <span>
         <strong>AVOND4DAAGSE</strong>
-        <small>BEHEER 2027</small>
-      </div>
+        <small>BEHEEROMGEVING 2027</small>
+      </span>
+    </a>
 
-      <nav class="vrij-menu">
-        <a href="dashboard.html">Dashboard</a>
-        <a href="inschrijvingen.html">Inschrijvingen</a>
-        <a href="routebeheer.html">Routebeheer</a>
-        <a href="vrijwilligers.html" class="vrij-active" aria-current="page">Vrijwilligers & inzet</a>
-        <a href="mijn-beschikbaarheid.html">Mijn beschikbaarheid</a>
-        <a href="draaiboek.html">Draaiboek</a>
-        <a href="financien.html">Financiën</a>
-        <a href="contactvragen.html">Contactvragen</a>
+    <div class="bm-sidebar-content">
+      <p class="bm-nav-label">OVERZICHT</p>
+
+      <nav class="bm-navigation" aria-label="Beheernavigatie">
+        <a href="dashboard.html">
+          <span class="bm-nav-icon" aria-hidden="true">▦</span>
+          Dashboard
+        </a>
+        <a href="inschrijvingen.html">
+          <span class="bm-nav-icon" aria-hidden="true">◎</span>
+          Inschrijvingen
+        </a>
+        <a href="routebeheer.html">
+          <span class="bm-nav-icon" aria-hidden="true">◇</span>
+          Routebeheer
+        </a>
+        <a href="vrijwilligers.html"
+           class="bm-nav-active" aria-current="page">
+          <span class="bm-nav-icon" aria-hidden="true">♧</span>
+          Vrijwilligers &amp; inzet
+        </a>
+        <a href="mijn-beschikbaarheid.html">
+          <span class="bm-nav-icon" aria-hidden="true">◷</span>
+          Mijn beschikbaarheid
+        </a>
+        <a href="draaiboek.html">
+          <span class="bm-nav-icon" aria-hidden="true">☷</span>
+          Draaiboek
+        </a>
+        <a href="financien.html">
+          <span class="bm-nav-icon" aria-hidden="true">€</span>
+          Financiën
+        </a>
+        <a href="contactvragen.html">
+          <span class="bm-nav-icon" aria-hidden="true">✉</span>
+          Contactvragen
+        </a>
       </nav>
+    </div>
 
-      <div class="vrij-sidebar-bottom">
-        <p>Beheerder</p>
-        <a href="login.html">Uitloggen</a>
+    <div class="bm-sidebar-footer">
+      <div class="bm-account">
+        <span class="bm-account-avatar" aria-hidden="true">B</span>
+        <span>
+          <strong>Beheeromgeving</strong>
+          <small>Frontenddemo</small>
+        </span>
+      </div>
+      <a href="login.html" class="bm-sidebar-exit">
+        Terug naar inloggen
+        <span aria-hidden="true">↗</span>
+      </a>
+    </div>
+  </aside>
+
+  <!-- PAGINA -->
+  <div class="bm-main-area">
+
+    <header class="bm-topbar">
+      <div class="bm-topbar-left">
+        <button type="button"
+                class="bm-menu-button"
+                id="bmMenuButton"
+                aria-controls="bmSidebar"
+                aria-expanded="false"
+                aria-label="Open beheermenu">
+          <span aria-hidden="true">☰</span>
+          Menu
+        </button>
+
+        <div class="bm-breadcrumb">
+          <span>Beheeromgeving</span>
+          <span aria-hidden="true">/</span>
+          <strong>Vrijwilligers</strong>
+        </div>
       </div>
 
-    </aside>
+      <a href="../../index.html" class="bm-website-link">
+        Bekijk publieke website ↗
+      </a>
+    </header>
 
-    <!-- HOOFDINHOUD -->
-    <main class="vrij-main">
+    <main class="bm-content">
 
-      <!-- PAGINA TITEL -->
-      <header class="vrij-header">
-
+      <!-- TITEL -->
+      <section class="bv-heading">
         <div>
-          <h1>Vrijwilligers & inzet</h1>
-
+          <p class="bm-eyebrow">VRIJWILLIGERSBEHEER</p>
+          <h1>Vrijwilligers &amp; inzet</h1>
           <p>
-            Beheer beschikbaarheid, rollen en contactgegevens,
-            en koppel vrijwilligers direct aan diensten in het
-            inzetschema.
+            Vind vrijwilligers, bekijk hun voorkeuren
+            en ga naar de inzetplanning.
           </p>
         </div>
 
-        <button class="vrij-dark-btn" type="button" disabled>
-          + Vrijwilliger
-        </button>
-
-      </header>
+        <a href="inzetschema.html"
+           class="bv-button bv-button-primary">
+          Bekijk inzetschema ↗
+        </a>
+      </section>
 
       <!-- TABS -->
-      <div class="vrij-tabs">
-
-        <button class="vrij-tab active" type="button">
+      <nav class="bv-tabs" aria-label="Vrijwilligerspagina's">
+        <a href="vrijwilligers.html"
+           class="bv-tab-active"
+           aria-current="page">
           Vrijwilligers
-        </button>
+        </a>
+        <a href="inzetschema.html">
+          Inzetschema
+        </a>
+      </nav>
 
-        
-<a href="inzetschema.html" class="vrij-tab inzet-tab">
-  Inzetschema
-</a>
-
-
+      <!-- DEMOMELDING -->
+      <div class="bm-notice" role="note">
+        <span class="bm-notice-icon" aria-hidden="true">i</span>
+        <div>
+          <strong>Voorbeeldvrijwilligers</strong>
+          <p>
+            Dit overzicht bevat de zes voorbeeldpersonen
+            uit de bestaande projectmock-up.
+            Het zijn geen live databasegegevens.
+            CSV-export en filters werken lokaal.
+          </p>
+        </div>
       </div>
 
       <!-- STATISTIEKEN -->
-      <p class="vrij-statistieken">
-        73 aangemeld (doel: 85) •
-        61 bevestigd •
-        12 uitnodigingen open •
-        18 open plaatsen, vooral woensdag
-      </p>
+      <section class="bv-stats"
+               aria-label="Vrijwilligersstatistieken">
 
-      <!-- ZOEKEN EN FILTEREN -->
-      <div class="vrij-filters">
+        <article class="bv-stat">
+          <span>Totaal in voorbeeld</span>
+          <strong id="bvTotal">6</strong>
+          <small>Vrijwilligers</small>
+        </article>
 
-        <input
-          type="text"
-          id="zoekVrijwilliger"
-          placeholder="Zoek vrijwilliger..."
-        >
+        <article class="bv-stat">
+          <span>Bevestigd</span>
+          <strong id="bvConfirmed">4</strong>
+          <small>Bevestigde voorbeelden</small>
+        </article>
 
-        <select id="filterRol">
-          <option value="">Alle rollen</option>
-          <option value="Verkeersregelaar">Verkeersregelaar</option>
-          <option value="Controlepost">Controlepost</option>
-          <option value="Startbureau">Startbureau</option>
-          <option value="Routebegeleider">Routebegeleider</option>
-          <option value="EHBO">EHBO</option>
-          <option value="Finishteam">Finishteam</option>
-        </select>
+        <article class="bv-stat">
+          <span>Uitgenodigd</span>
+          <strong id="bvInvited">2</strong>
+          <small>Wachten op bevestiging</small>
+        </article>
+      </section>
 
-        <select id="filterStatus">
-          <option value="">Alle statussen</option>
-          <option value="Bevestigd">Bevestigd</option>
-          <option value="Uitgenodigd">Uitgenodigd</option>
-        </select>
+      <!-- TABELPANEEL -->
+      <section class="bv-panel"
+               aria-labelledby="bvListTitle">
 
-        <button class="vrij-light-btn" id="wisFilters">
-          Filters wissen
-        </button>
+        <div class="bv-panel-header">
+          <div>
+            <p class="bm-eyebrow">OVERZICHT</p>
+            <h2 id="bvListTitle">Vrijwilligerslijst</h2>
+            <p>
+              Zoek op naam, nummer of rol en bekijk details
+              via de knop in de tabel.
+            </p>
+          </div>
 
-      </div>
-
-      <!-- VRIJWILLIGERS TABEL -->
-      <div class="vrij-table-container">
-
-        <table class="vrij-table">
-
-          <thead>
-            <tr>
-              <th>NR.</th>
-              <th>NAAM</th>
-              <th>TELEFOON</th>
-              <th>VOORKEURSROL</th>
-              <th>BESCHIKBAAR</th>
-              <th>STATUS</th>
-              <th>INZET</th>
-              <th>ACTIE</th>
-            </tr>
-          </thead>
-
-          <tbody id="vrijwilligersTabel">
-
-            <tr data-rol="Verkeersregelaar" data-status="Bevestigd">
-              <td>V-073</td>
-              <td>Anja Mulder</td>
-              <td>06 3456 7812</td>
-              <td>Verkeersregelaar</td>
-              <td>4 avonden</td>
-              <td>Bevestigd</td>
-              <td>di 18:15–20:30</td>
-              <td><button disabled>Inzet beheren</button></td>
-            </tr>
-
-            <tr data-rol="Controlepost" data-status="Bevestigd">
-              <td>V-072</td>
-              <td>Peter Kuiper</td>
-              <td>06 2201 9034</td>
-              <td>Controlepost</td>
-              <td>di, wo, vr</td>
-              <td>Bevestigd</td>
-              <td>wo 18:15–20:30</td>
-              <td><button disabled>Inzet beheren</button></td>
-            </tr>
-
-            <tr data-rol="Startbureau" data-status="Uitgenodigd">
-              <td>V-071</td>
-              <td>Fatima El Amrani</td>
-              <td>06 5512 4800</td>
-              <td>Startbureau</td>
-              <td>4 avonden</td>
-              <td>Uitgenodigd</td>
-              <td>di 18:00–19:00</td>
-              <td><button disabled>Inzet beheren</button></td>
-            </tr>
-
-            <tr data-rol="Routebegeleider" data-status="Bevestigd">
-              <td>V-070</td>
-              <td>Jan de Groot</td>
-              <td>06 9098 1122</td>
-              <td>Routebegeleider</td>
-              <td>do, vr</td>
-              <td>Bevestigd</td>
-              <td>Nog niet ingepland</td>
-              <td><button disabled>Inzet beheren</button></td>
-            </tr>
-
-            <tr data-rol="EHBO" data-status="Bevestigd">
-              <td>V-069</td>
-              <td>Iris Hendriks</td>
-              <td>06 1188 4402</td>
-              <td>EHBO</td>
-              <td>4 avonden</td>
-              <td>Bevestigd</td>
-              <td>vr 19:30–21:30</td>
-              <td><button disabled>Inzet beheren</button></td>
-            </tr>
-
-            <tr data-rol="Finishteam" data-status="Uitgenodigd">
-              <td>V-068</td>
-              <td>Wim Bos</td>
-              <td>06 7070 3301</td>
-              <td>Finishteam</td>
-              <td>vrijdag</td>
-              <td>Uitgenodigd</td>
-              <td>vr 19:30–21:30</td>
-              <td><button disabled>Inzet beheren</button></td>
-            </tr>
-
-          </tbody>
-        </table>
-
-        <p id="geenResultaten" hidden>
-          Geen vrijwilligers gevonden.
-        </p>
-
-      </div>
-
-      <!-- ONDERKANT TABEL -->
-      <div class="vrij-table-footer">
-
-        <p id="aantalVrijwilligers">
-          6 van 6 voorbeeldvrijwilligers getoond
-        </p>
-
-        <div class="vrij-footer-knoppen">
-          <button class="vrij-light-btn" id="exporteerLijst">
-            Exporteer lijst
-          </button>
-
-          <button class="vrij-dark-btn" disabled>
-            Stuur groepsmail
+          <button type="button"
+                  class="bv-button bv-button-primary"
+                  id="bvExport">
+            Download CSV ↓
           </button>
         </div>
 
-      </div>
+        <!-- FILTERS -->
+        <form id="bvFilters" class="bv-filters">
+          <label class="bv-search">
+            Zoeken
+            <input id="bvSearch"
+                   type="search"
+                   placeholder="Naam, nummer of rol"
+                   autocomplete="off">
+          </label>
 
-      <p class="vrij-info">
-        Vrijwilligers nodig? Deel de aanmeldlink via e-mail
-        of social media.
-      </p>
+          <label>
+            Voorkeursrol
+            <select id="bvRole">
+              <option value="">Alle rollen</option>
+              <option value="Verkeersregelaar">Verkeersregelaar</option>
+              <option value="Controlepost">Controlepost</option>
+              <option value="Startbureau">Startbureau</option>
+              <option value="Routebegeleider">Routebegeleider</option>
+              <option value="EHBO">EHBO</option>
+              <option value="Finishteam">Finishteam</option>
+            </select>
+          </label>
 
-      <p class="vrij-info">
-        Dit zijn voorbeeldgegevens uit de Figma-mock-up.
-      </p>
+          <label>
+            Status
+            <select id="bvStatus">
+              <option value="">Alle statussen</option>
+              <option value="Bevestigd">Bevestigd</option>
+              <option value="Uitgenodigd">Uitgenodigd</option>
+            </select>
+          </label>
+
+          <button type="reset"
+                  class="bv-button bv-button-light">
+            Filters wissen
+          </button>
+        </form>
+
+        <!-- TABEL -->
+        <div class="bv-table-scroll">
+          <table class="bv-table">
+            <thead>
+              <tr>
+                <th scope="col">Nummer</th>
+                <th scope="col">Vrijwilliger</th>
+                <th scope="col">Voorkeursrol</th>
+                <th scope="col">Beschikbaar</th>
+                <th scope="col">Status</th>
+                <th scope="col">Voorbeeldinzet</th>
+                <th scope="col">Details</th>
+              </tr>
+            </thead>
+
+            <tbody id="bvTableBody">
+              <tr>
+                <td colspan="7">
+                  Vrijwilligersoverzicht laden...
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="bv-panel-footer">
+          <span id="bvResultCount" aria-live="polite">
+            6 vrijwilligers
+          </span>
+          <a href="inzetschema.html"
+             class="bv-text-link">
+            Naar inzetschema →
+          </a>
+        </div>
+      </section>
+
+      <p id="bvFeedback"
+         class="bv-feedback"
+         role="status"
+         aria-live="polite"></p>
+
+      <footer class="bm-content-footer">
+        Avond4daagse 2027 · Vrijwilligersbeheer · Frontenddemo
+      </footer>
 
     </main>
+  </div>
+</div>
 
+<!-- DETAILVENSTER -->
+<dialog id="bvDialog"
+        class="bv-dialog"
+        aria-labelledby="bvDialogTitle">
+
+  <div class="bv-dialog-heading">
+    <div>
+      <p class="bm-eyebrow">VRIJWILLIGER</p>
+      <h2 id="bvDialogTitle">Vrijwilliger bekijken</h2>
+    </div>
+
+    <button type="button"
+            class="bv-dialog-close"
+            id="bvCloseDialog"
+            aria-label="Venster sluiten">×</button>
   </div>
 
-  <!-- JAVASCRIPT -->
-  <script>
+  <dl class="bv-details">
+    <div><dt>Nummer</dt><dd id="bvDetailId">—</dd></div>
+    <div><dt>Naam</dt><dd id="bvDetailName">—</dd></div>
+    <div><dt>Telefoon</dt><dd id="bvDetailPhone">—</dd></div>
+    <div><dt>Voorkeursrol</dt><dd id="bvDetailRole">—</dd></div>
+    <div><dt>Beschikbaarheid</dt><dd id="bvDetailAvailable">—</dd></div>
+    <div><dt>Status</dt><dd id="bvDetailStatus">—</dd></div>
+    <div><dt>Voorbeeldinzet</dt><dd id="bvDetailShift">—</dd></div>
+  </dl>
 
-    const zoekveld = document.getElementById("zoekVrijwilliger");
-    const rolFilter = document.getElementById("filterRol");
-    const statusFilter = document.getElementById("filterStatus");
-    const wisFilters = document.getElementById("wisFilters");
+  <button type="button"
+          class="bv-button bv-button-primary"
+          id="bvCloseBottom">
+    Sluiten
+  </button>
+</dialog>
 
-    const vrijwilligers = Array.from(
-      document.querySelectorAll("#vrijwilligersTabel tr")
-    );
-
-    // Vrijwilligers zoeken en filteren
-    function filterVrijwilligers() {
-
-      const zoekterm = zoekveld.value.toLowerCase();
-      const rol = rolFilter.value;
-      const status = statusFilter.value;
-
-      let aantal = 0;
-
-      vrijwilligers.forEach((vrijwilliger) => {
-
-        const naam = vrijwilliger.cells[1].textContent.toLowerCase();
-
-        const matchZoeken = naam.includes(zoekterm);
-
-        const matchRol =
-          rol === "" || vrijwilliger.dataset.rol === rol;
-
-        const matchStatus =
-          status === "" || vrijwilliger.dataset.status === status;
-
-        if (matchZoeken && matchRol && matchStatus) {
-          vrijwilliger.hidden = false;
-          aantal++;
-        } else {
-          vrijwilliger.hidden = true;
-        }
-
-      });
-
-      document.getElementById("aantalVrijwilligers").textContent =
-        aantal + " van 6 voorbeeldvrijwilligers getoond";
-
-      document.getElementById("geenResultaten").hidden =
-        aantal !== 0;
-    }
-
-    zoekveld.addEventListener("input", filterVrijwilligers);
-    rolFilter.addEventListener("change", filterVrijwilligers);
-    statusFilter.addEventListener("change", filterVrijwilligers);
-
-    // Filters wissen
-    wisFilters.addEventListener("click", () => {
-
-      zoekveld.value = "";
-      rolFilter.value = "";
-      statusFilter.value = "";
-
-      filterVrijwilligers();
-
-    });
-
-    // Zichtbare voorbeeldvrijwilligers exporteren
-    document.getElementById("exporteerLijst").addEventListener("click", () => {
-
-      const regels = [
-        ["Nr", "Naam", "Telefoon", "Rol", "Beschikbaar", "Status", "Inzet"]
-      ];
-
-      vrijwilligers.forEach((rij) => {
-        if (!rij.hidden) {
-          const cellen = Array.from(rij.cells)
-            .slice(0, 7)
-            .map(cel => cel.textContent.trim());
-
-          regels.push(cellen);
-        }
-      });
-
-      const csv = regels.map(regel =>
-        regel.map(waarde =>
-          '"' + waarde.replace(/"/g, '""') + '"'
-        ).join(";")
-      ).join("\r\n");
-
-      const blob = new Blob(["\uFEFF" + csv], {
-        type: "text/csv;charset=utf-8"
-      });
-
-      const url = URL.createObjectURL(blob);
-      const link = document.createElement("a");
-
-      link.href = url;
-      link.download = "vrijwilligers-voorbeeld.csv";
-      link.click();
-
-      setTimeout(() => URL.revokeObjectURL(url), 1000);
-
-    });
-
-  </script>
+<div class="bm-backdrop"
+     id="bmBackdrop"
+     hidden></div>
 
 </body>
 </html>
