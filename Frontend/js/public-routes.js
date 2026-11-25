@@ -1,221 +1,769 @@
 
+// ==========================================
+// AVOND4DAAGSE 2027
+// PUBLIEKE ROUTES EN GPX-KAART
+// ==========================================
+
 document.addEventListener("DOMContentLoaded", async () => {
 
-  // ==========================================
-  // AVOND4DAAGSE 2027
-  // PUBLIEKE ROUTES UIT DE BACKEND
-  // ==========================================
+    const API_URL = "http://localhost:5278";
 
-  const API_URL = "http://localhost:5278";
+    const $ = id => document.getElementById(id);
 
-  const routeList = document.querySelector(
-    ".pp-route-list"
-  );
+    const routeList = document.querySelector(".pp-route-list");
 
-  const routeCount = document.getElementById(
-    "ppRouteCount"
-  );
+    const routeCount = $("ppRouteCount");
+    const distanceFilter = $("ppDistanceFilter");
+    const dayFilter = $("ppDayFilter");
+    const mapStatus = $("ppMapStatus");
 
-  const distanceFilter = document.getElementById(
-    "ppDistanceFilter"
-  );
+    if (!routeList || !routeCount || !distanceFilter) {
+        return;
+    }
 
-  const dayFilter = document.getElementById(
-    "ppDayFilter"
-  );
+    let routes = [];
+    let map = null;
+    let routeLayer = null;
+    let locationMarker = null;
+    let selectedRouteId = null;
 
-  if (!routeList || !routeCount || !distanceFilter) {
-    return;
-  }
+    const startView = [52.1326, 5.2913];
 
-  // ==========================================
-  // 1. OUDE VOORBEELDROUTES WEGHALEN
-  // ==========================================
+    // ======================================
+    // 1. HULPFUNCTIES
+    // ======================================
 
-  routeList.querySelectorAll(
-    ".pp-route-card"
-  ).forEach(card => card.remove());
+    function element(tag, className = "", text) {
 
-  const notice = routeList.querySelector(
-    ".pp-notice"
-  );
+        const node = document.createElement(tag);
 
-  // De backend heeft nog geen datum per route.
-  // Daarom schakelen we deze filter voorlopig uit.
+        if (className) {
+            node.className = className;
+        }
 
-  if (dayFilter) {
-    dayFilter.disabled = true;
-    dayFilter.innerHTML =
-      '<option value="">Dagindeling volgt later</option>';
-  }
+        if (text !== undefined) {
+            node.textContent = String(text);
+        }
 
-  let routes = [];
+        return node;
+    }
 
-  // ==========================================
-  // 2. ROUTEKAART AANMAKEN
-  // ==========================================
+    function validPoints(points) {
 
-  function createRouteCard(route) {
+        if (!Array.isArray(points)) {
+            return [];
+        }
 
-    const card = document.createElement("article");
-    card.className = "pp-card pp-route-card";
-    card.dataset.distance = String(route.afstand);
+        if (points.length < 2 || points.length > 5000) {
+            return [];
+        }
 
-    const top = document.createElement("div");
-    top.className = "pp-route-top";
+        const valid = points.every(point =>
+            Array.isArray(point) &&
+            point.length === 2 &&
+            Number.isFinite(point[0]) &&
+            Number.isFinite(point[1]) &&
+            Math.abs(point[0]) <= 90 &&
+            Math.abs(point[1]) <= 180
+        );
 
-    const title = document.createElement("h3");
-    title.textContent = route.naam;
+        return valid ? points : [];
+    }
 
-    const chip = document.createElement("span");
-    chip.className = "pp-chip";
-    chip.textContent = route.afstand + " KM";
+    function eveningLabel(route) {
 
-    top.appendChild(title);
-    top.appendChild(chip);
+        return [1, 2, 3, 4].includes(
+            Number(route.wandelavond)
+        )
+            ? "Avond " + route.wandelavond
+            : "Wandelavond nog onbekend";
+    }
 
-    const description = document.createElement("p");
-    description.className = "pp-muted";
+    function isTestRoute(route) {
 
-    const starttijd = route.starttijd
-      ? route.starttijd.slice(0, 5)
-      : "Nog niet bekend";
+        return /test|demo/i.test(
+            route.naam + " " +
+            (route.evenementNaam || "")
+        );
+    }
 
-    description.textContent =
-      "Afstand: " + route.afstand + " km" +
-      " · Starttijd: " + starttijd;
+    function setMapStatus(message) {
 
-    const checkpoint = document.createElement("p");
-    checkpoint.className = "pp-muted";
+        if (mapStatus) {
+            mapStatus.textContent = message;
+        }
+    }
 
-    checkpoint.textContent =
-      "Controlepost: " +
-      (route.controlepost || "Nog niet bekend");
-
-    const info = document.createElement("span");
-    info.className = "pp-chip";
-
-    info.textContent =
-      route.naam.toLowerCase().includes("test")
-        ? "Testroute - niet officieel"
-        : "Routegegevens uit database";
-
-    const mapLink = document.createElement("a");
-    mapLink.className = "pp-btn pp-btn--dark";
-    mapLink.href = "#echte-kaart";
-    mapLink.textContent = "Bekijk de kaart →";
-
-    card.appendChild(top);
-    card.appendChild(description);
-    card.appendChild(checkpoint);
-    card.appendChild(info);
-    card.appendChild(mapLink);
-
-    return card;
-  }
-
-  // ==========================================
-  // 3. ROUTES EN AFSTAND FILTEREN
-  // ==========================================
-
-  function renderRoutes() {
+    // ======================================
+    // 2. BESTAANDE VOORBEELDROUTES WISSEN
+    // ======================================
 
     routeList.querySelectorAll(
-      ".pp-route-card, .pp-route-empty"
-    ).forEach(element => element.remove());
+        ".pp-route-card"
+    ).forEach(card => card.remove());
 
-    const selectedDistance = distanceFilter.value;
+    const notice = routeList.querySelector(
+        ".pp-notice"
+    );
 
-    const filteredRoutes = routes.filter(route => {
-      return (
-        selectedDistance === "all" ||
-        Number(route.afstand) === Number(selectedDistance)
-      );
-    });
+    if (notice) {
 
-    filteredRoutes.forEach(route => {
+        notice.querySelector("strong").textContent =
+            "Voorlopige routeinformatie";
 
-      const card = createRouteCard(route);
-
-      routeList.insertBefore(
-        card,
-        notice
-      );
-    });
-
-    if (filteredRoutes.length === 0) {
-
-      const empty = document.createElement("p");
-      empty.className = "pp-muted pp-route-empty";
-
-      empty.textContent =
-        "Er zijn nog geen routes voor " +
-        "deze afstand beschikbaar.";
-
-      routeList.insertBefore(empty, notice);
+        notice.querySelector("p").textContent =
+            "De organisatie moet de officiële routes " +
+            "en evenementdatums nog bevestigen. " +
+            "Testroutes zijn geen officiële wandelroutes.";
     }
 
-    routeCount.textContent =
-      filteredRoutes.length +
-      " route(s) gevonden voor Avond4daagse 2027. " +
-      "De officiële wandeltrajecten volgen later.";
-  }
+    const introduction = document.querySelector(
+        "#routes-overzicht .pp-shell > div .pp-muted"
+    );
 
-  distanceFilter.addEventListener(
-    "change",
-    renderRoutes
-  );
+    if (introduction) {
 
-  // ==========================================
-  // 4. ROUTES UIT POSTGRESQL OPHALEN
-  // ==========================================
-
-  routeCount.textContent =
-    "Routes worden opgehaald...";
-
-  try {
-
-    const [routeResponse, eventResponse] =
-      await Promise.all([
-        fetch(API_URL + "/api/Route"),
-        fetch(API_URL + "/api/Evenement")
-      ]);
-
-    if (!routeResponse.ok || !eventResponse.ok) {
-      throw new Error(
-        "De routegegevens konden niet worden opgehaald."
-      );
+        introduction.textContent =
+            "Kies een wandelavond en afstand. " +
+            "Bekijk de beschikbare routegegevens " +
+            "op de interactieve kaart.";
     }
 
-    const allRoutes = await routeResponse.json();
-    const evenementen = await eventResponse.json();
-
-    // Alleen routes van evenementen in 2027 tonen.
-    const eventIds = new Set(
-      evenementen
-        .filter(event =>
-          typeof event.datum === "string" &&
-          event.datum.startsWith("2027-")
-        )
-        .map(event => event.evenementId)
+    const caption = document.querySelector(
+        ".pp-map-caption"
     );
 
-    routes = allRoutes.filter(route =>
-      eventIds.has(route.evenementId)
+    if (caption) {
+
+        caption.textContent =
+            "Kaartgegevens van OpenStreetMap. " +
+            "Routepunten worden opgehaald uit de database. " +
+            "De kaart geeft geen automatische wandelinstructies.";
+    }
+
+    // ======================================
+    // 3. WANDELAVONDFILTER
+    // ======================================
+
+    if (dayFilter) {
+
+        dayFilter.replaceChildren(
+            new Option("Alle avonden", "all"),
+            new Option("Avond 1", "1"),
+            new Option("Avond 2", "2"),
+            new Option("Avond 3", "3"),
+            new Option("Avond 4", "4"),
+            new Option("Nog onbekend", "unknown")
+        );
+
+        dayFilter.disabled = false;
+    }
+
+    // ======================================
+    // 4. LEAFLET KAART
+    // ======================================
+
+    function initializeMap() {
+
+        if (typeof window.L === "undefined") {
+
+            setMapStatus(
+                "De kaartbibliotheek kon niet laden."
+            );
+
+            return;
+        }
+
+        map = L.map("ppMap", {
+            scrollWheelZoom: false
+        }).setView(startView, 8);
+
+        L.tileLayer(
+            "https://tile.openstreetmap.org/{z}/{x}/{y}.png",
+            {
+                maxZoom: 19,
+                attribution:
+                    '&copy; <a href="https://www.openstreetmap.org/copyright">' +
+                    'OpenStreetMap</a> contributors'
+            }
+        ).addTo(map);
+
+        routeLayer = L.layerGroup().addTo(map);
+
+        setMapStatus(
+            "Selecteer een route om het wandeltraject te bekijken."
+        );
+
+        setTimeout(() => map.invalidateSize(), 150);
+    }
+
+    initializeMap();
+
+    // ======================================
+    // 5. ROUTE TONEN OP KAART
+    // ======================================
+
+    function showRoute(route) {
+
+        selectedRouteId = route.routeId;
+
+        if (!map || !routeLayer) {
+
+            setMapStatus(
+                "De interactieve kaart is niet beschikbaar."
+            );
+
+            return;
+        }
+
+        routeLayer.clearLayers();
+
+        const points = validPoints(route.gpxPunten);
+
+        if (!points.length) {
+
+            map.setView(startView, 8);
+
+            setMapStatus(
+                route.naam +
+                ": er zijn nog geen GPX-routepunten beschikbaar."
+            );
+
+            return;
+        }
+
+        const line = L.polyline(points, {
+            color: "#24694b",
+            weight: 5,
+            opacity: 0.9
+        }).addTo(routeLayer);
+
+        const startMarker = L.circleMarker(points[0], {
+            radius: 8,
+            color: "#ffffff",
+            weight: 2,
+            fillColor: "#e99b45",
+            fillOpacity: 1
+        }).addTo(routeLayer);
+
+        const startPopup = element(
+            "span",
+            "",
+            "Start: " +
+            (route.startlocatie || "GPX-startpunt")
+        );
+
+        startMarker.bindPopup(startPopup);
+
+        const endMarker = L.circleMarker(
+            points[points.length - 1],
+            {
+                radius: 6,
+                color: "#ffffff",
+                weight: 2,
+                fillColor: "#24694b",
+                fillOpacity: 1
+            }
+        ).addTo(routeLayer);
+
+        endMarker.bindPopup("Eindpunt");
+
+        map.invalidateSize();
+
+        map.fitBounds(line.getBounds(), {
+            padding: [35, 35],
+            maxZoom: 17
+        });
+
+        setMapStatus(
+            route.naam +
+            " · " +
+            eveningLabel(route) +
+            " · " +
+            route.afstand +
+            " km (afstandscategorie)" +
+            (
+                isTestRoute(route)
+                    ? " · Testroute, niet officieel."
+                    : " · Voorlopige routeinformatie."
+            )
+        );
+
+        routeList.querySelectorAll(
+            ".pp-route-card"
+        ).forEach(card => {
+
+            const active =
+                card.dataset.routeId ===
+                String(selectedRouteId);
+
+            card.style.outline =
+                active ? "2px solid #24694b" : "";
+
+            const button = card.querySelector(
+                "[data-route-button]"
+            );
+
+            button?.setAttribute(
+                "aria-pressed",
+                String(active)
+            );
+        });
+    }
+
+    // ======================================
+    // 6. GPX DOWNLOADEN
+    // ======================================
+
+    function downloadGpx(route) {
+
+        const points = validPoints(route.gpxPunten);
+
+        if (!points.length) {
+            return;
+        }
+
+        const escapeXml = value =>
+            String(value).replace(
+                /[<>&"']/g,
+                char => ({
+                    "<": "&lt;",
+                    ">": "&gt;",
+                    "&": "&amp;",
+                    '"': "&quot;",
+                    "'": "&apos;"
+                })[char]
+            );
+
+        const coordinates = points.map(point =>
+            `<trkpt lat="${point[0]}" lon="${point[1]}"/>`
+        ).join("\n");
+
+        const content =
+            `<?xml version="1.0" encoding="UTF-8"?>\n` +
+            `<gpx version="1.1" creator="Avond4daagse 2027" ` +
+            `xmlns="http://www.topografix.com/GPX/1/1">\n` +
+            `<trk><name>${escapeXml(route.naam)}</name>\n` +
+            `<trkseg>\n${coordinates}\n</trkseg>\n` +
+            `</trk></gpx>`;
+
+        const blob = new Blob(
+            [content],
+            { type: "application/gpx+xml" }
+        );
+
+        const url = URL.createObjectURL(blob);
+
+        const link = document.createElement("a");
+
+        link.href = url;
+
+        const filename = String(route.naam || "route")
+            .replace(/[^a-zA-Z0-9_-]+/g, "-");
+
+        link.download = filename + ".gpx";
+
+        document.body.appendChild(link);
+
+        link.click();
+        link.remove();
+
+        setTimeout(
+            () => URL.revokeObjectURL(url),
+            1000
+        );
+    }
+
+    // ======================================
+    // 7. ROUTEKAART MAKEN
+    // ======================================
+
+    function createRouteCard(route) {
+
+        const card = element(
+            "article",
+            "pp-card pp-route-card"
+        );
+
+        card.dataset.distance =
+            String(route.afstand);
+
+        card.dataset.routeId =
+            String(route.routeId);
+
+        const top = element(
+            "div",
+            "pp-route-top"
+        );
+
+        top.append(
+            element("h3", "", route.naam),
+            element(
+                "span",
+                "pp-chip",
+                route.afstand + " KM"
+            )
+        );
+
+        const startTime = route.starttijd
+            ? route.starttijd.slice(0, 5)
+            : "Nog onbekend";
+
+        const points = validPoints(
+            route.gpxPunten
+        );
+
+        card.append(
+            top,
+
+            element(
+                "p",
+                "pp-muted",
+                eveningLabel(route) +
+                " · Starttijd: " + startTime
+            ),
+
+            element(
+                "p",
+                "pp-muted",
+                "Startlocatie: " +
+                (route.startlocatie || "Nog onbekend")
+            ),
+
+            element(
+                "p",
+                "pp-muted",
+                "Controlepost: " +
+                (route.controlepost || "Nog onbekend")
+            ),
+
+            element(
+                "span",
+                "pp-chip",
+                isTestRoute(route)
+                    ? "Testroute – niet officieel"
+                    : "Voorlopige routeinformatie"
+            ),
+
+            element(
+                "span",
+                "pp-chip",
+                points.length
+                    ? "GPX beschikbaar"
+                    : "GPX volgt later"
+            )
+        );
+
+        const mapButton = element(
+            "button",
+            "pp-btn pp-btn--dark",
+            points.length
+                ? "Bekijk de route →"
+                : "Bekijk de kaart →"
+        );
+
+        mapButton.type = "button";
+        mapButton.dataset.routeButton = "true";
+
+        mapButton.addEventListener("click", () => {
+
+            showRoute(route);
+
+            $("echte-kaart").scrollIntoView({
+                behavior: "smooth",
+                block: "nearest"
+            });
+        });
+
+        card.appendChild(mapButton);
+
+        if (points.length) {
+
+            const downloadButton = element(
+                "button",
+                "pp-btn pp-btn--light",
+                "Download GPX ↓"
+            );
+
+            downloadButton.type = "button";
+
+            downloadButton.addEventListener(
+                "click",
+                () => downloadGpx(route)
+            );
+
+            card.appendChild(downloadButton);
+        }
+
+        return card;
+    }
+
+    // ======================================
+    // 8. ROUTES FILTEREN
+    // ======================================
+
+    function renderRoutes() {
+
+        routeList.querySelectorAll(
+            ".pp-route-card, .pp-route-empty"
+        ).forEach(node => node.remove());
+
+        const distance = distanceFilter.value;
+
+        const evening = dayFilter?.value || "all";
+
+        const filtered = routes.filter(route => {
+
+            const matchesDistance =
+                distance === "all" ||
+                Number(route.afstand) === Number(distance);
+
+            const knownEvening =
+                [1, 2, 3, 4].includes(
+                    Number(route.wandelavond)
+                );
+
+            const matchesEvening =
+                evening === "all" ||
+                (
+                    evening === "unknown"
+                        ? !knownEvening
+                        : Number(route.wandelavond) ===
+                          Number(evening)
+                );
+
+            return matchesDistance && matchesEvening;
+        });
+
+        filtered.forEach(route => {
+
+            routeList.insertBefore(
+                createRouteCard(route),
+                notice
+            );
+        });
+
+        if (!filtered.length) {
+
+            routeList.insertBefore(
+                element(
+                    "p",
+                    "pp-muted pp-route-empty",
+                    "Geen routes gevonden voor deze selectie."
+                ),
+                notice
+            );
+
+            selectedRouteId = null;
+
+            routeLayer?.clearLayers();
+
+            map?.setView(startView, 8);
+
+            setMapStatus(
+                "Geen route beschikbaar voor deze filters."
+            );
+
+        } else {
+
+            const selected = filtered.find(route =>
+                route.routeId === selectedRouteId
+            );
+
+            const firstWithGpx = filtered.find(route =>
+                validPoints(route.gpxPunten).length > 0
+            );
+
+            showRoute(
+                selected ||
+                firstWithGpx ||
+                filtered[0]
+            );
+        }
+
+        routeCount.textContent =
+            filtered.length +
+            " route(s) gevonden voor Avond4daagse 2027.";
+    }
+
+    distanceFilter.addEventListener(
+        "change",
+        renderRoutes
     );
 
-    renderRoutes();
-
-  } catch (error) {
-
-    console.error(
-      "Routes ophalen mislukt:",
-      error
+    dayFilter?.addEventListener(
+        "change",
+        renderRoutes
     );
+
+    // ======================================
+    // 9. KAART RESETTEN
+    // ======================================
+
+    $("ppMapReset")?.addEventListener("click", () => {
+
+        if (!map) return;
+
+        map.setView(startView, 8);
+
+        setMapStatus(
+            "Nederland in beeld. Selecteer een route om in te zoomen."
+        );
+    });
+
+    // ======================================
+    // 10. EIGEN LOCATIE
+    // ======================================
+
+    $("ppLocate")?.addEventListener("click", () => {
+
+        if (!map) return;
+
+        if (!navigator.geolocation) {
+
+            setMapStatus(
+                "Je browser ondersteunt geen locatiebepaling."
+            );
+
+            return;
+        }
+
+        setMapStatus(
+            "Je locatie wordt opgezocht..."
+        );
+
+        navigator.geolocation.getCurrentPosition(
+
+            position => {
+
+                const coordinates = [
+                    position.coords.latitude,
+                    position.coords.longitude
+                ];
+
+                if (locationMarker) {
+
+                    map.removeLayer(locationMarker);
+                }
+
+                locationMarker = L.marker(
+                    coordinates
+                ).addTo(map);
+
+                locationMarker
+                    .bindPopup("Jouw huidige locatie")
+                    .openPopup();
+
+                map.setView(coordinates, 14);
+
+                setMapStatus(
+                    "Je locatie staat op de kaart. " +
+                    "Dit is geen officieel startpunt."
+                );
+            },
+
+            () => {
+
+                setMapStatus(
+                    "Locatietoegang is geweigerd of niet beschikbaar."
+                );
+            },
+
+            {
+                enableHighAccuracy: false,
+                timeout: 10000
+            }
+        );
+    });
+
+    // ======================================
+    // 11. ROUTES UIT DATABASE OPHALEN
+    // ======================================
 
     routeCount.textContent =
-      "Routes konden niet worden geladen. " +
-      "Controleer of de backend draait.";
-  }
+        "Routes worden opgehaald...";
+
+    try {
+
+        const [routeResponse, eventResponse] =
+            await Promise.all([
+
+                fetch(
+                    API_URL + "/api/Route",
+                    { cache: "no-store" }
+                ),
+
+                fetch(
+                    API_URL + "/api/Evenement",
+                    { cache: "no-store" }
+                )
+            ]);
+
+        if (!routeResponse.ok || !eventResponse.ok) {
+
+            throw new Error(
+                "Routegegevens konden niet worden opgehaald."
+            );
+        }
+
+        const allRoutes =
+            await routeResponse.json();
+
+        const evenementen =
+            await eventResponse.json();
+
+        if (
+            !Array.isArray(allRoutes) ||
+            !Array.isArray(evenementen)
+        ) {
+
+            throw new Error(
+                "Onverwacht antwoord van de backend."
+            );
+        }
+
+        const events2027 = new Map(
+
+            evenementen
+                .filter(event =>
+                    typeof event.datum === "string" &&
+                    event.datum.startsWith("2027-")
+                )
+                .map(event => [
+                    event.evenementId,
+                    event
+                ])
+        );
+
+        routes = allRoutes
+            .filter(route =>
+                events2027.has(route.evenementId)
+            )
+            .map(route => ({
+                ...route,
+
+                evenementNaam:
+                    events2027.get(route.evenementId)?.naam ||
+                    route.evenementNaam ||
+                    ""
+            }));
+
+        renderRoutes();
+
+    } catch (error) {
+
+        console.error(
+            "Routes ophalen mislukt:",
+            error
+        );
+
+        routeCount.textContent =
+            "Routes konden niet worden geladen. " +
+            "Probeer het later opnieuw.";
+
+        setMapStatus(
+            "Routegegevens zijn momenteel niet beschikbaar."
+        );
+    }
 
 });
