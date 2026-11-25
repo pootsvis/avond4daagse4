@@ -41,6 +41,7 @@
 
     <section class="pp-hero pp-hero--register">
       <div class="pp-shell">
+
         <span class="pp-eyebrow">
           DOE MEE IN 2027
         </span>
@@ -54,6 +55,7 @@
           herinneringen maken. Bereid je
           inschrijving voor in een paar stappen.
         </p>
+
       </div>
     </section>
 
@@ -85,6 +87,8 @@
             <p class="pp-muted">
               Vul de gegevens van de deelnemers in.
               Je kunt meerdere deelnemers toevoegen.
+              Geef per deelnemer aan of er een
+              begeleider meeloopt.
             </p>
 
             <form id="ppRegistrationForm"
@@ -93,24 +97,35 @@
               style="margin-top:26px">
 
               <div class="pp-notice">
-                <strong>Demoversie</strong>
+                <strong>Inschrijving voorbereiden</strong>
                 <p>
-                  Dit formulier is nog niet aan
-                  de database gekoppeld.
-                  Er wordt nog geen echte
-                  inschrijving opgeslagen.
+                  Je gegevens worden pas opgeslagen
+                  wanneer je de inschrijving op de
+                  controlepagina bevestigt.
+                  Er wordt nog niet betaald.
                 </p>
               </div>
 
+              <!-- AFSTAND -->
               <label>
                 Afstand
+
                 <select id="ppDistanceSelect"
-                  name="afstand" required>
-                  <option value="5">5 kilometer</option>
-                  <option value="10">10 kilometer</option>
+                  name="afstand"
+                  required>
+
+                  <option value="5">
+                    5 kilometer
+                  </option>
+
+                  <option value="10">
+                    10 kilometer
+                  </option>
+
                 </select>
               </label>
 
+              <!-- DEELNEMERS -->
               <div id="ppParticipants">
 
                 <fieldset class="pp-participant">
@@ -118,8 +133,10 @@
                   <legend>Deelnemer 1</legend>
 
                   <div class="pp-field-grid">
+
                     <label>
                       Voornaam
+
                       <input type="text"
                         name="voornaam[]"
                         maxlength="80"
@@ -128,16 +145,20 @@
 
                     <label>
                       Achternaam
+
                       <input type="text"
                         name="achternaam[]"
                         maxlength="80"
                         required>
                     </label>
+
                   </div>
 
                   <div class="pp-field-grid">
+
                     <label>
                       School of groep
+
                       <input type="text"
                         name="school[]"
                         maxlength="100"
@@ -146,14 +167,17 @@
 
                     <label>
                       Geboortedatum
+
                       <input type="date"
                         name="geboortedatum[]"
                         required>
                     </label>
+
                   </div>
 
                   <label>
                     Hoeveelste deelname?
+
                     <input type="number"
                       name="keer[]"
                       min="1"
@@ -162,6 +186,52 @@
                       required>
                   </label>
 
+                  <!-- NIEUW: BEGELEIDING -->
+                  <div style="
+                    padding-top:20px;
+                    margin-top:12px;
+                    border-top:1px solid #e1e9e2;">
+
+                    <label>
+                      Loopt deze deelnemer
+                      met een begeleider mee?
+
+                      <select name="begeleider[]"
+                        required>
+
+                        <option value=""
+                          selected disabled>
+                          Maak een keuze
+                        </option>
+
+                        <option value="nee">
+                          Nee, zonder begeleider
+                        </option>
+
+                        <option value="ja">
+                          Ja, met begeleider
+                        </option>
+
+                      </select>
+                    </label>
+
+                    <p class="pp-muted"
+                      style="
+                        font-size:13px;
+                        margin-top:10px;">
+
+                      Een begeleider is iemand
+                      die tijdens de wandeltocht
+                      met deze deelnemer meeloopt.
+
+                      De contactpersoon hoeft
+                      niet dezelfde persoon
+                      te zijn als de begeleider.
+
+                    </p>
+
+                  </div>
+
                 </fieldset>
 
               </div>
@@ -169,23 +239,46 @@
               <button type="button"
                 id="ppAddParticipant"
                 class="pp-btn pp-btn--light">
+
                 + Nog een deelnemer toevoegen
+
               </button>
 
-              <div style="padding-top:20px;
+              <!-- CONTACTPERSOON -->
+              <div style="
+                padding-top:20px;
                 border-top:1px solid #e1e9e2">
 
                 <h3>Contactpersoon</h3>
 
                 <p class="pp-muted"
                   style="margin:8px 0 20px">
-                  Hier vullen ouders of begeleiders
-                  hun contactgegevens in.
+
+                  Vul hier de gegevens in van
+                  iemand die bereikbaar is over
+                  deze inschrijving.
+
+                  <strong>
+                    Schrijf je jezelf in?
+                  </strong>
+
+                  Dan mag je gewoon je eigen
+                  e-mailadres en telefoonnummer
+                  invullen.
+
+                  Voor kinderen kan dit bijvoorbeeld
+                  een ouder of verzorger zijn.
+
+                  De contactpersoon hoeft niet
+                  mee te wandelen.
+
                 </p>
 
                 <div class="pp-field-grid">
+
                   <label>
                     E-mailadres
+
                     <input type="email"
                       name="email"
                       placeholder="naam@voorbeeld.nl"
@@ -194,31 +287,42 @@
 
                   <label>
                     Telefoonnummer
+
                     <input type="tel"
                       name="telefoon"
                       placeholder="06 12345678"
                       required>
                   </label>
+
                 </div>
 
               </div>
 
+              <!-- BEVESTIGING -->
               <label class="pp-checkbox">
-                <input type="checkbox" required>
+
+                <input type="checkbox"
+                  required>
+
                 <span>
-                  Ik begrijp dat dit een
-                  demonstratieformulier is
-                  en dat nog geen echte
-                  registratie wordt verwerkt.
+                  Ik begrijp dat mijn
+                  testinschrijving bij de
+                  laatste bevestiging in
+                  de database wordt opgeslagen,
+                  zonder betaling.
                 </span>
+
               </label>
 
               <button type="submit"
                 class="pp-btn pp-btn--dark">
+
                 Verder naar controle →
+
               </button>
 
             </form>
+
           </div>
 
           <!-- SAMENVATTING -->
@@ -234,11 +338,14 @@
                 In één oogopslag
               </h2>
 
-              <div style="margin-top:25px;
-                display:grid;gap:16px">
+              <div style="
+                margin-top:25px;
+                display:grid;
+                gap:16px">
 
                 <div class="pp-order-line">
                   <span>Deelnemers</span>
+
                   <strong id="ppParticipantCount">
                     1 deelnemer
                   </strong>
@@ -257,25 +364,33 @@
               </div>
 
               <div class="pp-price">
+
                 <span>Voorbeeldtotaal</span>
+
                 <strong id="ppTotalPrice">
                   € 8,50
                 </strong>
+
               </div>
 
               <p class="pp-muted"
-                style="font-size:12px;
-                margin-top:18px">
+                style="
+                  font-size:12px;
+                  margin-top:18px">
+
                 Dit is een indicatie op basis
                 van de huidige projectmock-up.
+
                 Geen echte betaling.
+
               </p>
 
             </div>
 
             <div class="pp-card"
-              style="margin-top:18px;
-              background:#fff5e9">
+              style="
+                margin-top:18px;
+                background:#fff5e9">
 
               <h3>Wist je dat?</h3>
 
@@ -291,13 +406,16 @@
           </aside>
 
         </div>
+
       </div>
     </section>
 
     <section class="pp-section pp-section--white">
+
       <div class="pp-shell pp-two">
 
         <div>
+
           <span class="pp-eyebrow">
             SAMEN WANDELEN
           </span>
@@ -305,9 +423,11 @@
           <h2 class="pp-section-title">
             Vier avonden vol mooie momenten.
           </h2>
+
         </div>
 
         <div>
+
           <p class="pp-lead">
             Van de eerste stappen tot
             de feestelijke finish:
@@ -318,29 +438,51 @@
           <a href="praktische-informatie.html"
             class="pp-btn pp-btn--light"
             style="margin-top:22px">
+
             Praktische informatie →
+
           </a>
+
         </div>
 
       </div>
+
     </section>
 
   </main>
 
   <footer class="pp-footer">
+
     <div class="pp-shell pp-footer-inner">
+
       <div>
+
         <strong>AVOND4DAAGSE 2027</strong>
-        <p>Vier avonden. Duizend herinneringen.</p>
+
+        <p>
+          Vier avonden. Duizend herinneringen.
+        </p>
+
       </div>
+
       <div class="pp-footer-links">
-        <a href="routes.html">Routes</a>
+
+        <a href="routes.html">
+          Routes
+        </a>
+
         <a href="praktische-informatie.html">
           Praktische informatie
         </a>
-        <a href="contact.html">Contact</a>
+
+        <a href="contact.html">
+          Contact
+        </a>
+
       </div>
+
     </div>
+
   </footer>
 
 </body>
