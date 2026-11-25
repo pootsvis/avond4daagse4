@@ -1,0 +1,95 @@
+
+.ba-account-grid {
+    display: grid;
+    grid-template-columns: 1fr 1.4fr;
+    align-items: start;
+    gap: 24px;
+    margin-top: 24px;
+}
+
+.ba-account-panel h2 {
+    margin-bottom: 20px;
+}
+
+.ba-account-details {
+    display: grid;
+    gap: 10px;
+}
+
+.ba-account-details dt {
+    font-size: 13px;
+    font-weight: 600;
+    color: #647369;
+}
+
+.ba-account-details dd {
+    margin: 0 0 16px;
+    font-weight: 600;
+    overflow-wrap: anywhere;
+}
+
+.ba-account-description {
+    line-height: 1.6;
+    color: #647369;
+    margin-bottom: 20px;
+}
+
+.ba-password-form {
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+}
+
+.ba-password-form label {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    font-weight: 600;
+}
+
+.ba-password-form input[type="password"],
+.ba-password-form input[type="text"] {
+    width: 100%;
+    box-sizing: border-box;
+    border: 1px solid #d5ddd7;
+    border-radius: 8px;
+    padding: 12px;
+    font: inherit;
+    background: white;
+}
+
+.ba-password-form .ba-show-password {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    font-size: 14px;
+    font-weight: 400;
+}
+
+.ba-account-button {
+    padding: 12px 18px;
+    background: #287651;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font: inherit;
+    font-weight: 600;
+}
+
+.ba-account-button:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+#baPasswordFeedback {
+    font-weight: 600;
+    font-size: 14px;
+    line-height: 1.5;
+}
+
+@media (max-width: 800px) {
+    .ba-account-grid {
+        grid-template-columns: 1fr;
+    }
+}
