@@ -286,7 +286,17 @@ public class InzetschemaController(
                     "Vrijwilliger niet gevonden."
                 );
             }
+string? certificaatFout =
+    await InzetCertificaatControle.Controleer(
+        context,
+        vrijwilliger,
+        dienst.Naam
+    );
 
+if (certificaatFout != null)
+{
+    return Conflict(certificaatFout);
+}
             if (IsNietBeschikbaar(
                 vrijwilliger,
                 dienst.Avond))
