@@ -2,41 +2,52 @@
 using Avond4DaagseBackend.DTOs;
 using Avond4DaagseBackend.Interfaces;
 using Avond4DaagseBackend.Models;
+using Avond4DaagseBackend.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Net.Mail;
 
 namespace Avond4DaagseBackend.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]
 public class InschrijvingController(
-    IInschrijvingService inschrijvingService
+    IInschrijvingService inschrijvingService,
+    EmailService emailService,
+    ILogger<InschrijvingController> logger
 ) : ControllerBase
 {
-    // Alleen de voorzitter mag inschrijvingen bekijken.
+    // GET - ALLE INSCHRIJVINGEN
+
     [Authorize(Roles = "Voorzitter")]
     [HttpGet]
     [ProducesResponseType(
         typeof(List<InschrijvingResponse>),
         StatusCodes.Status200OK)]
-    public async Task<ActionResult<List<InschrijvingResponse>>> GetInschrijvingen()
+    public async Task<ActionResult<List<InschrijvingResponse>>>
+        GetInschrijvingen()
     {
         List<Inschrijving> inschrijvingen =
             await inschrijvingService.GetAllInschrijvingen();
 
         return Ok(
-            inschrijvingen.Select(i => i.ToResponse()).ToList()
+            inschrijvingen.Select(i =>
+                i.ToResponse()
+            ).ToList()
         );
     }
 
-    // Eén inschrijving ophalen.
+    // GET - SPECIFIEKE INSCHRIJVING
+
     [Authorize(Roles = "Voorzitter")]
     [HttpGet("{id}")]
     [ProducesResponseType(
         typeof(InschrijvingResponse),
         StatusCodes.Status200OK)]
-    [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public async Task<ActionResult<InschrijvingResponse>> GetInschrijving(int id)
+    [ProducesResponseType(
+        StatusCodes.Status404NotFound)]
+    public async Task<ActionResult<InschrijvingResponse>>
+        GetInschrijving(int id)
     {
         try
         {
@@ -51,17 +62,31 @@ public class InschrijvingController(
         }
     }
 
-    // Bezoekers mogen zich inschrijven.
+    // POST - PUBLIEKE INSCHRIJVING
+
     [AllowAnonymous]
     [HttpPost]
     [ProducesResponseType(
         typeof(InschrijvingResponse),
         StatusCodes.Status201Created)]
-    [ProducesResponseType(StatusCodes.Status400BadRequest)]
-    public async Task<ActionResult<InschrijvingResponse>> CreateInschrijving(
-        CreateInschrijvingDto dto
-    )
+    [ProducesResponseType(
+        StatusCodes.Status400BadRequest)]
+    public async Task<ActionResult<InschrijvingResponse>>
+        CreateInschrijving(CreateInschrijvingDto dto)
     {
+        string email =
+            dto.Contactpersoon?.Email?.Trim() ?? "";
+
+        if (
+            !MailAddress.TryCreate(email, out var adres) ||
+            adres.Address != email
+        )
+        {
+            return BadRequest(
+                "Vul een geldig e-mailadres in."
+            );
+        }
+
         try
         {
             Inschrijving aangemaakt =
@@ -72,9 +97,67 @@ public class InschrijvingController(
                     aangemaakt.InschrijvingId
                 );
 
+            // De inschrijving is al opgeslagen.
+            // Een mailfout mag de inschrijving niet annuleren.
+
+            try
+            {
+                string bericht = $"""
+                    Beste deelnemer,
+
+                    Bedankt voor je inschrijving voor de
+                    Avond4daagse 2027!
+
+                    We hebben je inschrijving ontvangen.
+
+                    INSCHRIJFGEGEVENS
+
+                    Inschrijfnummer: {inschrijving.InschrijvingId}
+                    Aantal deelnemers: {inschrijving.AantalDeelnemers}
+                    Afstand: {inschrijving.AfstandKm} km
+                    Status: {inschrijving.Status}
+
+                    Dit bericht bevestigt de ontvangst
+                    van je inschrijving.
+
+                    Het is geen betalingsbevestiging.
+
+                    Meer praktische informatie volgt
+                    vanuit de organisatie.
+
+                    Met vriendelijke groet,
+
+                    Team Avond4daagse 2027
+                    """;
+
+                await emailService.VerstuurAsync(
+                    email,
+                    $"Avond4daagse 2027 - Inschrijving #{inschrijving.InschrijvingId}",
+                    bericht
+                );
+
+                logger.LogInformation(
+                    "Bevestigingsmail verzonden voor inschrijving {Id}",
+                    inschrijving.InschrijvingId
+                );
+            }
+            catch (Exception ex)
+            {
+                logger.LogWarning(
+                    "Bevestigingsmail voor inschrijving {Id} mislukt: {Type}",
+                    inschrijving.InschrijvingId,
+                    ex.GetType().Name
+                );
+            }
+
             return CreatedAtAction(
                 nameof(GetInschrijving),
-                new { id = inschrijving.InschrijvingId },
+
+                new
+                {
+                    id = inschrijving.InschrijvingId
+                },
+
                 inschrijving.ToResponse()
             );
         }
@@ -84,21 +167,27 @@ public class InschrijvingController(
         }
     }
 
-    // Alleen de voorzitter mag inschrijvingen aanpassen.
+    // PUT - INSCHRIJVING AANPASSEN
+
     [Authorize(Roles = "Voorzitter")]
     [HttpPut("{id}")]
     [ProducesResponseType(
         typeof(InschrijvingResponse),
         StatusCodes.Status200OK)]
-    [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public async Task<ActionResult<InschrijvingResponse>> UpdateInschrijving(
-        int id,
-        UpdateInschrijvingDto dto
-    )
+    [ProducesResponseType(
+        StatusCodes.Status404NotFound)]
+    public async Task<ActionResult<InschrijvingResponse>>
+        UpdateInschrijving(
+            int id,
+            UpdateInschrijvingDto dto
+        )
     {
         try
         {
-            await inschrijvingService.UpdateInschrijving(id, dto);
+            await inschrijvingService.UpdateInschrijving(
+                id,
+                dto
+            );
 
             Inschrijving inschrijving =
                 await inschrijvingService.GetInschrijvingById(id);
@@ -111,12 +200,16 @@ public class InschrijvingController(
         }
     }
 
-    // Alleen de voorzitter mag inschrijvingen verwijderen.
+    // DELETE - INSCHRIJVING VERWIJDEREN
+
     [Authorize(Roles = "Voorzitter")]
     [HttpDelete("{id}")]
-    [ProducesResponseType(StatusCodes.Status204NoContent)]
-    [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public async Task<ActionResult> DeleteInschrijving(int id)
+    [ProducesResponseType(
+        StatusCodes.Status204NoContent)]
+    [ProducesResponseType(
+        StatusCodes.Status404NotFound)]
+    public async Task<ActionResult>
+        DeleteInschrijving(int id)
     {
         try
         {
