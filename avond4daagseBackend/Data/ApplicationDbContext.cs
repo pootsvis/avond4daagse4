@@ -95,10 +95,23 @@ public class ApplicationDbContext : DbContext
         });
 
         modelBuilder.Entity<Vrijwilliger>(v =>
-        {
-            v.Property(x => x.VrijwilligersId).ValueGeneratedNever();
-            v.HasOne(x => x.Persoon).WithOne(p => p.Vrijwilliger).HasForeignKey<Vrijwilliger>(x => x.VrijwilligersId);
-        });
+{
+    v.Property(x => x.VrijwilligersId)
+        .ValueGeneratedNever();
+
+    v.HasOne(x => x.Persoon)
+        .WithOne(p => p.Vrijwilliger)
+        .HasForeignKey<Vrijwilliger>(
+            x => x.VrijwilligersId
+        );
+
+    v.HasOne(x => x.Gebruiker)
+        .WithOne()
+        .HasForeignKey<Vrijwilliger>(
+            x => x.GebruikerId
+        )
+        .OnDelete(DeleteBehavior.SetNull);
+});
 
         // Koppeltabellen met samengestelde primaire sleutel
         modelBuilder.Entity<EvenementSponsor>().HasKey(x => new { x.EvenementId, x.SponsorId });

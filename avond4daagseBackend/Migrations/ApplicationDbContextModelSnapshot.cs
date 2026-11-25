@@ -649,6 +649,13 @@ namespace avond4daagseBackend.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
+                    b.Property<string>("BeschikbaarheidJson")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<int?>("GebruikerId")
+                        .HasColumnType("integer");
+
                     b.Property<string>("Inzetting")
                         .IsRequired()
                         .HasColumnType("text");
@@ -666,6 +673,9 @@ namespace avond4daagseBackend.Migrations
                         .HasColumnType("text");
 
                     b.HasKey("VrijwilligersId");
+
+                    b.HasIndex("GebruikerId")
+                        .IsUnique();
 
                     b.ToTable("Vrijwilligers");
                 });
@@ -880,11 +890,18 @@ namespace avond4daagseBackend.Migrations
 
             modelBuilder.Entity("Avond4DaagseBackend.Models.Vrijwilliger", b =>
                 {
+                    b.HasOne("Avond4DaagseBackend.Models.Gebruiker", "Gebruiker")
+                        .WithOne()
+                        .HasForeignKey("Avond4DaagseBackend.Models.Vrijwilliger", "GebruikerId")
+                        .OnDelete(DeleteBehavior.SetNull);
+
                     b.HasOne("Avond4DaagseBackend.Models.Persoon", "Persoon")
                         .WithOne("Vrijwilliger")
                         .HasForeignKey("Avond4DaagseBackend.Models.Vrijwilliger", "VrijwilligersId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("Gebruiker");
 
                     b.Navigation("Persoon");
                 });
