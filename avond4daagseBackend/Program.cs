@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Avond4DaagseBackend.Models;
+using Avond4DaagseBackend.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -52,6 +53,9 @@ builder.Services.AddScoped<IVrijwilligerService, VrijwilligerService>();
 builder.Services.AddScoped<ITaakToewijzingService, TaakToewijzingService>();
 builder.Services.AddScoped<IPasswordHasher<Gebruiker>, PasswordHasher<Gebruiker>>();
 builder.Services.AddScoped<IDeelnemerService, DeelnemerService>();
+
+// EMAIL SERVICE
+builder.Services.AddScoped<EmailService>();
 
 // AUTHENTICATIE MET COOKIES
 builder.Services
