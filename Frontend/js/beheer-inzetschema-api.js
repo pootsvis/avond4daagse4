@@ -1,7 +1,7 @@
 
 // ==========================================
 // AVOND4DAAGSE 2027
-// INZETSCHEMA - BACKEND INTEGRATIE
+// INZETSCHEMA MET ROLGEBASEERDE RECHTEN
 // ==========================================
 
 document.addEventListener("DOMContentLoaded", () => {
@@ -23,11 +23,95 @@ document.addEventListener("DOMContentLoaded", () => {
     let shifts = [];
     let volunteers = [];
     let selectedKey = null;
+
     let ready = false;
     let busy = false;
+    let kanBeheren = false;
+
+    const assignmentCard =
+        volunteerSelect.closest(".bv-assignment-card");
+
+    const assignedNames =
+        $("bsAssignedNames").closest(".bv-assignment-list");
+
+    if (assignmentCard) {
+        assignmentCard.style.display = "none";
+    }
+
+    if (assignedNames) {
+        assignedNames.style.display = "none";
+    }
 
     // ======================================
-    // 1. API
+    // 1. RECHTEN CONTROLEREN
+    // ======================================
+
+    async function controleerRechten() {
+
+        const response = await fetch(
+            "http://localhost:5278/api/Auth/me",
+            {
+                credentials: "include",
+                cache: "no-store"
+            }
+        );
+
+        if (!response.ok) {
+
+            throw new Error(
+                "Sessie controleren mislukt."
+            );
+        }
+
+        const gebruiker = await response.json();
+
+        kanBeheren =
+            Array.isArray(gebruiker.rollen) &&
+            gebruiker.rollen.includes("Voorzitter");
+
+        if (assignmentCard) {
+
+            assignmentCard.style.display =
+                kanBeheren ? "" : "none";
+        }
+
+        if (assignedNames) {
+
+            assignedNames.style.display =
+                kanBeheren ? "" : "none";
+        }
+
+        const heading = document.querySelector(
+            ".bv-heading div > p:last-child"
+        );
+
+        if (heading) {
+
+            heading.textContent = kanBeheren
+
+                ? "Bekijk de bezetting per dienst en " +
+                  "plan vrijwilligers centraal in."
+
+                : "Bekijk het dienstenrooster en " +
+                  "de actuele bezetting. Je hebt leesrechten.";
+        }
+
+        if (!kanBeheren) {
+
+            document.querySelectorAll(
+                'a[href="vrijwilligers.html"]'
+            ).forEach(link => {
+
+                if (!link.closest("#bmSidebar")) {
+
+                    link.style.display = "none";
+                }
+            });
+        }
+    }
+
+    // ======================================
+    // 2. API
     // ======================================
 
     async function request(
@@ -46,9 +130,11 @@ document.addEventListener("DOMContentLoaded", () => {
                     method,
                     credentials: "include",
                     cache: "no-store",
+
                     headers: {
                         "Content-Type": "application/json"
                     },
+
                     body: data === undefined
                         ? undefined
                         : JSON.stringify(data)
@@ -72,7 +158,7 @@ document.addEventListener("DOMContentLoaded", () => {
         if (response.status === 403) {
 
             throw new Error(
-                "De rol Voorzitter is vereist."
+                "Je hebt geen rechten voor deze actie."
             );
         }
 
@@ -101,7 +187,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     // ======================================
-    // 2. HULPFUNCTIES
+    // 3. HULPFUNCTIES
     // ======================================
 
     function element(tag, className = "", text) {
@@ -109,12 +195,10 @@ document.addEventListener("DOMContentLoaded", () => {
         const node = document.createElement(tag);
 
         if (className) {
-
             node.className = className;
         }
 
         if (text !== undefined) {
-
             node.textContent = String(text);
         }
 
@@ -138,6 +222,7 @@ document.addEventListener("DOMContentLoaded", () => {
         tbody.replaceChildren();
 
         const row = element("tr");
+
         const cell = element("td", "", text);
 
         cell.colSpan = 5;
@@ -148,7 +233,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     // ======================================
-    // 3. STATISTIEKEN
+    // 4. STATISTIEKEN
     // ======================================
 
     function renderStatistics() {
@@ -170,7 +255,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     // ======================================
-    // 4. ROOSTER
+    // 5. DIENSTENROOSTER
     // ======================================
 
     function renderSchedule() {
@@ -180,7 +265,9 @@ document.addEventListener("DOMContentLoaded", () => {
         tbody.replaceChildren();
 
         const evenings = dayFilter.value === "all"
+
             ? [1, 2, 3, 4]
+
             : [Number(dayFilter.value)];
 
         document.querySelectorAll(
@@ -235,32 +322,32 @@ document.addEventListener("DOMContentLoaded", () => {
 
                     button.type = "button";
 
-                    if (shift.open === 0) {
-
-                        button.classList.add("is-full");
-                    } else {
-
-                        button.classList.add("is-open");
-                    }
+                    button.classList.add(
+                        shift.open === 0
+                            ? "is-full"
+                            : "is-open"
+                    );
 
                     button.classList.toggle(
                         "is-selected",
                         selectedKey === shift.key
                     );
 
-                    button.style.display = "flex";
+                    Object.assign(button.style, {
 
-                    button.style.flexDirection =
-                        "column";
+                        display: "flex",
 
-                    button.style.gap = "6px";
+                        flexDirection: "column",
 
-                    button.style.width = "100%";
+                        gap: "6px",
 
-                    button.style.backgroundColor =
-                        shift.open > 0
-                            ? "#e5f1e8"
-                            : "#eceeec";
+                        width: "100%",
+
+                        backgroundColor:
+                            shift.open > 0
+                                ? "#e5f1e8"
+                                : "#eceeec"
+                    });
 
                     if (selectedKey === shift.key) {
 
@@ -269,14 +356,17 @@ document.addEventListener("DOMContentLoaded", () => {
                     }
 
                     button.append(
+
                         element(
                             "strong", "", shift.naam
                         ),
+
                         element(
                             "span", "",
                             shift.bezet + " / " +
                             shift.capaciteit + " bezet"
                         ),
+
                         element(
                             "small", "",
                             shift.open + " open plaatsen"
@@ -290,6 +380,7 @@ document.addEventListener("DOMContentLoaded", () => {
                             selectedKey = shift.key;
 
                             renderSchedule();
+
                             renderDetails();
 
                             message("");
@@ -309,10 +400,19 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     // ======================================
-    // 5. VRIJWILLIGERSSELECTIE
+    // 6. VRIJWILLIGERSSELECTIE
     // ======================================
 
     function renderVolunteerOptions(shift) {
+
+        if (!kanBeheren) {
+
+            volunteerSelect.disabled = true;
+
+            addButton.disabled = true;
+
+            return;
+        }
 
         const previous = volunteerSelect.value;
 
@@ -375,7 +475,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     // ======================================
-    // 6. DIENSTDETAILS
+    // 7. DIENSTDETAILS
     // ======================================
 
     function renderDetails() {
@@ -413,13 +513,28 @@ document.addEventListener("DOMContentLoaded", () => {
             shift.capaciteit + " plaatsen bezet";
 
         $("bsDetailStatus").textContent =
+
             shift.open === 0
                 ? "Volledig bezet"
                 : shift.open + " open plaatsen";
 
-        $("bsBaseInfo").textContent =
-            "Alle onderstaande toewijzingen " +
-            "komen uit de database.";
+        $("bsBaseInfo").textContent = kanBeheren
+
+            ? "Alle onderstaande toewijzingen " +
+              "komen uit de database."
+
+            : "Deze dienst heeft " +
+              shift.bezet + " ingeplande vrijwilligers. " +
+              "Alleen de voorzitter kan de bezetting aanpassen.";
+
+        if (!kanBeheren) {
+
+            volunteerSelect.disabled = true;
+
+            addButton.disabled = true;
+
+            return;
+        }
 
         const assigned = shift.vrijwilligers || [];
 
@@ -437,14 +552,16 @@ document.addEventListener("DOMContentLoaded", () => {
 
             const item = element("li");
 
-            item.style.display = "flex";
+            Object.assign(item.style, {
 
-            item.style.alignItems = "center";
+                display: "flex",
 
-            item.style.justifyContent =
-                "space-between";
+                alignItems: "center",
 
-            item.style.gap = "10px";
+                justifyContent: "space-between",
+
+                gap: "10px"
+            });
 
             const name = element(
                 "span", "", person.naam
@@ -477,7 +594,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     // ======================================
-    // 7. GEGEVENS OPHALEN
+    // 8. GEGEVENS OPHALEN
     // ======================================
 
     async function loadSchedule() {
@@ -485,16 +602,23 @@ document.addEventListener("DOMContentLoaded", () => {
         ready = false;
 
         addButton.disabled = true;
+
         volunteerSelect.disabled = true;
 
         showTableMessage(
             "Inzetschema wordt geladen..."
         );
 
+        await controleerRechten();
+
         const [scheduleData, volunteerData] =
             await Promise.all([
+
                 request(),
-                request("/vrijwilligers")
+
+                kanBeheren
+                    ? request("/vrijwilligers")
+                    : Promise.resolve([])
             ]);
 
         if (
@@ -517,24 +641,31 @@ document.addEventListener("DOMContentLoaded", () => {
 
         renderDetails();
 
-        noticeTitle.textContent =
-            "Inzetschema verbonden met de database";
+        noticeTitle.textContent = kanBeheren
 
-        noticeText.textContent =
-            "De bezetting bestaat uit echte opgeslagen " +
-            "toewijzingen. Diensttijden, capaciteiten " +
-            "en evenementdatums zijn voorlopig.";
+            ? "Inzetschema verbonden met de database"
+
+            : "Inzetschema · Alleen bekijken";
+
+        noticeText.textContent = kanBeheren
+
+            ? "De bezetting bestaat uit echte opgeslagen " +
+              "toewijzingen. Diensttijden, capaciteiten " +
+              "en evenementdatums zijn voorlopig."
+
+            : "Je kunt het rooster en de bezetting bekijken. " +
+              "Alleen de voorzitter kan vrijwilligers inplannen.";
     }
 
     // ======================================
-    // 8. TOEWIJZING TOEVOEGEN
+    // 9. TOEWIJZING TOEVOEGEN
     // ======================================
 
     addButton.addEventListener(
         "click",
         async () => {
 
-            if (!ready || busy) return;
+            if (!kanBeheren || !ready || busy) return;
 
             const shift = selectedShift();
 
@@ -582,7 +713,7 @@ document.addEventListener("DOMContentLoaded", () => {
     );
 
     // ======================================
-    // 9. TOEWIJZING VERWIJDEREN
+    // 10. TOEWIJZING VERWIJDEREN
     // ======================================
 
     async function removeAssignment(
@@ -590,7 +721,7 @@ document.addEventListener("DOMContentLoaded", () => {
         person
     ) {
 
-        if (!ready || busy) return;
+        if (!kanBeheren || !ready || busy) return;
 
         const confirmed = window.confirm(
             person.naam +
@@ -635,7 +766,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     // ======================================
-    // 10. FILTERS
+    // 11. FILTERS
     // ======================================
 
     dayFilter.addEventListener(
@@ -655,6 +786,7 @@ document.addEventListener("DOMContentLoaded", () => {
             const shift = selectedShift();
 
             addButton.disabled =
+                !kanBeheren ||
                 !ready ||
                 busy ||
                 !shift ||
@@ -664,7 +796,7 @@ document.addEventListener("DOMContentLoaded", () => {
     );
 
     // ======================================
-    // 11. DEMOTEKSTEN VERVANGEN
+    // 12. INTERFACE
     // ======================================
 
     const notice = document.querySelector(
@@ -686,17 +818,6 @@ document.addEventListener("DOMContentLoaded", () => {
     $("bsTotalShifts").textContent = "—";
     $("bsOpenPlaces").textContent = "—";
     $("bsFullShifts").textContent = "—";
-
-    const heading = document.querySelector(
-        ".bv-heading div > p:last-child"
-    );
-
-    if (heading) {
-
-        heading.textContent =
-            "Bekijk de bezetting per dienst en " +
-            "plan vrijwilligers centraal in.";
-    }
 
     const totalLabel = $("bsTotalShifts")
         .parentElement.querySelector("small");
@@ -736,9 +857,7 @@ document.addEventListener("DOMContentLoaded", () => {
         help.textContent =
             "De backend controleert capaciteit, " +
             "dubbele toewijzingen, overlappende " +
-            "diensten en expliciet opgegeven " +
-            "onbeschikbaarheid. Controleer ook " +
-            "bevoegdheden en onbevestigde beschikbaarheid.";
+            "diensten en onbeschikbaarheid.";
     }
 
     const footer = document.querySelector(
@@ -782,7 +901,7 @@ document.addEventListener("DOMContentLoaded", () => {
     );
 
     // ======================================
-    // 12. START
+    // 13. START
     // ======================================
 
     loadSchedule().catch(error => {
