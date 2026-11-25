@@ -11,7 +11,7 @@ namespace Avond4DaagseBackend.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]
-[Authorize(Roles = "Voorzitter")]
+[Authorize(Roles = "Voorzitter,Secretaris,Penningmeester,Vrijwilliger,Verkeersregelaars")]
 public class InzetschemaController(
     ApplicationDbContext context
 ) : ControllerBase
@@ -109,12 +109,16 @@ public class InzetschemaController(
 
     // ======================================
     // GET - DIENSTEN EN BEZETTING
+    // ALLE ORGANISATIEROLLEN
     // ======================================
 
     [HttpGet]
     public async Task<IActionResult> GetInzetschema()
     {
+        bool kanBeheren = User.IsInRole("Voorzitter");
+
         var taken = await context.Draaiboektaken
+            .AsNoTracking()
             .Where(t => t.Categorie.StartsWith("Inzet:"))
             .Include(t => t.Taaktoewijzingen)
                 .ThenInclude(t => t.Vrijwilliger)
@@ -148,11 +152,15 @@ public class InzetschemaController(
                 naam = dienst.Naam,
                 capaciteit = dienst.Capaciteit,
                 bezet,
+
                 open = Math.Max(
                     0,
                     dienst.Capaciteit - bezet
                 ),
-                vrijwilligers
+
+                vrijwilligers = kanBeheren
+                    ? vrijwilligers
+                    : null
             };
         });
 
@@ -160,9 +168,11 @@ public class InzetschemaController(
     }
 
     // ======================================
-    // GET - BESCHIKBARE VRIJWILLIGERS
+    // GET - VRIJWILLIGERS
+    // ALLEEN VOORZITTER
     // ======================================
 
+    [Authorize(Roles = "Voorzitter")]
     [HttpGet("vrijwilligers")]
     public async Task<IActionResult> GetVrijwilligers()
     {
@@ -173,12 +183,18 @@ public class InzetschemaController(
         return Ok(vrijwilligers.Select(v => new
         {
             vrijwilligersId = v.VrijwilligersId,
+
             naam =
                 v.Persoon.Voornaam + " " +
                 v.Persoon.Achternaam,
+
             rol = v.Voorkeursrol,
-            gekoppeldAccount = v.GebruikerId.HasValue,
-            beschikbaarheid = v.Beschikbaarheid
+
+            gekoppeldAccount =
+                v.GebruikerId.HasValue,
+
+            beschikbaarheid =
+                v.Beschikbaarheid
         }));
     }
 
@@ -236,8 +252,10 @@ public class InzetschemaController(
 
     // ======================================
     // POST - VRIJWILLIGER TOEWIJZEN
+    // ALLEEN VOORZITTER
     // ======================================
 
+    [Authorize(Roles = "Voorzitter")]
     [HttpPost("{key}")]
     public async Task<IActionResult> Toewijzen(
         string key,
@@ -340,6 +358,7 @@ public class InzetschemaController(
                 taak = new Draaiboektaak
                 {
                     Titel = dienst.Naam,
+
                     Beschrijving =
                         $"Voorlopige dienst Avond " +
                         $"{dienst.Avond}, {dienst.Tijd}",
@@ -349,7 +368,9 @@ public class InzetschemaController(
                     ),
 
                     Categorie = Categorie(dienst),
+
                     Status = "Open",
+
                     Verantwoordelijke = dienst.Naam
                 };
 
@@ -382,6 +403,7 @@ public class InzetschemaController(
             }
 
             await context.SaveChangesAsync();
+
             await transaction.CommitAsync();
 
             return NoContent();
@@ -403,8 +425,10 @@ public class InzetschemaController(
 
     // ======================================
     // DELETE - TOEWIJZING VERWIJDEREN
+    // ALLEEN VOORZITTER
     // ======================================
 
+    [Authorize(Roles = "Voorzitter")]
     [HttpDelete("{key}/{vrijwilligersId:int}")]
     public async Task<IActionResult> VerwijderToewijzing(
         string key,

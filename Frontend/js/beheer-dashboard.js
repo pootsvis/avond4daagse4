@@ -1,37 +1,55 @@
 
 // ==========================================
 // AVOND4DAAGSE 2027
-// DASHBOARD - BACKEND INTEGRATIE
+// DASHBOARD PER GEBRUIKERSROL
 // ==========================================
 
 document.addEventListener("DOMContentLoaded", () => {
 
     const API_URL = "http://localhost:5278";
 
-    const stats = document.querySelectorAll(".bm-stat-card");
+    const stats = document.querySelectorAll(
+        ".bm-stat-card"
+    );
 
     const tableBody = document.querySelector(
         ".bm-table tbody"
     );
 
-    const notice = document.querySelector(".bm-notice");
-    const noticeTitle = notice.querySelector("strong");
-    const noticeText = notice.querySelector("p");
+    const recentPanel = tableBody?.closest(
+        ".bm-panel"
+    );
 
-    const numberFormat = new Intl.NumberFormat("nl-NL");
+    const notice = document.querySelector(
+        ".bm-notice"
+    );
+
+    const noticeTitle = notice.querySelector(
+        "strong"
+    );
+
+    const noticeText = notice.querySelector(
+        "p"
+    );
+
+    const numberFormat =
+        new Intl.NumberFormat("nl-NL");
 
     // ======================================
-    // 1. API VERZOEKEN
+    // 1. API
     // ======================================
 
     async function getData(path) {
 
         const response = await fetch(
+
             API_URL + path,
+
             {
-                method: "GET",
                 credentials: "include",
+
                 cache: "no-store",
+
                 headers: {
                     "Accept": "application/json"
                 }
@@ -48,7 +66,7 @@ document.addEventListener("DOMContentLoaded", () => {
         if (response.status === 403) {
 
             throw new Error(
-                "Je hebt geen toegang tot deze gegevens."
+                "Geen toegang tot deze gegevens."
             );
         }
 
@@ -59,23 +77,20 @@ document.addEventListener("DOMContentLoaded", () => {
             );
         }
 
-        const data = await response.json();
-
-        if (!Array.isArray(data)) {
-
-            throw new Error(
-                "Onverwacht antwoord van de backend."
-            );
-        }
-
-        return data;
+        return await response.json();
     }
 
     // ======================================
-    // 2. STATISTIEKEN WEERGEVEN
+    // 2. STATISTIEKEN
     // ======================================
 
-    function updateStat(index, label, value, icon, description) {
+    function updateStat(
+        index,
+        label,
+        value,
+        icon,
+        description
+    ) {
 
         const card = stats[index];
 
@@ -89,7 +104,9 @@ document.addEventListener("DOMContentLoaded", () => {
             ".bm-stat-icon"
         ).textContent = icon;
 
-        card.querySelector("strong").textContent =
+        card.querySelector(
+            "strong"
+        ).textContent =
             typeof value === "number"
                 ? numberFormat.format(value)
                 : value;
@@ -108,57 +125,35 @@ document.addEventListener("DOMContentLoaded", () => {
         );
     }
 
-    // ======================================
-    // 3. TOTAAL DEELNEMERS
-    // ======================================
-
     function countParticipants(inschrijvingen) {
 
         return inschrijvingen.reduce(
-            (total, inschrijving) => {
-
-                const aantal =
-                    inschrijving.aantalDeelnemers;
+            (total, item) => {
 
                 if (
-                    aantal != null &&
-                    Number.isFinite(Number(aantal)) &&
-                    Number(aantal) >= 0
+                    item.aantalDeelnemers != null &&
+                    Number.isFinite(
+                        Number(item.aantalDeelnemers)
+                    )
                 ) {
 
-                    return total + Number(aantal);
+                    return total +
+                        Number(item.aantalDeelnemers);
                 }
 
                 return total + (
-                    Array.isArray(inschrijving.deelnemers)
-                        ? inschrijving.deelnemers.length
+                    Array.isArray(item.deelnemers)
+                        ? item.deelnemers.length
                         : 0
                 );
-
             },
+
             0
         );
     }
 
     // ======================================
-    // 4. CONTACTVRAGEN
-    // ======================================
-
-    function countOpenQuestions(contactvragen) {
-
-        return contactvragen.filter(vraag => {
-
-            const status = String(
-                vraag.status || "Nieuw"
-            ).trim().toLowerCase();
-
-            return status !== "beantwoord";
-
-        }).length;
-    }
-
-    // ======================================
-    // 5. RECENTE INSCHRIJVINGEN
+    // 3. RECENTE INSCHRIJVINGEN
     // ======================================
 
     function showTableMessage(message) {
@@ -166,20 +161,23 @@ document.addEventListener("DOMContentLoaded", () => {
         tableBody.replaceChildren();
 
         const row = document.createElement("tr");
+
         const cell = document.createElement("td");
 
         cell.colSpan = 3;
+
         cell.textContent = message;
 
         row.appendChild(cell);
+
         tableBody.appendChild(row);
     }
 
-    function renderRecentRegistrations(inschrijvingen) {
+    function renderRecentRegistrations(items) {
 
         tableBody.replaceChildren();
 
-        if (!inschrijvingen.length) {
+        if (!items.length) {
 
             showTableMessage(
                 "Er zijn nog geen inschrijvingen."
@@ -188,23 +186,20 @@ document.addEventListener("DOMContentLoaded", () => {
             return;
         }
 
-        const recent = [...inschrijvingen]
-            .sort((a, b) => {
+        const recent = [...items]
 
-                const dateA =
-                    Date.parse(a.inschrijfdatum) || 0;
+            .sort((a, b) =>
 
-                const dateB =
-                    Date.parse(b.inschrijfdatum) || 0;
+                (Date.parse(b.inschrijfdatum) || 0) -
+                (Date.parse(a.inschrijfdatum) || 0) ||
 
-                return dateB - dateA ||
-                    Number(b.inschrijvingId) -
-                    Number(a.inschrijvingId);
+                Number(b.inschrijvingId) -
+                Number(a.inschrijvingId)
+            )
 
-            })
             .slice(0, 5);
 
-        recent.forEach(inschrijving => {
+        recent.forEach(item => {
 
             const row = document.createElement("tr");
 
@@ -217,49 +212,50 @@ document.addEventListener("DOMContentLoaded", () => {
             const statusCell =
                 document.createElement("td");
 
-            const statusBadge =
+            const badge =
                 document.createElement("span");
 
-            const deelnemers = Array.isArray(
-                inschrijving.deelnemers
-            )
-                ? inschrijving.deelnemers
-                : [];
+            const deelnemers =
+                Array.isArray(item.deelnemers)
+                    ? item.deelnemers
+                    : [];
 
-            const names = deelnemers.map(deelnemer =>
-                [
-                    deelnemer.voornaam,
-                    deelnemer.achternaam
-                ].filter(Boolean).join(" ").trim()
-            ).filter(Boolean);
+            const names = deelnemers
+                .map(person =>
 
-            nameCell.textContent = names.length
-                ? names.join(", ")
-                : "Inschrijving #" +
-                  inschrijving.inschrijvingId;
+                    [
+                        person.voornaam,
+                        person.achternaam
+                    ].filter(Boolean).join(" ")
+                )
+                .filter(Boolean);
 
-            const afstand =
-                Number(inschrijving.afstandKm);
+            nameCell.textContent =
+                names.length
+                    ? names.join(", ")
+                    : "Inschrijving #" +
+                      item.inschrijvingId;
 
-            distanceCell.textContent = afstand > 0
-                ? afstand + " km"
-                : "—";
+            distanceCell.textContent =
+                item.afstandKm
+                    ? item.afstandKm + " km"
+                    : "—";
 
-            const status = String(
-                inschrijving.status || "Onbekend"
-            );
+            const status =
+                item.status || "Onbekend";
 
-            statusBadge.className =
+            badge.className =
                 "bm-status " +
+
                 (
                     status.toLowerCase() === "betaald"
                         ? "bm-paid"
                         : "bm-pending"
                 );
 
-            statusBadge.textContent = status;
+            badge.textContent = status;
 
-            statusCell.appendChild(statusBadge);
+            statusCell.appendChild(badge);
 
             row.append(
                 nameCell,
@@ -272,7 +268,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     // ======================================
-    // 6. DEMOTEKSTEN VERVANGEN
+    // 4. INTERFACE VOORBEREIDEN
     // ======================================
 
     function prepareDashboard() {
@@ -283,7 +279,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
         if (tag) {
 
-            tag.textContent = "Databaseoverzicht";
+            tag.textContent = "Persoonlijk overzicht";
         }
 
         const caption = document.querySelector(
@@ -293,31 +289,6 @@ document.addEventListener("DOMContentLoaded", () => {
         if (caption) {
 
             caption.textContent = "Actuele gegevens";
-        }
-
-        const recentPanel = tableBody.closest(
-            ".bm-panel"
-        );
-
-        const eyebrow = recentPanel.querySelector(
-            ".bm-eyebrow"
-        );
-
-        if (eyebrow) {
-
-            eyebrow.textContent =
-                "LAATSTE INSCHRIJVINGEN";
-        }
-
-        const panelNote = recentPanel.querySelector(
-            ".bm-panel-note"
-        );
-
-        if (panelNote) {
-
-            panelNote.textContent =
-                "De vijf meest recente inschrijvingen " +
-                "uit de database.";
         }
 
         const footer = document.querySelector(
@@ -330,184 +301,365 @@ document.addEventListener("DOMContentLoaded", () => {
                 "Avond4daagse 2027 · Beheeromgeving";
         }
 
-        noticeTitle.textContent =
-            "Dashboardgegevens ophalen";
+        if (recentPanel) {
 
-        noticeText.textContent =
-            "De actuele gegevens worden geladen.";
+            recentPanel.style.display = "none";
 
-        updateStat(
-            0, "Inschrijvingen", "—",
-            "◎", "Gegevens laden"
-        );
+            const eyebrow = recentPanel.querySelector(
+                ".bm-eyebrow"
+            );
 
-        updateStat(
-            1, "Deelnemers", "—",
-            "♧", "Gegevens laden"
-        );
+            if (eyebrow) {
 
-        updateStat(
-            2, "Wandelroutes", "—",
-            "◇", "Gegevens laden"
-        );
+                eyebrow.textContent =
+                    "LAATSTE INSCHRIJVINGEN";
+            }
 
-        updateStat(
-            3, "Openstaande vragen", "—",
-            "✉", "Gegevens laden"
-        );
+            const note = recentPanel.querySelector(
+                ".bm-panel-note"
+            );
+
+            if (note) {
+
+                note.textContent =
+                    "De vijf meest recente inschrijvingen.";
+            }
+        }
 
         showTableMessage(
-            "Inschrijvingen worden opgehaald..."
+            "Gegevens worden geladen..."
         );
+
+        stats.forEach((card, index) => {
+
+            updateStat(
+                index,
+                "Gegevens",
+                "—",
+                "◎",
+                "Bezig met laden"
+            );
+        });
+
+        noticeTitle.textContent =
+            "Dashboard laden";
+
+        noticeText.textContent =
+            "Je persoonlijke overzicht wordt opgehaald.";
     }
 
     // ======================================
-    // 7. DASHBOARD LADEN
+    // 5. DASHBOARD LADEN
     // ======================================
 
     async function loadDashboard() {
 
         prepareDashboard();
 
-        const results = await Promise.allSettled([
-            getData("/api/Inschrijving"),
-            getData("/api/Route"),
-            getData("/api/ContactVraag")
-        ]);
+        try {
 
-        const [
-            inschrijvingenResult,
-            routesResult,
-            contactvragenResult
-        ] = results;
-
-        const errors = [];
-
-        // INSCHRIJVINGEN EN DEELNEMERS
-
-        if (inschrijvingenResult.status === "fulfilled") {
-
-            const inschrijvingen =
-                inschrijvingenResult.value;
-
-            updateStat(
-                0,
-                "Inschrijvingen",
-                inschrijvingen.length,
-                "◎",
-                "Totaal inschrijvingen"
+            const gebruiker = await getData(
+                "/api/Auth/me"
             );
 
-            updateStat(
-                1,
-                "Deelnemers",
-                countParticipants(inschrijvingen),
-                "♧",
-                "Totaal geregistreerde deelnemers"
+            const rollen =
+                Array.isArray(gebruiker.rollen)
+                    ? gebruiker.rollen
+                    : [];
+
+            const voorzitter =
+                rollen.includes("Voorzitter");
+
+            const secretaris =
+                rollen.includes("Secretaris");
+
+            const penningmeester =
+                rollen.includes("Penningmeester");
+
+            const vrijwilliger =
+                rollen.includes("Vrijwilliger") ||
+                rollen.includes("Verkeersregelaars");
+
+            const errors = [];
+
+            // Alleen toegestane gegevens ophalen.
+
+            async function veiligOphalen(path) {
+
+                try {
+
+                    const data = await getData(path);
+
+                    if (!Array.isArray(data)) {
+
+                        throw new Error(
+                            "Onverwacht API-antwoord."
+                        );
+                    }
+
+                    return data;
+
+                } catch (error) {
+
+                    errors.push(
+                        path + ": " + error.message
+                    );
+
+                    return null;
+                }
+            }
+
+            // Algemene gegevens zijn voor alle rollen.
+
+            const [routes, diensten] =
+                await Promise.all([
+
+                    veiligOphalen("/api/Route"),
+
+                    veiligOphalen("/api/Inzetschema")
+                ]);
+
+            if (voorzitter) {
+
+                const [inschrijvingen, vrijwilligers] =
+                    await Promise.all([
+
+                        veiligOphalen("/api/Inschrijving"),
+
+                        veiligOphalen("/api/Vrijwilliger")
+                    ]);
+
+                updateStat(
+
+                    0,
+
+                    "Inschrijvingen",
+
+                    inschrijvingen?.length ?? "—",
+
+                    "◎",
+
+                    "Totaal inschrijvingen"
+                );
+
+                updateStat(
+
+                    1,
+
+                    "Deelnemers",
+
+                    inschrijvingen
+                        ? countParticipants(inschrijvingen)
+                        : "—",
+
+                    "♧",
+
+                    "Geregistreerde deelnemers"
+                );
+
+                updateStat(
+
+                    2,
+
+                    "Wandelroutes",
+
+                    routes?.length ?? "—",
+
+                    "◇",
+
+                    "Routes in de database"
+                );
+
+                updateStat(
+
+                    3,
+
+                    "Vrijwilligers",
+
+                    vrijwilligers?.length ?? "—",
+
+                    "♧",
+
+                    "Geregistreerde vrijwilligers"
+                );
+
+                if (recentPanel) {
+
+                    recentPanel.style.display = "";
+                }
+
+                if (inschrijvingen) {
+
+                    renderRecentRegistrations(
+                        inschrijvingen
+                    );
+
+                } else {
+
+                    showTableMessage(
+                        "Inschrijvingen niet beschikbaar."
+                    );
+                }
+
+            } else {
+
+                updateStat(
+
+                    0,
+
+                    "Wandelroutes",
+
+                    routes?.length ?? "—",
+
+                    "◇",
+
+                    "Beschikbare routes"
+                );
+
+                updateStat(
+
+                    1,
+
+                    "Diensten",
+
+                    diensten?.length ?? "—",
+
+                    "◷",
+
+                    "Diensten in het inzetschema"
+                );
+
+                updateStat(
+
+                    2,
+
+                    "Open plaatsen",
+
+                    diensten
+                        ? diensten.reduce(
+                            (total, item) =>
+                                total + Number(item.open),
+                            0
+                        )
+                        : "—",
+
+                    "♧",
+
+                    "Nog beschikbare plaatsen"
+                );
+
+                if (secretaris) {
+
+                    const vragen = await veiligOphalen(
+                        "/api/ContactVraag"
+                    );
+
+                    const open = vragen
+
+                        ? vragen.filter(vraag =>
+                            String(
+                                vraag.status || "Nieuw"
+                            ).toLowerCase() !==
+                            "beantwoord"
+                        ).length
+
+                        : "—";
+
+                    updateStat(
+
+                        3,
+
+                        "Openstaande vragen",
+
+                        open,
+
+                        "✉",
+
+                        "Nog te behandelen"
+                    );
+
+                } else if (penningmeester) {
+
+                    const transacties = await veiligOphalen(
+                        "/api/Transactie"
+                    );
+
+                    updateStat(
+
+                        3,
+
+                        "Transacties",
+
+                        transacties?.length ?? "—",
+
+                        "€",
+
+                        "Financiële boekingen"
+                    );
+
+                } else if (vrijwilliger) {
+
+                    const persoonlijk = await veiligOphalen(
+                        "/api/MijnDiensten/me"
+                    );
+
+                    updateStat(
+
+                        3,
+
+                        "Mijn diensten",
+
+                        persoonlijk?.length ?? "—",
+
+                        "✓",
+
+                        "Persoonlijke planning"
+                    );
+                }
+            }
+
+            const labels = rollen.map(rol =>
+                rol === "Verkeersregelaars"
+                    ? "Verkeersregelaar"
+                    : rol
             );
-
-            renderRecentRegistrations(inschrijvingen);
-
-        } else {
-
-            updateStat(
-                0, "Inschrijvingen", "—",
-                "◎", "Niet beschikbaar"
-            );
-
-            updateStat(
-                1, "Deelnemers", "—",
-                "♧", "Niet beschikbaar"
-            );
-
-            showTableMessage(
-                "Inschrijvingen konden niet worden opgehaald."
-            );
-
-            errors.push(
-                "Inschrijvingen: " +
-                inschrijvingenResult.reason.message
-            );
-        }
-
-        // WANDELROUTES
-
-        if (routesResult.status === "fulfilled") {
-
-            updateStat(
-                2,
-                "Wandelroutes",
-                routesResult.value.length,
-                "◇",
-                "Routes in de database"
-            );
-
-        } else {
-
-            updateStat(
-                2, "Wandelroutes", "—",
-                "◇", "Niet beschikbaar"
-            );
-
-            errors.push(
-                "Routes: " +
-                routesResult.reason.message
-            );
-        }
-
-        // CONTACTVRAGEN
-
-        if (contactvragenResult.status === "fulfilled") {
-
-            updateStat(
-                3,
-                "Openstaande vragen",
-                countOpenQuestions(
-                    contactvragenResult.value
-                ),
-                "✉",
-                "Nog te behandelen"
-            );
-
-        } else {
-
-            updateStat(
-                3, "Openstaande vragen", "—",
-                "✉", "Niet beschikbaar"
-            );
-
-            errors.push(
-                "Contactvragen: " +
-                contactvragenResult.reason.message
-            );
-        }
-
-        // VERBINDINGSSTATUS
-
-        if (errors.length === 0) {
 
             noticeTitle.textContent =
-                "Dashboard verbonden met de database";
+                "Welkom, " +
+                (gebruiker.naam || "gebruiker");
 
             noticeText.textContent =
-                "De cijfers en recente inschrijvingen " +
-                "zijn rechtstreeks opgehaald uit PostgreSQL. " +
-                "Het overzicht wordt bijgewerkt wanneer " +
-                "je deze pagina opent of vernieuwt.";
 
-        } else {
+                "Je bent ingelogd als " +
+
+                labels.join(" / ") +
+
+                ". Dit dashboard toont gegevens " +
+
+                "die beschikbaar zijn voor jouw rol.";
+
+            if (errors.length) {
+
+                console.error(errors);
+
+                noticeText.textContent +=
+
+                    " Sommige gegevens konden " +
+
+                    "niet worden opgehaald.";
+            }
+
+        } catch (error) {
+
+            console.error(error);
 
             noticeTitle.textContent =
-                "Niet alle gegevens zijn beschikbaar";
+                "Dashboard ophalen mislukt";
 
             noticeText.textContent =
-                errors.join(" | ");
+                error.message;
         }
     }
-
-    // ======================================
-    // 8. START
-    // ======================================
 
     loadDashboard();
 

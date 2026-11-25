@@ -156,7 +156,29 @@ document.addEventListener("DOMContentLoaded", () => {
                 false
             );
 
-            window.location.assign("dashboard.html");
+            if (rollen.includes("Voorzitter")) {
+
+    window.location.assign("dashboard.html");
+
+} else if (rollen.includes("Penningmeester")) {
+
+    window.location.assign("financien.html");
+
+} else if (rollen.includes("Secretaris")) {
+
+    window.location.assign("contactvragen.html");
+
+} else if (
+    rollen.includes("Vrijwilliger") ||
+    rollen.includes("Verkeersregelaars")
+) {
+
+    window.location.assign("mijn-beschikbaarheid.html");
+
+} else {
+
+    showMessage("Dit account heeft geen geldige organisatierol.");
+}
 
         } catch (error) {
 
