@@ -1073,15 +1073,27 @@ document.addEventListener("DOMContentLoaded", () => {
     // 10. STATUS WIJZIGEN
     // ======================================
 
-    async function changeStatus(task, status) {
+   
+async function changeStatus(task, status) {
 
-        if (!canEdit || !ready || busy) return;
+    const eigenTaak =
+        view === "mijn" &&
+        isPersonal(task) &&
+        task.gebruikerIds.length === 1;
 
-        busy = true;
+    if (
+        (!canEdit && !eigenTaak) ||
+        !ready ||
+        busy
+    ) return;
 
-        render();
+    busy = true;
 
-        try {
+    render();
+
+    try {
+
+        if (canEdit) {
 
             await request(
                 "/api/Draaiboek/" + task.id,
@@ -1092,22 +1104,35 @@ document.addEventListener("DOMContentLoaded", () => {
                 })
             );
 
-            await loadTasks();
+        } else {
 
-            showMessage(
-                "Taakstatus bijgewerkt."
+            await request(
+                "/api/MijnTaakStatus/" + task.id,
+                "PUT",
+                {
+                    status: status
+                }
             );
-
-        } catch (error) {
-
-            showMessage(error.message);
-
-        } finally {
-
-            busy = false;
-            render();
         }
+
+        await loadTasks();
+
+        showMessage(
+            "Taakstatus bijgewerkt."
+        );
+
+    } catch (error) {
+
+        showMessage(error.message);
+
+    } finally {
+
+        busy = false;
+
+        render();
     }
+}
+
 
     // ======================================
     // 11. TAAKKAARTEN
@@ -1226,7 +1251,16 @@ document.addEventListener("DOMContentLoaded", () => {
         status.value = task.status;
 
         status.disabled =
-            !canEdit || !ready || busy;
+    (
+        !canEdit &&
+        !(
+            view === "mijn" &&
+            isPersonal(task) &&
+            task.gebruikerIds.length === 1
+        )
+    ) ||
+    !ready ||
+    busy;
 
         status.setAttribute(
             "aria-label",
