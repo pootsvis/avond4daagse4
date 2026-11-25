@@ -11,6 +11,6 @@ public class TransactieResponse
     public string Rekening { get; set; } = string.Empty;
     public string Betaalstatus { get; set; } = string.Empty;
     public string Factuur { get; set; } = string.Empty;
-    public int InschrijvingId { get; set; }
+    public int? InschrijvingId { get; set; }
     public BetalingDto? Betaling { get; set; }
 }

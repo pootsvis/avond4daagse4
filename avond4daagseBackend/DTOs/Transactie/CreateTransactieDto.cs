@@ -21,8 +21,7 @@ public class CreateTransactieDto
 
     public string Factuur { get; set; } = string.Empty;
 
-    public int InschrijvingId { get; set; }   // FK: bij welke inschrijving hoort de transactie
+    public int? InschrijvingId { get; set; }
 
-    // Optioneel: de service maakt de Betaling aan en vult TransactieId zelf in
     public BetalingDto? Betaling { get; set; }
 }

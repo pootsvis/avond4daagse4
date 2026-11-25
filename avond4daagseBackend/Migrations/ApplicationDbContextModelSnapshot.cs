@@ -618,7 +618,7 @@ namespace avond4daagseBackend.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<int>("InschrijvingId")
+                    b.Property<int?>("InschrijvingId")
                         .HasColumnType("integer");
 
                     b.Property<string>("Omschrijving")
@@ -881,9 +881,7 @@ namespace avond4daagseBackend.Migrations
                 {
                     b.HasOne("Avond4DaagseBackend.Models.Inschrijving", "Inschrijving")
                         .WithMany("Transacties")
-                        .HasForeignKey("InschrijvingId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("InschrijvingId");
 
                     b.Navigation("Inschrijving");
                 });

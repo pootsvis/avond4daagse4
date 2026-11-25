@@ -24,12 +24,18 @@ public class TransactieService(ApplicationDbContext context) : ITransactieServic
     public async Task<Transactie> CreateTransactie(CreateTransactieDto transactieDto)
     {
         // De inschrijving waar de transactie bij hoort moet bestaan, anders krijg je een databasefout
-        bool inschrijvingBestaat = await context.Inschrijvingen
-            .AnyAsync(i => i.InschrijvingId == transactieDto.InschrijvingId);
-        if (!inschrijvingBestaat)
-        {
-            throw new InvalidOperationException("Inschrijving not found");
-        }
+        if (transactieDto.InschrijvingId.HasValue)
+{
+    bool inschrijvingBestaat = await context.Inschrijvingen
+        .AnyAsync(i =>
+            i.InschrijvingId == transactieDto.InschrijvingId.Value
+        );
+
+    if (!inschrijvingBestaat)
+    {
+        throw new InvalidOperationException("Inschrijving not found");
+    }
+}
  
         Transactie transactie = new()
         {
