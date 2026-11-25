@@ -26,9 +26,7 @@ const PAGINA_RECHTEN = {
         "Voorzitter"
     ],
 
-    "routebeheer.html": [
-        "Voorzitter"
-    ],
+    "routebeheer.html": ALLE_ROLLEN,
 
     "vrijwilligers.html": [
         "Voorzitter"
@@ -45,15 +43,13 @@ const PAGINA_RECHTEN = {
 
     "mijn-taken.html": ALLE_ROLLEN,
 
-    "draaiboek-maandoverzicht.html": ALLE_ROLLEN,
+    "draaiboek-maand.html": ALLE_ROLLEN,
 
     "financien.html": [
-        "Voorzitter",
         "Penningmeester"
     ],
 
     "contactvragen.html": [
-        "Voorzitter",
         "Secretaris"
     ]
 };
@@ -77,10 +73,11 @@ function heeftPaginaToegang(pagina, rollen) {
 
     const toegestaan = PAGINA_RECHTEN[pagina];
 
-    if (!toegestaan) return false;
-
-    return rollen.some(rol =>
-        toegestaan.includes(rol)
+    return Boolean(
+        toegestaan &&
+        rollen.some(rol =>
+            toegestaan.includes(rol)
+        )
     );
 }
 
@@ -128,16 +125,11 @@ function toonGebruiker(gebruiker, rollen) {
         ".bm-account-avatar"
     );
 
-    const naam = account.querySelector(
-        "strong"
-    );
+    const naam = account.querySelector("strong");
 
-    const rolTekst = account.querySelector(
-        "small"
-    );
+    const rolTekst = account.querySelector("small");
 
     const labels = rollen.map(rol =>
-
         rol === "Verkeersregelaars"
             ? "Verkeersregelaar"
             : rol
@@ -228,8 +220,7 @@ function configureerUitloggen() {
                 console.error(error);
 
                 window.alert(
-                    "Uitloggen is mislukt. " +
-                    "Probeer het opnieuw."
+                    "Uitloggen mislukt. Probeer opnieuw."
                 );
             }
         }
@@ -237,122 +228,314 @@ function configureerUitloggen() {
 }
 
 // ==========================================
-// 5. SIDEBAR AANPASSEN
+// 5. NAVIGATIE AANPASSEN
 // ==========================================
 
 function pasNavigatieAan(rollen) {
+
+    const isVoorzitter =
+        rollen.includes("Voorzitter");
 
     const sidebar = document.getElementById(
         "bmSidebar"
     );
 
-    if (!sidebar) return;
+    if (sidebar) {
 
-    sidebar.querySelectorAll("a[href]")
-        .forEach(link => {
+        sidebar.querySelectorAll("a[href]")
+            .forEach(link => {
 
-            const href = link.getAttribute("href");
+                const href = link.getAttribute("href");
 
-            const pagina = paginaNaam(href);
+                if (
+                    href.startsWith("../") ||
+                    paginaNaam(href) === "login.html"
+                ) {
 
-            if (
-                href.startsWith("../") ||
-                pagina === "login.html"
-            ) {
+                    return;
+                }
 
-                return;
-            }
+                if (
+                    !isVoorzitter &&
+                    paginaNaam(href) === "vrijwilligers.html"
+                ) {
 
-            if (
-                !heeftPaginaToegang(
-                    pagina,
-                    rollen
-                )
-            ) {
+                    link.href = "inzetschema.html";
 
-                link.style.display = "none";
+                    link.replaceChildren();
 
-                link.setAttribute(
-                    "aria-hidden",
-                    "true"
-                );
+                    const icon = document.createElement(
+                        "span"
+                    );
 
-                link.tabIndex = -1;
-            }
-        });
+                    icon.className = "bm-nav-icon";
+                    icon.textContent = "♧";
 
-    // Overige rollen krijgen een alleen-lezen
-    // inzetschema in plaats van vrijwilligersbeheer.
+                    link.append(
+                        icon,
+                        document.createTextNode(
+                            " Inzetschema"
+                        )
+                    );
+                }
 
-    if (!rollen.includes("Voorzitter")) {
+                if (
+                    !heeftPaginaToegang(
+                        paginaNaam(link.href),
+                        rollen
+                    )
+                ) {
 
-        const volunteerLink = sidebar.querySelector(
-            'a[href="vrijwilligers.html"]'
+                    link.style.display = "none";
+
+                    link.setAttribute(
+                        "aria-hidden",
+                        "true"
+                    );
+
+                    link.tabIndex = -1;
+                }
+            });
+
+        const brand = sidebar.querySelector(
+            ".bm-brand"
         );
 
-        if (volunteerLink) {
+        if (brand) {
 
-            volunteerLink.href =
-                "inzetschema.html";
+            brand.href = startPagina(rollen);
 
-            volunteerLink.style.removeProperty(
-                "display"
+            brand.style.removeProperty("display");
+
+            brand.removeAttribute("aria-hidden");
+
+            brand.removeAttribute("tabindex");
+        }
+
+        const huidigePagina = paginaNaam(
+            window.location.href
+        );
+
+        sidebar.querySelectorAll(
+            ".bm-navigation a"
+        ).forEach(link => {
+
+            const bestemming = paginaNaam(link.href);
+
+            const actief =
+                bestemming === huidigePagina ||
+
+                (
+                    bestemming === "draaiboek.html" &&
+                    [
+                        "mijn-taken.html",
+                        "draaiboek-maand.html"
+                    ].includes(huidigePagina)
+                ) ||
+
+                (
+                    bestemming === "vrijwilligers.html" &&
+                    huidigePagina === "inzetschema.html"
+                );
+
+            link.classList.toggle(
+                "bm-nav-active",
+                actief
             );
 
-            volunteerLink.removeAttribute(
-                "aria-hidden"
-            );
+            if (actief) {
 
-            volunteerLink.removeAttribute(
-                "tabindex"
-            );
-
-            volunteerLink.textContent =
-                "Inzetschema";
-
-            const isActive =
-                paginaNaam(window.location.href) ===
-                "inzetschema.html";
-
-            volunteerLink.classList.toggle(
-                "active",
-                isActive
-            );
-
-            if (isActive) {
-
-                volunteerLink.setAttribute(
+                link.setAttribute(
                     "aria-current",
                     "page"
                 );
 
             } else {
 
-                volunteerLink.removeAttribute(
+                link.removeAttribute(
                     "aria-current"
                 );
             }
+        });
+    }
+
+    // Dashboardlinks ook aanpassen.
+
+    document.querySelectorAll(
+        ".bm-shortcut, .bm-workflow"
+    ).forEach(link => {
+
+        const bestemming = paginaNaam(
+            link.href
+        );
+
+        if (
+            !isVoorzitter &&
+            bestemming === "vrijwilligers.html"
+        ) {
+
+            link.href = "inzetschema.html";
+
+            const title = link.querySelector("h3");
+
+            const description = link.querySelector("p");
+
+            if (title) {
+
+                title.textContent = "Inzetschema";
+            }
+
+            if (description) {
+
+                description.textContent =
+                    "Bekijk de diensten en bezetting.";
+            }
         }
-    }
 
-    const brand = sidebar.querySelector(
-        ".bm-brand"
-    );
+        if (
+            !isVoorzitter &&
+            bestemming === "routebeheer.html"
+        ) {
 
-    if (brand) {
+            const title = link.querySelector("h3");
 
-        brand.href = startPagina(rollen);
+            if (title) {
 
-        brand.style.removeProperty("display");
+                title.textContent = "Routes bekijken";
+            }
+        }
 
-        brand.removeAttribute("aria-hidden");
+        if (
+            !heeftPaginaToegang(
+                paginaNaam(link.href),
+                rollen
+            )
+        ) {
 
-        brand.removeAttribute("tabindex");
-    }
+            link.style.display = "none";
+
+            link.setAttribute(
+                "aria-hidden",
+                "true"
+            );
+
+            link.tabIndex = -1;
+        }
+    });
 }
 
 // ==========================================
-// 6. LOGIN EN PAGINATOEGANG CONTROLEREN
+// 6. ROUTEBEHEER ALLEEN-LEZEN
+// ==========================================
+
+function pasRouteRechtenAan(rollen) {
+
+    if (
+        paginaNaam(window.location.href) !==
+        "routebeheer.html"
+    ) return;
+
+    if (rollen.includes("Voorzitter")) return;
+
+    const ids = [
+        "brAddRoute",
+        "brEditRoute",
+        "brDeleteRoute",
+        "brSaveRoute"
+    ];
+
+    ids.forEach(id => {
+
+        const control =
+            document.getElementById(id);
+
+        if (!control) return;
+
+        control.style.setProperty(
+            "display",
+            "none",
+            "important"
+        );
+
+        control.disabled = true;
+    });
+
+    // Blokkeer bewerkacties ook als een bestaand
+    // routescript de knop opnieuw activeert.
+
+    document.addEventListener(
+
+        "click",
+
+        event => {
+
+            if (
+                event.target.closest(
+                    "#brAddRoute, #brEditRoute, " +
+                    "#brDeleteRoute, #brSaveRoute"
+                )
+            ) {
+
+                event.preventDefault();
+
+                event.stopImmediatePropagation();
+            }
+        },
+
+        true
+    );
+
+    document.addEventListener(
+
+        "submit",
+
+        event => {
+
+            if (event.target.id === "brRouteForm") {
+
+                event.preventDefault();
+
+                event.stopImmediatePropagation();
+            }
+        },
+
+        true
+    );
+
+    const dialog =
+        document.getElementById("brDialog");
+
+    if (dialog) {
+
+        dialog.inert = true;
+    }
+
+    const notice = document.createElement("div");
+
+    notice.className = "bm-notice";
+
+    const text = document.createElement("div");
+
+    const title = document.createElement("strong");
+
+    title.textContent = "Routebeheer · Alleen bekijken";
+
+    const description = document.createElement("p");
+
+    description.textContent =
+        "Je kunt routes, afstanden en GPX-kaarten bekijken. " +
+        "Alleen de voorzitter kan routes aanpassen.";
+
+    text.append(title, description);
+
+    notice.appendChild(text);
+
+    document.querySelector(".bm-content")
+        ?.prepend(notice);
+}
+
+// ==========================================
+// 7. LOGIN EN PAGINATOEGANG
 // ==========================================
 
 async function controleerBeheerToegang() {
@@ -384,11 +567,11 @@ async function controleerBeheerToegang() {
                 ? gebruiker.rollen
                 : [];
 
-        const heeftOrganisatieRol = rollen.some(
-            rol => ALLE_ROLLEN.includes(rol)
-        );
-
-        if (!heeftOrganisatieRol) {
+        if (
+            !rollen.some(rol =>
+                ALLE_ROLLEN.includes(rol)
+            )
+        ) {
 
             window.location.replace("login.html");
 
@@ -417,14 +600,13 @@ async function controleerBeheerToegang() {
 
         window.beheerRollen = rollen;
 
-        toonGebruiker(
-            gebruiker,
-            rollen
-        );
+        toonGebruiker(gebruiker, rollen);
 
         configureerUitloggen();
 
         pasNavigatieAan(rollen);
+
+        pasRouteRechtenAan(rollen);
 
         document.documentElement.style.visibility =
             "visible";
@@ -441,7 +623,7 @@ async function controleerBeheerToegang() {
 }
 
 // ==========================================
-// 7. MOBIELE NAVIGATIE
+// 8. MOBIELE NAVIGATIE
 // ==========================================
 
 document.addEventListener(
@@ -450,26 +632,20 @@ document.addEventListener(
 
         controleerBeheerToegang();
 
-        const menuButton = document.getElementById(
-            "bmMenuButton"
-        );
+        const menuButton =
+            document.getElementById("bmMenuButton");
 
-        const sidebar = document.getElementById(
-            "bmSidebar"
-        );
+        const sidebar =
+            document.getElementById("bmSidebar");
 
-        const backdrop = document.getElementById(
-            "bmBackdrop"
-        );
+        const backdrop =
+            document.getElementById("bmBackdrop");
 
         if (
             !menuButton ||
             !sidebar ||
             !backdrop
-        ) {
-
-            return;
-        }
+        ) return;
 
         const mobileScreen = window.matchMedia(
             "(max-width: 920px)"
@@ -506,9 +682,7 @@ document.addEventListener(
             firstLink?.focus();
         }
 
-        function closeMenu(
-            restoreFocus = false
-        ) {
+        function closeMenu(restoreFocus = false) {
 
             document.body.classList.remove(
                 "bm-nav-open"
@@ -526,12 +700,12 @@ document.addEventListener(
 
             backdrop.hidden = true;
 
+            sidebar.inert = mobileScreen.matches;
+
             if (restoreFocus) {
 
                 menuButton.focus();
             }
-
-            sidebar.inert = mobileScreen.matches;
         }
 
         menuButton.addEventListener(
