@@ -20,4 +20,8 @@ public class InschrijvingDeelnemerDto
 
     [Range(1, 50)]
     public int HoeveelheidKeer { get; set; } = 1;
+
+    // Geeft aan of deze deelnemer
+    // met een begeleider meeloopt.
+    public bool NeemtBegeleiderMee { get; set; }
 }

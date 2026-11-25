@@ -94,6 +94,7 @@ public class InschrijvingService(ApplicationDbContext context)
             Contactpersoon = new Contactpersoon
             {
                 Email = dto.Contactpersoon?.Email ?? "",
+
                 Telefoonnummer =
                     dto.Contactpersoon?.Telefoonnummer ?? ""
             },
@@ -110,13 +111,20 @@ public class InschrijvingService(ApplicationDbContext context)
                     Deelname = new Deelname
                     {
                         School = p.SchoolOfGroep,
+
                         Groep = string.Empty,
 
                         Geboortedatum = p.Geboortedatum,
+
                         Geboortejaar = p.Geboortedatum.Year,
 
                         HoeveelheidKeer = p.HoeveelheidKeer,
-                        NeemtBegeleiderMee = false
+
+                        // NIEUW:
+                        // Begeleiderskeuze opslaan.
+                        // Ja = true, Nee = false.
+                        NeemtBegeleiderMee =
+                            p.NeemtBegeleiderMee
                     }
                 }
             ).ToList()
@@ -124,8 +132,8 @@ public class InschrijvingService(ApplicationDbContext context)
 
         context.Inschrijvingen.Add(inschrijving);
 
-        // EF Core slaat de inschrijving, contactpersoon,
-        // personen en deelnames samen op.
+        // Inschrijving, contactpersoon en deelnemers
+        // worden samen opgeslagen in PostgreSQL.
         await context.SaveChangesAsync();
 
         return inschrijving;
@@ -141,6 +149,7 @@ public class InschrijvingService(ApplicationDbContext context)
             await GetInschrijvingById(id);
 
         inschrijving.Status = dto.Status;
+
         inschrijving.AantalDeelnemers = dto.AantalDeelnemers;
 
         await context.SaveChangesAsync();
