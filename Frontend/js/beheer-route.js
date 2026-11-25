@@ -188,25 +188,23 @@ document.addEventListener("DOMContentLoaded", () => {
     // 2. API GEGEVENS OPHALEN
     // ======================================
 
-    function mapDatabaseRoute(route) {
+   function mapDatabaseRoute(route) {
 
-        const metadata = loadMetadata()[route.routeId] || {};
-
-        return {
-            id: "db-" + route.routeId,
-            routeId: route.routeId,
-            name: route.naam,
-            distance: Number(route.afstand),
-            evening: metadata.evening ?? null,
-            start: metadata.start ?? "",
-            starttijd: route.starttijd,
-            controlepost: route.controlepost,
-            evenementId: route.evenementId,
-            evenementNaam: route.evenementNaam,
-            points: validPoints(metadata.points),
-            source: "database"
-        };
-    }
+    return {
+        id: "db-" + route.routeId,
+        routeId: route.routeId,
+        name: route.naam,
+        distance: Number(route.afstand),
+        evening: route.wandelavond ?? null,
+        start: route.startlocatie ?? "",
+        starttijd: route.starttijd,
+        controlepost: route.controlepost,
+        evenementId: route.evenementId,
+        evenementNaam: route.evenementNaam,
+        points: validPoints(route.gpxPunten),
+        source: "database"
+    };
+}
 
     async function loadEvenementen() {
 
@@ -793,7 +791,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
         $("brDetailStorage").textContent =
             route.source === "database"
-                ? "Database + lokale aanvullende gegevens"
+                ? "PostgreSQL-database"
                 : "Lokaal concept";
 
         $("brDownloadGpx").disabled = !hasGpx;
@@ -867,6 +865,11 @@ document.addEventListener("DOMContentLoaded", () => {
 
             input.disabled = !databaseForm;
             input.required = databaseForm;
+            if (input === eventInput &&
+    route?.source === "database") {
+
+    input.disabled = true;
+}
 
             input.closest("label").hidden =
                 !databaseForm;
@@ -1067,14 +1070,16 @@ document.addEventListener("DOMContentLoaded", () => {
                 }
 
                 const payload = {
-                    naam: route.name,
-                    afstand: route.distance,
-                    starttijd: timeInput.value + ":00",
-                    controlepost:
-                        checkpointInput.value.trim(),
-                    evenementId:
-                        Number(eventInput.value)
-                };
+    naam: route.name,
+    afstand: route.distance,
+    starttijd: timeInput.value + ":00",
+    controlepost: checkpointInput.value.trim(),
+    evenementId: Number(eventInput.value),
+
+    wandelavond: route.evening,
+    startlocatie: route.start,
+    gpxPunten: route.points
+};
 
                 if (
                     !payload.evenementId ||
@@ -1149,13 +1154,7 @@ document.addEventListener("DOMContentLoaded", () => {
                         payload.evenementId
                     )?.naam || "";
 
-                if (!saveRouteMetadata(routeId, route)) {
-
-                    message +=
-                        " Waarschuwing: aanvullende lokale " +
-                        "gegevens konden niet worden opgeslagen.";
-                }
-
+                
                 if (existing) {
 
                     routes = routes.map(item =>
@@ -1407,16 +1406,16 @@ document.addEventListener("DOMContentLoaded", () => {
 
     if (notice) {
 
-        notice.querySelector("strong").textContent =
-            "Routebeheer — database gekoppeld";
+    notice.querySelector("strong").textContent =
+        "Routebeheer — database gekoppeld";
 
-        notice.querySelector("p").textContent =
-            "Nieuwe routes worden opgeslagen in de database " +
-            "en kunnen zichtbaar worden op de publieke website. " +
-            "Wandelavond, startlocatie en GPX-routepunten " +
-            "worden voorlopig alleen in deze browser opgeslagen. " +
-            "Bestaande lokale concepten blijven behouden.";
-    }
+    notice.querySelector("p").textContent =
+        "Nieuwe routes, wandelavonden, startlocaties " +
+        "en GPX-routepunten worden centraal opgeslagen " +
+        "in PostgreSQL. Bestaande lokale concepten " +
+        "blijven behouden. Oude aanvullende browsergegevens " +
+        "worden niet automatisch overgezet.";
+}
 
     const totalLabel = $("brTotalRoutes")
         .parentElement.querySelector("small");
