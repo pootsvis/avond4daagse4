@@ -1,0 +1,336 @@
+
+<!DOCTYPE html>
+<html lang="nl">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Gebruikersbeheer | Avond4daagse</title>
+
+    <link rel="stylesheet"
+          href="../css/beheer.css">
+
+    <link rel="stylesheet"
+          href="../css/beheer-polish.css">
+
+    <link rel="stylesheet"
+          href="../css/beheer-gebruikers.css">
+
+    <script src="../js/beheer-ui.js" defer></script>
+
+    <script src="../js/beheer-gebruikers.js" defer></script>
+
+</head>
+
+<body class="bm-page">
+
+<div class="bm-layout">
+
+    <aside class="bm-sidebar" id="bmSidebar">
+
+        <a href="dashboard.html" class="bm-brand">
+
+            <span class="bm-brand-symbol">4</span>
+
+            <span>
+                <strong>AVOND4DAAGSE</strong>
+                <small>BEHEEROMGEVING 2027</small>
+            </span>
+
+        </a>
+
+        <div class="bm-sidebar-content">
+
+            <p class="bm-nav-label">OVERZICHT</p>
+
+            <nav class="bm-navigation">
+
+                <a href="dashboard.html">
+                    <span class="bm-nav-icon">▦</span>
+                    Dashboard
+                </a>
+
+                <a href="inschrijvingen.html">
+                    <span class="bm-nav-icon">◎</span>
+                    Inschrijvingen
+                </a>
+
+                <a href="routebeheer.html">
+                    <span class="bm-nav-icon">◇</span>
+                    Routebeheer
+                </a>
+
+                <a href="vrijwilligers.html">
+                    <span class="bm-nav-icon">♧</span>
+                    Vrijwilligers &amp; inzet
+                </a>
+
+                <a href="mijn-beschikbaarheid.html">
+                    <span class="bm-nav-icon">◷</span>
+                    Mijn beschikbaarheid
+                </a>
+
+                <a href="draaiboek.html">
+                    <span class="bm-nav-icon">☷</span>
+                    Draaiboek
+                </a>
+
+                <a href="financien.html">
+                    <span class="bm-nav-icon">€</span>
+                    Financiën
+                </a>
+
+                <a href="contactvragen.html">
+                    <span class="bm-nav-icon">✉</span>
+                    Contactvragen
+                </a>
+
+                <a href="gebruikersbeheer.html"
+                   class="bm-nav-active">
+
+                    <span class="bm-nav-icon">♙</span>
+                    Gebruikersbeheer
+
+                </a>
+
+            </nav>
+
+        </div>
+
+        <div class="bm-sidebar-footer">
+
+            <div class="bm-account">
+
+                <span class="bm-account-avatar">B</span>
+
+                <span>
+                    <strong>Gebruiker</strong>
+                    <small>Account laden...</small>
+                </span>
+
+            </div>
+
+            <a href="login.html"
+               class="bm-sidebar-exit">
+
+                Uitloggen
+
+            </a>
+
+        </div>
+
+    </aside>
+
+    <div class="bm-main-area">
+
+        <header class="bm-topbar">
+
+            <div class="bm-topbar-left">
+
+                <button type="button"
+                        id="bmMenuButton"
+                        class="bm-menu-button">
+
+                    ☰ Menu
+
+                </button>
+
+                <div class="bm-breadcrumb">
+                    Beheeromgeving / Gebruikersbeheer
+                </div>
+
+            </div>
+
+            <a href="../../index.html"
+               class="bm-website-link">
+
+                Bekijk publieke website ↗
+
+            </a>
+
+        </header>
+
+        <main class="bm-content">
+
+            <section class="bm-welcome">
+
+                <div>
+
+                    <p class="bm-eyebrow">
+                        ORGANISATIE · EDITIE 2027
+                    </p>
+
+                    <h1>Gebruikersbeheer</h1>
+
+                    <p>
+                        Beheer accounts en organisatierollen.
+                    </p>
+
+                </div>
+
+            </section>
+
+            <div class="bm-notice">
+
+                <div>
+
+                    <strong>Accountbeheer</strong>
+
+                    <p>
+                        Alleen de voorzitter kan accounts
+                        aanmaken en rollen toewijzen.
+                    </p>
+
+                </div>
+
+            </div>
+
+            <section class="bg-stats">
+
+                <article class="bm-stat-card">
+
+                    <span>Gebruikers</span>
+                    <strong id="bgTotal">—</strong>
+
+                </article>
+
+                <article class="bm-stat-card">
+
+                    <span>Organisatieaccounts</span>
+                    <strong id="bgOrganisation">—</strong>
+
+                </article>
+
+                <article class="bm-stat-card">
+
+                    <span>Beschikbare rollen</span>
+                    <strong id="bgRoles">—</strong>
+
+                </article>
+
+            </section>
+
+            <section class="bm-panel bg-panel">
+
+                <h2>Nieuw account</h2>
+
+                <form id="bgCreateForm"
+                      class="bg-form">
+
+                    <label>
+                        Naam
+                        <input id="bgName"
+                               type="text"
+                               required>
+                    </label>
+
+                    <label>
+                        E-mailadres
+                        <input id="bgEmail"
+                               type="email"
+                               required>
+                    </label>
+
+                    <label>
+                        Tijdelijk wachtwoord
+                        <input id="bgPassword"
+                               type="password"
+                               minlength="8"
+                               autocomplete="new-password"
+                               required>
+                    </label>
+
+                    <label>
+                        Organisatierol
+                        <select id="bgCreateRole"
+                                required>
+                        </select>
+                    </label>
+
+                    <button class="bg-button"
+                            type="submit">
+
+                        Account aanmaken
+
+                    </button>
+
+                </form>
+
+            </section>
+
+            <section class="bm-panel bg-panel">
+
+                <h2>Bestaande gebruikers</h2>
+
+                <div class="bg-toolbar">
+
+                    <input type="search"
+                           id="bgSearch"
+                           placeholder="Zoek naam of e-mailadres">
+
+                    <button type="button"
+                            id="bgRefresh"
+                            class="bg-button bg-secondary">
+
+                        Vernieuwen
+
+                    </button>
+
+                </div>
+
+                <div class="bm-table-scroll">
+
+                    <table class="bm-table">
+
+                        <thead>
+                            <tr>
+                                <th>Naam</th>
+                                <th>E-mailadres</th>
+                                <th>Rollen</th>
+                                <th>Rol toevoegen</th>
+                            </tr>
+                        </thead>
+
+                        <tbody id="bgTableBody">
+                            <tr>
+                                <td colspan="4">
+                                    Gebruikers laden...
+                                </td>
+                            </tr>
+                        </tbody>
+
+                    </table>
+
+                </div>
+
+            </section>
+
+            <p id="bgFeedback"
+               class="bg-feedback"
+               role="status"
+               aria-live="polite">
+            </p>
+
+            <footer class="bm-content-footer">
+
+                Avond4daagse 2027 · Gebruikersbeheer
+
+            </footer>
+
+        </main>
+
+    </div>
+
+</div>
+
+<div id="bmBackdrop"
+     class="bm-backdrop"
+     hidden>
+</div>
+
+</body>
+</html>

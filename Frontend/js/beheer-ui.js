@@ -759,3 +759,55 @@ document.addEventListener(
         backdrop.hidden = true;
     }
 );
+
+
+// ==========================================
+// GEBRUIKERSBEHEER NAVIGATIE
+// ==========================================
+
+PAGINA_RECHTEN["gebruikersbeheer.html"] = [
+    "Voorzitter"
+];
+
+const oorspronkelijkeNavigatie = pasNavigatieAan;
+
+pasNavigatieAan = function (rollen) {
+
+    if (rollen.includes("Voorzitter")) {
+
+        const nav = document.querySelector(
+            "#bmSidebar .bm-navigation"
+        );
+
+        if (
+            nav &&
+            !nav.querySelector(
+                'a[href="gebruikersbeheer.html"]'
+            )
+        ) {
+
+            const link = document.createElement("a");
+
+            link.href = "gebruikersbeheer.html";
+
+            const icon = document.createElement("span");
+
+            icon.className = "bm-nav-icon";
+
+            icon.textContent = "♙";
+
+            link.append(
+
+                icon,
+
+                document.createTextNode(
+                    " Gebruikersbeheer"
+                )
+            );
+
+            nav.appendChild(link);
+        }
+    }
+
+    oorspronkelijkeNavigatie(rollen);
+};
