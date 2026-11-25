@@ -188,8 +188,8 @@ public class Transactie
     public string Betaalstatus { get; set; } = string.Empty;
     public string Factuur { get; set; } = string.Empty;
 
-    public int InschrijvingId { get; set; }
-    public Inschrijving Inschrijving { get; set; } = null!;
+    public int? InschrijvingId { get; set; }
+    public Inschrijving? Inschrijving { get; set; }
 
     public Betaling? Betaling { get; set; }
 }
