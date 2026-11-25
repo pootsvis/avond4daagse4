@@ -1,475 +1,499 @@
 
 // ==========================================
 // AVOND4DAAGSE 2027
-// MIJN BESCHIKBAARHEID - FRONTENDDEMO
+// MIJN BESCHIKBAARHEID - BACKEND
 // ==========================================
 
 document.addEventListener("DOMContentLoaded", () => {
 
-  const $ = id => document.getElementById(id);
+    const $ = id => document.getElementById(id);
 
-  const STORAGE_KEY =
-    "avond4daagse-beschikbaarheid-v2";
+    const API_URL =
+        "http://localhost:5278/api/Beschikbaarheid/me";
 
-  const OLD_STORAGE_KEY =
-    "avond4daagse-beschikbaarheid-demo";
+    const form = $("baForm");
+    const note = $("baNote");
+    const feedback = $("baFeedback");
+    const saveButton = $("baSave");
+    const restoreButton = $("baRestore");
 
-  const VALID_VALUES = [
-    "beschikbaar",
-    "misschien",
-    "niet"
-  ];
-
-  const form = $("baForm");
-  const note = $("baNote");
-  const statusText = $("baSavedStatus");
-  const feedback = $("baFeedback");
-  const restoreButton = $("baRestore");
-
-  const evenings = [
-    ...document.querySelectorAll(".ba-evening")
-  ];
-
-
-  // ========================================
-  // 1. LEGE BESCHIKBAARHEID
-  // ========================================
-
-  function emptyState() {
-
-    return {
-      avonden: {
-        "1": "",
-        "2": "",
-        "3": "",
-        "4": ""
-      },
-      toelichting: ""
-    };
-  }
-
-
-  // ========================================
-  // 2. GEGEVENS CONTROLEREN
-  // ========================================
-
-  function normalizeState(data) {
-
-    const result = emptyState();
-
-    if (!data || typeof data !== "object") {
-      return result;
-    }
-
-    for (let number = 1; number <= 4; number++) {
-
-      const value = data.avonden?.[String(number)];
-
-      if (VALID_VALUES.includes(value)) {
-        result.avonden[String(number)] = value;
-      }
-    }
-
-    if (typeof data.toelichting === "string") {
-      result.toelichting =
-        data.toelichting.slice(0, 600);
-    }
-
-    return result;
-  }
-
-
-  // ========================================
-  // 3. OUDE OPSLAG COMPATIBEL HOUDEN
-  // ========================================
-
-  function convertOldState(data) {
-
-    const result = emptyState();
-
-    if (!data || typeof data !== "object") {
-      return result;
-    }
-
-    // Alleen voor het overzetten van de oude
-    // lokaal opgeslagen demo-indeling.
-    // De datums zijn geen bevestigde planning.
-
-    const oldKeys = [
-      "2027-06-01",
-      "2027-06-02",
-      "2027-06-03",
-      "2027-06-04"
+    const evenings = [
+        ...document.querySelectorAll(".ba-evening")
     ];
 
-    oldKeys.forEach((key, index) => {
+    const validValues = [
+        "beschikbaar",
+        "misschien",
+        "niet"
+    ];
 
-      const oldValue = data.avonden?.[key];
-
-      if (oldValue === "ja") {
-        result.avonden[String(index + 1)] =
-          "beschikbaar";
-      }
-
-      if (oldValue === "nee") {
-        result.avonden[String(index + 1)] =
-          "niet";
-      }
-
-    });
-
-    if (typeof data.toelichting === "string") {
-      result.toelichting =
-        data.toelichting.slice(0, 600);
-    }
-
-    return result;
-  }
-
-
-  // ========================================
-  // 4. OPGESLAGEN KEUZES LADEN
-  // ========================================
-
-  function loadState() {
-
-    try {
-
-      const current = localStorage.getItem(
-        STORAGE_KEY
-      );
-
-      if (current !== null) {
-
-        const data = JSON.parse(current);
-
-        return {
-          state: normalizeState(data),
-          source: "current"
-        };
-      }
-
-      const old = localStorage.getItem(
-        OLD_STORAGE_KEY
-      );
-
-      if (old !== null) {
-
-        const data = JSON.parse(old);
-
-        return {
-          state: convertOldState(data),
-          source: "old"
-        };
-      }
-
-    } catch (error) {
-
-      console.warn(
-        "Beschikbaarheid kon niet geladen worden.",
-        error
-      );
-    }
-
-    return {
-      state: emptyState(),
-      source: "none"
+    const labels = {
+        beschikbaar: "Beschikbaar",
+        misschien: "Misschien",
+        niet: "Niet beschikbaar"
     };
-  }
 
+    let ready = false;
+    let busy = false;
 
-  const loaded = loadState();
+    let savedState = {
+        avonden: {},
+        toelichting: ""
+    };
 
-  let savedState = loaded.state;
-  let savedSource = loaded.source;
+    // ======================================
+    // 1. API
+    // ======================================
 
+    async function request(method = "GET", data) {
 
-  // ========================================
-  // 5. KEUZES IN HET FORMULIER TONEN
-  // ========================================
+        const response = await fetch(API_URL, {
+            method,
+            credentials: "include",
+            cache: "no-store",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: data === undefined
+                ? undefined
+                : JSON.stringify(data)
+        });
 
-  function applyState(state) {
+        if (response.status === 401) {
 
-    evenings.forEach(card => {
+            throw new Error(
+                "Log opnieuw in."
+            );
+        }
 
-      const number = card.dataset.evening;
-      const value = state.avonden[number];
+        if (response.status === 403) {
 
-      const radios = card.querySelectorAll(
-        'input[type="radio"]'
-      );
+            throw new Error(
+                "Je hebt geen toegang."
+            );
+        }
 
-      radios.forEach(radio => {
+        if (response.status === 404) {
 
-        radio.checked =
-          radio.value === value;
+            throw new Error(
+                "Er is nog geen vrijwilliger gekoppeld " +
+                "aan jouw account. Vraag de voorzitter " +
+                "om je account te koppelen."
+            );
+        }
 
-      });
+        if (!response.ok) {
+
+            throw new Error(
+                "API-fout: HTTP " + response.status
+            );
+        }
+
+        return await response.json();
+    }
+
+    // ======================================
+    // 2. FORMULIER LEZEN
+    // ======================================
+
+    function readForm() {
+
+        const avonden = {};
+
+        evenings.forEach(evening => {
+
+            const number = evening.dataset.evening;
+
+            const checked = evening.querySelector(
+                "input[type=radio]:checked"
+            );
+
+            avonden[number] = checked
+                ? checked.value
+                : "";
+        });
+
+        return {
+            avonden,
+            toelichting: note.value.trim()
+        };
+    }
+
+    // ======================================
+    // 3. FORMULIER INVULLEN
+    // ======================================
+
+    function applyState(state) {
+
+        evenings.forEach(evening => {
+
+            const number = evening.dataset.evening;
+
+            const value =
+                state.avonden?.[number] || "";
+
+            evening.querySelectorAll(
+                "input[type=radio]"
+            ).forEach(input => {
+
+                input.checked =
+                    input.value === value;
+            });
+        });
+
+        note.value =
+            state.toelichting || "";
+
+        updateStatistics();
+    }
+
+    // ======================================
+    // 4. STATISTIEKEN
+    // ======================================
+
+    function updateStatistics() {
+
+        const state = readForm();
+
+        const values = Object.values(
+            state.avonden
+        );
+
+        const filled = values.filter(value =>
+            validValues.includes(value)
+        ).length;
+
+        $("baFilled").textContent =
+            filled + " / 4";
+
+        $("baAvailable").textContent =
+            values.filter(
+                value => value === "beschikbaar"
+            ).length;
+
+        $("baMaybe").textContent =
+            values.filter(
+                value => value === "misschien"
+            ).length;
+
+        $("baUnavailable").textContent =
+            values.filter(
+                value => value === "niet"
+            ).length;
+
+        $("baProgressLabel").textContent =
+            filled + " van 4 ingevuld";
+
+        $("baProgressFill").style.width =
+            (filled / 4 * 100) + "%";
+
+        $("baProgress").setAttribute(
+            "aria-valuenow",
+            String(filled)
+        );
+
+        $("baNoteCount").textContent =
+            note.value.length + " / 600 tekens";
+
+        evenings.forEach(evening => {
+
+            const value =
+                state.avonden[evening.dataset.evening];
+
+            evening.querySelector(
+                ".ba-evening-status"
+            ).textContent =
+                labels[value] || "Nog niet ingevuld";
+        });
+    }
+
+    // ======================================
+    // 5. FORMULIER BESCHIKBAARHEID
+    // ======================================
+
+    function setEnabled(enabled) {
+
+        form.querySelectorAll(
+            "input, textarea, button"
+        ).forEach(element => {
+
+            element.disabled = !enabled;
+        });
+    }
+
+    // ======================================
+    // 6. GEGEVENS OPHALEN
+    // ======================================
+
+    async function loadAvailability() {
+
+        setEnabled(false);
+
+        $("baSavedStatus").textContent =
+            "Gegevens ophalen...";
+
+        try {
+
+            savedState = await request();
+
+            applyState(savedState);
+
+            ready = true;
+
+            setEnabled(true);
+
+            $("baSavedStatus").textContent =
+                "Beschikbaarheid uit de database geladen";
+
+            feedback.textContent =
+                "Je persoonlijke beschikbaarheid is opgehaald.";
+
+        } catch (error) {
+
+            ready = false;
+
+            $("baSavedStatus").textContent =
+                "Beschikbaarheid niet beschikbaar";
+
+            feedback.textContent =
+                error.message;
+        }
+    }
+
+    // ======================================
+    // 7. OPSLAAN
+    // ======================================
+
+    form.addEventListener("submit", async event => {
+
+        event.preventDefault();
+
+        if (!ready || busy) return;
+
+        busy = true;
+
+        const state = readForm();
+
+        setEnabled(false);
+
+        feedback.textContent =
+            "Beschikbaarheid opslaan...";
+
+        try {
+
+            savedState = await request(
+                "PUT",
+                state
+            );
+
+            applyState(savedState);
+
+            $("baSavedStatus").textContent =
+                "Opgeslagen in de database";
+
+            feedback.textContent =
+                "Je beschikbaarheid is succesvol opgeslagen.";
+
+        } catch (error) {
+
+            feedback.textContent =
+                "Opslaan mislukt: " + error.message;
+
+        } finally {
+
+            busy = false;
+
+            setEnabled(ready);
+        }
     });
 
-    note.value = state.toelichting;
+    // ======================================
+    // 8. HERSTELLEN EN WIJZIGEN
+    // ======================================
 
-    updateView();
-  }
+    restoreButton.addEventListener("click", () => {
 
+        if (!ready || busy) return;
 
-  // ========================================
-  // 6. HUIDIGE KEUZES UITLEZEN
-  // ========================================
+        applyState(savedState);
 
-  function readState() {
+        $("baSavedStatus").textContent =
+            "Opgeslagen keuzes hersteld";
 
-    const state = emptyState();
-
-    evenings.forEach(card => {
-
-      const number = card.dataset.evening;
-
-      const selected = card.querySelector(
-        'input[type="radio"]:checked'
-      );
-
-      if (
-        selected &&
-        VALID_VALUES.includes(selected.value)
-      ) {
-        state.avonden[number] = selected.value;
-      }
+        feedback.textContent =
+            "De laatst opgeslagen gegevens zijn hersteld.";
     });
 
-    state.toelichting = note.value.slice(0, 600);
+    form.addEventListener("input", () => {
 
-    return state;
-  }
+        updateStatistics();
 
+        if (ready) {
 
-  // ========================================
-  // 7. STATISTIEKEN EN VOORTGANG
-  // ========================================
+            $("baSavedStatus").textContent =
+                "Niet-opgeslagen wijzigingen";
+        }
+    });
 
-  function updateView() {
+    // Avond opnieuw onbeantwoord kunnen maken.
+    evenings.forEach(evening => {
 
-    const state = readState();
+        const clearButton =
+            document.createElement("button");
 
-    const values = Object.values(
-      state.avonden
+        clearButton.type = "button";
+
+        clearButton.className =
+            "ba-button ba-button-light";
+
+        clearButton.textContent =
+            "Keuze wissen";
+
+        clearButton.addEventListener("click", () => {
+
+            if (!ready || busy) return;
+
+            evening.querySelectorAll(
+                "input[type=radio]"
+            ).forEach(input => {
+
+                input.checked = false;
+            });
+
+            updateStatistics();
+
+            $("baSavedStatus").textContent =
+                "Niet-opgeslagen wijzigingen";
+        });
+
+        evening.appendChild(clearButton);
+    });
+
+    // ======================================
+    // 9. INTERFACE TEKSTEN
+    // ======================================
+
+    const notice = document.querySelector(
+        ".bm-notice"
     );
 
-    const filled = values.filter(
-      value => VALID_VALUES.includes(value)
-    ).length;
+    notice.querySelector("strong").textContent =
+        "Beschikbaarheid is nog geen inplanning";
 
-    const available = values.filter(
-      value => value === "beschikbaar"
-    ).length;
+    notice.querySelector("p").textContent =
+        "Je beschikbaarheid wordt gekoppeld aan " +
+        "je persoonlijke vrijwilligersaccount. " +
+        "De definitieve evenementdatums zijn nog " +
+        "niet bevestigd.";
 
-    const maybe = values.filter(
-      value => value === "misschien"
-    ).length;
-
-    const unavailable = values.filter(
-      value => value === "niet"
-    ).length;
-
-
-    $("baFilled").textContent =
-      filled + " / 4";
-
-    $("baAvailable").textContent =
-      String(available);
-
-    $("baMaybe").textContent =
-      String(maybe);
-
-    $("baUnavailable").textContent =
-      String(unavailable);
-
-
-    // Voortgangsbalk
-    $("baProgressLabel").textContent =
-      filled + " van 4 ingevuld";
-
-    $("baProgress").setAttribute(
-      "aria-valuenow",
-      String(filled)
+    const tag = document.querySelector(
+        ".bm-demo-tag"
     );
 
-    $("baProgressFill").style.width =
-      (filled / 4 * 100) + "%";
+    if (tag) {
 
-
-    // Tekenteller
-    $("baNoteCount").textContent =
-      note.value.length + " / 600 tekens";
-
-
-    // Geselecteerde keuze per avond
-    evenings.forEach(card => {
-
-      const number = card.dataset.evening;
-      const value = state.avonden[number];
-
-      const status = card.querySelector(
-        ".ba-evening-status"
-      );
-
-      const labels = {
-        "": "Nog niet ingevuld",
-        beschikbaar: "Je bent beschikbaar",
-        misschien: "Beschikbaarheid onzeker",
-        niet: "Je bent niet beschikbaar"
-      };
-
-      status.textContent =
-        labels[value] || labels[""];
-
-
-      card.querySelectorAll(
-        ".ba-choice"
-      ).forEach(label => {
-
-        const radio = label.querySelector("input");
-
-        const active = radio.checked;
-
-        label.classList.toggle(
-          "is-selected",
-          active
-        );
-
-        label.classList.toggle(
-          "is-maybe",
-          active && radio.value === "misschien"
-        );
-
-        label.classList.toggle(
-          "is-unavailable",
-          active && radio.value === "niet"
-        );
-      });
-    });
-
-
-    // Zijn er wijzigingen sinds de
-    // laatst geladen of opgeslagen keuzes?
-    const changed =
-      JSON.stringify(state) !==
-      JSON.stringify(savedState);
-
-    restoreButton.disabled = !changed;
-
-    if (changed) {
-
-      statusText.textContent =
-        "Wijzigingen nog niet opgeslagen";
-
-    } else if (savedSource === "current") {
-
-      statusText.textContent =
-        "Lokaal opgeslagen in deze browser";
-
-    } else if (savedSource === "old") {
-
-      statusText.textContent =
-        "Eerdere lokaal opgeslagen keuzes geladen";
-
-    } else {
-
-      statusText.textContent =
-        "Nog geen keuzes opgeslagen";
+        tag.textContent =
+            "Persoonlijke beschikbaarheid";
     }
-  }
 
+    const saveText = document.querySelector(
+        ".ba-save-area p"
+    );
 
-  // ========================================
-  // 8. WIJZIGINGEN BIJHOUDEN
-  // ========================================
+    if (saveText) {
 
-  form.addEventListener("change", () => {
-
-    feedback.textContent = "";
-    updateView();
-
-  });
-
-
-  note.addEventListener("input", () => {
-
-    feedback.textContent = "";
-    updateView();
-
-  });
-
-
-  // ========================================
-  // 9. LOKAAL OPSLAAN
-  // ========================================
-
-  form.addEventListener("submit", event => {
-
-    event.preventDefault();
-
-    const state = readState();
-
-    try {
-
-      localStorage.setItem(
-        STORAGE_KEY,
-        JSON.stringify(state)
-      );
-
-      savedState = state;
-      savedSource = "current";
-
-      updateView();
-
-      const filled = Object.values(
-        state.avonden
-      ).filter(
-        value => VALID_VALUES.includes(value)
-      ).length;
-
-      feedback.textContent =
-        "Je keuzes voor " + filled +
-        " van de 4 avonden zijn opgeslagen " +
-        "in deze browser. Er is niets " +
-        "naar de organisatie verzonden.";
-
-    } catch (error) {
-
-      console.warn(
-        "Lokaal opslaan is mislukt.",
-        error
-      );
-
-      feedback.textContent =
-        "Opslaan is mislukt. Controleer of " +
-        "je browser lokale opslag toestaat.";
+        saveText.textContent =
+            "Je keuzes worden opgeslagen in de database.";
     }
-  });
 
+    // Verwijder fictieve persoonlijke diensten.
+    const shiftsPanel = $("baShiftsTitle")
+        ?.closest(".ba-panel");
 
-  // ========================================
-  // 10. LAATST OPGESLAGEN KEUZES HERSTELLEN
-  // ========================================
+    if (shiftsPanel) {
 
-  restoreButton.addEventListener("click", () => {
+        const tbody =
+            shiftsPanel.querySelector("tbody");
 
-    applyState(savedState);
+        if (tbody) {
 
-    feedback.textContent =
-      savedSource === "none"
-        ? "De nog niet opgeslagen keuzes zijn gewist."
-        : "De laatst geladen of opgeslagen keuzes " +
-          "zijn hersteld.";
+            tbody.replaceChildren();
 
-  });
+            const row =
+                document.createElement("tr");
 
+            const cell =
+                document.createElement("td");
 
-  // ========================================
-  // 11. PAGINA INITIALISEREN
-  // ========================================
+            cell.colSpan = 5;
 
-  applyState(savedState);
+            cell.textContent =
+                "Persoonlijke taaktoewijzingen zijn " +
+                "nog niet gekoppeld.";
+
+            row.appendChild(cell);
+
+            tbody.appendChild(row);
+        }
+
+        const eyebrow = shiftsPanel.querySelector(
+            ".bm-eyebrow"
+        );
+
+        if (eyebrow) {
+
+            eyebrow.textContent =
+                "PERSOONLIJKE PLANNING";
+        }
+
+        const description = shiftsPanel.querySelector(
+            ".ba-panel-header div > p:last-child"
+        );
+
+        if (description) {
+
+            description.textContent =
+                "Hier komen later jouw toegewezen diensten.";
+        }
+
+        const tableNote = shiftsPanel.querySelector(
+            ".ba-table-note"
+        );
+
+        if (tableNote) {
+
+            tableNote.textContent =
+                "Het inzetschema is nog niet gekoppeld " +
+                "aan persoonlijke taaktoewijzingen.";
+        }
+    }
+
+    const bottomInfo = document.querySelector(
+        ".ba-bottom-info p"
+    );
+
+    if (bottomInfo) {
+
+        bottomInfo.textContent =
+            "De organisatie kan je beschikbaarheid bekijken " +
+            "via vrijwilligersbeheer. De koppeling met " +
+            "persoonlijke diensten volgt later.";
+    }
+
+    const footer = document.querySelector(
+        ".bm-content-footer"
+    );
+
+    if (footer) {
+
+        footer.textContent =
+            "Avond4daagse 2027 · Mijn beschikbaarheid";
+    }
+
+    // ======================================
+    // 10. START
+    // ======================================
+
+    loadAvailability();
 
 });
