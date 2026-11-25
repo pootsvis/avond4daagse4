@@ -1,6 +1,9 @@
-namespace Avond4DaagseBackend.Models; 
 
-// ---------- Evenement en bijbehorende gegevens ----------
+namespace Avond4DaagseBackend.Models;
+
+// ==========================================
+// EVENEMENT EN BIJBEHORENDE GEGEVENS
+// ==========================================
 
 public class Evenement
 {
@@ -71,7 +74,9 @@ public class EvenementSponsor
     public Sponsor Sponsor { get; set; } = null!;
 }
 
-// ---------- Personen ----------
+// ==========================================
+// PERSONEN
+// ==========================================
 
 public class Persoon
 {
@@ -86,11 +91,16 @@ public class Persoon
 
 public class Deelnemer
 {
-    public int DeelnemerId { get; set; }   // PK en tegelijk FK naar Persoon
+    public int DeelnemerId { get; set; }
     public Persoon Persoon { get; set; } = null!;
 
     public int DeelnameId { get; set; }
     public Deelname Deelname { get; set; } = null!;
+
+    // NIEUW: deelnemer koppelen aan een inschrijving.
+    // Nullable zodat bestaande deelnemers blijven werken.
+    public int? InschrijvingId { get; set; }
+    public Inschrijving? Inschrijving { get; set; }
 }
 
 public class Deelname
@@ -102,12 +112,16 @@ public class Deelname
     public int HoeveelheidKeer { get; set; }
     public bool NeemtBegeleiderMee { get; set; }
 
+    // NIEUW: volledige geboortedatum voor inschrijvingen.
+    // Nullable om bestaande gegevens te behouden.
+    public DateOnly? Geboortedatum { get; set; }
+
     public ICollection<Deelnemer> Deelnemers { get; set; } = new List<Deelnemer>();
 }
 
 public class Vrijwilliger
 {
-    public int VrijwilligersId { get; set; }   // PK en tegelijk FK naar Persoon
+    public int VrijwilligersId { get; set; }
     public Persoon Persoon { get; set; } = null!;
 
     public string Beschikbaarheid { get; set; } = string.Empty;
@@ -119,7 +133,9 @@ public class Vrijwilliger
     public ICollection<Taaktoewijzing> Taaktoewijzingen { get; set; } = new List<Taaktoewijzing>();
 }
 
-// ---------- Inschrijving en betaling ----------
+// ==========================================
+// INSCHRIJVING EN BETALING
+// ==========================================
 
 public class Contactpersoon
 {
@@ -144,6 +160,12 @@ public class Inschrijving
     public Contactpersoon Contactpersoon { get; set; } = null!;
 
     public ICollection<Transactie> Transacties { get; set; } = new List<Transactie>();
+
+    // NIEUW: de gekozen wandelafstand.
+    public int AfstandKm { get; set; }
+
+    // NIEUW: alle deelnemers bij deze inschrijving.
+    public ICollection<Deelnemer> Deelnemers { get; set; } = new List<Deelnemer>();
 }
 
 public class Transactie
@@ -175,14 +197,16 @@ public class Betaling
     public Transactie Transactie { get; set; } = null!;
 }
 
-// ---------- Gebruikers, rollen en rechten ----------
+// ==========================================
+// GEBRUIKERS, ROLLEN EN RECHTEN
+// ==========================================
 
 public class Gebruiker
 {
     public int GebruikerId { get; set; }
     public string Naam { get; set; } = string.Empty;
     public string Email { get; set; } = string.Empty;
-    public string Wachtwoord { get; set; } = string.Empty; // sla hier een hash op, nooit platte tekst
+    public string Wachtwoord { get; set; } = string.Empty;
 
     public ICollection<GebruikerRol> GebruikerRollen { get; set; } = new List<GebruikerRol>();
     public ICollection<GebruikerDraaiboektaak> GebruikerDraaiboektaken { get; set; } = new List<GebruikerDraaiboektaak>();
@@ -224,7 +248,9 @@ public class RolRecht
     public Recht Recht { get; set; } = null!;
 }
 
-// ---------- Contactvragen ----------
+// ==========================================
+// CONTACTVRAGEN
+// ==========================================
 
 public class Contactvraag
 {
@@ -241,11 +267,13 @@ public class Contactvraag
     public int PersoonId { get; set; }
     public Persoon Persoon { get; set; } = null!;
 
-    public int? GebruikerId { get; set; }   // optioneel (NULL toegestaan)
+    public int? GebruikerId { get; set; }
     public Gebruiker? Gebruiker { get; set; }
 }
 
-// ---------- Draaiboek ----------
+// ==========================================
+// DRAAIBOEK EN TAKEN
+// ==========================================
 
 public class Draaiboektaak
 {

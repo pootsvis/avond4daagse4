@@ -1,3 +1,4 @@
+
 using System.ComponentModel.DataAnnotations;
 
 namespace Avond4DaagseBackend.DTOs;
@@ -12,6 +13,10 @@ public class DeelnameDto
 
     [Range(1900, 2100)]
     public int Geboortejaar { get; set; }
+
+    // Nieuw: volledige geboortedatum.
+    // Optioneel voor bestaande deelnemers.
+    public DateOnly? Geboortedatum { get; set; }
 
     [Range(0, 100)]
     public int HoeveelheidKeer { get; set; }
