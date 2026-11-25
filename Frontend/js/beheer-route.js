@@ -1,7 +1,6 @@
-
 // ==========================================
 // AVOND4DAAGSE 2027
-// ROUTEBEHEER - LOKALE FRONTENDDEMO
+// ROUTEBEHEER - BACKEND INTEGRATIE
 // ==========================================
 
 document.addEventListener("DOMContentLoaded", () => {
@@ -9,6 +8,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const $ = id => document.getElementById(id);
 
     const STORAGE_KEY = "a4d-routebeheer-demo-v1";
+    const METADATA_KEY = "a4d-route-metadata-v1";
     const MAX_FILE_SIZE = 2 * 1024 * 1024;
     const MAX_POINTS = 5000;
 
@@ -25,6 +25,10 @@ document.addEventListener("DOMContentLoaded", () => {
     const eveningInput = $("brRouteEvening");
     const distanceInput = $("brRouteDistance");
     const startInput = $("brRouteStart");
+    const eventInput = $("brRouteEvent");
+    const timeInput = $("brRouteTime");
+    const checkpointInput = $("brRouteCheckpoint");
+
     const fileInput = $("brGpxFile");
     const removeGpxInput = $("brRemoveGpx");
     const removeGpxWrap = $("brRemoveGpxWrap");
@@ -37,238 +41,366 @@ document.addEventListener("DOMContentLoaded", () => {
     const mapEmptyText = $("brMapEmptyText");
     const feedback = $("brFeedback");
 
-    let routes = loadRoutes();
+    let routes = [];
+    let evenementen = [];
+
     let selectedId = null;
     let editingId = null;
 
     let map = null;
     let routeLayer = null;
 
+    let busy = false;
+    let apiReady = false;
 
     // ======================================
-    // 1. LOKAAL OPSLAAN
+    // 1. LOKALE OPSLAG
     // ======================================
+
+    function validPoints(points) {
+
+        if (!Array.isArray(points)) return [];
+
+        return points.filter(point =>
+            Array.isArray(point) &&
+            point.length === 2 &&
+            Number.isFinite(point[0]) &&
+            Number.isFinite(point[1]) &&
+            Math.abs(point[0]) <= 90 &&
+            Math.abs(point[1]) <= 180
+        ).slice(0, MAX_POINTS);
+    }
 
     function loadRoutes() {
 
         try {
-            const saved = localStorage.getItem(
-                STORAGE_KEY
+
+            const saved = JSON.parse(
+                localStorage.getItem(STORAGE_KEY) || "[]"
             );
 
-            if (!saved) return [];
+            if (!Array.isArray(saved)) return [];
 
-            const result = JSON.parse(saved);
-
-            if (!Array.isArray(result)) return [];
-
-            return result.filter(route => {
-                return (
-                    route &&
-                    typeof route.id === "string" &&
-                    typeof route.name === "string" &&
-                    [1, 2, 3, 4].includes(route.evening) &&
-                    [5, 10].includes(route.distance)
-                );
-            }).map(route => {
-
-                const points = Array.isArray(route.points)
-                    ? route.points.filter(point =>
-                        Array.isArray(point) &&
-                        point.length === 2 &&
-                        Number.isFinite(point[0]) &&
-                        Number.isFinite(point[1]) &&
-                        Math.abs(point[0]) <= 90 &&
-                        Math.abs(point[1]) <= 180
-                    ).slice(0, MAX_POINTS)
-                    : [];
-
-                return {
-                    id: route.id,
-                    name: route.name,
-                    evening: route.evening,
-                    distance: route.distance,
-                    start: typeof route.start === "string"
-                        ? route.start
-                        : "",
-                    points
-                };
-
-            });
+            return saved.filter(route =>
+                route &&
+                typeof route.id === "string" &&
+                typeof route.name === "string" &&
+                [1, 2, 3, 4].includes(route.evening) &&
+                [5, 10].includes(route.distance)
+            ).map(route => ({
+                ...route,
+                source: "local",
+                points: validPoints(route.points)
+            }));
 
         } catch (error) {
-            console.warn(
-                "Lokale routes konden niet worden geladen.",
-                error
-            );
 
+            console.error(error);
             return [];
         }
     }
 
-
     function saveRoutes() {
 
         try {
+
             localStorage.setItem(
                 STORAGE_KEY,
-                JSON.stringify(routes)
+                JSON.stringify(
+                    routes.filter(route =>
+                        route.source === "local"
+                    )
+                )
             );
 
             return true;
 
         } catch (error) {
 
-            console.warn(
-                "Routes konden niet lokaal worden opgeslagen.",
-                error
-            );
-
+            console.error(error);
             return false;
         }
     }
 
+    function loadMetadata() {
+
+        try {
+
+            return JSON.parse(
+                localStorage.getItem(METADATA_KEY) || "{}"
+            ) || {};
+
+        } catch {
+
+            return {};
+        }
+    }
+
+    function saveRouteMetadata(routeId, route) {
+
+        try {
+
+            const metadata = loadMetadata();
+
+            metadata[routeId] = {
+                evening: route.evening,
+                start: route.start,
+                points: route.points
+            };
+
+            localStorage.setItem(
+                METADATA_KEY,
+                JSON.stringify(metadata)
+            );
+
+            return true;
+
+        } catch (error) {
+
+            console.error(error);
+            return false;
+        }
+    }
+
+    function deleteRouteMetadata(routeId) {
+
+        try {
+
+            const metadata = loadMetadata();
+
+            delete metadata[routeId];
+
+            localStorage.setItem(
+                METADATA_KEY,
+                JSON.stringify(metadata)
+            );
+
+            return true;
+
+        } catch (error) {
+
+            console.error(error);
+            return false;
+        }
+    }
 
     // ======================================
-    // 2. GPX-BESTAND LEZEN
+    // 2. API GEGEVENS OPHALEN
+    // ======================================
+
+    function mapDatabaseRoute(route) {
+
+        const metadata = loadMetadata()[route.routeId] || {};
+
+        return {
+            id: "db-" + route.routeId,
+            routeId: route.routeId,
+            name: route.naam,
+            distance: Number(route.afstand),
+            evening: metadata.evening ?? null,
+            start: metadata.start ?? "",
+            starttijd: route.starttijd,
+            controlepost: route.controlepost,
+            evenementId: route.evenementId,
+            evenementNaam: route.evenementNaam,
+            points: validPoints(metadata.points),
+            source: "database"
+        };
+    }
+
+    async function loadEvenementen() {
+
+        evenementen = await A4DRouteAPI.getEvenementen();
+
+        eventInput.replaceChildren(
+            new Option("Selecteer een evenement", "")
+        );
+
+        evenementen.forEach(evenement => {
+
+            eventInput.add(
+                new Option(
+                    evenement.naam,
+                    evenement.evenementId
+                )
+            );
+        });
+    }
+
+    async function initializeRoutes() {
+
+        apiReady = false;
+
+        $("brAddRoute").disabled = true;
+
+        routes = loadRoutes();
+
+        render();
+
+        const errors = [];
+
+        try {
+
+            const databaseRoutes =
+                await A4DRouteAPI.getRoutes();
+
+            routes = [
+                ...routes,
+                ...databaseRoutes.map(mapDatabaseRoute)
+            ];
+
+        } catch (error) {
+
+            errors.push(error.message);
+        }
+
+        try {
+
+            await loadEvenementen();
+
+        } catch (error) {
+
+            errors.push(
+                "Evenementen ophalen mislukt: " +
+                error.message
+            );
+        }
+
+        apiReady = errors.length === 0;
+
+        $("brAddRoute").disabled = !apiReady;
+
+        render();
+
+        feedback.textContent = apiReady
+            ? "Routes opgehaald uit de database."
+            : errors.join(" ");
+    }
+
+    // ======================================
+    // 3. GPX IMPORTEREN
     // ======================================
 
     async function readGpx(file) {
 
         if (file.size > MAX_FILE_SIZE) {
+
             throw new Error(
                 "Het GPX-bestand is groter dan 2 MB."
             );
         }
 
         if (!file.name.toLowerCase().endsWith(".gpx")) {
+
             throw new Error(
-                "Selecteer een bestand met de extensie .gpx."
+                "Selecteer een geldig GPX-bestand."
             );
         }
 
         const xml = await file.text();
 
         const documentXml = new DOMParser()
-            .parseFromString(
-                xml,
-                "application/xml"
-            );
+            .parseFromString(xml, "application/xml");
 
         if (
             documentXml.getElementsByTagName(
                 "parsererror"
-            ).length > 0
+            ).length
         ) {
+
             throw new Error(
                 "Het GPX-bestand bevat ongeldige XML."
             );
         }
 
-        // Eerst zoeken naar tracks.
-        // Als die er niet zijn, routepunten gebruiken.
         let nodes = [
             ...documentXml.getElementsByTagNameNS(
-                "*",
-                "trkpt"
+                "*", "trkpt"
             )
         ];
 
-        if (nodes.length === 0) {
+        if (!nodes.length) {
+
             nodes = [
                 ...documentXml.getElementsByTagNameNS(
-                    "*",
-                    "rtept"
+                    "*", "rtept"
                 )
             ];
         }
 
         if (nodes.length < 2) {
+
             throw new Error(
-                "Dit GPX-bestand bevat onvoldoende " +
-                "track- of routepunten."
+                "Het GPX-bestand bevat onvoldoende routepunten."
             );
         }
 
         if (nodes.length > MAX_POINTS) {
+
             throw new Error(
-                "Dit bestand bevat meer dan 5.000 " +
-                "routepunten. Vereenvoudig de GPX " +
-                "voordat je deze importeert."
+                "Maximaal 5.000 routepunten toegestaan."
             );
         }
 
-        const points = [];
-
-        nodes.forEach(node => {
-
-            const lat = Number(
-                node.getAttribute("lat")
-            );
-
-            const lng = Number(
-                node.getAttribute("lon")
-            );
-
-            if (
-                Number.isFinite(lat) &&
-                Number.isFinite(lng) &&
-                Math.abs(lat) <= 90 &&
-                Math.abs(lng) <= 180
-            ) {
-                points.push([
-                    Number(lat.toFixed(6)),
-                    Number(lng.toFixed(6))
-                ]);
-            }
-        });
+        const points = validPoints(
+            nodes.filter(node =>
+                node.hasAttribute("lat") &&
+                node.hasAttribute("lon") &&
+                node.getAttribute("lat").trim() !== "" &&
+                node.getAttribute("lon").trim() !== ""
+            ).map(node => [
+                Number(
+                    Number(node.getAttribute("lat"))
+                        .toFixed(6)
+                ),
+                Number(
+                    Number(node.getAttribute("lon"))
+                        .toFixed(6)
+                )
+            ])
+        );
 
         if (points.length < 2) {
+
             throw new Error(
-                "Er zijn geen bruikbare coördinaten gevonden."
+                "Geen bruikbare routepunten gevonden."
             );
         }
 
         return points;
     }
 
-
     // ======================================
-    // 3. AFSTAND BEREKENEN
+    // 4. GPX AFSTAND BEREKENEN
     // ======================================
 
     function calculateDistance(points) {
 
-        if (!points || points.length < 2) {
-            return 0;
-        }
-
-        const earthRadius = 6371;
-        const toRadians = value =>
-            value * Math.PI / 180;
-
         let total = 0;
+
+        const radians = value =>
+            value * Math.PI / 180;
 
         for (let i = 1; i < points.length; i++) {
 
             const first = points[i - 1];
             const second = points[i];
 
-            const latDiff = toRadians(
+            const lat = radians(
                 second[0] - first[0]
             );
 
-            const lngDiff = toRadians(
+            const lng = radians(
                 second[1] - first[1]
             );
 
             const a =
-                Math.sin(latDiff / 2) ** 2 +
-                Math.cos(toRadians(first[0])) *
-                Math.cos(toRadians(second[0])) *
-                Math.sin(lngDiff / 2) ** 2;
+                Math.sin(lat / 2) ** 2 +
+                Math.cos(radians(first[0])) *
+                Math.cos(radians(second[0])) *
+                Math.sin(lng / 2) ** 2;
 
-            total += 2 * earthRadius *
+            total += 6371 * 2 *
                 Math.asin(
                     Math.min(1, Math.sqrt(a))
                 );
@@ -277,24 +409,19 @@ document.addEventListener("DOMContentLoaded", () => {
         return total;
     }
 
-
     function formatDistance(points) {
 
-        if (!points || points.length < 2) {
-            return "Geen GPX";
-        }
+        if (points.length < 2) return "Geen GPX";
 
-        const km = calculateDistance(points);
-
-        return km.toLocaleString("nl-NL", {
-            minimumFractionDigits: 2,
-            maximumFractionDigits: 2
-        }) + " km";
+        return calculateDistance(points)
+            .toLocaleString("nl-NL", {
+                minimumFractionDigits: 2,
+                maximumFractionDigits: 2
+            }) + " km";
     }
 
-
     // ======================================
-    // 4. OPENSTREETMAP
+    // 5. INTERACTIEVE KAART
     // ======================================
 
     if (typeof window.L !== "undefined") {
@@ -311,37 +438,32 @@ document.addEventListener("DOMContentLoaded", () => {
                     '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
             }
         ).addTo(map);
-
-    } else {
-        mapEmptyText.textContent =
-            "De kaart kon niet geladen worden. " +
-            "Controleer je internetverbinding. " +
-            "Je kunt nog steeds routes beheren.";
     }
-
 
     function showMap(points) {
 
         if (map && routeLayer) {
+
             map.removeLayer(routeLayer);
             routeLayer = null;
         }
 
-        if (!points || points.length < 2) {
+        if (!map) {
+
             mapEmpty.hidden = false;
 
-            if (map) {
-                map.setView([52.1326, 5.2913], 8);
-            }
+            mapEmptyText.textContent =
+                "De kaart is momenteel niet beschikbaar.";
 
             return;
         }
 
-        if (!map) {
+        if (points.length < 2) {
+
             mapEmpty.hidden = false;
-            mapEmptyText.textContent =
-                "De GPX-route is opgeslagen, maar " +
-                "de interactieve kaart is niet beschikbaar.";
+
+            map.setView([52.1326, 5.2913], 8);
+
             return;
         }
 
@@ -379,23 +501,24 @@ document.addEventListener("DOMContentLoaded", () => {
 
         routeLayer.addTo(map);
 
-        map.fitBounds(
-            polyline.getBounds(),
-            {
-                padding: [30, 30],
-                maxZoom: 16
-            }
-        );
+        map.fitBounds(polyline.getBounds(), {
+            padding: [30, 30],
+            maxZoom: 16
+        });
 
-        setTimeout(() => {
-            map.invalidateSize();
-        }, 100);
+        setTimeout(() => map.invalidateSize(), 100);
     }
 
+    // ======================================
+    // 6. FILTERS
+    // ======================================
 
-    // ======================================
-    // 5. FILTEREN
-    // ======================================
+    function eveningLabel(route) {
+
+        return route.evening
+            ? "Avond " + route.evening
+            : "Wandelavond onbekend";
+    }
 
     function getFilteredRoutes() {
 
@@ -403,37 +526,30 @@ document.addEventListener("DOMContentLoaded", () => {
             .trim()
             .toLocaleLowerCase("nl-NL");
 
-        const evening = eveningFilter.value;
-        const distance = distanceFilter.value;
-
         return routes.filter(route => {
 
-            const text = (
-                route.name + " " + route.start
-            ).toLocaleLowerCase("nl-NL");
-
-            const matchesSearch =
-                query === "" || text.includes(query);
-
-            const matchesEvening =
-                evening === "all" ||
-                String(route.evening) === evening;
-
-            const matchesDistance =
-                distance === "all" ||
-                String(route.distance) === distance;
+            const text = [
+                route.name,
+                route.start,
+                route.controlepost
+            ].join(" ").toLocaleLowerCase("nl-NL");
 
             return (
-                matchesSearch &&
-                matchesEvening &&
-                matchesDistance
+                text.includes(query) &&
+                (
+                    eveningFilter.value === "all" ||
+                    String(route.evening) === eveningFilter.value
+                ) &&
+                (
+                    distanceFilter.value === "all" ||
+                    String(route.distance) === distanceFilter.value
+                )
             );
         });
     }
 
-
     // ======================================
-    // 6. STATISTIEKEN
+    // 7. STATISTIEKEN
     // ======================================
 
     function updateStatistics() {
@@ -443,18 +559,17 @@ document.addEventListener("DOMContentLoaded", () => {
         ).length;
 
         $("brTotalRoutes").textContent =
-            String(routes.length);
+            routes.length;
 
         $("brRoutesWithGpx").textContent =
-            String(withGpx);
+            withGpx;
 
         $("brRoutesWithoutGpx").textContent =
-            String(routes.length - withGpx);
+            routes.length - withGpx;
     }
 
-
     // ======================================
-    // 7. ROUTELIJST
+    // 8. ROUTEKAARTEN
     // ======================================
 
     function createRouteCard(route) {
@@ -465,9 +580,10 @@ document.addEventListener("DOMContentLoaded", () => {
         button.className = "br-route-card";
         button.dataset.id = route.id;
 
-        if (route.id === selectedId) {
-            button.classList.add("is-selected");
-        }
+        button.classList.toggle(
+            "is-selected",
+            route.id === selectedId
+        );
 
         button.setAttribute(
             "aria-pressed",
@@ -497,25 +613,26 @@ document.addEventListener("DOMContentLoaded", () => {
         const meta = document.createElement("div");
         meta.className = "br-card-meta";
 
-        const evening = document.createElement("span");
-        evening.textContent =
-            "Avond " + route.evening;
+        [
+            eveningLabel(route),
+            route.distance + " km",
+            route.start || "Startlocatie onbekend",
+            route.source === "local"
+                ? "Lokaal concept"
+                : "Database"
+        ].forEach(value => {
 
-        const distance = document.createElement("span");
-        distance.textContent =
-            route.distance + " km";
+            const span = document.createElement("span");
 
-        const start = document.createElement("span");
+            span.textContent = value;
 
-        start.textContent = route.start
-            ? route.start
-            : "Startlocatie onbekend";
-
-        meta.append(evening, distance, start);
+            meta.appendChild(span);
+        });
 
         button.append(top, meta);
 
         button.addEventListener("click", () => {
+
             selectedId = route.id;
             render();
         });
@@ -523,27 +640,24 @@ document.addEventListener("DOMContentLoaded", () => {
         return button;
     }
 
-
     function renderList() {
 
         const filtered = getFilteredRoutes();
 
-        if (
-            selectedId &&
-            !filtered.some(route => route.id === selectedId)
-        ) {
+        if (!filtered.some(
+            route => route.id === selectedId
+        )) {
+
             selectedId = null;
         }
 
         $("brResultCount").textContent =
             filtered.length +
-            (filtered.length === 1
-                ? " route"
-                : " routes");
+            (filtered.length === 1 ? " route" : " routes");
 
         list.replaceChildren();
 
-        if (filtered.length === 0) {
+        if (!filtered.length) {
 
             const empty = document.createElement("div");
             empty.className = "br-empty";
@@ -551,46 +665,35 @@ document.addEventListener("DOMContentLoaded", () => {
             const title = document.createElement("strong");
             const message = document.createElement("p");
 
-            if (routes.length === 0) {
-                title.textContent =
-                    "Nog geen routes toegevoegd";
+            title.textContent = routes.length
+                ? "Geen routes gevonden"
+                : "Nog geen routes beschikbaar";
 
-                message.textContent =
-                    "Klik op Route toevoegen om " +
-                    "de eerste route aan te maken.";
-            } else {
-                title.textContent =
-                    "Geen routes gevonden";
-
-                message.textContent =
-                    "Pas de zoekopdracht of filters aan.";
-            }
+            message.textContent = routes.length
+                ? "Pas de zoekopdracht of filters aan."
+                : "Voeg een route toe of controleer de verbinding.";
 
             empty.append(title, message);
+
             list.appendChild(empty);
 
             return;
         }
 
-        filtered
-            .sort((a, b) =>
-                a.evening - b.evening ||
-                a.distance - b.distance ||
-                a.name.localeCompare(
-                    b.name,
-                    "nl-NL"
-                )
-            )
-            .forEach(route => {
-                list.appendChild(
-                    createRouteCard(route)
-                );
-            });
+        filtered.sort((a, b) =>
+            (a.evening ?? 5) - (b.evening ?? 5) ||
+            a.distance - b.distance ||
+            a.name.localeCompare(b.name, "nl-NL")
+        ).forEach(route => {
+
+            list.appendChild(
+                createRouteCard(route)
+            );
+        });
     }
 
-
     // ======================================
-    // 8. GESELECTEERDE ROUTE
+    // 9. ROUTEDETAILS
     // ======================================
 
     function getSelectedRoute() {
@@ -600,6 +703,30 @@ document.addEventListener("DOMContentLoaded", () => {
         ) || null;
     }
 
+    function addDetail(id, label) {
+
+        if ($(id)) return;
+
+        const details = selectedDetails
+            .querySelector(".br-details");
+
+        const row = document.createElement("div");
+        const dt = document.createElement("dt");
+        const dd = document.createElement("dd");
+
+        dt.textContent = label;
+        dd.id = id;
+        dd.textContent = "—";
+
+        row.append(dt, dd);
+
+        details.appendChild(row);
+    }
+
+    addDetail("brDetailTime", "Starttijd");
+    addDetail("brDetailCheckpoint", "Controlepost");
+    addDetail("brDetailEvent", "Evenement");
+    addDetail("brDetailStorage", "Opslag");
 
     function renderSelectedRoute() {
 
@@ -616,25 +743,24 @@ document.addEventListener("DOMContentLoaded", () => {
             selectedDetails.hidden = true;
 
             mapEmptyText.textContent =
-                "Selecteer een route met " +
-                "GPX-bestand om deze op de " +
-                "kaart te bekijken.";
+                "Selecteer een route met GPX-bestand.";
 
             showMap([]);
 
             return;
         }
 
-        $("brMapTitle").textContent = route.name;
-
         const hasGpx = route.points.length >= 2;
+
+        $("brMapTitle").textContent =
+            route.name;
 
         $("brMapBadge").textContent = hasGpx
             ? "GPX beschikbaar"
             : "GPX ontbreekt";
 
         $("brDetailEvening").textContent =
-            "Avond " + route.evening;
+            eveningLabel(route);
 
         $("brDetailDistance").textContent =
             route.distance + " km";
@@ -645,11 +771,49 @@ document.addEventListener("DOMContentLoaded", () => {
         $("brDetailGpxDistance").textContent =
             formatDistance(route.points);
 
+        $("brDetailTime").textContent =
+            route.starttijd
+                ? route.starttijd.slice(0, 5)
+                : "Niet ingevuld";
+
+        $("brDetailCheckpoint").textContent =
+            route.controlepost || "Niet ingevuld";
+
+        const evenement = evenementen.find(item =>
+            Number(item.evenementId) ===
+            Number(route.evenementId)
+        );
+
+        $("brDetailEvent").textContent =
+            evenement?.naam ||
+            route.evenementNaam ||
+            (route.evenementId
+                ? "Evenement " + route.evenementId
+                : "Niet gekoppeld");
+
+        $("brDetailStorage").textContent =
+            route.source === "database"
+                ? "Database + lokale aanvullende gegevens"
+                : "Lokaal concept";
+
         $("brDownloadGpx").disabled = !hasGpx;
+
+        $("brEditRoute").disabled =
+            busy || (
+                route.source === "database" &&
+                !apiReady
+            );
+
+        $("brDeleteRoute").disabled =
+            busy || (
+                route.source === "database" &&
+                !apiReady
+            );
 
         selectedDetails.hidden = false;
 
         if (!hasGpx) {
+
             mapEmptyText.textContent =
                 "Deze route heeft nog geen GPX-bestand. " +
                 "Klik op Bewerken om er een toe te voegen.";
@@ -658,28 +822,55 @@ document.addEventListener("DOMContentLoaded", () => {
         showMap(route.points);
     }
 
-
     function render() {
+
         updateStatistics();
         renderList();
         renderSelectedRoute();
     }
 
+    // ======================================
+    // 10. FORMULIER
+    // ======================================
 
-    // ======================================
-    // 9. FORMULIER OPENEN
-    // ======================================
+    eveningInput.prepend(
+        new Option("Wandelavond onbekend", "")
+    );
+
+    eveningInput.required = false;
 
     function openRouteForm(route = null) {
+
+        if (busy) return;
+
+        if (
+            (!route || route.source === "database") &&
+            !apiReady
+        ) return;
 
         form.reset();
 
         editingId = route ? route.id : null;
 
         formStatus.textContent = "";
-
         existingGpx.hidden = true;
         removeGpxWrap.hidden = true;
+
+        const databaseForm =
+            !route || route.source === "database";
+
+        [
+            eventInput,
+            timeInput,
+            checkpointInput
+        ].forEach(input => {
+
+            input.disabled = !databaseForm;
+            input.required = databaseForm;
+
+            input.closest("label").hidden =
+                !databaseForm;
+        });
 
         if (route) {
 
@@ -689,12 +880,23 @@ document.addEventListener("DOMContentLoaded", () => {
             nameInput.value = route.name;
 
             eveningInput.value =
-                String(route.evening);
+                route.evening ?? "";
 
             distanceInput.value =
                 String(route.distance);
 
-            startInput.value = route.start;
+            startInput.value = route.start || "";
+
+            eventInput.value =
+                route.evenementId ?? "";
+
+            timeInput.value =
+                route.starttijd
+                    ? route.starttijd.slice(0, 5)
+                    : "";
+
+            checkpointInput.value =
+                route.controlepost ?? "";
 
             if (route.points.length >= 2) {
 
@@ -714,208 +916,385 @@ document.addEventListener("DOMContentLoaded", () => {
 
             $("brDialogTitle").textContent =
                 "Route toevoegen";
+
+            eveningInput.value = "1";
         }
 
         dialog.showModal();
         nameInput.focus();
     }
 
+    $("brAddRoute").addEventListener(
+        "click",
+        () => openRouteForm()
+    );
 
-    $("brAddRoute").addEventListener("click", () => {
-        openRouteForm();
-    });
+    $("brEditRoute").addEventListener(
+        "click",
+        () => {
 
+            const route = getSelectedRoute();
 
-    $("brEditRoute").addEventListener("click", () => {
-
-        const route = getSelectedRoute();
-
-        if (route) {
-            openRouteForm(route);
+            if (route) openRouteForm(route);
         }
-    });
-
+    );
 
     function closeRouteForm() {
+
+        if (busy) return;
+
         dialog.close();
         editingId = null;
     }
 
-
     $("brCloseDialog").addEventListener(
-        "click",
-        closeRouteForm
+        "click", closeRouteForm
     );
 
     $("brCancelDialog").addEventListener(
-        "click",
-        closeRouteForm
+        "click", closeRouteForm
     );
 
+    dialog.addEventListener("cancel", event => {
+
+        if (busy) event.preventDefault();
+    });
+
     dialog.addEventListener("close", () => {
+
         editingId = null;
     });
 
-
     // ======================================
-    // 10. ROUTE OPSLAAN
+    // 11. POST EN PUT
     // ======================================
 
     form.addEventListener("submit", async event => {
 
         event.preventDefault();
 
-        if (!form.reportValidity()) {
-            return;
-        }
+        if (busy || !form.reportValidity()) return;
 
+        busy = true;
         saveButton.disabled = true;
         formStatus.textContent = "";
 
         try {
 
-            const existing = editingId
-                ? routes.find(
-                    route => route.id === editingId
-                )
-                : null;
+            const existing = routes.find(
+                route => route.id === editingId
+            );
+
+            const localOnly =
+                existing?.source === "local";
 
             let points = existing
                 ? [...existing.points]
                 : [];
 
             if (removeGpxInput.checked) {
+
                 points = [];
             }
 
-            const file = fileInput.files[0];
+            if (fileInput.files[0]) {
 
-            if (file) {
-                points = await readGpx(file);
+                points = await readGpx(
+                    fileInput.files[0]
+                );
             }
 
             const route = {
-                id: existing
-                    ? existing.id
-                    : createId(),
-
+                ...existing,
                 name: nameInput.value.trim(),
-                evening: Number(eveningInput.value),
+                evening: eveningInput.value
+                    ? Number(eveningInput.value)
+                    : null,
                 distance: Number(distanceInput.value),
                 start: startInput.value.trim(),
                 points
             };
 
             if (!route.name) {
+
                 throw new Error(
                     "Vul een routenaam in."
                 );
             }
 
-            if (existing) {
+            if (
+                localOnly &&
+                ![1, 2, 3, 4].includes(route.evening)
+            ) {
 
-                const index = routes.findIndex(
-                    item => item.id === existing.id
+                throw new Error(
+                    "Selecteer een wandelavond voor het lokale concept."
+                );
+            }
+
+            let message;
+
+            if (localOnly) {
+
+                const updated = routes.map(item =>
+                    item.id === existing.id
+                        ? route
+                        : item
                 );
 
-                routes[index] = route;
+                const previous = routes;
+
+                routes = updated;
+
+                if (!saveRoutes()) {
+
+                    routes = previous;
+
+                    throw new Error(
+                        "Het lokale concept kon niet worden opgeslagen."
+                    );
+                }
+
+                message = "Lokaal concept bijgewerkt.";
 
             } else {
-                routes.push(route);
+
+                if (!apiReady) {
+
+                    throw new Error(
+                        "De backend is niet beschikbaar."
+                    );
+                }
+
+                const payload = {
+                    naam: route.name,
+                    afstand: route.distance,
+                    starttijd: timeInput.value + ":00",
+                    controlepost:
+                        checkpointInput.value.trim(),
+                    evenementId:
+                        Number(eventInput.value)
+                };
+
+                if (
+                    !payload.evenementId ||
+                    !payload.controlepost ||
+                    !timeInput.value
+                ) {
+
+                    throw new Error(
+                        "Vul alle verplichte routegegevens in."
+                    );
+                }
+
+                let routeId;
+
+                if (existing) {
+
+                    // PUT: BESTAANDE ROUTE
+
+                    routeId = existing.routeId;
+
+                    await A4DRouteAPI.updateRoute(
+                        routeId,
+                        payload
+                    );
+
+                    message = "Route bijgewerkt in de database.";
+
+                } else {
+
+                    // POST: NIEUWE ROUTE
+
+                    const confirmed = window.confirm(
+                        "Deze route wordt opgeslagen in de database " +
+                        "en kan zichtbaar worden op de publieke website.\n\n" +
+                        "Wil je doorgaan?"
+                    );
+
+                    if (!confirmed) return;
+
+                    const created =
+                        await A4DRouteAPI.createRoute(payload);
+
+                    routeId = created?.routeId;
+
+                    if (!routeId) {
+
+                        dialog.close();
+
+                        await initializeRoutes();
+
+                        feedback.textContent =
+                            "POST is uitgevoerd, maar het route-ID " +
+                            "ontbreekt in het antwoord. Controleer " +
+                            "het overzicht voordat je opnieuw opslaat.";
+
+                        return;
+                    }
+
+                    message = "Route toegevoegd aan de database.";
+                }
+
+                route.id = "db-" + routeId;
+                route.routeId = routeId;
+                route.source = "database";
+                route.starttijd = payload.starttijd;
+                route.controlepost = payload.controlepost;
+                route.evenementId = payload.evenementId;
+
+                route.evenementNaam =
+                    evenementen.find(item =>
+                        Number(item.evenementId) ===
+                        payload.evenementId
+                    )?.naam || "";
+
+                if (!saveRouteMetadata(routeId, route)) {
+
+                    message +=
+                        " Waarschuwing: aanvullende lokale " +
+                        "gegevens konden niet worden opgeslagen.";
+                }
+
+                if (existing) {
+
+                    routes = routes.map(item =>
+                        item.id === existing.id
+                            ? route
+                            : item
+                    );
+
+                } else {
+
+                    routes.push(route);
+                }
             }
 
             selectedId = route.id;
 
-            const savedLocally = saveRoutes();
+            dialog.close();
 
-            closeRouteForm();
-
-            // Nieuwe of aangepaste route tonen,
-            // ook als oude filters niet meer passen.
             filterForm.reset();
 
             render();
 
-            feedback.textContent = savedLocally
-                ? "Route opgeslagen in deze browser. " +
-                  "Nog niet gepubliceerd op de website."
-                : "Route staat nu in dit scherm, maar " +
-                  "kon niet blijvend lokaal worden " +
-                  "opgeslagen. Controleer je browseropslag.";
+            feedback.textContent = message;
 
         } catch (error) {
 
             formStatus.textContent =
                 error.message ||
-                "Er is iets misgegaan bij het opslaan.";
+                "Opslaan mislukt.";
 
         } finally {
 
+            busy = false;
             saveButton.disabled = false;
-        }
 
+            render();
+        }
     });
 
-
-    function createId() {
-
-        if (
-            window.crypto &&
-            typeof window.crypto.randomUUID === "function"
-        ) {
-            return window.crypto.randomUUID();
-        }
-
-        return (
-            "route-" +
-            Date.now() +
-            "-" +
-            Math.random().toString(36).slice(2)
-        );
-    }
-
-
     // ======================================
-    // 11. ROUTE VERWIJDEREN
+    // 12. DELETE
     // ======================================
 
     $("brDeleteRoute").addEventListener(
         "click",
-        () => {
+        async () => {
 
             const route = getSelectedRoute();
 
-            if (!route) return;
+            if (!route || busy) return;
+
+            const databaseRoute =
+                route.source === "database";
+
+            if (databaseRoute && !apiReady) return;
 
             const confirmed = window.confirm(
                 'Wil je "' + route.name +
-                '" verwijderen uit deze browser?\n\n' +
-                "Dit verwijdert geen gegevens " +
-                "uit de backend."
+                '" definitief verwijderen?\n\n' +
+                (
+                    databaseRoute
+                        ? "De route wordt verwijderd uit de database."
+                        : "Alleen het lokale concept wordt verwijderd."
+                )
             );
 
             if (!confirmed) return;
 
-            routes = routes.filter(
-                item => item.id !== route.id
-            );
+            busy = true;
 
-            selectedId = null;
+            renderSelectedRoute();
 
-            const savedLocally = saveRoutes();
+            try {
 
-            render();
+                let message;
 
-            feedback.textContent = savedLocally
-                ? "Route lokaal verwijderd."
-                : "Route uit dit scherm verwijderd, " +
-                  "maar het opslaan is mislukt.";
+                if (databaseRoute) {
+
+                    await A4DRouteAPI.deleteRoute(
+                        route.routeId
+                    );
+
+                    const metadataDeleted =
+                        deleteRouteMetadata(route.routeId);
+
+                    routes = routes.filter(
+                        item => item.id !== route.id
+                    );
+
+                    message = "Route verwijderd uit de database.";
+
+                    if (!metadataDeleted) {
+
+                        message +=
+                            " Lokale aanvullende gegevens " +
+                            "konden niet worden verwijderd.";
+                    }
+
+                } else {
+
+                    const previous = routes;
+
+                    routes = routes.filter(
+                        item => item.id !== route.id
+                    );
+
+                    if (!saveRoutes()) {
+
+                        routes = previous;
+
+                        throw new Error(
+                            "Het lokale concept kon niet worden verwijderd."
+                        );
+                    }
+
+                    message = "Lokaal concept verwijderd.";
+                }
+
+                selectedId = null;
+
+                feedback.textContent = message;
+
+            } catch (error) {
+
+                feedback.textContent =
+                    "Verwijderen mislukt: " +
+                    error.message;
+
+            } finally {
+
+                busy = false;
+
+                render();
+            }
         }
     );
 
-
     // ======================================
-    // 12. GPX DOWNLOADEN
+    // 13. GPX DOWNLOADEN
     // ======================================
 
     function escapeXml(text) {
@@ -928,7 +1307,6 @@ document.addEventListener("DOMContentLoaded", () => {
             .replace(/'/g, "&apos;");
     }
 
-
     $("brDownloadGpx").addEventListener(
         "click",
         () => {
@@ -936,40 +1314,39 @@ document.addEventListener("DOMContentLoaded", () => {
             const route = getSelectedRoute();
 
             if (!route || route.points.length < 2) {
+
                 return;
             }
 
-            const trackPoints = route.points
-                .map(point =>
-                    '<trkpt lat="' + point[0] +
-                    '" lon="' + point[1] + '"></trkpt>'
-                )
-                .join("\n");
+            const trackPoints = route.points.map(point =>
+                '<trkpt lat="' + point[0] +
+                '" lon="' + point[1] +
+                '"></trkpt>'
+            ).join("\n");
 
             const xml =
                 '<?xml version="1.0" encoding="UTF-8"?>\n' +
                 '<gpx version="1.1" ' +
-                'creator="Avond4daagse Frontenddemo" ' +
+                'creator="Avond4daagse 2027" ' +
                 'xmlns="http://www.topografix.com/GPX/1/1">\n' +
                 '<trk>\n' +
-                '<name>' + escapeXml(route.name) +
-                '</name>\n' +
+                '<name>' + escapeXml(route.name) + '</name>\n' +
                 '<trkseg>\n' +
-                trackPoints + '\n' +
-                '</trkseg>\n' +
-                '</trk>\n' +
-                '</gpx>';
+                trackPoints +
+                '\n</trkseg>\n</trk>\n</gpx>';
 
             const blob = new Blob(
                 [xml],
-                { type: "application/gpx+xml" }
+                {
+                    type: "application/gpx+xml"
+                }
             );
 
             const url = URL.createObjectURL(blob);
 
             const link = document.createElement("a");
 
-            const safeName = route.name
+            const filename = route.name
                 .toLowerCase()
                 .normalize("NFD")
                 .replace(/[\u0300-\u036f]/g, "")
@@ -977,56 +1354,93 @@ document.addEventListener("DOMContentLoaded", () => {
                 .replace(/^-|-$/g, "");
 
             link.href = url;
+
             link.download =
-                (safeName || "avond4daagse-route") +
-                ".gpx";
+                (filename || "avond4daagse-route") + ".gpx";
 
             document.body.appendChild(link);
 
             link.click();
             link.remove();
 
-            setTimeout(() => {
-                URL.revokeObjectURL(url);
-            }, 1000);
+            setTimeout(
+                () => URL.revokeObjectURL(url),
+                1000
+            );
 
             feedback.textContent =
-                "GPX gedownload. Dit is een " +
-                "nieuw gegenereerd bestand met " +
-                "de opgeslagen routepunten.";
+                "GPX-bestand gedownload.";
         }
     );
 
-
     // ======================================
-    // 13. FILTEREVENTS
+    // 14. FILTEREVENTS
     // ======================================
 
     search.addEventListener("input", render);
 
     eveningFilter.addEventListener(
-        "change",
-        render
+        "change", render
     );
 
     distanceFilter.addEventListener(
-        "change",
-        render
+        "change", render
     );
 
-    filterForm.addEventListener("submit", event => {
-        event.preventDefault();
-    });
+    filterForm.addEventListener(
+        "submit",
+        event => event.preventDefault()
+    );
 
-    filterForm.addEventListener("reset", () => {
-        setTimeout(render, 0);
-    });
-
+    filterForm.addEventListener(
+        "reset",
+        () => setTimeout(render, 0)
+    );
 
     // ======================================
-    // 14. START
+    // 15. INTERFACE TEKSTEN
     // ======================================
 
-    render();
+    const notice = document.querySelector(
+        ".bm-notice"
+    );
+
+    if (notice) {
+
+        notice.querySelector("strong").textContent =
+            "Routebeheer — database gekoppeld";
+
+        notice.querySelector("p").textContent =
+            "Nieuwe routes worden opgeslagen in de database " +
+            "en kunnen zichtbaar worden op de publieke website. " +
+            "Wandelavond, startlocatie en GPX-routepunten " +
+            "worden voorlopig alleen in deze browser opgeslagen. " +
+            "Bestaande lokale concepten blijven behouden.";
+    }
+
+    const totalLabel = $("brTotalRoutes")
+        .parentElement.querySelector("small");
+
+    if (totalLabel) {
+
+        totalLabel.textContent =
+            "Database en lokale concepten";
+    }
+
+    const footer = document.querySelector(
+        ".bm-content-footer"
+    );
+
+    if (footer) {
+
+        footer.textContent =
+            "Avond4daagse 2027 · Routebeheer";
+    }
+
+    // ======================================
+    // 16. START
+    // ======================================
+
+    initializeRoutes();
 
 });

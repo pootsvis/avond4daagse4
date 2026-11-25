@@ -23,7 +23,8 @@
             src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 
     <script defer src="../js/beheer-ui.js"></script>
-    <script defer src="../js/beheer-route.js"></script>
+<script defer src="../js/beheer-route-api.js"></script>
+<script defer src="../js/beheer-route.js"></script>
 </head>
 
 <body class="bm-page br-page">
@@ -551,7 +552,30 @@
                    maxlength="120"
                    placeholder="Bijv. het startplein">
         </label>
+<label>
+    Evenement
 
+    <select id="brRouteEvent" required>
+        <option value="">Selecteer een evenement</option>
+    </select>
+</label>
+
+<label>
+    Starttijd
+
+    <input id="brRouteTime"
+           type="time"
+           required>
+</label>
+
+<label>
+    Controlepost
+
+    <input id="brRouteCheckpoint"
+           type="text"
+           placeholder="Bijv. Controlepost 1"
+           required>
+</label>
         <div class="br-upload">
 
             <label for="brGpxFile">
