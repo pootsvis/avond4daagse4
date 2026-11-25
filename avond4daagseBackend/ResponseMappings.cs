@@ -1,13 +1,12 @@
+
 using Avond4DaagseBackend.Models;
-using Route = Avond4DaagseBackend.Models.Route; // voorkomt verwarring met Microsoft.AspNetCore.Routing.Route
+using Route = Avond4DaagseBackend.Models.Route;
 
 namespace Avond4DaagseBackend.DTOs;
 
-// Eén plek voor alle mapping van model naar response. Gebruik in een controller:
-//   Ok(evenement.ToResponse())
-//   Ok(evenementen.Select(e => e.ToResponse()).ToList())
 public static class ResponseMappings
 {
+    // EVENEMENT
     public static EvenementResponse ToResponse(this Evenement e) => new()
     {
         EvenementId = e.EvenementId,
@@ -17,6 +16,7 @@ public static class ResponseMappings
         Locatie = e.Locatie,
         InschrijvingGeopend = e.InschrijvingGeopend,
         Publicatiestatus = e.Publicatiestatus,
+
         InzetSchema = e.InzetSchema == null
             ? new InzetSchemaDto()
             : new InzetSchemaDto
@@ -25,6 +25,7 @@ public static class ResponseMappings
                 Datum = e.InzetSchema.Datum,
                 Taak = e.InzetSchema.Taak
             },
+
         PraktischeInformatie = e.PraktischeInformatie == null
             ? new PraktischeInformatieDto()
             : new PraktischeInformatieDto
@@ -32,9 +33,13 @@ public static class ResponseMappings
                 Bereikbaarheid = e.PraktischeInformatie.Bereikbaarheid,
                 Deelnemersinformatie = e.PraktischeInformatie.Deelnemersinformatie
             },
-        SponsorIds = e.EvenementSponsors.Select(es => es.SponsorId).ToList()
+
+        SponsorIds = e.EvenementSponsors
+            .Select(es => es.SponsorId)
+            .ToList()
     };
 
+    // ROUTE
     public static RouteResponse ToResponse(this Route r) => new()
     {
         RouteId = r.RouteId,
@@ -46,12 +51,14 @@ public static class ResponseMappings
         EvenementNaam = r.Evenement?.Naam ?? string.Empty
     };
 
+    // SPONSOR
     public static SponsorResponse ToResponse(this Sponsor s) => new()
     {
         SponsorId = s.SponsorId,
         Naam = s.Naam
     };
 
+    // INSCHRIJVING
     public static InschrijvingResponse ToResponse(this Inschrijving i) => new()
     {
         InschrijvingId = i.InschrijvingId,
@@ -59,15 +66,22 @@ public static class ResponseMappings
         Status = i.Status,
         AantalDeelnemers = i.AantalDeelnemers,
         EvenementId = i.EvenementId,
+        AfstandKm = i.AfstandKm,
+
         Contactpersoon = i.Contactpersoon == null
             ? null
             : new ContactpersoonDto
             {
                 Email = i.Contactpersoon.Email,
                 Telefoonnummer = i.Contactpersoon.Telefoonnummer
-            }
+            },
+
+        Deelnemers = i.Deelnemers
+            .Select(d => d.ToResponse())
+            .ToList()
     };
 
+    // TRANSACTIE
     public static TransactieResponse ToResponse(this Transactie t) => new()
     {
         TransactieId = t.TransactieId,
@@ -80,6 +94,7 @@ public static class ResponseMappings
         Betaalstatus = t.Betaalstatus,
         Factuur = t.Factuur,
         InschrijvingId = t.InschrijvingId,
+
         Betaling = t.Betaling == null
             ? null
             : new BetalingDto
@@ -90,6 +105,7 @@ public static class ResponseMappings
             }
     };
 
+    // CONTACTVRAAG
     public static ContactvraagResponse ToResponse(this Contactvraag c) => new()
     {
         ContactvraagId = c.ContactvraagId,
@@ -104,7 +120,7 @@ public static class ResponseMappings
         GebruikerId = c.GebruikerId
     };
 
-    // Bewust zonder wachtwoord (hash)
+    // GEBRUIKER
     public static GebruikerResponse ToResponse(this Gebruiker g) => new()
     {
         GebruikerId = g.GebruikerId,
@@ -112,6 +128,7 @@ public static class ResponseMappings
         Email = g.Email
     };
 
+    // VRIJWILLIGER
     public static VrijwilligerResponse ToResponse(this Vrijwilliger v) => new()
     {
         VrijwilligersId = v.VrijwilligersId,
@@ -124,19 +141,24 @@ public static class ResponseMappings
         Inzetting = v.Inzetting
     };
 
+    // ROL
     public static RolResponse ToResponse(this Rol r) => new()
     {
         RolId = r.RolId,
         Naam = r.Naam,
-        RechtIds = r.RolRechten.Select(rr => rr.RechtId).ToList()
+        RechtIds = r.RolRechten
+            .Select(rr => rr.RechtId)
+            .ToList()
     };
 
+    // RECHT
     public static RechtResponse ToResponse(this Recht r) => new()
     {
         RechtId = r.RechtId,
         Naam = r.Naam
     };
 
+    // TAAKTOEWIJZING
     public static TaaktoewijzingResponse ToResponse(this Taaktoewijzing t) => new()
     {
         ToewijzingId = t.ToewijzingId,
@@ -144,6 +166,7 @@ public static class ResponseMappings
         TaakId = t.TaakId
     };
 
+    // DRAAIBOEK
     public static DraaiboektaakResponse ToResponse(this Draaiboektaak t) => new()
     {
         TaakId = t.TaakId,
@@ -153,14 +176,19 @@ public static class ResponseMappings
         Categorie = t.Categorie,
         Status = t.Status,
         Verantwoordelijke = t.Verantwoordelijke,
-        GebruikerIds = t.GebruikerDraaiboektaken.Select(gd => gd.GebruikerId).ToList()
+
+        GebruikerIds = t.GebruikerDraaiboektaken
+            .Select(gd => gd.GebruikerId)
+            .ToList()
     };
 
+    // DEELNEMER
     public static DeelnemerResponse ToResponse(this Deelnemer d) => new()
     {
         DeelnemerId = d.DeelnemerId,
         Voornaam = d.Persoon?.Voornaam ?? string.Empty,
         Achternaam = d.Persoon?.Achternaam ?? string.Empty,
+
         Deelname = d.Deelname == null
             ? new DeelnameDto()
             : new DeelnameDto
@@ -168,6 +196,7 @@ public static class ResponseMappings
                 School = d.Deelname.School,
                 Groep = d.Deelname.Groep,
                 Geboortejaar = d.Deelname.Geboortejaar,
+                Geboortedatum = d.Deelname.Geboortedatum,
                 HoeveelheidKeer = d.Deelname.HoeveelheidKeer,
                 NeemtBegeleiderMee = d.Deelname.NeemtBegeleiderMee
             }

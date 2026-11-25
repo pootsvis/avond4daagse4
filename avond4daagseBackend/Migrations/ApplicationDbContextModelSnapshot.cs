@@ -134,6 +134,9 @@ namespace avond4daagseBackend.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("DeelnameId"));
 
+                    b.Property<DateOnly?>("Geboortedatum")
+                        .HasColumnType("date");
+
                     b.Property<int>("Geboortejaar")
                         .HasColumnType("integer");
 
@@ -164,9 +167,14 @@ namespace avond4daagseBackend.Migrations
                     b.Property<int>("DeelnameId")
                         .HasColumnType("integer");
 
+                    b.Property<int?>("InschrijvingId")
+                        .HasColumnType("integer");
+
                     b.HasKey("DeelnemerId");
 
                     b.HasIndex("DeelnameId");
+
+                    b.HasIndex("InschrijvingId");
 
                     b.ToTable("Deelnemers");
                 });
@@ -333,6 +341,9 @@ namespace avond4daagseBackend.Migrations
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("InschrijvingId"));
 
                     b.Property<int>("AantalDeelnemers")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("AfstandKm")
                         .HasColumnType("integer");
 
                     b.Property<int>("ContactpersoonId")
@@ -701,7 +712,13 @@ namespace avond4daagseBackend.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("Avond4DaagseBackend.Models.Inschrijving", "Inschrijving")
+                        .WithMany("Deelnemers")
+                        .HasForeignKey("InschrijvingId");
+
                     b.Navigation("Deelname");
+
+                    b.Navigation("Inschrijving");
 
                     b.Navigation("Persoon");
                 });
@@ -909,6 +926,8 @@ namespace avond4daagseBackend.Migrations
 
             modelBuilder.Entity("Avond4DaagseBackend.Models.Inschrijving", b =>
                 {
+                    b.Navigation("Deelnemers");
+
                     b.Navigation("Transacties");
                 });
 
