@@ -9,7 +9,9 @@
 
   <link rel="stylesheet" href="Frontend/css/style.css">
   <link rel="stylesheet" href="Frontend/css/public-pages.css">
-  <script defer src="Frontend/js/public-pages.js"></script>
+
+  <!-- Contactformulier gekoppeld aan backend -->
+  <script defer src="Frontend/js/public-contact.js"></script>
 </head>
 
 <body class="pp-page pp-contact">
@@ -122,7 +124,7 @@
 
           </aside>
 
-          <!-- FORMULIER -->
+          <!-- CONTACTFORMULIER -->
           <div class="pp-card">
 
             <span class="pp-eyebrow">
@@ -137,8 +139,10 @@
             <p class="pp-muted"
               style="margin-bottom:25px">
               Vul je gegevens en bericht in.
-              De echte verzending wordt
-              later gekoppeld aan de backend.
+              Na verzending wordt je vraag
+              opgeslagen in het systeem,
+              zodat de organisatie deze
+              kan bekijken.
             </p>
 
             <form id="ppContactForm"
@@ -227,17 +231,21 @@
                 0 / 2000 tekens
               </p>
 
+              <!-- INFORMATIEMELDING -->
               <div class="pp-notice">
-                Dit is nog een demonstratieformulier.
-                Gegevens worden niet naar de
-                organisatie verzonden.
+                Je bericht wordt opgeslagen
+                in de Avond4daagse-database.
+                Gebruik tijdens het testen
+                fictieve persoonsgegevens.
               </div>
 
+              <!-- VERZENDKNOP -->
               <button type="submit"
                 class="pp-btn pp-btn--dark">
-                Controleer bericht →
+                Verstuur bericht →
               </button>
 
+              <!-- RESULTAAT VAN DE BACKEND -->
               <p id="ppContactStatus"
                 class="pp-status"
                 role="status"
@@ -288,8 +296,12 @@
   <footer class="pp-footer">
     <div class="pp-shell pp-footer-inner">
       <div>
-        <strong>AVOND4DAAGSE 2027</strong>
-        <p>Vier avonden. Duizend herinneringen.</p>
+        <strong>
+          AVOND4DAAGSE 2027
+        </strong>
+        <p>
+          Vier avonden. Duizend herinneringen.
+        </p>
       </div>
       <div class="pp-footer-links">
         <a href="index.html">Home</a>
