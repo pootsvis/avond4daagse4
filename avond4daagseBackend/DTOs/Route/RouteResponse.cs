@@ -7,6 +7,13 @@ public class RouteResponse
     public double Afstand { get; set; }
     public TimeOnly Starttijd { get; set; }
     public string Controlepost { get; set; } = string.Empty;
+
     public int EvenementId { get; set; }
     public string EvenementNaam { get; set; } = string.Empty;
+
+    public int? Wandelavond { get; set; }
+    public string Startlocatie { get; set; } = string.Empty;
+
+    public double[][] GpxPunten { get; set; }
+        = Array.Empty<double[]>();
 }

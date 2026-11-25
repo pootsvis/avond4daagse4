@@ -11,6 +11,14 @@ public class UpdateRouteDto
     public double Afstand { get; set; }
 
     public TimeOnly Starttijd { get; set; }
+
     public string Controlepost { get; set; } = string.Empty;
-    // Geen EvenementId: een route verhuist niet naar een ander evenement
+
+    [Range(1, 4)]
+    public int? Wandelavond { get; set; }
+
+    [StringLength(250)]
+    public string Startlocatie { get; set; } = string.Empty;
+
+    public double[][]? GpxPunten { get; set; }
 }

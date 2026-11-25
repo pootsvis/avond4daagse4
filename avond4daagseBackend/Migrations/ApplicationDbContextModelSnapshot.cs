@@ -537,12 +537,23 @@ namespace avond4daagseBackend.Migrations
                     b.Property<int>("EvenementId")
                         .HasColumnType("integer");
 
+                    b.Property<string>("GpxPuntenJson")
+                        .IsRequired()
+                        .HasColumnType("text");
+
                     b.Property<string>("Naam")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("Startlocatie")
                         .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<TimeOnly>("Starttijd")
                         .HasColumnType("time without time zone");
+
+                    b.Property<int?>("Wandelavond")
+                        .HasColumnType("integer");
 
                     b.HasKey("RouteId");
 

@@ -53,6 +53,10 @@ public class Route
     public TimeOnly Starttijd { get; set; }
     public string Controlepost { get; set; } = string.Empty;
 
+    public int? Wandelavond { get; set; }
+    public string Startlocatie { get; set; } = string.Empty;
+    public string GpxPuntenJson { get; set; } = "[]";
+
     public int EvenementId { get; set; }
     public Evenement Evenement { get; set; } = null!;
 }

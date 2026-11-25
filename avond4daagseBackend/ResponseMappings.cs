@@ -41,15 +41,24 @@ public static class ResponseMappings
 
     // ROUTE
     public static RouteResponse ToResponse(this Route r) => new()
-    {
-        RouteId = r.RouteId,
-        Naam = r.Naam,
-        Afstand = r.Afstand,
-        Starttijd = r.Starttijd,
-        Controlepost = r.Controlepost,
-        EvenementId = r.EvenementId,
-        EvenementNaam = r.Evenement?.Naam ?? string.Empty
-    };
+{
+    RouteId = r.RouteId,
+    Naam = r.Naam,
+    Afstand = r.Afstand,
+    Starttijd = r.Starttijd,
+    Controlepost = r.Controlepost,
+    EvenementId = r.EvenementId,
+    EvenementNaam = r.Evenement?.Naam ?? string.Empty,
+
+    Wandelavond = r.Wandelavond,
+    Startlocatie = r.Startlocatie,
+
+    GpxPunten = string.IsNullOrWhiteSpace(r.GpxPuntenJson)
+        ? Array.Empty<double[]>()
+        : System.Text.Json.JsonSerializer
+            .Deserialize<double[][]>(r.GpxPuntenJson)
+            ?? Array.Empty<double[]>()
+};
 
     // SPONSOR
     public static SponsorResponse ToResponse(this Sponsor s) => new()
