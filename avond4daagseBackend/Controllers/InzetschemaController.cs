@@ -16,7 +16,7 @@ public class InzetschemaController(
     ApplicationDbContext context
 ) : ControllerBase
 {
-    private record Dienst(
+    internal record Dienst(
         string Key,
         int Avond,
         string Tijd,
@@ -76,7 +76,7 @@ public class InzetschemaController(
         { 4, 4, 4, 8 }
     };
 
-    private static List<Dienst> Diensten()
+    internal static List<Dienst> Diensten()
     {
         var result = new List<Dienst>();
 
