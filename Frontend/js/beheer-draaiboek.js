@@ -1,1573 +1,1932 @@
 
 // ==========================================
 // AVOND4DAAGSE 2027
-// DRAAIBOEK - DAG, MAAND EN MIJN TAKEN
+// DRAAIBOEK - BACKEND INTEGRATIE
 // ==========================================
 
 document.addEventListener("DOMContentLoaded", () => {
 
-  const app = document.getElementById("dbpApp");
+    const $ = id => document.getElementById(id);
+    const app = $("dbpApp");
 
-  if (!app) return;
+    if (!app) return;
 
-  const view = app.dataset.view;
+    const view = app.dataset.view;
 
-  if (!["dag", "maand", "mijn"].includes(view)) {
-    return;
-  }
+    const API_URL = "http://localhost:5278";
 
-  const KEY = "avond4daagse-draaiboek-dag-demo";
+    const TEAMS = [
+        "Coördinatie",
+        "Startteam",
+        "Hoofdorganisatie",
+        "Finishteam",
+        "Routecoördinator"
+    ];
 
-  const TEAMS = [
-    "Coördinatie",
-    "Startteam",
-    "Hoofdorganisatie",
-    "Finishteam",
-    "Routecoördinator"
-  ];
+    const MOMENTS = [
+        "Voorbereiding",
+        "Tijdens de wandelavond",
+        "Afronding"
+    ];
 
-  const MOMENTS = [
-    "Voorbereiding",
-    "Tijdens de wandelavond",
-    "Afronding"
-  ];
+    const STATUSES = [
+        "Open",
+        "Bezig",
+        "Gereed"
+    ];
 
-  const STATUSES = ["Open", "Bezig", "Gereed"];
+    const EVENINGS = [
+        "2027-06-01",
+        "2027-06-02",
+        "2027-06-03",
+        "2027-06-04"
+    ];
 
-  const DEFAULT_DATE = "2027-06-03";
+    const DEFAULT_DATE = "2027-06-03";
 
-  const EVENINGS = [
-    "2027-06-01",
-    "2027-06-02",
-    "2027-06-03",
-    "2027-06-04"
-  ];
+    let tasks = [];
+    let users = [];
+    let currentUser = null;
 
-  // Bestaande voorbeeldtaken uit de repository.
-  const DEFAULT_TASKS = {
-    "2027-06-01": [],
-    "2027-06-02": [],
-    "2027-06-03": [
-      {
-        id: 1,
-        titel: "Terrein openen",
-        omschrijving:
-          "Hekken openen, stroom en portofoons controleren.",
-        team: "Coördinatie",
-        moment: "Voorbereiding",
-        status: "Gereed"
-      },
-      {
-        id: 2,
-        titel: "Opbouw startbureau",
-        omschrijving:
-          "Tafels, startlijsten en stempelkaarten klaarleggen.",
-        team: "Startteam",
-        moment: "Voorbereiding",
-        status: "Bezig"
-      },
-      {
-        id: 3,
-        titel: "Briefing vrijwilligers",
-        omschrijving:
-          "Laatste routewijzigingen en veiligheidsafspraken.",
-        team: "Hoofdorganisatie",
-        moment: "Voorbereiding",
-        status: "Open"
-      },
-      {
-        id: 4,
-        titel: "Start 10 km",
-        omschrijving:
-          "Startvak openen en eerste groep laten vertrekken.",
-        team: "Startteam",
-        moment: "Tijdens de wandelavond",
-        status: "Open"
-      },
-      {
-        id: 5,
-        titel: "Start 5 km",
-        omschrijving:
-          "Groepen per school gefaseerd laten vertrekken.",
-        team: "Startteam",
-        moment: "Tijdens de wandelavond",
-        status: "Open"
-      },
-      {
-        id: 6,
-        titel: "Eerste finishers",
-        omschrijving:
-          "Waterpunten en stempelpost volledig bemand.",
-        team: "Finishteam",
-        moment: "Tijdens de wandelavond",
-        status: "Open"
-      },
-      {
-        id: 7,
-        titel: "Route vrijmelden",
-        omschrijving:
-          "Alle posten bellen en deelnemersaantallen bevestigen.",
-        team: "Routecoördinator",
-        moment: "Afronding",
-        status: "Open"
-      }
-    ],
-    "2027-06-04": []
-  };
+    let selectedDate = DEFAULT_DATE;
+    let calendarMonth = "2027-06";
 
-  // Alleen deze drie bestaande taken waren al
-  // aan de voorbeeldgebruiker toegewezen.
-  const PERSONAL_DEMO_IDS = new Set(["1", "3", "7"]);
+    let editingTask = null;
+    let canEdit = false;
+    let ready = false;
+    let busy = false;
 
+    const title = view === "mijn"
+        ? "Mijn taken"
+        : view === "maand"
+            ? "Maandoverzicht"
+            : "Draaiboek";
 
-  // ========================================
-  // 1. HULPFUNCTIES
-  // ========================================
+    // ======================================
+    // 1. HULPFUNCTIES
+    // ======================================
 
-  const $ = id => document.getElementById(id);
+    function create(tag, className = "", text) {
 
-  function dateKey(day) {
-    return "2027-06-" + String(day).padStart(2, "0");
-  }
+        const element = document.createElement(tag);
 
-  function dayNumber(date) {
-    return Number(date.slice(-2));
-  }
+        if (className) {
+            element.className = className;
+        }
 
-  function dateLabel(date) {
-    const day = dayNumber(date);
+        if (text !== undefined) {
+            element.textContent = String(text);
+        }
 
-    if (day >= 1 && day <= 4) {
-      return "Avond " + day + " (demo)";
+        return element;
     }
 
-    return day + " juni 2027";
-  }
+    function dateLabel(date) {
 
-  function create(tag, className = "", content) {
-    const element = document.createElement(tag);
+        const index = EVENINGS.indexOf(date);
 
-    if (className) {
-      element.className = className;
+        if (index !== -1) {
+
+            return "Avond " + (index + 1) +
+                " · " + date;
+        }
+
+        return new Date(date + "T12:00:00")
+            .toLocaleDateString("nl-NL", {
+                day: "numeric",
+                month: "long",
+                year: "numeric"
+            });
     }
 
-    if (content !== undefined) {
-      element.textContent = String(content);
+    function showMessage(message) {
+
+        $("dbpFeedback").textContent = message;
     }
 
-    return element;
-  }
+    function addOption(select, value, label) {
 
-  function makeId() {
-    if (window.crypto?.randomUUID) {
-      return window.crypto.randomUUID();
+        select.add(
+            new Option(label, value)
+        );
     }
 
-    return "taak-" + Date.now() + "-" +
-      Math.random().toString(36).slice(2);
-  }
+    function fillOptions(select, values, placeholder) {
 
-  function clone(value) {
-    return JSON.parse(JSON.stringify(value));
-  }
+        select.replaceChildren();
 
+        if (placeholder !== undefined) {
 
-  // ========================================
-  // 2. BEWARENDE OPSLAG COMPATIBEL HOUDEN
-  // ========================================
+            addOption(select, "", placeholder);
+        }
 
-  function normalizeTask(task) {
-    if (!task || typeof task !== "object") {
-      return null;
+        [...new Set(values)]
+            .filter(Boolean)
+            .forEach(value => {
+
+                addOption(select, value, value);
+            });
     }
 
-    const title = String(task.titel || "").trim();
+    // ======================================
+    // 2. API
+    // ======================================
 
-    if (!title) return null;
+    async function request(
+        path,
+        method = "GET",
+        data
+    ) {
 
-    return {
-      id: task.id ?? makeId(),
-      titel: title.slice(0, 100),
-      omschrijving: String(
-        task.omschrijving || ""
-      ).slice(0, 800),
-      team: TEAMS.includes(task.team)
-        ? task.team
-        : TEAMS[0],
-      moment: MOMENTS.includes(task.moment)
-        ? task.moment
-        : MOMENTS[0],
-      status: STATUSES.includes(task.status)
-        ? task.status
-        : "Open",
-      eigen: task.eigen === true
-    };
-  }
+        let response;
 
-  function loadTasks() {
-    try {
-      const saved = localStorage.getItem(KEY);
+        try {
 
-      if (saved === null) {
-        return clone(DEFAULT_TASKS);
-      }
+            response = await fetch(
+                API_URL + path,
+                {
+                    method,
+                    credentials: "include",
+                    cache: "no-store",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: data === undefined
+                        ? undefined
+                        : JSON.stringify(data)
+                }
+            );
 
-      const parsed = JSON.parse(saved);
+        } catch {
 
-      if (
-        !parsed ||
-        typeof parsed !== "object" ||
-        Array.isArray(parsed)
-      ) {
-        return clone(DEFAULT_TASKS);
-      }
+            throw new Error(
+                "Geen verbinding met de backend."
+            );
+        }
 
-      const result = {};
+        if (response.status === 401) {
 
-      // Ook bestaande taken op andere dagen
-      // van juni blijven bewaard.
-      for (let day = 1; day <= 30; day++) {
-        const key = dateKey(day);
-        const list = parsed[key];
+            throw new Error(
+                "Log opnieuw in."
+            );
+        }
 
-        result[key] = Array.isArray(list)
-          ? list.map(normalizeTask).filter(Boolean)
-          : [];
-      }
+        if (response.status === 403) {
 
-      return result;
+            throw new Error(
+                "Je hebt geen toestemming voor deze actie."
+            );
+        }
 
-    } catch (error) {
-      console.warn("Draaiboek kon niet geladen worden.", error);
-      return clone(DEFAULT_TASKS);
+        if (!response.ok) {
+
+            console.error(
+                response.status,
+                await response.text()
+            );
+
+            throw new Error(
+                "API-fout: HTTP " + response.status
+            );
+        }
+
+        if (response.status === 204) {
+
+            return null;
+        }
+
+        return await response.json();
     }
-  }
-
-  let tasks = loadTasks();
-  let selectedDate = DEFAULT_DATE;
-  let editingId = null;
-
-  // Eerst opslaan, daarna de schermgegevens
-  // aanpassen. Zo blijft de vorige toestand
-  // behouden als opslaan mislukt.
-  function updateTasks(change, successMessage) {
-    const next = clone(tasks);
-
-    change(next);
-
-    try {
-      localStorage.setItem(KEY, JSON.stringify(next));
-      tasks = next;
-
-      render();
-      showMessage(successMessage);
-      return true;
-
-    } catch (error) {
-      console.warn("Opslaan mislukt.", error);
-
-      showMessage(
-        "Opslaan is mislukt. Er is niets gewijzigd. " +
-        "Controleer de browseropslag."
-      );
-
-      return false;
-    }
-  }
-
-  function showMessage(message) {
-    $("dbpFeedback").textContent = message;
-  }
-
-  function allItems() {
-    return Object.entries(tasks).flatMap(
-      ([date, list]) =>
-        list.map(task => ({ date, task }))
-    );
-  }
-
-  function isPersonal(item) {
-    return item.task.eigen === true ||
-      (
-        item.date === DEFAULT_DATE &&
-        PERSONAL_DEMO_IDS.has(String(item.task.id))
-      );
-  }
-
-
-  // ========================================
-  // 3. PAGINAOPBOUW
-  // ========================================
-
-  const title = view === "mijn"
-    ? "Mijn taken"
-    : view === "maand"
-      ? "Maandoverzicht"
-      : "Draaiboek";
-
-  app.innerHTML = `
-    <div class="bm-layout">
-
-      <aside class="bm-sidebar" id="bmSidebar">
-
-        <a href="dashboard.html" class="bm-brand">
-          <span class="bm-brand-symbol"
-                aria-hidden="true">4</span>
-          <span>
-            <strong>AVOND4DAAGSE</strong>
-            <small>BEHEEROMGEVING 2027</small>
-          </span>
-        </a>
-
-        <div class="bm-sidebar-content">
-          <p class="bm-nav-label">OVERZICHT</p>
-
-          <nav class="bm-navigation"
-               aria-label="Beheernavigatie">
-
-            <a href="dashboard.html">
-              <span class="bm-nav-icon"
-                    aria-hidden="true">▦</span>
-              Dashboard
-            </a>
-
-            <a href="inschrijvingen.html">
-              <span class="bm-nav-icon"
-                    aria-hidden="true">◎</span>
-              Inschrijvingen
-            </a>
-
-            <a href="routebeheer.html">
-              <span class="bm-nav-icon"
-                    aria-hidden="true">◇</span>
-              Routebeheer
-            </a>
-
-            <a href="vrijwilligers.html">
-              <span class="bm-nav-icon"
-                    aria-hidden="true">♧</span>
-              Vrijwilligers &amp; inzet
-            </a>
-
-            <a href="mijn-beschikbaarheid.html">
-              <span class="bm-nav-icon"
-                    aria-hidden="true">◷</span>
-              Mijn beschikbaarheid
-            </a>
-
-            <a href="draaiboek.html"
-               class="bm-nav-active"
-               aria-current="page">
-              <span class="bm-nav-icon"
-                    aria-hidden="true">☷</span>
-              Draaiboek
-            </a>
-
-            <a href="financien.html">
-              <span class="bm-nav-icon"
-                    aria-hidden="true">€</span>
-              Financiën
-            </a>
-
-            <a href="contactvragen.html">
-              <span class="bm-nav-icon"
-                    aria-hidden="true">✉</span>
-              Contactvragen
-            </a>
-
-          </nav>
-        </div>
-
-        <div class="bm-sidebar-footer">
-          <div class="bm-account">
-            <span class="bm-account-avatar"
-                  aria-hidden="true">B</span>
-            <span>
-              <strong>Beheeromgeving</strong>
-              <small>Frontenddemo</small>
-            </span>
-          </div>
-
-          <a href="login.html"
-             class="bm-sidebar-exit">
-            Terug naar inloggen ↗
-          </a>
-        </div>
-
-      </aside>
-
-      <div class="bm-main-area">
-
-        <header class="bm-topbar">
-
-          <div class="bm-topbar-left">
-            <button type="button"
-                    class="bm-menu-button"
-                    id="bmMenuButton"
-                    aria-controls="bmSidebar"
-                    aria-expanded="false"
-                    aria-label="Open beheermenu">
-              <span aria-hidden="true">☰</span>
-              Menu
-            </button>
-
-            <div class="bm-breadcrumb">
-              <span>Beheeromgeving</span>
-              <span aria-hidden="true">/</span>
-              <strong>${title}</strong>
-            </div>
-          </div>
-
-          <a href="../../index.html"
-             class="bm-website-link">
-            Bekijk publieke website ↗
-          </a>
-
-        </header>
-
-        <main class="bm-content">
-
-          <section class="dbp-heading">
-            <div>
-              <p class="bm-eyebrow">
-                ORGANISATIE · EDITIE 2027
-              </p>
-              <h1>${title}</h1>
-              <p>
-                Beheer werkzaamheden, volg de voortgang
-                en houd de organisatie overzichtelijk.
-              </p>
-            </div>
-
-            <button type="button"
-                    id="dbpAdd"
-                    class="dbp-btn dbp-btn-primary">
-              + Taak toevoegen
-            </button>
-          </section>
-
-          <nav class="dbp-tabs"
-               aria-label="Draaiboekweergaven">
-
-            <a href="draaiboek.html"
-               ${view === "dag"
-                 ? 'class="is-active" aria-current="page"'
-                 : ""}>
-              Dag
-            </a>
-
-            <a href="draaiboek-maand.html"
-               ${view === "maand"
-                 ? 'class="is-active" aria-current="page"'
-                 : ""}>
-              Maand
-            </a>
-
-            <a href="mijn-taken.html"
-               ${view === "mijn"
-                 ? 'class="is-active" aria-current="page"'
-                 : ""}>
-              Mijn taken
-            </a>
-
-          </nav>
-
-          <div class="bm-notice" role="note">
-            <span class="bm-notice-icon"
-                  aria-hidden="true">i</span>
-
-            <div>
-              <strong>
-                Voorbeeldplanning — alleen lokaal opgeslagen
-              </strong>
-
-              <p>
-                Het bestaande draaiboek gebruikt juni 2027
-                als demokalender. De evenementdatums zijn
-                nog niet officieel bevestigd.
-                Taken worden uitsluitend in deze browser
-                opgeslagen en zijn niet gekoppeld aan
-                gebruikersaccounts of de backend.
-              </p>
-            </div>
-          </div>
-
-          <section class="dbp-stats"
-                   aria-label="Taakstatistieken">
-
-            <article class="dbp-stat">
-              <span>Totaal taken</span>
-              <strong id="dbpTotal">0</strong>
-              <small id="dbpTotalLabel">
-                In dit overzicht
-              </small>
-            </article>
-
-            <article class="dbp-stat">
-              <span>Open of bezig</span>
-              <strong id="dbpActive">0</strong>
-              <small>Nog niet afgerond</small>
-            </article>
-
-            <article class="dbp-stat">
-              <span>Afgerond</span>
-              <strong id="dbpDone">0</strong>
-              <small>Status gereed</small>
-            </article>
-
-          </section>
-
-          <section class="dbp-toolbar"
-                   aria-label="Filters en acties">
-
-            <div class="dbp-filter-grid">
-
-              <label class="dbp-field"
-                     id="dbpDayWrap">
-                Wandelavond
-                <select id="dbpDayFilter"></select>
-              </label>
-
-              <label class="dbp-field dbp-field-search">
-                Zoeken
-                <input id="dbpSearch"
-                       type="search"
-                       placeholder="Zoek taak of omschrijving">
-              </label>
-
-              <label class="dbp-field">
-                Team
-                <select id="dbpTeamFilter">
-                  <option value="">Alle teams</option>
-                </select>
-              </label>
-
-              <label class="dbp-field">
-                Moment
-                <select id="dbpMomentFilter">
-                  <option value="">Alle momenten</option>
-                </select>
-              </label>
-
-              <label class="dbp-field">
-                Status
-                <select id="dbpStatusFilter">
-                  <option value="">Alle statussen</option>
-                </select>
-              </label>
-
-            </div>
-
-            <div class="dbp-filter-grid">
-
-              <button type="button"
-                      id="dbpClearFilters"
-                      class="dbp-btn">
-                Filters wissen
-              </button>
-
-              <button type="button"
-                      id="dbpDuplicate"
-                      class="dbp-btn"
-                      ${view !== "dag" ? "hidden" : ""}>
-                Dupliceer naar volgende avond
-              </button>
-
-              <button type="button"
-                      id="dbpPrint"
-                      class="dbp-btn">
-                Afdrukken / PDF
-              </button>
-
-            </div>
-          </section>
-
-          <section id="dbpCalendarPanel"
-                   class="dbp-panel"
-                   hidden>
-
-            <div class="dbp-panel-header">
-              <div>
-                <p class="bm-eyebrow">DEMONTH 2027</p>
-                <h2>Juni — demokalender</h2>
-                <p>
-                  Selecteer een dag om de taken te bekijken.
-                </p>
-              </div>
-              <span class="dbp-count">
-                30 kalenderdagen
-              </span>
-            </div>
-
-            <div id="dbpCalendar"
-                 class="dbp-calendar"
-                 aria-label="Kalender juni 2027">
-            </div>
-
-          </section>
-
-          <div id="dbpMainLayout" class="dbp-layout">
-
-            <section class="dbp-panel"
-                     aria-labelledby="dbpListTitle">
-
-              <div class="dbp-panel-header">
-                <div>
-                  <p class="bm-eyebrow">
-                    TAKENOVERZICHT
-                  </p>
-
-                  <h2 id="dbpListTitle">
-                    Taken
-                  </h2>
-
-                  <p id="dbpListSubtitle">
-                    Werkzaamheden per wandelavond
-                  </p>
+
+    // ======================================
+    // 3. PAGINA OPBOUWEN
+    // ======================================
+
+    app.innerHTML = `
+        <div class="bm-layout">
+
+            <aside class="bm-sidebar" id="bmSidebar">
+
+                <a href="dashboard.html" class="bm-brand">
+
+                    <span class="bm-brand-symbol"
+                          aria-hidden="true">4</span>
+
+                    <span>
+                        <strong>AVOND4DAAGSE</strong>
+                        <small>BEHEEROMGEVING 2027</small>
+                    </span>
+
+                </a>
+
+                <div class="bm-sidebar-content">
+
+                    <p class="bm-nav-label">OVERZICHT</p>
+
+                    <nav class="bm-navigation"
+                         aria-label="Beheernavigatie">
+
+                        <a href="dashboard.html">
+                            <span class="bm-nav-icon">▦</span>
+                            Dashboard
+                        </a>
+
+                        <a href="inschrijvingen.html">
+                            <span class="bm-nav-icon">◎</span>
+                            Inschrijvingen
+                        </a>
+
+                        <a href="routebeheer.html">
+                            <span class="bm-nav-icon">◇</span>
+                            Routebeheer
+                        </a>
+
+                        <a href="vrijwilligers.html">
+                            <span class="bm-nav-icon">♧</span>
+                            Vrijwilligers &amp; inzet
+                        </a>
+
+                        <a href="mijn-beschikbaarheid.html">
+                            <span class="bm-nav-icon">◷</span>
+                            Mijn beschikbaarheid
+                        </a>
+
+                        <a href="draaiboek.html"
+                           class="bm-nav-active"
+                           aria-current="page">
+                            <span class="bm-nav-icon">☷</span>
+                            Draaiboek
+                        </a>
+
+                        <a href="financien.html">
+                            <span class="bm-nav-icon">€</span>
+                            Financiën
+                        </a>
+
+                        <a href="contactvragen.html">
+                            <span class="bm-nav-icon">✉</span>
+                            Contactvragen
+                        </a>
+
+                    </nav>
+
                 </div>
 
-                <span class="dbp-count"
-                      id="dbpListCount">
-                  0 taken
-                </span>
-              </div>
+                <div class="bm-sidebar-footer">
 
-              <div id="dbpTaskList"
-                   class="dbp-task-list">
-              </div>
+                    <div class="bm-account">
 
-            </section>
+                        <span class="bm-account-avatar">B</span>
 
-            <aside class="dbp-side-panel">
+                        <span>
+                            <strong id="dbpAccount">
+                                Beheeromgeving
+                            </strong>
 
-              <h3>Voortgang</h3>
+                            <small id="dbpAccountRole">
+                                Account laden...
+                            </small>
+                        </span>
 
-              <strong id="dbpProgressText">
-                0 / 0
-              </strong>
+                    </div>
 
-              <div class="dbp-progress-track"
-                   aria-hidden="true">
-                <span id="dbpProgressFill"></span>
-              </div>
+                    <a href="login.html"
+                       class="bm-sidebar-exit">
+                        Terug naar inloggen ↗
+                    </a>
 
-              <p id="dbpProgressDescription">
-                Taken afgerond in dit overzicht.
-              </p>
-
-              <p style="margin-top:20px">
-                Bij een noodgeval neem je contact
-                op met de evenementcoördinator.
-                Bel bij direct gevaar 112.
-              </p>
+                </div>
 
             </aside>
 
-          </div>
+            <div class="bm-main-area">
 
-          <p id="dbpFeedback"
-             class="dbp-feedback"
-             role="status"
-             aria-live="polite"></p>
+                <header class="bm-topbar">
 
-          <footer class="bm-content-footer">
-            Avond4daagse 2027 · Draaiboek · Frontenddemo
-          </footer>
+                    <div class="bm-topbar-left">
 
-        </main>
-      </div>
-    </div>
+                        <button type="button"
+                                class="bm-menu-button"
+                                id="bmMenuButton"
+                                aria-controls="bmSidebar"
+                                aria-expanded="false">
+                            ☰ Menu
+                        </button>
 
-    <dialog id="dbpModal"
-            class="dbp-dialog"
-            aria-labelledby="dbpModalTitle">
+                        <div class="bm-breadcrumb">
+                            <span>Beheeromgeving</span>
+                            <span>/</span>
+                            <strong>${title}</strong>
+                        </div>
 
-      <div class="dbp-dialog-heading">
-        <div>
-          <p class="bm-eyebrow">TAAKGEGEVENS</p>
-          <h2 id="dbpModalTitle">
-            Taak toevoegen
-          </h2>
+                    </div>
+
+                    <a href="../../index.html"
+                       class="bm-website-link">
+                        Bekijk publieke website ↗
+                    </a>
+
+                </header>
+
+                <main class="bm-content">
+
+                    <section class="dbp-heading">
+
+                        <div>
+
+                            <p class="bm-eyebrow">
+                                ORGANISATIE · EDITIE 2027
+                            </p>
+
+                            <h1>${title}</h1>
+
+                            <p>
+                                Beheer werkzaamheden,
+                                taaktoewijzingen en voortgang.
+                            </p>
+
+                        </div>
+
+                        <button type="button"
+                                id="dbpAdd"
+                                class="dbp-btn dbp-btn-primary"
+                                disabled>
+                            + Taak toevoegen
+                        </button>
+
+                    </section>
+
+                    <nav class="dbp-tabs">
+
+                        <a href="draaiboek.html"
+                           ${view === "dag"
+                               ? 'class="is-active"'
+                               : ""}>
+                            Dag
+                        </a>
+
+                        <a href="draaiboek-maand.html"
+                           ${view === "maand"
+                               ? 'class="is-active"'
+                               : ""}>
+                            Maand
+                        </a>
+
+                        <a href="mijn-taken.html"
+                           ${view === "mijn"
+                               ? 'class="is-active"'
+                               : ""}>
+                            Mijn taken
+                        </a>
+
+                    </nav>
+
+                    <div class="bm-notice" role="note">
+
+                        <span class="bm-notice-icon">i</span>
+
+                        <div>
+
+                            <strong id="dbpNoticeTitle">
+                                Draaiboek laden
+                            </strong>
+
+                            <p id="dbpNoticeText">
+                                Databasegegevens worden opgehaald.
+                            </p>
+
+                        </div>
+
+                    </div>
+
+                    <section class="dbp-stats">
+
+                        <article class="dbp-stat">
+                            <span>Totaal taken</span>
+                            <strong id="dbpTotal">—</strong>
+                            <small id="dbpTotalLabel">
+                                In dit overzicht
+                            </small>
+                        </article>
+
+                        <article class="dbp-stat">
+                            <span>Open of bezig</span>
+                            <strong id="dbpActive">—</strong>
+                            <small>Nog niet afgerond</small>
+                        </article>
+
+                        <article class="dbp-stat">
+                            <span>Afgerond</span>
+                            <strong id="dbpDone">—</strong>
+                            <small>Status gereed</small>
+                        </article>
+
+                    </section>
+
+                    <section class="dbp-toolbar">
+
+                        <div class="dbp-filter-grid">
+
+                            <label class="dbp-field"
+                                   id="dbpDayWrap">
+                                Datum
+                                <input type="date"
+                                       id="dbpDayFilter">
+                            </label>
+
+                            <label class="dbp-field dbp-field-search">
+                                Zoeken
+                                <input type="search"
+                                       id="dbpSearch"
+                                       placeholder="Zoek taak">
+                            </label>
+
+                            <label class="dbp-field">
+                                Team
+                                <select id="dbpTeamFilter">
+                                </select>
+                            </label>
+
+                            <label class="dbp-field">
+                                Moment
+                                <select id="dbpMomentFilter">
+                                </select>
+                            </label>
+
+                            <label class="dbp-field">
+                                Status
+                                <select id="dbpStatusFilter">
+                                </select>
+                            </label>
+
+                        </div>
+
+                        <div class="dbp-filter-grid">
+
+                            <button type="button"
+                                    id="dbpClearFilters"
+                                    class="dbp-btn">
+                                Filters wissen
+                            </button>
+
+                            <button type="button"
+                                    id="dbpDuplicate"
+                                    class="dbp-btn">
+                                Dupliceer naar volgende dag
+                            </button>
+
+                            <button type="button"
+                                    id="dbpPrint"
+                                    class="dbp-btn">
+                                Afdrukken / PDF
+                            </button>
+
+                        </div>
+
+                    </section>
+
+                    <section id="dbpCalendarPanel"
+                             class="dbp-panel"
+                             hidden>
+
+                        <div class="dbp-panel-header">
+
+                            <div>
+
+                                <p class="bm-eyebrow">
+                                    MAANDOVERZICHT
+                                </p>
+
+                                <h2 id="dbpCalendarTitle">
+                                    Kalender
+                                </h2>
+
+                                <p>
+                                    Selecteer een dag om
+                                    de taken te bekijken.
+                                </p>
+
+                            </div>
+
+                            <label class="dbp-field">
+                                Maand
+                                <input type="month"
+                                       id="dbpMonth">
+                            </label>
+
+                        </div>
+
+                        <div id="dbpCalendar"
+                             class="dbp-calendar">
+                        </div>
+
+                    </section>
+
+                    <div id="dbpMainLayout"
+                         class="dbp-layout">
+
+                        <section class="dbp-panel">
+
+                            <div class="dbp-panel-header">
+
+                                <div>
+
+                                    <p class="bm-eyebrow">
+                                        TAKENOVERZICHT
+                                    </p>
+
+                                    <h2 id="dbpListTitle">
+                                        Taken
+                                    </h2>
+
+                                    <p id="dbpListSubtitle">
+                                        Werkzaamheden
+                                    </p>
+
+                                </div>
+
+                                <span class="dbp-count"
+                                      id="dbpListCount">
+                                    0 taken
+                                </span>
+
+                            </div>
+
+                            <div id="dbpTaskList"
+                                 class="dbp-task-list">
+                            </div>
+
+                        </section>
+
+                        <aside class="dbp-side-panel">
+
+                            <h3>Voortgang</h3>
+
+                            <strong id="dbpProgressText">
+                                0 / 0
+                            </strong>
+
+                            <div class="dbp-progress-track">
+
+                                <span id="dbpProgressFill">
+                                </span>
+
+                            </div>
+
+                            <p id="dbpProgressDescription">
+                                Taken afgerond.
+                            </p>
+
+                            <p style="margin-top:20px">
+                                Neem bij een noodgeval
+                                contact op met de
+                                evenementcoördinator.
+                                Bel bij direct gevaar 112.
+                            </p>
+
+                        </aside>
+
+                    </div>
+
+                    <p id="dbpFeedback"
+                       class="dbp-feedback"
+                       role="status"
+                       aria-live="polite">
+                    </p>
+
+                    <footer class="bm-content-footer">
+                        Avond4daagse 2027 · Draaiboek
+                    </footer>
+
+                </main>
+
+            </div>
+
         </div>
 
-        <button type="button"
-                class="dbp-close"
-                id="dbpCloseModal"
-                aria-label="Venster sluiten">
-          ×
-        </button>
-      </div>
+        <dialog id="dbpModal"
+                class="dbp-dialog">
 
-      <form id="dbpForm" class="dbp-form">
+            <div class="dbp-dialog-heading">
 
-        <label>
-          Taaknaam
-          <input id="dbpTaskTitle"
-                 type="text"
-                 maxlength="100"
-                 required
-                 placeholder="Bijv. Materialen controleren">
-        </label>
+                <div>
 
-        <label>
-          Omschrijving
-          <textarea id="dbpTaskDescription"
-                    rows="3"
-                    maxlength="800"
-                    placeholder="Wat moet er gebeuren?"></textarea>
-        </label>
+                    <p class="bm-eyebrow">
+                        TAAKGEGEVENS
+                    </p>
 
-        <div class="dbp-form-grid">
+                    <h2 id="dbpModalTitle">
+                        Taak toevoegen
+                    </h2>
 
-          <label class="dbp-field">
-            Dag of wandelavond
-            <select id="dbpTaskDate"></select>
-          </label>
+                </div>
 
-          <label class="dbp-field">
-            Team
-            <select id="dbpTaskTeam"></select>
-          </label>
+                <button type="button"
+                        class="dbp-close"
+                        id="dbpCloseModal">
+                    ×
+                </button>
 
-        </div>
+            </div>
 
-        <div class="dbp-form-grid">
+            <form id="dbpForm"
+                  class="dbp-form">
 
-          <label class="dbp-field">
-            Moment
-            <select id="dbpTaskMoment"></select>
-          </label>
+                <label>
+                    Taaknaam
 
-          <label class="dbp-field">
-            Status
-            <select id="dbpTaskStatus"></select>
-          </label>
+                    <input id="dbpTaskTitle"
+                           type="text"
+                           maxlength="150"
+                           required>
+                </label>
 
-        </div>
+                <label>
+                    Omschrijving
 
-        <label class="dbp-check-label">
-          <input id="dbpTaskPersonal"
-                 type="checkbox">
-          Tonen onder Mijn taken (voorbeeldgebruiker)
-        </label>
+                    <textarea id="dbpTaskDescription"
+                              rows="3">
+                    </textarea>
+                </label>
 
-        <div class="dbp-form-actions">
+                <div class="dbp-form-grid">
 
-          <button type="button"
-                  id="dbpCancelModal"
-                  class="dbp-btn">
-            Annuleren
-          </button>
+                    <label class="dbp-field">
+                        Datum
 
-          <button type="submit"
-                  class="dbp-btn dbp-btn-primary">
-            Taak opslaan
-          </button>
+                        <input type="date"
+                               id="dbpTaskDate"
+                               required>
+                    </label>
 
-        </div>
+                    <label class="dbp-field">
+                        Verantwoordelijk team
 
-      </form>
-    </dialog>
+                        <select id="dbpTaskTeam">
+                        </select>
+                    </label>
 
-    <div class="bm-backdrop"
-         id="bmBackdrop"
-         hidden></div>
-  `;
+                </div>
 
+                <div class="dbp-form-grid">
 
-  // ========================================
-  // 4. SELECTVELDEN OPBOUWEN
-  // ========================================
+                    <label class="dbp-field">
+                        Moment
 
-  function addOption(select, value, label) {
-    const option = document.createElement("option");
+                        <select id="dbpTaskMoment">
+                        </select>
+                    </label>
 
-    option.value = value;
-    option.textContent = label;
+                    <label class="dbp-field">
+                        Status
 
-    select.appendChild(option);
-  }
+                        <select id="dbpTaskStatus">
+                        </select>
+                    </label>
 
-  const dayFilter = $("dbpDayFilter");
-  const teamFilter = $("dbpTeamFilter");
-  const momentFilter = $("dbpMomentFilter");
-  const statusFilter = $("dbpStatusFilter");
-  const searchInput = $("dbpSearch");
+                </div>
 
-  const formDate = $("dbpTaskDate");
-  const formTeam = $("dbpTaskTeam");
-  const formMoment = $("dbpTaskMoment");
-  const formStatus = $("dbpTaskStatus");
+                <label>
+                    Gebruikers toewijzen
 
-  TEAMS.forEach(value => {
-    addOption(teamFilter, value, value);
-    addOption(formTeam, value, value);
-  });
+                    <select id="dbpTaskUsers"
+                            multiple
+                            size="4">
+                    </select>
+                </label>
 
-  MOMENTS.forEach(value => {
-    addOption(momentFilter, value, value);
-    addOption(formMoment, value, value);
-  });
+                <small>
+                    Houd Cmd ingedrukt om meerdere
+                    gebruikers te selecteren.
+                </small>
 
-  STATUSES.forEach(value => {
-    addOption(statusFilter, value, value);
-    addOption(formStatus, value, value);
-  });
+                <p id="dbpFormFeedback"
+                   role="status">
+                </p>
 
-  // Dag en Mijn taken werken met vier avonden.
-  // Maand toont alle dagen van de demokalender.
-  const formDayCount = view === "maand" ? 30 : 4;
+                <div class="dbp-form-actions">
 
-  for (let day = 1; day <= formDayCount; day++) {
-    const date = dateKey(day);
+                    <button type="button"
+                            id="dbpCancelModal"
+                            class="dbp-btn">
+                        Annuleren
+                    </button>
 
-    addOption(
-      formDate,
-      date,
-      dateLabel(date)
-    );
-  }
+                    <button type="submit"
+                            id="dbpSaveTask"
+                            class="dbp-btn dbp-btn-primary">
+                        Taak opslaan
+                    </button>
 
-  if (view === "mijn") {
-    addOption(dayFilter, "", "Alle avonden");
-  }
+                </div>
 
-  if (view === "maand") {
-    $("dbpDayWrap").hidden = true;
-    $("dbpCalendarPanel").hidden = false;
-    $("dbpMainLayout").className =
-      "dbp-calendar-layout";
-  } else {
-    EVENINGS.forEach(date => {
-      addOption(dayFilter, date, dateLabel(date));
-    });
+            </form>
 
-    dayFilter.value =
-      view === "dag" ? DEFAULT_DATE : "";
-  }
+        </dialog>
 
+        <div class="bm-backdrop"
+             id="bmBackdrop"
+             hidden></div>
+    `;
 
-  // ========================================
-  // 5. FILTERS
-  // ========================================
+    // ======================================
+    // 4. ELEMENTEN
+    // ======================================
 
-  function getScopeItems() {
-    const all = allItems();
+    const dialog = $("dbpModal");
+    const taskForm = $("dbpForm");
+
+    const dayFilter = $("dbpDayFilter");
+    const teamFilter = $("dbpTeamFilter");
+    const momentFilter = $("dbpMomentFilter");
+    const statusFilter = $("dbpStatusFilter");
+    const searchInput = $("dbpSearch");
+
+    const formTeam = $("dbpTaskTeam");
+    const formMoment = $("dbpTaskMoment");
+    const formStatus = $("dbpTaskStatus");
+    const formUsers = $("dbpTaskUsers");
+
+    dayFilter.value = DEFAULT_DATE;
+
+    $("dbpMonth").value = calendarMonth;
+
+    if (view === "maand") {
+
+        $("dbpCalendarPanel").hidden = false;
+        $("dbpDayWrap").hidden = true;
+
+        $("dbpMainLayout").className =
+            "dbp-calendar-layout";
+    }
 
     if (view === "mijn") {
-      return all.filter(isPersonal);
+
+        dayFilter.value = "";
     }
 
-    if (view === "dag") {
-      return all.filter(
-        item => item.date === selectedDate
-      );
+    // ======================================
+    // 5. GEGEVENS NORMALISEREN
+    // ======================================
+
+    function normalize(task) {
+
+        return {
+            id: task.taakId,
+            titel: task.titel || "",
+            omschrijving:
+                task.beschrijving || "",
+            datum: task.datum,
+            team:
+                task.verantwoordelijke || "",
+            moment:
+                task.categorie || "",
+            status:
+                task.status || "Onbekend",
+            gebruikerIds:
+                Array.isArray(task.gebruikerIds)
+                    ? task.gebruikerIds.map(Number)
+                    : []
+        };
     }
 
-    // Maandoverzicht: alle demokalenderdagen.
-    return all;
-  }
+    function toPayload(task) {
 
-  function getVisibleItems() {
-    const query = searchInput.value
-      .trim()
-      .toLocaleLowerCase("nl-NL");
+        return {
+            titel: task.titel,
+            beschrijving: task.omschrijving,
+            datum: task.datum,
+            categorie: task.moment,
+            status: task.status,
+            verantwoordelijke: task.team,
+            gebruikerIds: task.gebruikerIds
+        };
+    }
 
-    return getScopeItems().filter(item => {
-      const task = item.task;
+    function isPersonal(task) {
 
-      const searchable = [
-        task.titel,
-        task.omschrijving,
-        task.team,
-        task.moment
-      ].join(" ").toLocaleLowerCase("nl-NL");
+        return currentUser &&
+            task.gebruikerIds.includes(
+                Number(currentUser.gebruikerId)
+            );
+    }
 
-      const dateMatch = view === "mijn"
-        ? (!dayFilter.value ||
-            item.date === dayFilter.value)
-        : view === "maand"
-          ? item.date === selectedDate
-          : true;
+    // ======================================
+    // 6. FILTEROPTIES
+    // ======================================
 
-      return (
-        dateMatch &&
-        (!query || searchable.includes(query)) &&
-        (!teamFilter.value ||
-          task.team === teamFilter.value) &&
-        (!momentFilter.value ||
-          task.moment === momentFilter.value) &&
-        (!statusFilter.value ||
-          task.status === statusFilter.value)
-      );
+    function refreshOptions() {
+
+        const currentTeam = teamFilter.value;
+        const currentMoment = momentFilter.value;
+        const currentStatus = statusFilter.value;
+
+        const teams = [
+            ...TEAMS,
+            ...tasks.map(task => task.team)
+        ];
+
+        const moments = [
+            ...MOMENTS,
+            ...tasks.map(task => task.moment)
+        ];
+
+        const statuses = [
+            ...STATUSES,
+            ...tasks.map(task => task.status)
+        ];
+
+        fillOptions(
+            teamFilter,
+            teams,
+            "Alle teams"
+        );
+
+        fillOptions(
+            momentFilter,
+            moments,
+            "Alle momenten"
+        );
+
+        fillOptions(
+            statusFilter,
+            statuses,
+            "Alle statussen"
+        );
+
+        fillOptions(formTeam, teams, "Geen team");
+        fillOptions(formMoment, moments, "Geen moment");
+        fillOptions(formStatus, statuses);
+
+        teamFilter.value = currentTeam;
+        momentFilter.value = currentMoment;
+        statusFilter.value = currentStatus;
+
+        formUsers.replaceChildren();
+
+        users.forEach(user => {
+
+            addOption(
+                formUsers,
+                user.gebruikerId,
+                user.naam + " (#" +
+                user.gebruikerId + ")"
+            );
+        });
+    }
+
+    // ======================================
+    // 7. API GEGEVENS LADEN
+    // ======================================
+
+    async function loadTasks() {
+
+        const data = await request(
+            "/api/Draaiboek"
+        );
+
+        if (!Array.isArray(data)) {
+
+            throw new Error(
+                "Onverwacht API-antwoord."
+            );
+        }
+
+        tasks = data.map(normalize);
+
+        refreshOptions();
+
+        render();
+    }
+
+    async function initialize() {
+
+        try {
+
+            currentUser = await request(
+                "/api/Auth/me"
+            );
+
+            if (!currentUser.gebruikerId) {
+
+                throw new Error(
+                    "Gebruikers-ID ontbreekt. " +
+                    "Controleer AuthController."
+                );
+            }
+
+            const roles =
+                currentUser.rollen || [];
+
+            canEdit = roles.includes(
+                "Voorzitter"
+            );
+
+            $("dbpAccount").textContent =
+                currentUser.naam ||
+                "Beheeromgeving";
+
+            $("dbpAccountRole").textContent =
+                roles.join(", ");
+
+            if (canEdit) {
+
+                users = await request(
+                    "/api/Gebruiker"
+                );
+
+                if (!Array.isArray(users)) {
+
+                    throw new Error(
+                        "Gebruikers konden niet worden geladen."
+                    );
+                }
+            }
+
+            await loadTasks();
+
+            ready = true;
+
+            $("dbpNoticeTitle").textContent =
+                "Draaiboek verbonden met de database";
+
+            $("dbpNoticeText").textContent =
+                "Taken worden centraal opgeslagen. " +
+                "De vier wandelavonden in juni zijn " +
+                "voorlopige planningsdatums. " +
+                (
+                    canEdit
+                        ? "Je kunt taken beheren en toewijzen."
+                        : "Je hebt alleen leestoegang."
+                );
+
+            render();
+
+        } catch (error) {
+
+            ready = false;
+
+            $("dbpNoticeTitle").textContent =
+                "Draaiboek ophalen mislukt";
+
+            $("dbpNoticeText").textContent =
+                error.message;
+
+            showMessage(error.message);
+        }
+    }
+
+    // ======================================
+    // 8. FILTEREN
+    // ======================================
+
+    function getScopeTasks() {
+
+        if (view === "mijn") {
+
+            return tasks.filter(isPersonal);
+        }
+
+        if (view === "dag") {
+
+            return tasks.filter(task =>
+                task.datum === selectedDate
+            );
+        }
+
+        return tasks.filter(task =>
+            task.datum.startsWith(calendarMonth)
+        );
+    }
+
+    function getVisibleTasks() {
+
+        const query = searchInput.value
+            .trim()
+            .toLowerCase();
+
+        return getScopeTasks().filter(task => {
+
+            const text = [
+                task.titel,
+                task.omschrijving,
+                task.team,
+                task.moment
+            ].join(" ").toLowerCase();
+
+            const dateMatches =
+                view === "maand"
+                    ? task.datum === selectedDate
+                    : view === "mijn"
+                        ? !dayFilter.value ||
+                          task.datum === dayFilter.value
+                        : true;
+
+            return (
+                dateMatches &&
+                text.includes(query) &&
+                (
+                    !teamFilter.value ||
+                    task.team === teamFilter.value
+                ) &&
+                (
+                    !momentFilter.value ||
+                    task.moment === momentFilter.value
+                ) &&
+                (
+                    !statusFilter.value ||
+                    task.status === statusFilter.value
+                )
+            );
+        });
+    }
+
+    // ======================================
+    // 9. STATISTIEKEN
+    // ======================================
+
+    function renderStats() {
+
+        const items = getScopeTasks();
+
+        const done = items.filter(task =>
+            task.status === "Gereed"
+        ).length;
+
+        $("dbpTotal").textContent =
+            items.length;
+
+        $("dbpActive").textContent =
+            items.length - done;
+
+        $("dbpDone").textContent = done;
+
+        $("dbpTotalLabel").textContent =
+            view === "mijn"
+                ? "Persoonlijke taken"
+                : view === "maand"
+                    ? "Taken in deze maand"
+                    : "Taken op deze datum";
+    }
+
+    // ======================================
+    // 10. STATUS WIJZIGEN
+    // ======================================
+
+    async function changeStatus(task, status) {
+
+        if (!canEdit || !ready || busy) return;
+
+        busy = true;
+
+        render();
+
+        try {
+
+            await request(
+                "/api/Draaiboek/" + task.id,
+                "PUT",
+                toPayload({
+                    ...task,
+                    status
+                })
+            );
+
+            await loadTasks();
+
+            showMessage(
+                "Taakstatus bijgewerkt."
+            );
+
+        } catch (error) {
+
+            showMessage(error.message);
+
+        } finally {
+
+            busy = false;
+            render();
+        }
+    }
+
+    // ======================================
+    // 11. TAAKKAARTEN
+    // ======================================
+
+    function renderTaskCard(task) {
+
+        const card = create(
+            "article",
+            "dbp-task-card"
+        );
+
+        if (task.status === "Gereed") {
+
+            card.classList.add("is-done");
+        }
+
+        const head = create(
+            "div",
+            "dbp-task-head"
+        );
+
+        const info = create("div");
+
+        if (view !== "dag") {
+
+            info.appendChild(
+                create(
+                    "span",
+                    "dbp-task-date",
+                    dateLabel(task.datum)
+                )
+            );
+        }
+
+        info.appendChild(
+            create("h3", "", task.titel)
+        );
+
+        head.appendChild(info);
+
+        card.appendChild(head);
+
+        if (task.omschrijving) {
+
+            card.appendChild(
+                create(
+                    "p",
+                    "dbp-task-description",
+                    task.omschrijving
+                )
+            );
+        }
+
+        const meta = create(
+            "div",
+            "dbp-task-meta"
+        );
+
+        [
+            task.team || "Geen team",
+            task.moment || "Geen moment"
+        ].forEach(value => {
+
+            meta.appendChild(
+                create("span", "", value)
+            );
+        });
+
+        if (isPersonal(task)) {
+
+            meta.appendChild(
+                create("span", "", "Mijn taak")
+            );
+        }
+
+        if (task.gebruikerIds.length) {
+
+            const names = task.gebruikerIds.map(id => {
+
+                const user = users.find(item =>
+                    Number(item.gebruikerId) === id
+                );
+
+                return user
+                    ? user.naam
+                    : "Gebruiker #" + id;
+            });
+
+            meta.appendChild(
+                create(
+                    "span",
+                    "",
+                    "Toegewezen: " + names.join(", ")
+                )
+            );
+        }
+
+        card.appendChild(meta);
+
+        const actions = create(
+            "div",
+            "dbp-task-actions"
+        );
+
+        const status = create(
+            "select",
+            "dbp-status-select"
+        );
+
+        fillOptions(
+            status,
+            [...STATUSES, task.status]
+        );
+
+        status.value = task.status;
+
+        status.disabled =
+            !canEdit || !ready || busy;
+
+        status.setAttribute(
+            "aria-label",
+            "Status van " + task.titel
+        );
+
+        status.addEventListener("change", () => {
+
+            changeStatus(task, status.value);
+        });
+
+        actions.appendChild(status);
+
+        if (canEdit) {
+
+            const edit = create(
+                "button",
+                "dbp-btn",
+                "Bewerken"
+            );
+
+            edit.type = "button";
+            edit.disabled = busy || !ready;
+
+            edit.addEventListener("click", () => {
+
+                openForm(task);
+            });
+
+            const remove = create(
+                "button",
+                "dbp-btn dbp-btn-danger",
+                "Verwijderen"
+            );
+
+            remove.type = "button";
+            remove.disabled = busy || !ready;
+
+            remove.addEventListener("click", () => {
+
+                removeTask(task);
+            });
+
+            actions.append(edit, remove);
+        }
+
+        card.appendChild(actions);
+
+        return card;
+    }
+
+    // ======================================
+    // 12. TAKENLIJST
+    // ======================================
+
+    function renderTaskList() {
+
+        const visible = getVisibleTasks();
+
+        const list = $("dbpTaskList");
+
+        list.replaceChildren();
+
+        $("dbpListTitle").textContent =
+            view === "mijn"
+                ? "Mijn taken"
+                : dateLabel(selectedDate);
+
+        $("dbpListSubtitle").textContent =
+            view === "mijn"
+                ? "Taken die aan jouw account zijn toegewezen."
+                : "Werkzaamheden voor deze datum.";
+
+        $("dbpListCount").textContent =
+            visible.length + " zichtbaar";
+
+        if (!visible.length) {
+
+            list.appendChild(
+                create(
+                    "p",
+                    "dbp-empty",
+                    "Geen taken gevonden."
+                )
+            );
+
+        } else {
+
+            const moments = [
+                ...new Set([
+                    ...MOMENTS,
+                    ...visible.map(task => task.moment)
+                ])
+            ];
+
+            moments.forEach(moment => {
+
+                const items = visible.filter(task =>
+                    task.moment === moment
+                );
+
+                if (!items.length) return;
+
+                list.appendChild(
+                    create(
+                        "h3",
+                        "dbp-group-heading",
+                        moment || "Overige taken"
+                    )
+                );
+
+                items.forEach(task => {
+
+                    list.appendChild(
+                        renderTaskCard(task)
+                    );
+                });
+            });
+        }
+
+        const scope = getScopeTasks().filter(task =>
+            view !== "maand" ||
+            task.datum === selectedDate
+        );
+
+        const done = scope.filter(task =>
+            task.status === "Gereed"
+        ).length;
+
+        $("dbpProgressText").textContent =
+            done + " / " + scope.length;
+
+        $("dbpProgressFill").style.width =
+            (
+                scope.length
+                    ? done / scope.length * 100
+                    : 0
+            ) + "%";
+
+        $("dbpProgressDescription").textContent =
+            done + " van " + scope.length +
+            " taken zijn afgerond.";
+    }
+
+    // ======================================
+    // 13. MAANDKALENDER
+    // ======================================
+
+    function renderCalendar() {
+
+        if (view !== "maand") return;
+
+        const calendar = $("dbpCalendar");
+
+        calendar.replaceChildren();
+
+        const [year, month] =
+            calendarMonth.split("-").map(Number);
+
+        const first = new Date(
+            year,
+            month - 1,
+            1
+        );
+
+        const days = new Date(
+            year,
+            month,
+            0
+        ).getDate();
+
+        $("dbpCalendarTitle").textContent =
+            first.toLocaleDateString("nl-NL", {
+                month: "long",
+                year: "numeric"
+            });
+
+        ["Ma", "Di", "Wo", "Do", "Vr", "Za", "Zo"]
+            .forEach(label => {
+
+                calendar.appendChild(
+                    create(
+                        "span",
+                        "dbp-weekday",
+                        label
+                    )
+                );
+            });
+
+        const offset =
+            (first.getDay() + 6) % 7;
+
+        for (let i = 0; i < offset; i++) {
+
+            calendar.appendChild(
+                create(
+                    "span",
+                    "dbp-calendar-spacer"
+                )
+            );
+        }
+
+        for (let day = 1; day <= days; day++) {
+
+            const date = calendarMonth + "-" +
+                String(day).padStart(2, "0");
+
+            const count = tasks.filter(task =>
+                task.datum === date
+            ).length;
+
+            const button = create(
+                "button",
+                "dbp-calendar-day"
+            );
+
+            button.type = "button";
+
+            button.classList.toggle(
+                "is-selected",
+                selectedDate === date
+            );
+
+            button.setAttribute(
+                "aria-pressed",
+                String(selectedDate === date)
+            );
+
+            button.append(
+                create("strong", "", day),
+                create(
+                    "small",
+                    "",
+                    count
+                        ? count + " taken"
+                        : "Geen taken"
+                )
+            );
+
+            button.addEventListener("click", () => {
+
+                selectedDate = date;
+
+                render();
+            });
+
+            calendar.appendChild(button);
+        }
+    }
+
+    function render() {
+
+        renderStats();
+        renderCalendar();
+        renderTaskList();
+
+        $("dbpAdd").hidden = !canEdit;
+
+        $("dbpAdd").disabled =
+            busy || !ready;
+
+        $("dbpDuplicate").hidden =
+            view !== "dag" || !canEdit;
+
+        $("dbpDuplicate").disabled =
+            busy || !ready;
+
+        if (view === "dag") {
+
+            dayFilter.value = selectedDate;
+        }
+    }
+
+    // ======================================
+    // 14. FORMULIER
+    // ======================================
+
+    function openForm(task = null) {
+
+        if (!canEdit || busy || !ready) return;
+
+        taskForm.reset();
+
+        editingTask = task;
+
+        $("dbpModalTitle").textContent =
+            task ? "Taak bewerken" : "Taak toevoegen";
+
+        $("dbpTaskTitle").value =
+            task?.titel || "";
+
+        $("dbpTaskDescription").value =
+            task?.omschrijving || "";
+
+        $("dbpTaskDate").value =
+            task?.datum || selectedDate;
+
+        formTeam.value =
+            task?.team ?? TEAMS[0];
+
+        formMoment.value =
+            task?.moment ?? MOMENTS[0];
+
+        formStatus.value =
+            task?.status || "Open";
+
+        const assigned = task
+            ? task.gebruikerIds
+            : view === "mijn"
+                ? [Number(currentUser.gebruikerId)]
+                : [];
+
+        [...formUsers.options].forEach(option => {
+
+            option.selected = assigned.includes(
+                Number(option.value)
+            );
+        });
+
+        $("dbpFormFeedback").textContent = "";
+
+        dialog.showModal();
+    }
+
+    $("dbpAdd").addEventListener("click", () => {
+
+        openForm();
     });
-  }
 
+    function closeForm() {
 
-  // ========================================
-  // 6. STATISTIEKEN
-  // ========================================
+        if (busy) return;
 
-  function renderStats() {
-    const items = getScopeItems();
+        dialog.close();
+        editingTask = null;
+    }
 
-    const done = items.filter(
-      item => item.task.status === "Gereed"
-    ).length;
-
-    $("dbpTotal").textContent =
-      String(items.length);
-
-    $("dbpActive").textContent =
-      String(items.length - done);
-
-    $("dbpDone").textContent =
-      String(done);
-
-    $("dbpTotalLabel").textContent =
-      view === "dag"
-        ? "Taken op deze demoavond"
-        : view === "maand"
-          ? "Taken in de demomaand"
-          : "Persoonlijke voorbeeldtaken";
-  }
-
-
-  // ========================================
-  // 7. TAAKSTATUS WIJZIGEN
-  // ========================================
-
-  function changeStatus(date, id, newStatus) {
-    if (!STATUSES.includes(newStatus)) return;
-
-    updateTasks(next => {
-      const task = (next[date] || []).find(
-        item => String(item.id) === String(id)
-      );
-
-      if (task) {
-        task.status = newStatus;
-      }
-    }, "Taakstatus lokaal bijgewerkt.");
-  }
-
-
-  // ========================================
-  // 8. TAAKKAART MAKEN
-  // ========================================
-
-  function renderTaskCard(item) {
-    const { date, task } = item;
-
-    const card = create(
-      "article",
-      "dbp-task-card"
+    $("dbpCloseModal").addEventListener(
+        "click",
+        closeForm
     );
 
-    if (task.status === "Gereed") {
-      card.classList.add("is-done");
-    }
-
-    const head = create("div", "dbp-task-head");
-    const info = create("div");
-
-    if (view !== "dag") {
-      info.appendChild(
-        create(
-          "span",
-          "dbp-task-date",
-          dateLabel(date)
-        )
-      );
-    }
-
-    info.appendChild(
-      create("h3", "", task.titel)
+    $("dbpCancelModal").addEventListener(
+        "click",
+        closeForm
     );
 
-    head.appendChild(info);
-    card.appendChild(head);
+    dialog.addEventListener("cancel", event => {
 
-    if (task.omschrijving) {
-      card.appendChild(
-        create(
-          "p",
-          "dbp-task-description",
-          task.omschrijving
-        )
-      );
+        if (busy) event.preventDefault();
+    });
+
+    // ======================================
+    // 15. POST EN PUT
+    // ======================================
+
+    taskForm.addEventListener(
+        "submit",
+        async event => {
+
+            event.preventDefault();
+
+            if (!canEdit || !ready || busy) return;
+
+            const task = {
+                titel:
+                    $("dbpTaskTitle").value.trim(),
+
+                omschrijving:
+                    $("dbpTaskDescription").value.trim(),
+
+                datum:
+                    $("dbpTaskDate").value,
+
+                team:
+                    formTeam.value,
+
+                moment:
+                    formMoment.value,
+
+                status:
+                    formStatus.value,
+
+                gebruikerIds:
+                    [...formUsers.selectedOptions]
+                        .map(option =>
+                            Number(option.value)
+                        )
+            };
+
+            if (!task.titel || !task.datum) {
+
+                $("dbpFormFeedback").textContent =
+                    "Vul een taaknaam en datum in.";
+
+                return;
+            }
+
+            busy = true;
+
+            $("dbpSaveTask").disabled = true;
+
+            try {
+
+                const path = editingTask
+                    ? "/api/Draaiboek/" + editingTask.id
+                    : "/api/Draaiboek";
+
+                await request(
+                    path,
+                    editingTask ? "PUT" : "POST",
+                    toPayload(task)
+                );
+
+                selectedDate = task.datum;
+
+                calendarMonth =
+                    task.datum.slice(0, 7);
+
+                $("dbpMonth").value =
+                    calendarMonth;
+
+                dialog.close();
+
+                editingTask = null;
+
+                searchInput.value = "";
+                teamFilter.value = "";
+                momentFilter.value = "";
+                statusFilter.value = "";
+
+                if (view === "mijn") {
+
+                    dayFilter.value = "";
+                }
+
+                await loadTasks();
+
+                showMessage(
+                    "Taak opgeslagen in de database."
+                );
+
+            } catch (error) {
+
+                if (dialog.open) {
+
+                    $("dbpFormFeedback").textContent =
+                        error.message;
+
+                } else {
+
+                    showMessage(
+                        "Taak opgeslagen, maar overzicht " +
+                        "vernieuwen mislukt: " +
+                        error.message
+                    );
+                }
+
+            } finally {
+
+                busy = false;
+
+                $("dbpSaveTask").disabled = false;
+
+                render();
+            }
+        }
+    );
+
+    // ======================================
+    // 16. DELETE
+    // ======================================
+
+    async function removeTask(task) {
+
+        if (!canEdit || busy || !ready) return;
+
+        const confirmed = window.confirm(
+            'Wil je "' + task.titel +
+            '" definitief verwijderen uit de database?'
+        );
+
+        if (!confirmed) return;
+
+        busy = true;
+
+        render();
+
+        try {
+
+            await request(
+                "/api/Draaiboek/" + task.id,
+                "DELETE"
+            );
+
+            tasks = tasks.filter(
+                item => item.id !== task.id
+            );
+
+            showMessage(
+                "Taak verwijderd."
+            );
+
+        } catch (error) {
+
+            showMessage(error.message);
+
+        } finally {
+
+            busy = false;
+
+            render();
+        }
     }
 
-    const meta = create("div", "dbp-task-meta");
+    // ======================================
+    // 17. TAKEN DUPLICEREN
+    // ======================================
+
+    $("dbpDuplicate").addEventListener(
+        "click",
+        async () => {
+
+            if (!canEdit || !ready || busy) return;
+
+            const source = tasks.filter(task =>
+                task.datum === selectedDate
+            );
+
+            if (!source.length) {
+
+                showMessage(
+                    "Er zijn geen taken om te dupliceren."
+                );
+
+                return;
+            }
+
+            const date = new Date(
+                selectedDate + "T12:00:00Z"
+            );
+
+            date.setUTCDate(
+                date.getUTCDate() + 1
+            );
+
+            const nextDate =
+                date.toISOString().slice(0, 10);
+
+            const confirmed = window.confirm(
+                source.length +
+                " taken kopiëren naar " + nextDate +
+                "?\n\nDe nieuwe taken krijgen status Open."
+            );
+
+            if (!confirmed) return;
+
+            busy = true;
+
+            render();
+
+            let created = 0;
+
+            try {
+
+                for (const task of source) {
+
+                    await request(
+                        "/api/Draaiboek",
+                        "POST",
+                        toPayload({
+                            ...task,
+                            datum: nextDate,
+                            status: "Open",
+                            gebruikerIds: []
+                        })
+                    );
+
+                    created++;
+                }
+
+                selectedDate = nextDate;
+
+                await loadTasks();
+
+                showMessage(
+                    created + " taken gekopieerd."
+                );
+
+            } catch (error) {
+
+                try {
+                    await loadTasks();
+                } catch {}
+
+                showMessage(
+                    created + " taken gekopieerd. " +
+                    "Daarna ontstond een fout: " +
+                    error.message
+                );
+
+            } finally {
+
+                busy = false;
+
+                render();
+            }
+        }
+    );
+
+    // ======================================
+    // 18. FILTEREVENTS
+    // ======================================
+
+    dayFilter.addEventListener("change", () => {
+
+        if (view === "dag" && dayFilter.value) {
+
+            selectedDate = dayFilter.value;
+        }
+
+        render();
+    });
+
+    $("dbpMonth").addEventListener(
+        "change",
+        event => {
+
+            if (!event.target.value) return;
+
+            calendarMonth =
+                event.target.value;
+
+            selectedDate =
+                calendarMonth + "-01";
+
+            render();
+        }
+    );
 
     [
-      task.team,
-      task.moment
-    ].forEach(value => {
-      meta.appendChild(
-        create("span", "", value)
-      );
+        searchInput,
+        teamFilter,
+        momentFilter,
+        statusFilter
+    ].forEach(control => {
+
+        control.addEventListener(
+            control === searchInput
+                ? "input"
+                : "change",
+            render
+        );
     });
 
-    if (isPersonal(item)) {
-      meta.appendChild(
-        create("span", "", "Mijn taak · demo")
-      );
-    }
+    $("dbpClearFilters").addEventListener(
+        "click",
+        () => {
 
-    card.appendChild(meta);
+            searchInput.value = "";
+            teamFilter.value = "";
+            momentFilter.value = "";
+            statusFilter.value = "";
 
-    const actions = create(
-      "div",
-      "dbp-task-actions"
-    );
+            if (view === "mijn") {
 
-    const status = create(
-      "select",
-      "dbp-status-select"
-    );
+                dayFilter.value = "";
+            }
 
-    status.setAttribute(
-      "aria-label",
-      "Status van " + task.titel
-    );
-
-    STATUSES.forEach(value => {
-      addOption(status, value, value);
-    });
-
-    status.value = task.status;
-
-    status.addEventListener("change", () => {
-      changeStatus(date, task.id, status.value);
-    });
-
-    actions.appendChild(status);
-
-    // Op Dag en Maand kun je ook bewerken
-    // en verwijderen. Mijn taken kan status
-    // veranderen en blijft verder eenvoudig.
-    if (view !== "mijn") {
-
-      const edit = create(
-        "button",
-        "dbp-btn",
-        "Bewerken"
-      );
-
-      edit.type = "button";
-
-      edit.addEventListener("click", () => {
-        openForm(item);
-      });
-
-      actions.appendChild(edit);
-
-      const remove = create(
-        "button",
-        "dbp-btn dbp-btn-danger",
-        "Verwijderen"
-      );
-
-      remove.type = "button";
-
-      remove.addEventListener("click", () => {
-        removeTask(date, task.id, task.titel);
-      });
-
-      actions.appendChild(remove);
-    }
-
-    card.appendChild(actions);
-
-    return card;
-  }
-
-
-  // ========================================
-  // 9. TAKEN TONEN
-  // ========================================
-
-  function renderTaskList() {
-    const visible = getVisibleItems();
-
-    const allForSelected = getScopeItems().filter(
-      item =>
-        view !== "maand" ||
-        item.date === selectedDate
-    );
-
-    const list = $("dbpTaskList");
-    list.replaceChildren();
-
-    if (view === "dag") {
-      $("dbpListTitle").textContent =
-        dateLabel(selectedDate);
-    } else if (view === "maand") {
-      $("dbpListTitle").textContent =
-        dayNumber(selectedDate) + " juni 2027";
-    } else {
-      $("dbpListTitle").textContent =
-        "Mijn voorbeeldtaken";
-    }
-
-    $("dbpListSubtitle").textContent =
-      view === "mijn"
-        ? "Voorbeeldtaken die aan de demogebruiker zijn gekoppeld."
-        : "Selecteer een taak om de status aan te passen.";
-
-    $("dbpListCount").textContent =
-      visible.length + " zichtbaar";
-
-    if (visible.length === 0) {
-      list.appendChild(
-        create(
-          "p",
-          "dbp-empty",
-          "Geen taken gevonden. Pas de filters aan " +
-          "of voeg een nieuwe taak toe."
-        )
-      );
-    } else {
-
-      const groups = [...MOMENTS];
-
-      groups.forEach(moment => {
-        const groupItems = visible.filter(
-          item => item.task.moment === moment
-        );
-
-        if (groupItems.length === 0) return;
-
-        list.appendChild(
-          create(
-            "h3",
-            "dbp-group-heading",
-            moment
-          )
-        );
-
-        groupItems.forEach(item => {
-          list.appendChild(
-            renderTaskCard(item)
-          );
-        });
-      });
-    }
-
-    // Voortgang van het huidige overzicht.
-    const total = allForSelected.length;
-
-    const done = allForSelected.filter(
-      item => item.task.status === "Gereed"
-    ).length;
-
-    $("dbpProgressText").textContent =
-      done + " / " + total;
-
-    $("dbpProgressFill").style.width =
-      (total ? done / total * 100 : 0) + "%";
-
-    $("dbpProgressDescription").textContent =
-      total
-        ? done + " van " + total +
-          " taken zijn afgerond."
-        : "Er staan nog geen taken in dit overzicht.";
-  }
-
-
-  // ========================================
-  // 10. MAANDKALENDER
-  // ========================================
-
-  function renderCalendar() {
-    if (view !== "maand") return;
-
-    const calendar = $("dbpCalendar");
-    calendar.replaceChildren();
-
-    ["Ma", "Di", "Wo", "Do", "Vr", "Za", "Zo"]
-      .forEach(label => {
-        calendar.appendChild(
-          create("span", "dbp-weekday", label)
-        );
-      });
-
-    // 1 juni 2027 valt op dinsdag.
-    // Gebruik UTC om tijdzoneverschillen
-    // in de kalenderraster te voorkomen.
-    const firstDay = new Date(
-      Date.UTC(2027, 5, 1)
-    ).getUTCDay();
-
-    const offset = (firstDay + 6) % 7;
-
-    for (let i = 0; i < offset; i++) {
-      calendar.appendChild(
-        create("span", "dbp-calendar-spacer")
-      );
-    }
-
-    for (let day = 1; day <= 30; day++) {
-      const date = dateKey(day);
-      const dayTasks = tasks[date] || [];
-
-      const button = create(
-        "button",
-        "dbp-calendar-day"
-      );
-
-      button.type = "button";
-
-      button.classList.toggle(
-        "is-selected",
-        date === selectedDate
-      );
-
-      button.setAttribute(
-        "aria-pressed",
-        String(date === selectedDate)
-      );
-
-      button.setAttribute(
-        "aria-label",
-        day + " juni, " +
-        dayTasks.length + " taken"
-      );
-
-      button.appendChild(
-        create("strong", "", day)
-      );
-
-      button.appendChild(
-        create(
-          "small",
-          "",
-          dayTasks.length
-            ? dayTasks.length + " taken"
-            : "Geen taken"
-        )
-      );
-
-      button.addEventListener("click", () => {
-        selectedDate = date;
-        render();
-      });
-
-      calendar.appendChild(button);
-    }
-  }
-
-
-  // ========================================
-  // 11. TOTALE WEERGAVE
-  // ========================================
-
-  function render() {
-    renderStats();
-    renderCalendar();
-    renderTaskList();
-
-    if (view === "dag") {
-      dayFilter.value = selectedDate;
-
-      $("dbpDuplicate").disabled =
-        selectedDate === EVENINGS[3];
-    }
-  }
-
-
-  // ========================================
-  // 12. FORMULIER
-  // ========================================
-
-  const dialog = $("dbpModal");
-  const taskForm = $("dbpForm");
-
-  function openForm(item = null) {
-    taskForm.reset();
-
-    editingId = item
-      ? {
-          date: item.date,
-          id: item.task.id
+            render();
         }
-      : null;
-
-    $("dbpModalTitle").textContent =
-      item ? "Taak bewerken" : "Taak toevoegen";
-
-    $("dbpTaskTitle").value =
-      item?.task.titel || "";
-
-    $("dbpTaskDescription").value =
-      item?.task.omschrijving || "";
-
-    formDate.value =
-      item?.date ||
-      (
-        view === "mijn"
-          ? DEFAULT_DATE
-          : selectedDate
-      );
-
-    formTeam.value =
-      item?.task.team || TEAMS[0];
-
-    formMoment.value =
-      item?.task.moment || MOMENTS[0];
-
-    formStatus.value =
-      item?.task.status || "Open";
-
-    $("dbpTaskPersonal").checked = item
-      ? isPersonal(item)
-      : view === "mijn";
-
-    dialog.showModal();
-
-    $("dbpTaskTitle").focus();
-  }
-
-  function closeForm() {
-    dialog.close();
-    editingId = null;
-  }
-
-  $("dbpAdd").addEventListener("click", () => {
-    openForm();
-  });
-
-  $("dbpCloseModal").addEventListener(
-    "click",
-    closeForm
-  );
-
-  $("dbpCancelModal").addEventListener(
-    "click",
-    closeForm
-  );
-
-  dialog.addEventListener("close", () => {
-    editingId = null;
-  });
-
-
-  // ========================================
-  // 13. TAAK TOEVOEGEN OF BEWERKEN
-  // ========================================
-
-  taskForm.addEventListener("submit", event => {
-    event.preventDefault();
-
-    if (!taskForm.reportValidity()) return;
-
-    const date = formDate.value;
-    const title = $("dbpTaskTitle").value.trim();
-
-    if (!title) return;
-
-    const newTask = {
-      id: editingId?.id ?? makeId(),
-      titel: title,
-      omschrijving:
-        $("dbpTaskDescription").value.trim(),
-      team: formTeam.value,
-      moment: formMoment.value,
-      status: formStatus.value,
-      eigen: $("dbpTaskPersonal").checked
-    };
-
-    const saved = updateTasks(next => {
-
-      if (!next[date]) {
-        next[date] = [];
-      }
-
-      if (editingId) {
-        next[editingId.date] = (
-          next[editingId.date] || []
-        ).filter(
-          task =>
-            String(task.id) !== String(editingId.id)
-        );
-      }
-
-      next[date].push(newTask);
-
-    }, editingId
-      ? "Taak bijgewerkt in de browser."
-      : "Nieuwe taak lokaal toegevoegd."
     );
 
-    if (!saved) return;
-
-    // Open het betreffende overzicht.
-    if (view !== "mijn") {
-      selectedDate = date;
-    }
-
-    teamFilter.value = "";
-    momentFilter.value = "";
-    statusFilter.value = "";
-    searchInput.value = "";
-
-    closeForm();
-    render();
-  });
-
-
-  // ========================================
-  // 14. TAAK VERWIJDEREN
-  // ========================================
-
-  function removeTask(date, id, title) {
-    const confirmed = window.confirm(
-      'Wil je "' + title + '" verwijderen ' +
-      "uit dit lokale draaiboek?\n\n" +
-      "De database wordt niet gewijzigd."
+    $("dbpPrint").addEventListener(
+        "click",
+        () => window.print()
     );
 
-    if (!confirmed) return;
+    // ======================================
+    // 19. ACTUEEL OVERZICHT
+    // ======================================
 
-    updateTasks(next => {
-      next[date] = (next[date] || []).filter(
-        task => String(task.id) !== String(id)
-      );
-    }, "Taak lokaal verwijderd.");
-  }
+    window.addEventListener("focus", async () => {
 
+        if (!ready || busy || dialog.open) return;
 
-  // ========================================
-  // 15. DUPLICEREN NAAR VOLGENDE AVOND
-  // ========================================
+        try {
 
-  $("dbpDuplicate").addEventListener("click", () => {
-    if (view !== "dag") return;
+            await loadTasks();
 
-    const index = EVENINGS.indexOf(selectedDate);
-    const nextDate = EVENINGS[index + 1];
+        } catch (error) {
 
-    if (!nextDate) {
-      showMessage(
-        "Er is geen volgende demoavond."
-      );
-      return;
-    }
-
-    const source = tasks[selectedDate] || [];
-
-    if (source.length === 0) {
-      showMessage(
-        "Deze avond heeft nog geen taken."
-      );
-      return;
-    }
-
-    const confirmed = window.confirm(
-      source.length + " taak/taken kopiëren " +
-      "naar de volgende demoavond?\n\n" +
-      "De nieuwe taken krijgen status Open."
-    );
-
-    if (!confirmed) return;
-
-    const saved = updateTasks(next => {
-      if (!next[nextDate]) {
-        next[nextDate] = [];
-      }
-
-      source.forEach(task => {
-        next[nextDate].push({
-          ...task,
-          id: makeId(),
-          status: "Open"
-        });
-      });
-    }, source.length +
-      " taak/taken naar de volgende avond gekopieerd."
-    );
-
-    if (saved) {
-      selectedDate = nextDate;
-      dayFilter.value = nextDate;
-      render();
-    }
-  });
-
-
-  // ========================================
-  // 16. FILTERS
-  // ========================================
-
-  if (view !== "maand") {
-    dayFilter.addEventListener("change", () => {
-      if (view === "dag") {
-        selectedDate = dayFilter.value;
-      }
-
-      render();
-    });
-  }
-
-  [searchInput, teamFilter, momentFilter, statusFilter]
-    .forEach(control => {
-
-      control.addEventListener(
-        control === searchInput ? "input" : "change",
-        render
-      );
+            showMessage(error.message);
+        }
     });
 
-  $("dbpClearFilters").addEventListener(
-    "click",
-    () => {
-      searchInput.value = "";
-      teamFilter.value = "";
-      momentFilter.value = "";
-      statusFilter.value = "";
+    // ======================================
+    // 20. START
+    // ======================================
 
-      if (view === "mijn") {
-        dayFilter.value = "";
-      }
-
-      render();
-
-      showMessage("Filters gewist.");
-    }
-  );
-
-
-  // ========================================
-  // 17. AFDRUKKEN OF PDF OPSLAAN
-  // ========================================
-
-  $("dbpPrint").addEventListener("click", () => {
-    window.print();
-  });
-
-
-  // ========================================
-  // 18. WIJZIGINGEN UIT ANDERE TABBLADEN
-  // ========================================
-
-  window.addEventListener("storage", event => {
-    if (event.key !== KEY) return;
-
-    tasks = loadTasks();
-    render();
-
-    showMessage(
-      "Het draaiboek is bijgewerkt vanuit " +
-      "een ander browsertabblad."
-    );
-  });
-
-
-  // ========================================
-  // 19. START
-  // ========================================
-
-  render();
+    initialize();
 
 });

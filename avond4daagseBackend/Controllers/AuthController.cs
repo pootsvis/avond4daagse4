@@ -73,14 +73,18 @@ public class AuthController(
     [HttpGet("me")]
     [Authorize]
     public IActionResult Me()
+{
+    return Ok(new
     {
-        return Ok(new
-        {
-            Naam = User.Identity?.Name,
-            Email = User.FindFirstValue(ClaimTypes.Email),
-            Rollen = User.FindAll(ClaimTypes.Role).Select(c => c.Value).ToList()
-        });
-    }
+        GebruikerId = int.Parse(
+            User.FindFirstValue(ClaimTypes.NameIdentifier)!
+        ),
+        Naam = User.Identity?.Name,
+        Email = User.FindFirstValue(ClaimTypes.Email),
+        Rollen = User.FindAll(ClaimTypes.Role)
+            .Select(c => c.Value).ToList()
+    });
+}
     
     [HttpPost("register")]
     [AllowAnonymous]
