@@ -811,3 +811,62 @@ pasNavigatieAan = function (rollen) {
 
     oorspronkelijkeNavigatie(rollen);
 };
+
+
+// ==========================================
+// MIJN ACCOUNT NAVIGATIE
+// ==========================================
+
+PAGINA_RECHTEN["mijn-account.html"] = ALLE_ROLLEN;
+
+const navigatieVoorAccount = pasNavigatieAan;
+
+pasNavigatieAan = function (rollen) {
+
+    navigatieVoorAccount(rollen);
+
+    const footer = document.querySelector(
+        ".bm-sidebar-footer"
+    );
+
+    const logout = footer?.querySelector(
+        ".bm-sidebar-exit"
+    );
+
+    if (!footer || !logout) return;
+
+    if (
+        footer.querySelector(
+            'a[href="mijn-account.html"]'
+        )
+    ) return;
+
+    const accountLink = document.createElement("a");
+
+    accountLink.href = "mijn-account.html";
+
+    accountLink.textContent = "Mijn account ⚙";
+
+    accountLink.style.cssText = `
+        display: block;
+        color: inherit;
+        text-decoration: none;
+        padding: 12px 0;
+        font-size: 14px;
+    `;
+
+    if (
+        paginaNaam(window.location.href) ===
+        "mijn-account.html"
+    ) {
+
+        accountLink.setAttribute(
+            "aria-current",
+            "page"
+        );
+
+        accountLink.style.fontWeight = "bold";
+    }
+
+    footer.insertBefore(accountLink, logout);
+};

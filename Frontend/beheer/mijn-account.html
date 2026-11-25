@@ -1,0 +1,293 @@
+
+<!DOCTYPE html>
+<html lang="nl">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Mijn account | Avond4daagse</title>
+
+    <link rel="stylesheet"
+          href="../css/beheer.css">
+
+    <link rel="stylesheet"
+          href="../css/beheer-polish.css">
+
+    <link rel="stylesheet"
+          href="../css/beheer-account.css">
+
+    <script src="../js/beheer-ui.js" defer></script>
+
+    <script src="../js/beheer-account.js" defer></script>
+
+</head>
+
+<body class="bm-page">
+
+<div class="bm-layout">
+
+    <aside class="bm-sidebar" id="bmSidebar">
+
+        <a href="dashboard.html" class="bm-brand">
+
+            <span class="bm-brand-symbol">4</span>
+
+            <span>
+                <strong>AVOND4DAAGSE</strong>
+                <small>BEHEEROMGEVING 2027</small>
+            </span>
+
+        </a>
+
+        <div class="bm-sidebar-content">
+
+            <p class="bm-nav-label">OVERZICHT</p>
+
+            <nav class="bm-navigation">
+
+                <a href="dashboard.html">
+                    <span class="bm-nav-icon">▦</span>
+                    Dashboard
+                </a>
+
+                <a href="inschrijvingen.html">
+                    <span class="bm-nav-icon">◎</span>
+                    Inschrijvingen
+                </a>
+
+                <a href="routebeheer.html">
+                    <span class="bm-nav-icon">◇</span>
+                    Routebeheer
+                </a>
+
+                <a href="vrijwilligers.html">
+                    <span class="bm-nav-icon">♧</span>
+                    Vrijwilligers &amp; inzet
+                </a>
+
+                <a href="mijn-beschikbaarheid.html">
+                    <span class="bm-nav-icon">◷</span>
+                    Mijn beschikbaarheid
+                </a>
+
+                <a href="draaiboek.html">
+                    <span class="bm-nav-icon">☷</span>
+                    Draaiboek
+                </a>
+
+                <a href="financien.html">
+                    <span class="bm-nav-icon">€</span>
+                    Financiën
+                </a>
+
+                <a href="contactvragen.html">
+                    <span class="bm-nav-icon">✉</span>
+                    Contactvragen
+                </a>
+
+            </nav>
+
+        </div>
+
+        <div class="bm-sidebar-footer">
+
+            <div class="bm-account">
+
+                <span class="bm-account-avatar">B</span>
+
+                <span>
+                    <strong>Gebruiker</strong>
+                    <small>Account laden...</small>
+                </span>
+
+            </div>
+
+            <a href="login.html"
+               class="bm-sidebar-exit">
+
+                Uitloggen
+
+            </a>
+
+        </div>
+
+    </aside>
+
+    <div class="bm-main-area">
+
+        <header class="bm-topbar">
+
+            <div class="bm-topbar-left">
+
+                <button type="button"
+                        id="bmMenuButton"
+                        class="bm-menu-button"
+                        aria-controls="bmSidebar"
+                        aria-expanded="false">
+
+                    ☰ Menu
+
+                </button>
+
+                <div class="bm-breadcrumb">
+                    Beheeromgeving / Mijn account
+                </div>
+
+            </div>
+
+            <a href="../../index.html"
+               class="bm-website-link">
+
+                Bekijk publieke website ↗
+
+            </a>
+
+        </header>
+
+        <main class="bm-content">
+
+            <section class="bm-welcome">
+
+                <div>
+
+                    <p class="bm-eyebrow">
+                        ORGANISATIE · EDITIE 2027
+                    </p>
+
+                    <h1>Mijn account</h1>
+
+                    <p>
+                        Bekijk je accountgegevens en
+                        beheer je wachtwoord.
+                    </p>
+
+                </div>
+
+            </section>
+
+            <div class="ba-account-grid">
+
+                <section class="bm-panel ba-account-panel">
+
+                    <h2>Accountgegevens</h2>
+
+                    <dl class="ba-account-details">
+
+                        <dt>Naam</dt>
+                        <dd id="baAccountName">—</dd>
+
+                        <dt>E-mailadres</dt>
+                        <dd id="baAccountEmail">—</dd>
+
+                        <dt>Organisatierollen</dt>
+                        <dd id="baAccountRoles">—</dd>
+
+                    </dl>
+
+                </section>
+
+                <section class="bm-panel ba-account-panel">
+
+                    <h2>Wachtwoord wijzigen</h2>
+
+                    <p class="ba-account-description">
+
+                        Kies een nieuw wachtwoord van
+                        minimaal 12 tekens.
+
+                        Na het wijzigen moet je opnieuw
+                        inloggen.
+
+                    </p>
+
+                    <form id="baPasswordForm"
+                          class="ba-password-form">
+
+                        <label>
+
+                            Huidig wachtwoord
+
+                            <input id="baCurrentPassword"
+                                   type="password"
+                                   autocomplete="current-password"
+                                   required>
+
+                        </label>
+
+                        <label>
+
+                            Nieuw wachtwoord
+
+                            <input id="baNewPassword"
+                                   type="password"
+                                   autocomplete="new-password"
+                                   minlength="12"
+                                   maxlength="128"
+                                   required>
+
+                        </label>
+
+                        <label>
+
+                            Bevestig nieuw wachtwoord
+
+                            <input id="baConfirmPassword"
+                                   type="password"
+                                   autocomplete="new-password"
+                                   minlength="12"
+                                   maxlength="128"
+                                   required>
+
+                        </label>
+
+                        <label class="ba-show-password">
+
+                            <input id="baShowPassword"
+                                   type="checkbox">
+
+                            Wachtwoorden tonen
+
+                        </label>
+
+                        <button id="baSavePassword"
+                                type="submit"
+                                class="ba-account-button">
+
+                            Wachtwoord wijzigen
+
+                        </button>
+
+                        <p id="baPasswordFeedback"
+                           role="status"
+                           aria-live="polite">
+                        </p>
+
+                    </form>
+
+                </section>
+
+            </div>
+
+            <footer class="bm-content-footer">
+
+                Avond4daagse 2027 · Mijn account
+
+            </footer>
+
+        </main>
+
+    </div>
+
+</div>
+
+<div id="bmBackdrop"
+     class="bm-backdrop"
+     hidden>
+</div>
+
+</body>
+</html>
