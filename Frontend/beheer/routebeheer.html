@@ -552,7 +552,30 @@
                    maxlength="120"
                    placeholder="Bijv. het startplein">
         </label>
+<label>
+    Evenement
 
+    <select id="brRouteEvent" required>
+        <option value="">Selecteer een evenement</option>
+    </select>
+</label>
+
+<label>
+    Starttijd
+
+    <input id="brRouteTime"
+           type="time"
+           required>
+</label>
+
+<label>
+    Controlepost
+
+    <input id="brRouteCheckpoint"
+           type="text"
+           placeholder="Bijv. Controlepost 1"
+           required>
+</label>
         <div class="br-upload">
 
             <label for="brGpxFile">

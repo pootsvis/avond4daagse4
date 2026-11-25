@@ -106,7 +106,43 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     }
 
+const ROUTE_METADATA_KEY = "a4d-route-metadata-v1";
 
+function loadRouteMetadata(routeId) {
+    try {
+        const metadata = JSON.parse(
+            localStorage.getItem(ROUTE_METADATA_KEY) || "{}"
+        );
+
+        return metadata[routeId] || {};
+    } catch {
+        return {};
+    }
+}
+
+function saveRouteMetadata(routeId, route) {
+    try {
+        const metadata = JSON.parse(
+            localStorage.getItem(ROUTE_METADATA_KEY) || "{}"
+        );
+
+        metadata[routeId] = {
+            evening: route.evening,
+            start: route.start,
+            points: route.points
+        };
+
+        localStorage.setItem(
+            ROUTE_METADATA_KEY,
+            JSON.stringify(metadata)
+        );
+
+        return true;
+    } catch (error) {
+        console.warn("Routegegevens lokaal opslaan mislukt.", error);
+        return false;
+    }
+}
     function saveRoutes() {
 
         try {
@@ -829,7 +865,42 @@ $("brDeleteRoute").disabled = route.source === "database";
                 routes[index] = route;
 
             } else {
-                routes.push(route);
+                const payload = {
+    naam: route.name,
+    afstand: route.distance,
+    starttijd: $("brRouteTime").value + ":00",
+    controlepost: $("brRouteCheckpoint").value.trim(),
+    evenementId: Number($("brRouteEvent").value)
+};
+
+if (!payload.evenementId || !payload.controlepost) {
+    throw new Error(
+        "Vul alle verplichte routegegevens in."
+    );
+}
+
+const createdRoute = await A4DRouteAPI.createRoute(payload);
+
+route.id = "db-" + createdRoute.routeId;
+route.routeId = createdRoute.routeId;
+route.source = "database";
+route.starttijd = payload.starttijd;
+route.controlepost = payload.controlepost;
+route.evenementId = payload.evenementId;
+
+const metadataSaved = saveRouteMetadata(
+    route.routeId,
+    route
+);
+
+if (!metadataSaved) {
+    alert(
+        "De route is opgeslagen in de database, " +
+        "maar de aanvullende lokale gegevens niet."
+    );
+}
+
+routes.push(route);
             }
 
             selectedId = route.id;
@@ -845,8 +916,9 @@ $("brDeleteRoute").disabled = route.source === "database";
             render();
 
             feedback.textContent = savedLocally
-                ? "Route opgeslagen in deze browser. " +
-                  "Nog niet gepubliceerd op de website."
+                ?route.source === "database"
+    ? "Route succesvol opgeslagen in de database."
+    : "Route lokaal opgeslagen."
                 : "Route staat nu in dit scherm, maar " +
                   "kon niet blijvend lokaal worden " +
                   "opgeslagen. Controleer je browseropslag.";
@@ -1039,19 +1111,23 @@ $("brDeleteRoute").disabled = route.source === "database";
         try {
             const databaseRoutes = await A4DRouteAPI.getRoutes();
 
-            const mappedRoutes = databaseRoutes.map(route => ({
-                id: "db-" + route.routeId,
-                routeId: route.routeId,
-                name: route.naam,
-                evening: null,
-                distance: Number(route.afstand),
-                start: "",
-                starttijd: route.starttijd,
-                controlepost: route.controlepost,
-                evenementId: route.evenementId,
-                points: [],
-                source: "database"
-            }));
+            const mappedRoutes = databaseRoutes.map(route => {
+    const metadata = loadRouteMetadata(route.routeId);
+
+    return {
+        id: "db-" + route.routeId,
+        routeId: route.routeId,
+        name: route.naam,
+        evening: metadata.evening ?? null,
+        distance: Number(route.afstand),
+        start: metadata.start ?? "",
+        starttijd: route.starttijd,
+        controlepost: route.controlepost,
+        evenementId: route.evenementId,
+        points: metadata.points ?? [],
+        source: "database"
+    };
+});
 
             routes = [...loadRoutes(), ...mappedRoutes];
 
@@ -1069,6 +1145,37 @@ $("brDeleteRoute").disabled = route.source === "database";
         }
     }
 
-    initializeRoutes();
+    async function loadEvenementen() {
+    const eventSelect = $("brRouteEvent");
+
+    try {
+        const evenementen = await A4DRouteAPI.getEvenementen();
+
+        eventSelect.replaceChildren();
+
+        const placeholder = document.createElement("option");
+        placeholder.value = "";
+        placeholder.textContent = "Selecteer een evenement";
+        eventSelect.appendChild(placeholder);
+
+        evenementen.forEach(evenement => {
+            const option = document.createElement("option");
+
+            option.value = evenement.evenementId;
+            option.textContent = evenement.naam;
+
+            eventSelect.appendChild(option);
+        });
+
+    } catch (error) {
+        feedback.textContent =
+            "Evenementen ophalen mislukt: " + error.message;
+
+        eventSelect.disabled = true;
+    }
+}
+
+initializeRoutes();
+loadEvenementen();
 
 });
