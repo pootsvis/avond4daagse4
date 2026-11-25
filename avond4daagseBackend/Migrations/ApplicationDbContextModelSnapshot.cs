@@ -664,6 +664,19 @@ namespace avond4daagseBackend.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
+                    b.Property<byte[]>("CertificaatBestand")
+                        .HasColumnType("bytea");
+
+                    b.Property<string>("CertificaatNaam")
+                        .HasColumnType("text");
+
+                    b.Property<string>("CertificaatStatus")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<DateTime?>("CertificaatUploadDatum")
+                        .HasColumnType("timestamp with time zone");
+
                     b.Property<int?>("GebruikerId")
                         .HasColumnType("integer");
 

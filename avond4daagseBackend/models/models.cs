@@ -134,12 +134,16 @@ public class Vrijwilliger
     public string Status { get; set; } = string.Empty;
     public string Inzetting { get; set; } = string.Empty;
 
-    // Koppeling met het persoonlijke gebruikersaccount.
     public int? GebruikerId { get; set; }
     public Gebruiker? Gebruiker { get; set; }
 
-    // Persoonlijke beschikbaarheid per wandelavond.
     public string BeschikbaarheidJson { get; set; } = string.Empty;
+
+    // Certificaatgegevens
+    public byte[]? CertificaatBestand { get; set; }
+    public string? CertificaatNaam { get; set; }
+    public DateTime? CertificaatUploadDatum { get; set; }
+    public string CertificaatStatus { get; set; } = "Ontbreekt";
 
     public ICollection<Taaktoewijzing> Taaktoewijzingen { get; set; }
         = new List<Taaktoewijzing>();
