@@ -112,7 +112,9 @@ document.addEventListener("DOMContentLoaded", () => {
         try {
             localStorage.setItem(
                 STORAGE_KEY,
-                JSON.stringify(routes)
+               JSON.stringify(
+    routes.filter(route => route.source !== "database")
+)
             );
 
             return true;
@@ -499,7 +501,9 @@ document.addEventListener("DOMContentLoaded", () => {
 
         const evening = document.createElement("span");
         evening.textContent =
-            "Avond " + route.evening;
+            route.evening
+    ? "Avond " + route.evening
+    : "Wandelavond onbekend";
 
         const distance = document.createElement("span");
         distance.textContent =
@@ -634,7 +638,9 @@ document.addEventListener("DOMContentLoaded", () => {
             : "GPX ontbreekt";
 
         $("brDetailEvening").textContent =
-            "Avond " + route.evening;
+            route.evening
+    ? "Avond " + route.evening
+    : "Wandelavond onbekend";
 
         $("brDetailDistance").textContent =
             route.distance + " km";
@@ -648,6 +654,8 @@ document.addEventListener("DOMContentLoaded", () => {
         $("brDownloadGpx").disabled = !hasGpx;
 
         selectedDetails.hidden = false;
+        $("brEditRoute").disabled = route.source === "database";
+$("brDeleteRoute").disabled = route.source === "database";
 
         if (!hasGpx) {
             mapEmptyText.textContent =
@@ -1023,10 +1031,44 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 
 
-    // ======================================
-    // 14. START
+        // ======================================
+    // 14. START - API INTEGRATIE
     // ======================================
 
-    render();
+    async function initializeRoutes() {
+        try {
+            const databaseRoutes = await A4DRouteAPI.getRoutes();
+
+            const mappedRoutes = databaseRoutes.map(route => ({
+                id: "db-" + route.routeId,
+                routeId: route.routeId,
+                name: route.naam,
+                evening: null,
+                distance: Number(route.afstand),
+                start: "",
+                starttijd: route.starttijd,
+                controlepost: route.controlepost,
+                evenementId: route.evenementId,
+                points: [],
+                source: "database"
+            }));
+
+            routes = [...loadRoutes(), ...mappedRoutes];
+
+            render();
+
+            feedback.textContent =
+                "Routes opgehaald uit de database.";
+
+        } catch (error) {
+            render();
+
+            feedback.textContent =
+                "Database routes ophalen mislukt: " +
+                error.message;
+        }
+    }
+
+    initializeRoutes();
 
 });
